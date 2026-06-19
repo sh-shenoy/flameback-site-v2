@@ -165,6 +165,18 @@
   .wbtns .switch{width:100%;background:transparent;border:1px solid var(--accent);color:var(--accent);font-family:"Geist",serif;font-size:14px;padding:13px;cursor:pointer}
   .wbtns .proceed{width:100%;background:var(--btn-bg);color:var(--btn-ink);border:none;font-family:"Geist",serif;font-size:14px;font-weight:500;padding:14px;cursor:pointer;transition:opacity .3s}
   .wbtns .proceed[disabled]{opacity:.34;cursor:not-allowed}
+  .filterbar{margin-bottom:6px}
+  .filterbar .fl{font-family:"Geist Mono",monospace;font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-mute);margin-bottom:10px}
+  .filterbar .recnote{color:var(--accent);text-transform:none;letter-spacing:0;font-family:"Geist",serif;font-style:italic;font-size:11.5px}
+  .fchips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+  .fchip{font-family:"Geist",serif;font-size:13.5px;color:var(--ink-soft);background:var(--card);border:1px solid var(--line);padding:7px 15px;border-radius:999px;cursor:pointer;transition:all .2s}
+  .fchip:hover{border-color:var(--ink-soft)}
+  .fchip.on{background:var(--accent);color:var(--btn-ink);border-color:var(--accent)}
+  .fchip.rec:not(.on){border-color:color-mix(in srgb,var(--accent) 55%,var(--line))}
+  .fchip.rec::after{content:"\2605";margin-left:6px;color:var(--accent);font-size:10px;vertical-align:1px}
+  .fchip.rec.on::after{color:var(--btn-ink)}
+  .scard{position:relative}
+  .scard .recpill{position:absolute;top:14px;right:14px;font-family:"Geist Mono",monospace;font-size:8.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);border:1px solid color-mix(in srgb,var(--accent) 45%,transparent);border-radius:999px;padding:2px 8px}
 </style>
   <link rel="stylesheet" href="v2.css">
 </head>
@@ -195,28 +207,25 @@
 
         <span class="eyebrow"><span class="l"></span>Strategy marketplace</span>
     <h1 class="ttl">Pick your <em>strategy.</em></h1>
-    <p class="lede">We've landed you on the band matched to your profile. Slide to explore — browsing is free, you only commit when you tap Select.</p>
+    <p class="lede">We've matched you to the Moderate band — it's pre-selected. Filter by risk and style to explore others; browsing is free, you only commit when you tap Select.</p>
 
-    <!-- risk spectrum -->
-    <div class="spectrum">
-      <div class="recwrap"><span class="recbadge" id="recBadge">Recommended for you</span></div>
-      <div class="track">
-        <div class="stops" id="stops">
-          <span class="stop" data-b="0"></span>
-          <span class="stop" data-b="1"></span>
-          <span class="stop" data-b="2"></span>
-          <span class="stop" data-b="3"></span>
-        </div>
+    <!-- filters -->
+    <div class="filterbar">
+      <div class="fl">Risk level <span class="recnote">— Moderate matches your profile</span></div>
+      <div class="fchips" id="riskChips">
+        <button class="fchip" data-r="all">All strategies</button>
+        <button class="fchip" data-r="0">Conservative</button>
+        <button class="fchip" data-r="1">Moderate</button>
+        <button class="fchip" data-r="2">Aggressive</button>
+        <button class="fchip" data-r="3">Very Aggressive</button>
       </div>
-      <div class="slabels" id="slabels">
-        <button data-b="0">Conservative</button>
-        <button data-b="1">Moderate</button>
-        <button data-b="2">Aggressive</button>
-        <button data-b="3">Very Aggressive</button>
+      <div class="fl">Style</div>
+      <div class="fchips" id="styleChips">
+        <button class="fchip on" data-s="all">All</button>
+        <button class="fchip" data-s="Static">Static &mdash; fixed rules</button>
+        <button class="fchip" data-s="Dynamic">Dynamic &mdash; adapts</button>
       </div>
-      <div class="anchors"><span>Less risk → stable returns</span><span>More risk → higher returns</span></div>
     </div>
-
     <div class="warn" id="warn"></div>
 
     <div class="cards" id="cards"></div>
@@ -338,66 +347,16 @@
     ]
   };
 
-  var activeBand=RECOMMENDED;
-  var selection=null; // {band, idx}
-  var expanded={}; // per-card factsheet state, key band-idx
+  var ALL=[];
+  Object.keys(DATA).forEach(function(b){ b=parseInt(b,10); DATA[b].forEach(function(s,idx){ ALL.push({band:b,idx:idx,s:s}); }); });
 
-  // ── slider position helpers (4 stops at 0,33.3,66.6,100%) ──
-  function pctFor(b){return (b/3*100);}
-  function placeRecBadge(){document.getElementById('recBadge').style.left=pctFor(RECOMMENDED)+'%';}
+  var riskF=String(RECOMMENDED), styleF='all';
+  var selection=null;
+  var expanded={};
 
-  function renderStops(){
-    document.querySelectorAll('#stops .stop').forEach(function(s){s.classList.toggle('on',parseInt(s.dataset.b,10)===activeBand);});
-    document.querySelectorAll('#slabels button').forEach(function(b){b.classList.toggle('on',parseInt(b.dataset.b,10)===activeBand);});
-  }
-
-  // ── render the two cards for the active band ──
-  function renderCards(){
-    var c=document.getElementById('cards'); c.innerHTML='';
-    DATA[activeBand].forEach(function(s,idx){
-      var key=activeBand+'-'+idx;
-      var isSel=selection&&selection.band===activeBand&&selection.idx===idx;
-      var open=expanded[key];
-      var card=document.createElement('div');
-      card.className='scard'+(isSel?' sel':'');
-      card.innerHTML=
-        '<span class="selbadge">&#10003; Selected</span>'+
-        '<span class="typetag">'+s.type+'</span>'+
-        '<h3>'+s.name+'</h3>'+
-        '<div class="metrics">'+
-          '<div class="m"><span class="mk">Historic CAGR</span><span class="mv pos">'+s.cagr+'</span></div>'+
-          '<div class="m"><span class="mk">Max drawdown</span><span class="mv neg">'+s.dd+'</span></div>'+
-          '<div class="m"><span class="mk">Since inception</span><span class="mv pos">'+s.since+'</span></div>'+
-        '</div>'+
-        '<p class="philo">'+s.philo+'</p>'+
-        '<button class="know'+(open?' open':'')+'" data-key="'+key+'">Know more · factsheet <span class="ar">▾</span></button>'+
-        '<div class="fact'+(open?' open':'')+'">'+
-          '<div class="chart"><div class="ct">'+s.name+' vs Nifty 500 TRI</div>'+sparkline()+
-            '<div class="periods"><button>1M</button><button>3M</button><button>6M</button><button class="on">1Y</button><button>3Y</button><button>All</button></div>'+
-          '</div>'+
-          '<table class="rtab"><tr><td>1Y return</td><td class="">'+s.cagr+'</td></tr><tr><td>3Y CAGR</td><td>'+s.cagr+'</td></tr><tr><td>Since inception</td><td>'+s.since+'</td></tr></table>'+
-          '<div class="riskgrid">'+
-            '<div class="rc"><span class="rk">Sharpe</span><span class="rv">1.1</span></div>'+
-            '<div class="rc"><span class="rk">Sortino</span><span class="rv">1.6</span></div>'+
-            '<div class="rc"><span class="rk">Calmar</span><span class="rv">0.9</span></div>'+
-            '<div class="rc"><span class="rk">Max DD</span><span class="rv">'+s.dd+'</span></div>'+
-            '<div class="rc"><span class="rk">Vol</span><span class="rv">'+(8+activeBand*4)+'%</span></div>'+
-            '<div class="rc"><span class="rk">Win rate</span><span class="rv">'+(58+activeBand*2)+'%</span></div>'+
-          '</div>'+
-        '</div>'+
-        '<button class="selbtn" data-idx="'+idx+'">'+(isSel?'&#10003; Selected':'Select '+s.name)+'</button>';
-      c.appendChild(card);
-    });
-
-    // wire factsheet toggles
-    c.querySelectorAll('.know').forEach(function(btn){
-      btn.onclick=function(){var k=btn.dataset.key;expanded[k]=!expanded[k];renderCards();};
-    });
-    // wire select
-    c.querySelectorAll('.selbtn').forEach(function(btn){
-      btn.onclick=function(){onSelect(activeBand,parseInt(btn.dataset.idx,10));};
-    });
-  }
+  var cardsEl=document.getElementById('cards');
+  var riskChips=document.querySelectorAll('#riskChips .fchip');
+  var styleChips=document.querySelectorAll('#styleChips .fchip');
 
   function sparkline(){
     return '<svg viewBox="0 0 280 70" width="100%" height="60" preserveAspectRatio="none">'+
@@ -406,18 +365,59 @@
       '</svg>';
   }
 
-  // ── band change (slider/stop/label) ──
-  function setBand(b){
-    activeBand=b; renderStops(); renderCards();
-    // browsing other bands is free — no warning here per spec
+  function cardHTML(item){
+    var s=item.s, band=item.band, idx=item.idx, key=band+'-'+idx;
+    var isSel=selection&&selection.band===band&&selection.idx===idx;
+    var open=expanded[key], rec=(band===RECOMMENDED);
+    return '<div class="scard'+(isSel?' sel':'')+'">'+
+      '<span class="selbadge">&#10003; Selected</span>'+
+      (rec?'<span class="recpill">Recommended</span>':'')+
+      '<span class="typetag">'+BANDS[band]+' · '+s.type+'</span>'+
+      '<h3>'+s.name+'</h3>'+
+      '<div class="metrics">'+
+        '<div class="m"><span class="mk">Historic CAGR</span><span class="mv pos">'+s.cagr+'</span></div>'+
+        '<div class="m"><span class="mk">Max drawdown</span><span class="mv neg">'+s.dd+'</span></div>'+
+        '<div class="m"><span class="mk">Since inception</span><span class="mv pos">'+s.since+'</span></div>'+
+      '</div>'+
+      '<p class="philo">'+s.philo+'</p>'+
+      '<button class="know'+(open?' open':'')+'" data-key="'+key+'">Know more · factsheet <span class="ar">▾</span></button>'+
+      '<div class="fact'+(open?' open':'')+'">'+
+        '<div class="chart"><div class="ct">'+s.name+' vs Nifty 500 TRI</div>'+sparkline()+
+          '<div class="periods"><button>1M</button><button>3M</button><button>6M</button><button class="on">1Y</button><button>3Y</button><button>All</button></div>'+
+        '</div>'+
+        '<table class="rtab"><tr><td>1Y return</td><td>'+s.cagr+'</td></tr><tr><td>3Y CAGR</td><td>'+s.cagr+'</td></tr><tr><td>Since inception</td><td>'+s.since+'</td></tr></table>'+
+        '<div class="riskgrid">'+
+          '<div class="rc"><span class="rk">Sharpe</span><span class="rv">1.1</span></div>'+
+          '<div class="rc"><span class="rk">Sortino</span><span class="rv">1.6</span></div>'+
+          '<div class="rc"><span class="rk">Calmar</span><span class="rv">0.9</span></div>'+
+          '<div class="rc"><span class="rk">Max DD</span><span class="rv">'+s.dd+'</span></div>'+
+          '<div class="rc"><span class="rk">Vol</span><span class="rv">'+(8+band*4)+'%</span></div>'+
+          '<div class="rc"><span class="rk">Win rate</span><span class="rv">'+(58+band*2)+'%</span></div>'+
+        '</div>'+
+      '</div>'+
+      '<button class="selbtn" data-band="'+band+'" data-idx="'+idx+'">'+(isSel?'&#10003; Selected':'Select '+s.name)+'</button>'+
+    '</div>';
   }
-  document.querySelectorAll('#stops .stop').forEach(function(s){s.onclick=function(){setBand(parseInt(s.dataset.b,10));};});
-  document.querySelectorAll('#slabels button').forEach(function(b){b.onclick=function(){setBand(parseInt(b.dataset.b,10));};});
+
+  function render(){
+    riskChips.forEach(function(c){c.classList.toggle('on',String(c.dataset.r)===String(riskF));c.classList.toggle('rec',String(c.dataset.r)===String(RECOMMENDED));});
+    styleChips.forEach(function(c){c.classList.toggle('on',String(c.dataset.s)===String(styleF));});
+    var list=ALL.filter(function(it){
+      var rk=(riskF==='all')||(it.band===parseInt(riskF,10));
+      var st=(styleF==='all')||(it.s.type===styleF);
+      return rk&&st;
+    });
+    cardsEl.innerHTML = list.length ? list.map(cardHTML).join('') : '<p class="warn" style="display:block;grid-column:1/-1">No strategies match — widen the filters.</p>';
+    cardsEl.querySelectorAll('.know').forEach(function(btn){btn.onclick=function(){expanded[btn.dataset.key]=!expanded[btn.dataset.key];render();};});
+    cardsEl.querySelectorAll('.selbtn').forEach(function(btn){btn.onclick=function(){onSelect(parseInt(btn.dataset.band,10),parseInt(btn.dataset.idx,10));};});
+  }
+  riskChips.forEach(function(c){c.onclick=function(){riskF=c.dataset.r;render();};});
+  styleChips.forEach(function(c){c.onclick=function(){styleF=c.dataset.s;render();};});
 
   // ── selection + guardrail ──
   function onSelect(band,idx){
     selection={band:band,idx:idx};
-    renderCards();
+    render();
     if(band!==RECOMMENDED){ openWaiver(); }
     else { openInvest(); }
   }
@@ -465,12 +465,12 @@
   document.getElementById('proceedBtn').onclick=function(){scrim.classList.remove('open');openInvest();};
   document.getElementById('switchBtn').onclick=function(){
     scrim.classList.remove('open');
-    setBand(RECOMMENDED);
+    riskF=String(RECOMMENDED);
     selection={band:RECOMMENDED,idx:0};
-    renderCards();
+    render();
     openInvest();
   };
-  scrim.onclick=function(e){if(e.target===scrim){scrim.classList.remove('open');selection=null;renderCards();}};
+  scrim.onclick=function(e){if(e.target===scrim){scrim.classList.remove('open');selection=null;render();}};
 
   // invest inputs
   var amt=document.getElementById('amt'), sipAmt=document.getElementById('sipAmt');
@@ -500,7 +500,7 @@
   };
 
   // init
-  placeRecBadge(); renderStops(); renderCards();
+  render();
 </script>
   <script src="reload.js"></script>
 </body>
