@@ -157,6 +157,15 @@
           </div>
         </div>
 
+        <div class="field">
+          <label class="fl">Your current home</label>
+          <div class="chips" id="home">
+            <div class="chip" data-v="Rented / leased">Rented / leased</div>
+            <div class="chip" data-v="Owned outright">Owned outright</div>
+            <div class="chip" data-v="Owned under mortgage">Owned under mortgage</div>
+          </div>
+        </div>
+
         <div class="calc">
           <span class="k">Estimated savings rate</span>
           <span class="v muted" id="savings">—</span>
@@ -213,6 +222,14 @@
     };
   });
 
+  var home=null;
+  document.querySelectorAll('#home .chip').forEach(function(c){
+    c.onclick=function(){
+      document.querySelectorAll('#home .chip').forEach(function(x){x.classList.remove('on');});
+      c.classList.add('on'); home=c.getAttribute('data-v'); validate();
+    };
+  });
+
   function val(id){ return parseInt(digits(document.getElementById(id))||'0',10); }
   function recalc(){
     var income=val('f2'), exp=val('f3'), emi=val('f4');
@@ -232,7 +249,7 @@
   var cta=document.getElementById('cta');
   function validate(){
     var age=ageFromDOB(f1.value);
-    var ok = age>=18 && val('f2')>0 && val('f3')>0 && f4.value!=='' && val('f5')>0 && document.getElementById('f6').value!=='' && dep!==null;
+    var ok = age>=18 && val('f2')>0 && val('f3')>0 && f4.value!=='' && val('f5')>0 && document.getElementById('f6').value!=='' && dep!==null && home;
     cta.disabled=!ok;
   }
   cta.onclick=function(){ if(!cta.disabled) location.href='flameback-app-income-streams.html'; };
