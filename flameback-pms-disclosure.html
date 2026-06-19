@@ -5,59 +5,59 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PMS Disclosure Document — flameback.</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root{--bg:#FCFAF6;--ink:#1A1714;--ink-soft:rgba(26,23,20,.68);--ink-mute:rgba(26,23,20,.46);--line:rgba(26,23,20,.14);--panel:#F4EFE7;--accent:#B23E08;--btn-bg:#1A1714;--btn-ink:#FCFAF6;--grain-blend:multiply;--grain-op:.035}
-  :root.dark{--bg:#1A1714;--ink:#F2EDE3;--ink-soft:rgba(242,237,227,.66);--ink-mute:rgba(242,237,227,.44);--line:rgba(242,237,227,.16);--panel:#221E1A;--accent:#FF6D0A;--btn-bg:#FF6D0A;--btn-ink:#1A1714;--grain-blend:screen;--grain-op:.055}
+  :root{--bg:#F5F2EA;--ink:#0B0C0E;--ink-soft:rgba(11,12,14,.68);--ink-mute:rgba(11,12,14,.46);--line:rgba(11,12,14,.14);--panel:#F4EFE7;--accent:#8A6D43;--btn-bg:#0B0C0E;--btn-ink:#F5F2EA;--grain-blend:multiply;--grain-op:.035}
+  :root.dark{--bg:#0B0C0E;--ink:#F5F2EA;--ink-soft:rgba(245,242,234,.66);--ink-mute:rgba(245,242,234,.44);--line:rgba(245,242,234,.16);--panel:#221E1A;--accent:#B59669;--btn-bg:#B59669;--btn-ink:#0B0C0E;--grain-blend:screen;--grain-op:.055}
   *{margin:0;padding:0;box-sizing:border-box}
   html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
-  body{background:var(--bg);color:var(--ink);font-family:"Source Serif 4",serif;transition:background .5s,color .5s;font-variant-numeric:tabular-nums;line-height:1.62}
+  body{background:var(--bg);color:var(--ink);font-family:"Geist",serif;transition:background .5s,color .5s;font-variant-numeric:tabular-nums;line-height:1.62}
   body::after{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;mix-blend-mode:var(--grain-blend);opacity:var(--grain-op);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
   .wrap{max-width:920px;margin:0 auto;padding:0 clamp(22px,5vw,44px);position:relative;z-index:2}
-  .wm{font-family:"Source Serif 4",serif;font-weight:600;font-size:16px;color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+  .wm{font-family:"Geist",serif;font-weight:600;font-size:16px;color:var(--ink);text-decoration:none;letter-spacing:-.01em}
   .wm .p{color:var(--accent)}
   a{color:var(--accent)}
 
   /* Nav strip */
   nav.top{padding:18px 0;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--bg) 92%,transparent)}
   .navin{max-width:920px;margin:0 auto;padding:0 clamp(22px,5vw,44px);display:flex;align-items:center;justify-content:space-between;gap:18px}
-  .navin .back{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase;text-decoration:none}
+  .navin .back{font-family:"Geist Mono",monospace;font-size:11px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase;text-decoration:none}
   .navin .back:hover{color:var(--accent)}
-  .toggle{background:none;border:1px solid var(--line);color:var(--ink-soft);cursor:pointer;font-family:"Source Serif 4",serif;font-size:12px;font-style:italic;padding:4px 11px;border-radius:999px}
+  .toggle{background:none;border:1px solid var(--line);color:var(--ink-soft);cursor:pointer;font-family:"Geist",serif;font-size:12px;font-style:italic;padding:4px 11px;border-radius:999px}
 
   /* Document masthead */
   .mast{padding:clamp(40px,6vh,68px) 0 clamp(28px,4vh,40px);border-bottom:1px solid var(--ink);position:relative}
-  .mast .lbl{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px}
-  .mast h1{font-family:"Cormorant Garamond",serif;font-weight:500;font-size:clamp(36px,5.5vw,56px);letter-spacing:-.015em;line-height:1.04;max-width:24ch;margin-bottom:18px}
+  .mast .lbl{font-family:"Geist Mono",monospace;font-size:10.5px;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px}
+  .mast h1{font-family:"Instrument Serif",serif;font-weight:500;font-size:clamp(36px,5.5vw,56px);letter-spacing:-.015em;line-height:1.04;max-width:24ch;margin-bottom:18px}
   .mast h1 em{color:var(--accent);font-style:italic;font-weight:500}
   .mast .sub{font-size:15px;line-height:1.6;color:var(--ink-soft);max-width:58ch;margin-bottom:24px;font-style:italic}
   .mast .meta-tbl{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:18px}
   @media(max-width:680px){.mast .meta-tbl{grid-template-columns:1fr}}
   .mast .meta-tbl .kv{background:var(--bg);padding:14px 18px;display:flex;flex-direction:column;gap:4px}
-  .mast .meta-tbl .k{font-family:"JetBrains Mono",monospace;font-size:9.5px;color:var(--ink-mute);letter-spacing:.08em;text-transform:uppercase}
-  .mast .meta-tbl .v{font-family:"Source Serif 4",serif;font-size:14px;color:var(--ink);line-height:1.4}
-  .mast .meta-tbl .v.mono{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.04em}
+  .mast .meta-tbl .k{font-family:"Geist Mono",monospace;font-size:9.5px;color:var(--ink-mute);letter-spacing:.08em;text-transform:uppercase}
+  .mast .meta-tbl .v{font-family:"Geist",serif;font-size:14px;color:var(--ink);line-height:1.4}
+  .mast .meta-tbl .v.mono{font-family:"Geist Mono",monospace;font-size:12px;letter-spacing:.04em}
 
   /* Working-draft ribbon */
   .draft{margin:24px 0 0;padding:14px 20px;border:1px dashed var(--accent);background:color-mix(in srgb,var(--accent) 4%,transparent);font-size:13px;line-height:1.6;color:var(--ink);font-style:italic}
-  .draft strong{font-family:"JetBrains Mono",monospace;font-style:normal;font-weight:500;font-size:10.5px;color:var(--accent);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:5px}
+  .draft strong{font-family:"Geist Mono",monospace;font-style:normal;font-weight:500;font-size:10.5px;color:var(--accent);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:5px}
 
   /* TOC */
   .toc{padding:32px 0;border-bottom:1px solid var(--line)}
-  .toc h2{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--ink-mute);letter-spacing:.08em;text-transform:uppercase;margin-bottom:18px;font-weight:500}
+  .toc h2{font-family:"Geist Mono",monospace;font-size:10.5px;color:var(--ink-mute);letter-spacing:.08em;text-transform:uppercase;margin-bottom:18px;font-weight:500}
   .toc ol{list-style:none;display:grid;grid-template-columns:repeat(2,1fr);gap:6px 24px;counter-reset:t}
   @media(max-width:680px){.toc ol{grid-template-columns:1fr}}
   .toc li{counter-increment:t;font-size:14px;line-height:1.6;padding:5px 0;border-bottom:1px dotted var(--line);display:flex;align-items:baseline;gap:10px}
-  .toc li:before{content:counter(t,decimal-leading-zero);font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--accent);letter-spacing:.04em;min-width:24px}
+  .toc li:before{content:counter(t,decimal-leading-zero);font-family:"Geist Mono",monospace;font-size:10.5px;color:var(--accent);letter-spacing:.04em;min-width:24px}
   .toc a{color:var(--ink);text-decoration:none}
   .toc a:hover{color:var(--accent)}
 
   /* Sections */
   .sec{padding:clamp(48px,6vh,68px) 0;border-bottom:1px solid var(--line)}
-  .sec-num{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--accent);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px}
-  .sec h2{font-family:"Cormorant Garamond",serif;font-weight:500;font-size:clamp(24px,3.3vw,36px);letter-spacing:-.012em;line-height:1.08;margin-bottom:26px;max-width:30ch}
+  .sec-num{font-family:"Geist Mono",monospace;font-size:11px;color:var(--accent);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px}
+  .sec h2{font-family:"Instrument Serif",serif;font-weight:500;font-size:clamp(24px,3.3vw,36px);letter-spacing:-.012em;line-height:1.08;margin-bottom:26px;max-width:30ch}
   .sec h2 em{color:var(--accent);font-style:italic}
-  .sec h3{font-family:"Cormorant Garamond",serif;font-weight:500;font-style:italic;font-size:20px;letter-spacing:-.005em;line-height:1.15;margin-top:28px;margin-bottom:12px;color:var(--ink)}
+  .sec h3{font-family:"Instrument Serif",serif;font-weight:500;font-style:italic;font-size:20px;letter-spacing:-.005em;line-height:1.15;margin-top:28px;margin-bottom:12px;color:var(--ink)}
   .sec p{font-size:14.5px;line-height:1.72;color:var(--ink);max-width:64ch;margin-bottom:14px}
   .sec p:last-child{margin-bottom:0}
   .sec p em{color:var(--accent);font-style:italic}
@@ -67,33 +67,34 @@
   .sec li:before{content:"\2014";color:var(--accent);position:absolute;left:0;top:0}
   .sec ol{counter-reset:li}
   .sec ol li{padding-left:32px}
-  .sec ol li:before{content:counter(li,lower-roman)".";font-family:"Cormorant Garamond",serif;font-style:italic;counter-increment:li}
+  .sec ol li:before{content:counter(li,lower-roman)".";font-family:"Instrument Serif",serif;font-style:italic;counter-increment:li}
 
   /* Tables */
   .tbl{margin:18px 0;border:1px solid var(--line);background:color-mix(in srgb,var(--ink) 1.5%,transparent);overflow-x:auto}
   .tbl table{width:100%;border-collapse:collapse;min-width:520px}
   .tbl th,.tbl td{padding:12px 16px;text-align:left;font-size:13px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.55}
-  .tbl th{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase;font-weight:500;background:color-mix(in srgb,var(--ink) 3%,transparent)}
+  .tbl th{font-family:"Geist Mono",monospace;font-size:10px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase;font-weight:500;background:color-mix(in srgb,var(--ink) 3%,transparent)}
   .tbl td{color:var(--ink)}
-  .tbl td:first-child{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:15px;color:var(--ink);width:34%;letter-spacing:-.005em}
+  .tbl td:first-child{font-family:"Instrument Serif",serif;font-style:italic;font-size:15px;color:var(--ink);width:34%;letter-spacing:-.005em}
   .tbl tr:last-child td{border-bottom:none}
 
   /* Placeholder (legal-text-pending) marker */
   .pend{padding:14px 18px;border:1px dashed var(--line);background:color-mix(in srgb,var(--accent) 2%,transparent);font-size:13px;line-height:1.55;color:var(--ink-soft);font-style:italic;margin:14px 0;max-width:64ch}
-  .pend strong{font-family:"JetBrains Mono",monospace;font-style:normal;font-weight:500;font-size:10px;color:var(--accent);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:4px}
+  .pend strong{font-family:"Geist Mono",monospace;font-style:normal;font-weight:500;font-size:10px;color:var(--accent);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:4px}
 
   /* Footer */
   footer{padding:48px 0 36px}
   .sig{display:grid;grid-template-columns:1fr 1fr;gap:36px;padding:32px 0;border-top:2px solid var(--ink);border-bottom:1px solid var(--line);margin-bottom:32px}
   @media(max-width:680px){.sig{grid-template-columns:1fr;gap:24px}}
   .sig .blk{padding:0}
-  .sig .blk .role{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink-mute);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px}
+  .sig .blk .role{font-family:"Geist Mono",monospace;font-size:10px;color:var(--ink-mute);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px}
   .sig .blk .line{height:1px;background:var(--ink);margin:30px 0 8px;max-width:240px}
-  .sig .blk .nm{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:18px;color:var(--ink)}
-  .sig .blk .post{font-family:"Source Serif 4",serif;font-size:12px;color:var(--ink-soft);font-style:italic;margin-top:2px}
-  .sig .blk .dt{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-mute);letter-spacing:.04em;margin-top:14px}
+  .sig .blk .nm{font-family:"Instrument Serif",serif;font-style:italic;font-size:18px;color:var(--ink)}
+  .sig .blk .post{font-family:"Geist",serif;font-size:12px;color:var(--ink-soft);font-style:italic;margin-top:2px}
+  .sig .blk .dt{font-family:"Geist Mono",monospace;font-size:11px;color:var(--ink-mute);letter-spacing:.04em;margin-top:14px}
   .disc{font-size:11.5px;color:var(--ink-mute);line-height:1.6;font-style:italic;max-width:72ch}
 </style>
+  <link rel="stylesheet" href="v2.css">
 </head>
 <body>
 

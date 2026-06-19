@@ -5,28 +5,28 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>flameback. — Chapter 2: What you want</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#1A1714; --ink:#F2EDE3; --ink-soft:rgba(242,237,227,.64); --ink-mute:rgba(242,237,227,.42);
-    --line:rgba(242,237,227,.15); --panel:#221E1A; --accent:#FF6D0A; --btn-bg:#FF6D0A; --btn-ink:#1A1714;
+    --bg:#0B0C0E; --ink:#F5F2EA; --ink-soft:rgba(245,242,234,.64); --ink-mute:rgba(245,242,234,.42);
+    --line:rgba(245,242,234,.15); --panel:#221E1A; --accent:#B59669; --btn-bg:#B59669; --btn-ink:#0B0C0E;
     --grain-blend:screen; --grain-op:.05;
-    --cons:#A07B5A; --base:#FF6D0A; --aggr:#E94B26; --target:#8FB87A;
+    --cons:#A07B5A; --base:#B59669; --aggr:#E94B26; --target:#8FB87A;
   }
   :root.light{
-    --bg:#FCFAF6; --ink:#1A1714; --ink-soft:rgba(26,23,20,.66); --ink-mute:rgba(26,23,20,.46);
-    --line:rgba(26,23,20,.13); --panel:#F4EFE7; --accent:#FF6D0A; --btn-bg:#1A1714; --btn-ink:#FCFAF6;
+    --bg:#F5F2EA; --ink:#0B0C0E; --ink-soft:rgba(11,12,14,.66); --ink-mute:rgba(11,12,14,.46);
+    --line:rgba(11,12,14,.13); --panel:#F4EFE7; --accent:#B59669; --btn-bg:#0B0C0E; --btn-ink:#F5F2EA;
     --grain-blend:multiply; --grain-op:.03;
-    --cons:#8C6444; --base:#FF6D0A; --aggr:#C03515; --target:#5F8048;
+    --cons:#8C6444; --base:#B59669; --aggr:#C03515; --target:#5F8048;
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{-webkit-font-smoothing:antialiased}
-  body{background:var(--bg);color:var(--ink);font-family:"Source Serif 4",serif;transition:background .5s,color .5s;font-variant-numeric:tabular-nums;min-height:100vh}
+  body{background:var(--bg);color:var(--ink);font-family:"Geist",serif;transition:background .5s,color .5s;font-variant-numeric:tabular-nums;min-height:100vh}
   body::after{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;mix-blend-mode:var(--grain-blend);opacity:var(--grain-op);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
   section,nav,main{position:relative;z-index:2}
-  .wm{font-family:"Source Serif 4",serif;font-weight:600;font-size:18px;color:var(--ink);text-decoration:none}
+  .wm{font-family:"Geist",serif;font-weight:600;font-size:18px;color:var(--ink);text-decoration:none}
   .wm .p{color:var(--accent)}
-  h1,h2,h3,h4{font-family:"Cormorant Garamond",serif;font-weight:500;letter-spacing:-.012em;color:var(--ink)}
+  h1,h2,h3,h4{font-family:"Instrument Serif",serif;font-weight:500;letter-spacing:-.012em;color:var(--ink)}
 
   nav{padding:14px 0;border-bottom:1px solid var(--line)}
   .navin{display:flex;align-items:center;justify-content:space-between;padding:0 clamp(22px,3vw,32px)}
@@ -35,11 +35,11 @@
   .navr{display:flex;align-items:center;gap:18px}
   .navr .nlink{color:var(--ink-soft);text-decoration:none;font-size:13px;font-style:italic;cursor:pointer}
   .navr .nlink:hover{color:var(--ink)}
-  .toggle{background:none;border:1px solid var(--line);color:var(--ink-soft);cursor:pointer;font-family:"Source Serif 4",serif;font-size:13px;font-style:italic;padding:5px 13px;border-radius:999px}
+  .toggle{background:none;border:1px solid var(--line);color:var(--ink-soft);cursor:pointer;font-family:"Geist",serif;font-size:13px;font-style:italic;padding:5px 13px;border-radius:999px}
 
   /* Chapter ribbon */
   .ribbon{padding:14px clamp(22px,3vw,32px);border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--bg) 95%,transparent);display:flex;align-items:center;gap:clamp(10px,1.5vw,14px);overflow-x:auto;white-space:nowrap}
-  .ch{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-family:"Source Serif 4",serif;font-style:italic;color:var(--ink-mute);cursor:pointer;text-decoration:none}
+  .ch{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-family:"Geist",serif;font-style:italic;color:var(--ink-mute);cursor:pointer;text-decoration:none}
   .ch:hover{color:var(--ink-soft)}
   .ch .ci{width:18px;height:18px;border-radius:50%;border:1px solid var(--ink-mute);display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-style:normal;flex-shrink:0;color:var(--ink-mute)}
   .ch.done .ci{background:color-mix(in srgb,var(--accent) 25%,transparent);border-color:var(--accent);color:var(--accent)}
@@ -52,7 +52,7 @@
 
   /* Chapter header */
   .ch-lab{display:flex;align-items:center;gap:12px;margin-bottom:14px}
-  .ch-lab .num{font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--accent);font-size:18px}
+  .ch-lab .num{font-family:"Instrument Serif",serif;font-style:italic;color:var(--accent);font-size:18px}
   .ch-lab .lab{font-style:italic;font-size:13px;color:var(--ink-mute);letter-spacing:.04em}
 
   h1{font-size:clamp(32px,4.6vw,48px);line-height:1.02;letter-spacing:-.018em;margin-bottom:12px;max-width:22ch}
@@ -63,13 +63,13 @@
   /* Purpose chips */
   .purp-h{font-size:11px;color:var(--ink-mute);font-style:italic;letter-spacing:.05em;text-transform:uppercase;margin-bottom:10px}
   .chip-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:clamp(28px,3vw,36px)}
-  .chip{padding:9px 16px;border:1px solid var(--line);background:transparent;color:var(--ink-soft);font-family:"Source Serif 4",serif;font-size:13.5px;cursor:pointer;font-style:italic;transition:border-color .15s,color .15s,background .15s}
+  .chip{padding:9px 16px;border:1px solid var(--line);background:transparent;color:var(--ink-soft);font-family:"Geist",serif;font-size:13.5px;cursor:pointer;font-style:italic;transition:border-color .15s,color .15s,background .15s}
   .chip:hover{border-color:var(--ink-mute);color:var(--ink)}
   .chip.sel{background:var(--accent);color:var(--btn-ink);border-color:var(--accent);font-style:normal;font-weight:500}
 
   /* Mode toggle (solve for value vs solve for return) */
   .modes{display:inline-flex;border:1px solid var(--line);margin-bottom:clamp(20px,2.5vw,28px)}
-  .modes button{padding:9px 18px;background:transparent;border:none;font-family:"Source Serif 4",serif;font-size:13px;color:var(--ink-soft);font-style:italic;cursor:pointer;border-right:1px solid var(--line)}
+  .modes button{padding:9px 18px;background:transparent;border:none;font-family:"Geist",serif;font-size:13px;color:var(--ink-soft);font-style:italic;cursor:pointer;border-right:1px solid var(--line)}
   .modes button:last-child{border-right:none}
   .modes button.active{background:var(--accent);color:var(--btn-ink);font-style:normal;font-weight:500}
 
@@ -81,14 +81,14 @@
   .panel{padding:24px;border:1px solid var(--line);background:color-mix(in srgb,var(--ink) 2%,transparent);display:flex;flex-direction:column;gap:24px}
   .ctrl label{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
   .ctrl .lab-l{font-size:11px;color:var(--ink-mute);font-style:italic;letter-spacing:.05em;text-transform:uppercase}
-  .ctrl .lab-v{font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--accent);font-size:20px;line-height:1}
+  .ctrl .lab-v{font-family:"Instrument Serif",serif;font-style:italic;color:var(--accent);font-size:20px;line-height:1}
   .ctrl input[type=range]{width:100%;accent-color:var(--accent);height:2px;background:var(--line);margin-bottom:5px}
   .ctrl .rng{display:flex;justify-content:space-between;font-size:10.5px;color:var(--ink-mute);font-style:italic;letter-spacing:.02em}
 
   /* Chart panel */
   .chart-wrap{border:1px solid var(--line);background:color-mix(in srgb,var(--ink) 2%,transparent);padding:24px;display:flex;flex-direction:column;gap:14px}
   .chart-wrap .ch-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px;flex-wrap:wrap;gap:10px}
-  .ch-head .h-t{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:19px;color:var(--ink)}
+  .ch-head .h-t{font-family:"Instrument Serif",serif;font-style:italic;font-size:19px;color:var(--ink)}
   .ch-head .h-d{font-size:11px;color:var(--ink-mute);font-style:italic;letter-spacing:.04em}
   .chart-svg-wrap{width:100%;overflow-x:auto}
   svg.chart{display:block;width:100%;min-width:560px;height:auto}
@@ -107,8 +107,8 @@
   .res.aggr::before{background:var(--aggr)}
   .res-h{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:10px}
   .res-h .l{font-style:italic;font-size:11px;color:var(--ink-mute);letter-spacing:.05em;text-transform:uppercase}
-  .res-h .r{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-mute)}
-  .res-v{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:28px;color:var(--ink);line-height:1;letter-spacing:-.01em}
+  .res-h .r{font-family:"Geist Mono",monospace;font-size:11px;color:var(--ink-mute)}
+  .res-v{font-family:"Instrument Serif",serif;font-style:italic;font-size:28px;color:var(--ink);line-height:1;letter-spacing:-.01em}
   .res-v.acc{color:var(--accent)}
   .res-d{font-size:11.5px;color:var(--ink-soft);font-style:italic;margin-top:6px;line-height:1.5}
   .res-tag{display:inline-block;font-size:9.5px;color:var(--accent);font-style:italic;text-transform:uppercase;letter-spacing:.08em;margin-top:8px;padding:2px 6px;border:1px solid color-mix(in srgb,var(--accent) 50%,transparent)}
@@ -123,17 +123,17 @@
   @media(max-width:860px){.mix-grid{grid-template-columns:1fr}}
   .mix-card{padding:22px;border:1px solid var(--line);background:color-mix(in srgb,var(--ink) 1.5%,transparent);position:relative}
   .mix-card.rec{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 4%,transparent)}
-  .mix-card.rec::before{content:"Recommended";position:absolute;top:-9px;left:18px;background:var(--accent);color:var(--btn-ink);padding:2px 9px;font-size:10px;letter-spacing:.05em;text-transform:uppercase;font-style:italic;font-family:"Source Serif 4",serif}
+  .mix-card.rec::before{content:"Recommended";position:absolute;top:-9px;left:18px;background:var(--accent);color:var(--btn-ink);padding:2px 9px;font-size:10px;letter-spacing:.05em;text-transform:uppercase;font-style:italic;font-family:"Geist",serif}
   .mc-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:14px}
-  .mc-head .name{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:20px;color:var(--ink)}
-  .mc-head .rate{font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--accent)}
+  .mc-head .name{font-family:"Instrument Serif",serif;font-style:italic;font-size:20px;color:var(--ink)}
+  .mc-head .rate{font-family:"Geist Mono",monospace;font-size:13px;color:var(--accent)}
   .mc-d{font-size:13px;line-height:1.5;color:var(--ink-soft);margin-bottom:16px;min-height:60px}
   .mc-alloc{display:flex;flex-direction:column;gap:7px;margin-bottom:14px}
   .mc-row{display:flex;justify-content:space-between;font-size:12.5px;align-items:center;gap:8px}
   .mc-row .nm{color:var(--ink);flex:1}
   .mc-row .bar{width:80px;height:4px;background:var(--line);border-radius:2px;overflow:hidden;flex-shrink:0}
   .mc-row .bar i{display:block;height:100%;background:var(--accent)}
-  .mc-row .pct{font-family:"JetBrains Mono",monospace;color:var(--ink-mute);font-size:11.5px;width:32px;text-align:right}
+  .mc-row .pct{font-family:"Geist Mono",monospace;color:var(--ink-mute);font-size:11.5px;width:32px;text-align:right}
   .mc-foot{padding-top:12px;border-top:1px dashed var(--line);font-size:11.5px;color:var(--ink-mute);font-style:italic;line-height:1.5}
   .mc-foot strong{color:var(--ink);font-weight:500;font-style:normal}
 
@@ -144,15 +144,16 @@
   .actions-r{display:flex;align-items:center;gap:14px}
   .actions .skip{font-size:13px;color:var(--ink-mute);text-decoration:none;font-style:italic;cursor:pointer}
   .actions .skip:hover{color:var(--ink-soft)}
-  .btn{background:var(--btn-bg);color:var(--btn-ink);border:none;font-family:"Source Serif 4",serif;font-size:15px;font-weight:500;padding:12px 24px;cursor:pointer;display:inline-flex;align-items:center;gap:11px;transition:gap .3s,opacity .3s;text-decoration:none}
+  .btn{background:var(--btn-bg);color:var(--btn-ink);border:none;font-family:"Geist",serif;font-size:15px;font-weight:500;padding:12px 24px;cursor:pointer;display:inline-flex;align-items:center;gap:11px;transition:gap .3s,opacity .3s;text-decoration:none}
   .btn:hover{gap:15px;opacity:.92}
 
   /* RM ping (client view) */
-  .ping{position:fixed;bottom:24px;right:24px;display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--accent);color:var(--btn-ink);font-family:"Source Serif 4",serif;font-size:13px;font-weight:500;text-decoration:none;cursor:pointer;box-shadow:0 8px 24px -8px rgba(0,0,0,.5);z-index:30}
+  .ping{position:fixed;bottom:24px;right:24px;display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--accent);color:var(--btn-ink);font-family:"Geist",serif;font-size:13px;font-weight:500;text-decoration:none;cursor:pointer;box-shadow:0 8px 24px -8px rgba(0,0,0,.5);z-index:30}
   .ping:hover{opacity:.92}
   .ping .ic{font-size:14px}
 
 </style>
+  <link rel="stylesheet" href="v2.css">
 </head>
 <body>
 
@@ -275,7 +276,7 @@
             <g id="grid"></g>
             <g id="axes"></g>
             <line id="targetLine" stroke="var(--target)" stroke-width="1.4" stroke-dasharray="6,4" opacity="0.85"/>
-            <text id="targetLabel" font-size="10" font-family="Source Serif 4" font-style="italic" fill="var(--target)" letter-spacing="0.04em" text-anchor="end"></text>
+            <text id="targetLabel" font-size="10" font-family="Geist" font-style="italic" fill="var(--target)" letter-spacing="0.04em" text-anchor="end"></text>
             <path id="pathCons" fill="none" stroke="var(--cons)" stroke-width="1.6" opacity="0.85"/>
             <path id="pathBase" fill="none" stroke="var(--base)" stroke-width="2.6"/>
             <path id="pathAggr" fill="none" stroke="var(--aggr)" stroke-width="1.6" opacity="0.85"/>
@@ -494,7 +495,7 @@
       lab.setAttribute('x', ML-8);
       lab.setAttribute('y', yPos+3);
       lab.setAttribute('font-size','10');
-      lab.setAttribute('font-family','Source Serif 4');
+      lab.setAttribute('font-family','Geist');
       lab.setAttribute('font-style','italic');
       lab.setAttribute('fill','var(--ink-mute)');
       lab.setAttribute('text-anchor','end');
@@ -515,7 +516,7 @@
       lab.setAttribute('x', xPos);
       lab.setAttribute('y', CH-MB+22);
       lab.setAttribute('font-size','10');
-      lab.setAttribute('font-family','Source Serif 4');
+      lab.setAttribute('font-family','Geist');
       lab.setAttribute('font-style','italic');
       lab.setAttribute('fill','var(--ink-mute)');
       lab.setAttribute('text-anchor','middle');

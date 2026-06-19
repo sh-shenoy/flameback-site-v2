@@ -5,30 +5,30 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>flameback. — Insurance Advisor</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#1A1714; --ink:#F2EDE3; --ink-soft:rgba(242,237,227,.64); --ink-mute:rgba(242,237,227,.42);
-    --line:rgba(242,237,227,.15); --accent:#FF6D0A; --btn-bg:#FF6D0A; --btn-ink:#1A1714;
+    --bg:#0B0C0E; --ink:#F5F2EA; --ink-soft:rgba(245,242,234,.64); --ink-mute:rgba(245,242,234,.42);
+    --line:rgba(245,242,234,.15); --accent:#B59669; --btn-bg:#B59669; --btn-ink:#0B0C0E;
     --grain-blend:screen; --grain-op:.05; --good:#8FB87A; --warn:#E8A547; --bad:#D04A2A;
   }
   :root.light{
-    --bg:#FCFAF6; --ink:#1A1714; --ink-soft:rgba(26,23,20,.66); --ink-mute:rgba(26,23,20,.46);
-    --line:rgba(26,23,20,.13); --accent:#FF6D0A; --btn-bg:#1A1714; --btn-ink:#FCFAF6;
+    --bg:#F5F2EA; --ink:#0B0C0E; --ink-soft:rgba(11,12,14,.66); --ink-mute:rgba(11,12,14,.46);
+    --line:rgba(11,12,14,.13); --accent:#B59669; --btn-bg:#0B0C0E; --btn-ink:#F5F2EA;
     --grain-blend:multiply; --grain-op:.03; --good:#5F8048; --warn:#C8821E; --bad:#A03615;
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
-  body{background:var(--bg);color:var(--ink);font-family:"Source Serif 4",serif;transition:background .5s,color .5s;font-variant-numeric:tabular-nums}
+  body{background:var(--bg);color:var(--ink);font-family:"Geist",serif;transition:background .5s,color .5s;font-variant-numeric:tabular-nums}
   body::after{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;mix-blend-mode:var(--grain-blend);opacity:var(--grain-op);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
   .wrap{max-width:1180px;margin:0 auto;padding:0 clamp(22px,5vw,44px)}
   section{position:relative;z-index:2}
-  .wm{font-family:"Source Serif 4",serif;font-weight:600;font-size:18px;color:var(--ink);text-decoration:none}
+  .wm{font-family:"Geist",serif;font-weight:600;font-size:18px;color:var(--ink);text-decoration:none}
   .wm .p{color:var(--accent)}
-  .lab{font-family:"Source Serif 4",serif;font-style:italic;font-size:14px;color:var(--ink-mute)}
+  .lab{font-family:"Geist",serif;font-style:italic;font-size:14px;color:var(--ink-mute)}
   .lab .n{font-style:normal;color:var(--accent);margin-right:10px}
-  h1,h2,h3,h4{font-family:"Cormorant Garamond",serif;font-weight:500;letter-spacing:-.012em;color:var(--ink)}
-  .btn,.btn-out{display:inline-flex;align-items:center;gap:11px;font-family:"Source Serif 4",serif;font-size:15px;font-weight:500;padding:12px 22px;text-decoration:none;transition:gap .3s,opacity .3s,border-color .3s;cursor:pointer;border:none}
+  h1,h2,h3,h4{font-family:"Instrument Serif",serif;font-weight:500;letter-spacing:-.012em;color:var(--ink)}
+  .btn,.btn-out{display:inline-flex;align-items:center;gap:11px;font-family:"Geist",serif;font-size:15px;font-weight:500;padding:12px 22px;text-decoration:none;transition:gap .3s,opacity .3s,border-color .3s;cursor:pointer;border:none}
   .btn{background:var(--btn-bg);color:var(--btn-ink)}.btn:hover{gap:15px;opacity:.92}
   .btn-out{background:transparent;color:var(--ink);border:1px solid var(--line)}.btn-out:hover{gap:15px;border-color:var(--ink-mute)}
 
@@ -38,7 +38,7 @@
   .navr{display:flex;align-items:center;gap:21px}
   .navr a{color:var(--ink-soft);text-decoration:none;font-size:14.5px;transition:color .3s}
   .navr a:hover{color:var(--ink)} .navr a.current{color:var(--ink)}
-  .toggle{background:none;border:1px solid var(--line);color:var(--ink-soft);cursor:pointer;font-family:"Source Serif 4",serif;font-size:13px;font-style:italic;padding:5px 13px;border-radius:999px}
+  .toggle{background:none;border:1px solid var(--line);color:var(--ink-soft);cursor:pointer;font-family:"Geist",serif;font-size:13px;font-style:italic;padding:5px 13px;border-radius:999px}
   .navr a.navbtn{background:var(--btn-bg);color:var(--btn-ink);padding:8px 17px}
   @media(max-width:880px){.navr .navlink{display:none}}
 
@@ -70,13 +70,13 @@
 
   .q-block{padding:14px 0;border-top:1px solid var(--line)}
   .q-block:first-of-type{border-top:none;padding-top:0}
-  .q-label{font-family:"Source Serif 4",serif;font-style:italic;font-size:11px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px;display:block}
-  .q-block label.q-text{font-family:"Cormorant Garamond",serif;font-size:18px;color:var(--ink);display:block;margin-bottom:12px;line-height:1.2}
+  .q-label{font-family:"Geist",serif;font-style:italic;font-size:11px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px;display:block}
+  .q-block label.q-text{font-family:"Instrument Serif",serif;font-size:18px;color:var(--ink);display:block;margin-bottom:12px;line-height:1.2}
   .q-input{display:flex;align-items:center;border:1px solid var(--line);background:var(--bg);max-width:380px}
   .q-input .pfx{padding:10px 14px;font-style:italic;color:var(--ink-mute);font-size:14px;border-right:1px solid var(--line)}
-  .q-input input{flex:1;background:transparent;border:none;color:var(--ink);font-family:"Source Serif 4",serif;font-size:14px;padding:10px 12px;outline:none}
+  .q-input input{flex:1;background:transparent;border:none;color:var(--ink);font-family:"Geist",serif;font-size:14px;padding:10px 12px;outline:none}
   .q-opts{display:flex;gap:8px;flex-wrap:wrap}
-  .q-opt{padding:8px 16px;border:1px solid var(--line);background:transparent;color:var(--ink-soft);font-family:"Source Serif 4",serif;font-size:13.5px;cursor:pointer;transition:border-color .25s,color .25s,background .25s}
+  .q-opt{padding:8px 16px;border:1px solid var(--line);background:transparent;color:var(--ink-soft);font-family:"Geist",serif;font-size:13.5px;cursor:pointer;transition:border-color .25s,color .25s,background .25s}
   .q-opt:hover{border-color:var(--ink-mute);color:var(--ink)}
   .q-opt.selected{border-color:var(--accent);color:var(--accent);background:color-mix(in srgb,var(--accent) 5%,transparent)}
 
@@ -110,7 +110,7 @@
   .cov-status.short{border-color:var(--warn);color:var(--warn)}
   .cov-status.ok{border-color:var(--good);color:var(--good)}
 
-  .cov-rec{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:24px;color:var(--accent);margin-bottom:4px;line-height:1.1}
+  .cov-rec{font-family:"Instrument Serif",serif;font-style:italic;font-size:24px;color:var(--accent);margin-bottom:4px;line-height:1.1}
   .cov-lab{font-style:italic;font-size:11.5px;color:var(--ink-mute);margin-bottom:14px}
   .cov-detail{font-size:13.5px;line-height:1.55;color:var(--ink);margin-bottom:14px}
   .cov-vs{display:flex;justify-content:space-between;padding-top:12px;border-top:1px solid var(--line);font-size:12.5px}
@@ -146,6 +146,7 @@
   .disc span{font-size:12.5px;color:var(--ink-mute);line-height:1.6}
   .disc .legal{max-width:64ch;font-style:italic}
 </style>
+  <link rel="stylesheet" href="v2.css">
 </head>
 <body>
 

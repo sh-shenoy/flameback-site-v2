@@ -1,0 +1,22 @@
+/* Flameback v2 — component refinements, loaded after each page's inline <style> so it wins.
+   Calm, shadowless, pill buttons, soft-cornered cards. */
+
+/* No grain texture — v2 is clean and quiet */
+body::after{display:none !important}
+
+/* Buttons are pills; the one action is filled, ghosts are hairline-outlined */
+.btn,.btn-out,.cta,.toggle,.navr a.cta,.navbtn,button.cta,a.cta{border-radius:999px !important}
+
+/* Cards / tiles / panels: 8px, elevation by colour not shadow */
+.card,.scard,.tool,.meet,.explainer,.calc,.quizcta,.waitlist,.pbtn,.opt,
+.manif-cell,.fs-list,.nums-cell{border-radius:8px}
+
+/* Inputs: 4px */
+.inp,textarea,input[type="text"],input[type="email"],input[type="tel"],
+input[type="number"],.inwrap,.phone{border-radius:4px}
+
+/* Selected chips read as champagne (a signed page, not a scoreboard) */
+.chip.on,.chip.sel{box-shadow:none}
+
+/* Instrument Serif sits a touch looser than Cormorant did */
+h1,h2,h3,h4{letter-spacing:-.01em}

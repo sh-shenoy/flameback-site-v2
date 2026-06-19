@@ -5,36 +5,37 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>flameback. — Offerings</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root{--bg:#1A1714;--ink:#F2EDE3;--ink-soft:rgba(242,237,227,.66);--ink-mute:rgba(242,237,227,.44);--line:rgba(242,237,227,.16);--accent:#FF6D0A;--btn-bg:#FF6D0A;--btn-ink:#1A1714;--grain-blend:screen;--grain-op:.055}
-  :root.light{--bg:#FCFAF6;--ink:#1A1714;--ink-soft:rgba(26,23,20,.68);--ink-mute:rgba(26,23,20,.46);--line:rgba(26,23,20,.14);--accent:#B23E08;--btn-bg:#1A1714;--btn-ink:#FCFAF6;--grain-blend:multiply;--grain-op:.035}
+  :root{--bg:#0B0C0E;--ink:#F5F2EA;--ink-soft:rgba(245,242,234,.66);--ink-mute:rgba(245,242,234,.44);--line:rgba(245,242,234,.16);--accent:#B59669;--btn-bg:#B59669;--btn-ink:#0B0C0E;--grain-blend:screen;--grain-op:.055}
+  :root.light{--bg:#F5F2EA;--ink:#0B0C0E;--ink-soft:rgba(11,12,14,.68);--ink-mute:rgba(11,12,14,.46);--line:rgba(11,12,14,.14);--accent:#8A6D43;--btn-bg:#0B0C0E;--btn-ink:#F5F2EA;--grain-blend:multiply;--grain-op:.035}
   *{margin:0;padding:0;box-sizing:border-box}
   html{-webkit-font-smoothing:antialiased}
-  body{background:var(--bg);color:var(--ink);font-family:"Source Serif 4",serif;transition:background .5s,color .5s;line-height:1.55;min-height:100vh;display:flex;flex-direction:column}
+  body{background:var(--bg);color:var(--ink);font-family:"Geist",serif;transition:background .5s,color .5s;line-height:1.55;min-height:100vh;display:flex;flex-direction:column}
   body::after{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;mix-blend-mode:var(--grain-blend);opacity:var(--grain-op);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
   .wrap{max-width:1240px;margin:0 auto;padding:0 clamp(22px,5vw,44px);width:100%}
   nav{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 84%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
   .navin{display:flex;align-items:center;justify-content:space-between;padding:14px 0;gap:24px}
-  .wm{font-family:"Source Serif 4",serif;font-weight:600;font-size:18px;color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+  .wm{font-family:"Geist",serif;font-weight:600;font-size:18px;color:var(--ink);text-decoration:none;letter-spacing:-.01em}
   .wm .p{color:var(--accent)}
   .navr{display:flex;align-items:center;gap:18px}
   .navr a{color:var(--ink-soft);text-decoration:none;font-size:14px;transition:color .3s}
   .navr a:hover{color:var(--ink)}
-  .toggle{background:none;border:1px solid var(--line);color:var(--ink-soft);cursor:pointer;font-family:"Source Serif 4",serif;font-size:12.5px;font-style:italic;padding:5px 13px;border-radius:999px}
+  .toggle{background:none;border:1px solid var(--line);color:var(--ink-soft);cursor:pointer;font-family:"Geist",serif;font-size:12.5px;font-style:italic;padding:5px 13px;border-radius:999px}
   main{flex:1;display:flex;align-items:center;position:relative;z-index:2}
   .hero{padding:clamp(60px,12vh,140px) 0;width:100%}
-  .lab{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--ink-mute);letter-spacing:.09em;text-transform:uppercase;display:inline-flex;align-items:center;gap:11px;margin-bottom:30px}
+  .lab{font-family:"Geist Mono",monospace;font-size:10.5px;color:var(--ink-mute);letter-spacing:.09em;text-transform:uppercase;display:inline-flex;align-items:center;gap:11px;margin-bottom:30px}
   .lab .l{width:24px;height:1px;background:var(--accent)}
-  h1{font-family:"Cormorant Garamond",serif;font-weight:500;font-size:clamp(46px,7vw,96px);line-height:1;letter-spacing:-.02em;margin-bottom:24px}
+  h1{font-family:"Instrument Serif",serif;font-weight:500;font-size:clamp(46px,7vw,96px);line-height:1;letter-spacing:-.02em;margin-bottom:24px}
   h1 em{color:var(--accent);font-style:italic}
   .sub{font-size:clamp(16px,1.6vw,19px);font-style:italic;color:var(--ink-soft);max-width:50ch;margin-bottom:36px;line-height:1.6}
-  .btn{display:inline-flex;align-items:center;gap:11px;font-family:"Source Serif 4",serif;font-size:14.5px;font-weight:500;padding:12px 22px;text-decoration:none;background:var(--btn-bg);color:var(--btn-ink);transition:gap .35s,opacity .3s}
+  .btn{display:inline-flex;align-items:center;gap:11px;font-family:"Geist",serif;font-size:14.5px;font-weight:500;padding:12px 22px;text-decoration:none;background:var(--btn-bg);color:var(--btn-ink);transition:gap .35s,opacity .3s}
   .btn:hover{gap:15px;opacity:.92}
-  .mark{position:absolute;right:-10px;bottom:0;font-family:"Cormorant Garamond",serif;font-style:italic;font-size:clamp(150px,24vw,300px);color:var(--ink);opacity:.02;line-height:.8;pointer-events:none;white-space:nowrap}
+  .mark{position:absolute;right:-10px;bottom:0;font-family:"Instrument Serif",serif;font-style:italic;font-size:clamp(150px,24vw,300px);color:var(--ink);opacity:.02;line-height:.8;pointer-events:none;white-space:nowrap}
   footer{border-top:1px solid var(--line);padding:22px 0;position:relative;z-index:2}
-  footer .wrap{display:flex;justify-content:space-between;font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--ink-mute);letter-spacing:.05em;text-transform:uppercase;flex-wrap:wrap;gap:10px}
+  footer .wrap{display:flex;justify-content:space-between;font-family:"Geist Mono",monospace;font-size:10.5px;color:var(--ink-mute);letter-spacing:.05em;text-transform:uppercase;flex-wrap:wrap;gap:10px}
 </style>
+  <link rel="stylesheet" href="v2.css">
 </head>
 <body>
 <nav><div class="wrap"><div class="navin">

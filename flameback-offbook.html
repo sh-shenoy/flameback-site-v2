@@ -5,32 +5,32 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>flameback. — Off-book</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#1A1714; --ink:#F2EDE3; --ink-soft:rgba(242,237,227,.64); --ink-mute:rgba(242,237,227,.42);
-    --line:rgba(242,237,227,.15); --panel:#221E1A; --accent:#FF6D0A; --btn-bg:#FF6D0A; --btn-ink:#1A1714;
+    --bg:#0B0C0E; --ink:#F5F2EA; --ink-soft:rgba(245,242,234,.64); --ink-mute:rgba(245,242,234,.42);
+    --line:rgba(245,242,234,.15); --panel:#221E1A; --accent:#B59669; --btn-bg:#B59669; --btn-ink:#0B0C0E;
     --grain-blend:screen; --grain-op:.05;
   }
   :root.light{
-    --bg:#FCFAF6; --ink:#1A1714; --ink-soft:rgba(26,23,20,.66); --ink-mute:rgba(26,23,20,.46);
-    --line:rgba(26,23,20,.13); --panel:#F4EFE7; --accent:#FF6D0A; --btn-bg:#1A1714; --btn-ink:#FCFAF6;
+    --bg:#F5F2EA; --ink:#0B0C0E; --ink-soft:rgba(11,12,14,.66); --ink-mute:rgba(11,12,14,.46);
+    --line:rgba(11,12,14,.13); --panel:#F4EFE7; --accent:#B59669; --btn-bg:#0B0C0E; --btn-ink:#F5F2EA;
     --grain-blend:multiply; --grain-op:.03;
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
-  body{background:var(--bg);color:var(--ink);font-family:"Source Serif 4",serif;transition:background .5s,color .5s;font-variant-numeric:tabular-nums}
+  body{background:var(--bg);color:var(--ink);font-family:"Geist",serif;transition:background .5s,color .5s;font-variant-numeric:tabular-nums}
   body::after{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;mix-blend-mode:var(--grain-blend);opacity:var(--grain-op);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
   .wrap{max-width:1240px;margin:0 auto;padding:0 clamp(22px,5vw,44px)}
   section{position:relative;z-index:2}
   section[id]{scroll-margin-top:106px}
-  .mono{font-family:"JetBrains Mono",monospace}
-  .wm{font-family:"Source Serif 4",serif;font-weight:600;font-size:18px;color:var(--ink);text-decoration:none}
+  .mono{font-family:"Geist Mono",monospace}
+  .wm{font-family:"Geist",serif;font-weight:600;font-size:18px;color:var(--ink);text-decoration:none}
   .wm .p{color:var(--accent)}
-  .lab{font-family:"Source Serif 4",serif;font-style:italic;font-size:14px;color:var(--ink-mute)}
+  .lab{font-family:"Geist",serif;font-style:italic;font-size:14px;color:var(--ink-mute)}
   .lab .n{font-style:normal;color:var(--accent);margin-right:10px}
-  h1,h2,h3,h4{font-family:"Cormorant Garamond",serif;font-weight:500;letter-spacing:-.012em;color:var(--ink)}
-  .btn,.btn-out{display:inline-flex;align-items:center;gap:11px;font-family:"Source Serif 4",serif;font-size:15px;font-weight:500;padding:12px 22px;text-decoration:none;transition:gap .35s,opacity .3s,border-color .3s;cursor:pointer;border:none}
+  h1,h2,h3,h4{font-family:"Instrument Serif",serif;font-weight:500;letter-spacing:-.012em;color:var(--ink)}
+  .btn,.btn-out{display:inline-flex;align-items:center;gap:11px;font-family:"Geist",serif;font-size:15px;font-weight:500;padding:12px 22px;text-decoration:none;transition:gap .35s,opacity .3s,border-color .3s;cursor:pointer;border:none}
   .btn{background:var(--btn-bg);color:var(--btn-ink)}.btn:hover{gap:15px;opacity:.92}
   .btn-out{background:transparent;color:var(--ink);border:1px solid var(--line)}.btn-out:hover{gap:15px;border-color:var(--ink-mute)}
 
@@ -40,7 +40,7 @@
   .navr{display:flex;align-items:center;gap:21px}
   .navr a{color:var(--ink-soft);text-decoration:none;font-size:14.5px;transition:color .3s}
   .navr a:hover{color:var(--ink)} .navr a.current{color:var(--ink)}
-  .toggle{background:none;border:1px solid var(--line);color:var(--ink-soft);cursor:pointer;font-family:"Source Serif 4",serif;font-size:13px;font-style:italic;padding:5px 13px;border-radius:999px}
+  .toggle{background:none;border:1px solid var(--line);color:var(--ink-soft);cursor:pointer;font-family:"Geist",serif;font-size:13px;font-style:italic;padding:5px 13px;border-radius:999px}
   .navr a.navbtn{background:var(--btn-bg);color:var(--btn-ink);padding:8px 17px}
   @media(max-width:880px){.navr .navlink{display:none}}
 
@@ -73,7 +73,7 @@
   @media(max-width:680px){.stats-row{grid-template-columns:repeat(2,1fr)}}
   .stat{background:var(--bg);padding:16px 22px}
   .stat-l{display:block;font-style:italic;font-size:11px;color:var(--ink-mute);letter-spacing:.05em;text-transform:uppercase;margin-bottom:6px}
-  .stat-v{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:24px;color:var(--ink);line-height:1}
+  .stat-v{font-family:"Instrument Serif",serif;font-style:italic;font-size:24px;color:var(--ink);line-height:1}
   .stat-v.acc{color:var(--accent)}
 
   /* Project sections */
@@ -84,10 +84,10 @@
   .proj.flip .proj-viz{order:1}
   @media(max-width:860px){.proj-grid,.proj.flip .proj-grid{grid-template-columns:1fr;gap:24px}.proj.flip .proj-text{order:1}.proj.flip .proj-viz{order:2}}
 
-  .proj-num{font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--accent);font-size:18px;letter-spacing:.04em;margin-bottom:14px}
+  .proj-num{font-family:"Instrument Serif",serif;font-style:italic;color:var(--accent);font-size:18px;letter-spacing:.04em;margin-bottom:14px}
   .proj-text h2{font-size:clamp(32px,4.2vw,52px);line-height:0.98;letter-spacing:-.014em;margin-bottom:14px}
   .proj-text h2 .acc{color:var(--accent);font-style:italic}
-  .proj-tag{font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--ink-soft);font-size:18px;line-height:1.35;margin-bottom:22px;max-width:38ch}
+  .proj-tag{font-family:"Instrument Serif",serif;font-style:italic;color:var(--ink-soft);font-size:18px;line-height:1.35;margin-bottom:22px;max-width:38ch}
   .proj-body{font-size:14.5px;line-height:1.7;color:var(--ink);max-width:54ch;margin-bottom:14px}
   .proj-body p{margin-bottom:12px}
   .proj-body p:last-child{margin-bottom:0}
@@ -101,7 +101,7 @@
   @media(max-width:540px){.proj-meta{grid-template-columns:1fr 1fr}}
   .proj-meta-it{background:var(--bg);padding:10px 14px}
   .proj-meta-it .pl{display:block;font-style:italic;font-size:10px;color:var(--ink-mute);letter-spacing:.05em;text-transform:uppercase;margin-bottom:3px}
-  .proj-meta-it .pv{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:17px;color:var(--ink);line-height:1}
+  .proj-meta-it .pv{font-family:"Instrument Serif",serif;font-style:italic;font-size:17px;color:var(--ink);line-height:1}
   .proj-meta-it .pv.acc{color:var(--accent)}
 
   .proj-cta{display:flex;gap:10px;flex-wrap:wrap}
@@ -125,8 +125,8 @@
   .ideas-list{list-style:none}
   .ideas-list li{padding:10px 0;border-top:1px dashed var(--line);font-size:13.5px;line-height:1.55;color:var(--ink-soft);display:flex;align-items:flex-start;gap:12px}
   .ideas-list li:first-child{border-top:none}
-  .ideas-list li .rn{flex-shrink:0;font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--accent);font-size:14px;width:20px}
-  .ideas-list li strong{color:var(--ink);font-weight:500;display:block;margin-bottom:2px;font-family:"Cormorant Garamond",serif;font-style:italic;font-size:15px}
+  .ideas-list li .rn{flex-shrink:0;font-family:"Instrument Serif",serif;font-style:italic;color:var(--accent);font-size:14px;width:20px}
+  .ideas-list li strong{color:var(--ink);font-weight:500;display:block;margin-bottom:2px;font-family:"Instrument Serif",serif;font-style:italic;font-size:15px}
 
   footer{border-top:1px solid var(--line);padding:48px 0 36px}
   .footin{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;margin-bottom:36px}
@@ -138,6 +138,7 @@
   .disc span{font-size:12.5px;color:var(--ink-mute);line-height:1.6}
   .disc .legal{max-width:64ch;font-style:italic}
 </style>
+  <link rel="stylesheet" href="v2.css">
 </head>
 <body>
 
@@ -230,27 +231,27 @@
               <svg viewBox="0 0 280 606" xmlns="http://www.w3.org/2000/svg">
                 <rect width="280" height="606" fill="var(--bg)"/>
                 <!-- status bar -->
-                <text x="20" y="32" font-size="11" font-family="Source Serif 4" font-weight="500" fill="var(--ink)">9:24</text>
+                <text x="20" y="32" font-size="11" font-family="Geist" font-weight="500" fill="var(--ink)">9:24</text>
                 <circle cx="240" cy="29" r="3" fill="var(--ink)"/>
                 <rect x="250" y="25" width="14" height="8" rx="1.5" fill="none" stroke="var(--ink)" stroke-width="0.8"/>
                 <rect x="252" y="27" width="10" height="4" fill="var(--ink)"/>
                 <!-- App header -->
-                <text x="20" y="74" font-size="22" font-family="Cormorant Garamond" font-style="italic" fill="var(--ink)">onlyAdopt</text>
-                <text x="20" y="92" font-size="10" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)">find a companion</text>
+                <text x="20" y="74" font-size="22" font-family="Instrument Serif" font-style="italic" fill="var(--ink)">onlyAdopt</text>
+                <text x="20" y="92" font-size="10" font-family="Geist" font-style="italic" fill="var(--ink-mute)">find a companion</text>
                 <!-- Search bar -->
                 <rect x="20" y="106" width="240" height="34" rx="6" fill="none" stroke="var(--line)" stroke-width="1"/>
                 <circle cx="36" cy="123" r="4" fill="none" stroke="var(--ink-mute)" stroke-width="1"/>
                 <line x1="40" y1="127" x2="44" y2="131" stroke="var(--ink-mute)" stroke-width="1"/>
-                <text x="56" y="127" font-size="11" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)">Bangalore &middot; all pets</text>
+                <text x="56" y="127" font-size="11" font-family="Geist" font-style="italic" fill="var(--ink-mute)">Bangalore &middot; all pets</text>
                 <!-- Filter chips -->
                 <rect x="20" y="156" width="46" height="22" rx="11" fill="var(--accent)"/>
-                <text x="43" y="171" font-size="10" font-family="Source Serif 4" fill="var(--btn-ink)" text-anchor="middle">All</text>
+                <text x="43" y="171" font-size="10" font-family="Geist" fill="var(--btn-ink)" text-anchor="middle">All</text>
                 <rect x="72" y="156" width="48" height="22" rx="11" fill="none" stroke="var(--line)" stroke-width="0.8"/>
-                <text x="96" y="171" font-size="10" font-family="Source Serif 4" fill="var(--ink-soft)" text-anchor="middle">Dogs</text>
+                <text x="96" y="171" font-size="10" font-family="Geist" fill="var(--ink-soft)" text-anchor="middle">Dogs</text>
                 <rect x="126" y="156" width="46" height="22" rx="11" fill="none" stroke="var(--line)" stroke-width="0.8"/>
-                <text x="149" y="171" font-size="10" font-family="Source Serif 4" fill="var(--ink-soft)" text-anchor="middle">Cats</text>
+                <text x="149" y="171" font-size="10" font-family="Geist" fill="var(--ink-soft)" text-anchor="middle">Cats</text>
                 <rect x="178" y="156" width="56" height="22" rx="11" fill="none" stroke="var(--line)" stroke-width="0.8"/>
-                <text x="206" y="171" font-size="10" font-family="Source Serif 4" fill="var(--ink-soft)" text-anchor="middle">Others</text>
+                <text x="206" y="171" font-size="10" font-family="Geist" fill="var(--ink-soft)" text-anchor="middle">Others</text>
                 <!-- Pet cards -->
                 <!-- card 1 -->
                 <rect x="20" y="196" width="115" height="156" rx="4" fill="none" stroke="var(--line)" stroke-width="0.8"/>
@@ -259,9 +260,9 @@
                 <ellipse cx="77" cy="252" rx="22" ry="14" fill="color-mix(in srgb,var(--accent) 38%,transparent)"/>
                 <circle cx="60" cy="240" r="10" fill="color-mix(in srgb,var(--accent) 38%,transparent)"/>
                 <path d="M 53 234 L 50 224 L 57 230 Z" fill="color-mix(in srgb,var(--accent) 38%,transparent)"/>
-                <text x="28" y="308" font-size="11" font-family="Cormorant Garamond" font-style="italic" fill="var(--ink)">Tia</text>
-                <text x="28" y="322" font-size="8.5" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)">Indie &middot; 3 yrs &middot; F</text>
-                <text x="28" y="338" font-size="8" font-family="Source Serif 4" font-style="italic" fill="var(--accent)">Bangalore &middot; CARE</text>
+                <text x="28" y="308" font-size="11" font-family="Instrument Serif" font-style="italic" fill="var(--ink)">Tia</text>
+                <text x="28" y="322" font-size="8.5" font-family="Geist" font-style="italic" fill="var(--ink-mute)">Indie &middot; 3 yrs &middot; F</text>
+                <text x="28" y="338" font-size="8" font-family="Geist" font-style="italic" fill="var(--accent)">Bangalore &middot; CARE</text>
                 <!-- card 2 -->
                 <rect x="145" y="196" width="115" height="156" rx="4" fill="none" stroke="var(--line)" stroke-width="0.8"/>
                 <rect x="145" y="196" width="115" height="96" fill="color-mix(in srgb,var(--ink) 6%,transparent)"/>
@@ -269,31 +270,31 @@
                 <ellipse cx="202" cy="254" rx="18" ry="13" fill="color-mix(in srgb,var(--ink-mute) 35%,transparent)"/>
                 <circle cx="202" cy="238" r="11" fill="color-mix(in srgb,var(--ink-mute) 35%,transparent)"/>
                 <path d="M 195 230 L 192 220 L 198 226 Z M 209 230 L 212 220 L 206 226 Z" fill="color-mix(in srgb,var(--ink-mute) 35%,transparent)"/>
-                <text x="153" y="308" font-size="11" font-family="Cormorant Garamond" font-style="italic" fill="var(--ink)">Mochi</text>
-                <text x="153" y="322" font-size="8.5" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)">DSH &middot; 1 yr &middot; M</text>
-                <text x="153" y="338" font-size="8" font-family="Source Serif 4" font-style="italic" fill="var(--accent)">Mumbai &middot; PFA</text>
+                <text x="153" y="308" font-size="11" font-family="Instrument Serif" font-style="italic" fill="var(--ink)">Mochi</text>
+                <text x="153" y="322" font-size="8.5" font-family="Geist" font-style="italic" fill="var(--ink-mute)">DSH &middot; 1 yr &middot; M</text>
+                <text x="153" y="338" font-size="8" font-family="Geist" font-style="italic" fill="var(--accent)">Mumbai &middot; PFA</text>
                 <!-- card 3 -->
                 <rect x="20" y="364" width="115" height="156" rx="4" fill="none" stroke="var(--line)" stroke-width="0.8"/>
                 <rect x="20" y="364" width="115" height="96" fill="color-mix(in srgb,var(--accent) 8%,transparent)"/>
                 <ellipse cx="77" cy="420" rx="22" ry="14" fill="color-mix(in srgb,var(--accent) 32%,transparent)"/>
                 <circle cx="60" cy="408" r="10" fill="color-mix(in srgb,var(--accent) 32%,transparent)"/>
-                <text x="28" y="476" font-size="11" font-family="Cormorant Garamond" font-style="italic" fill="var(--ink)">Bruno</text>
-                <text x="28" y="490" font-size="8.5" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)">Labrador &middot; 5 yrs &middot; M</text>
-                <text x="28" y="506" font-size="8" font-family="Source Serif 4" font-style="italic" fill="var(--accent)">Pune &middot; Atulya</text>
+                <text x="28" y="476" font-size="11" font-family="Instrument Serif" font-style="italic" fill="var(--ink)">Bruno</text>
+                <text x="28" y="490" font-size="8.5" font-family="Geist" font-style="italic" fill="var(--ink-mute)">Labrador &middot; 5 yrs &middot; M</text>
+                <text x="28" y="506" font-size="8" font-family="Geist" font-style="italic" fill="var(--accent)">Pune &middot; Atulya</text>
                 <!-- card 4 -->
                 <rect x="145" y="364" width="115" height="156" rx="4" fill="none" stroke="var(--line)" stroke-width="0.8"/>
                 <rect x="145" y="364" width="115" height="96" fill="color-mix(in srgb,var(--ink) 8%,transparent)"/>
                 <ellipse cx="202" cy="422" rx="20" ry="13" fill="color-mix(in srgb,var(--ink-mute) 30%,transparent)"/>
                 <circle cx="184" cy="408" r="10" fill="color-mix(in srgb,var(--ink-mute) 30%,transparent)"/>
-                <text x="153" y="476" font-size="11" font-family="Cormorant Garamond" font-style="italic" fill="var(--ink)">Pepper</text>
-                <text x="153" y="490" font-size="8.5" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)">Indie &middot; 2 yrs &middot; F</text>
-                <text x="153" y="506" font-size="8" font-family="Source Serif 4" font-style="italic" fill="var(--accent)">Delhi &middot; FoSA</text>
+                <text x="153" y="476" font-size="11" font-family="Instrument Serif" font-style="italic" fill="var(--ink)">Pepper</text>
+                <text x="153" y="490" font-size="8.5" font-family="Geist" font-style="italic" fill="var(--ink-mute)">Indie &middot; 2 yrs &middot; F</text>
+                <text x="153" y="506" font-size="8" font-family="Geist" font-style="italic" fill="var(--accent)">Delhi &middot; FoSA</text>
                 <!-- bottom nav -->
                 <line x1="0" y1="552" x2="280" y2="552" stroke="var(--line)" stroke-width="0.8"/>
-                <text x="36" y="578" font-size="9" font-family="Source Serif 4" fill="var(--accent)" text-anchor="middle">Browse</text>
-                <text x="104" y="578" font-size="9" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)" text-anchor="middle">Saved</text>
-                <text x="174" y="578" font-size="9" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)" text-anchor="middle">Visit</text>
-                <text x="244" y="578" font-size="9" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)" text-anchor="middle">More</text>
+                <text x="36" y="578" font-size="9" font-family="Geist" fill="var(--accent)" text-anchor="middle">Browse</text>
+                <text x="104" y="578" font-size="9" font-family="Geist" font-style="italic" fill="var(--ink-mute)" text-anchor="middle">Saved</text>
+                <text x="174" y="578" font-size="9" font-family="Geist" font-style="italic" fill="var(--ink-mute)" text-anchor="middle">Visit</text>
+                <text x="244" y="578" font-size="9" font-family="Geist" font-style="italic" fill="var(--ink-mute)" text-anchor="middle">More</text>
                 <rect x="14" y="585" width="44" height="2" fill="var(--accent)"/>
               </svg>
             </div>
@@ -313,16 +314,16 @@
               <svg viewBox="0 0 280 606" xmlns="http://www.w3.org/2000/svg">
                 <rect width="280" height="606" fill="var(--bg)"/>
                 <!-- status bar -->
-                <text x="20" y="32" font-size="11" font-family="Source Serif 4" font-weight="500" fill="var(--ink)">9:24</text>
+                <text x="20" y="32" font-size="11" font-family="Geist" font-weight="500" fill="var(--ink)">9:24</text>
                 <circle cx="240" cy="29" r="3" fill="var(--ink)"/>
                 <rect x="250" y="25" width="14" height="8" rx="1.5" fill="none" stroke="var(--ink)" stroke-width="0.8"/>
                 <rect x="252" y="27" width="10" height="4" fill="var(--ink)"/>
                 <!-- Alert banner -->
                 <rect x="0" y="48" width="280" height="36" fill="var(--accent)"/>
-                <text x="140" y="72" font-size="13" font-family="Cormorant Garamond" font-style="italic" fill="var(--btn-ink)" text-anchor="middle">MISSING &middot; Marx</text>
+                <text x="140" y="72" font-size="13" font-family="Instrument Serif" font-style="italic" fill="var(--btn-ink)" text-anchor="middle">MISSING &middot; Marx</text>
                 <!-- Header -->
-                <text x="20" y="116" font-size="22" font-family="Cormorant Garamond" font-style="italic" fill="var(--ink)">finding<tspan fill="var(--accent)">Marx</tspan></text>
-                <text x="20" y="134" font-size="10" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)">lost since 28 May &middot; 02:14 PM</text>
+                <text x="20" y="116" font-size="22" font-family="Instrument Serif" font-style="italic" fill="var(--ink)">finding<tspan fill="var(--accent)">Marx</tspan></text>
+                <text x="20" y="134" font-size="10" font-family="Geist" font-style="italic" fill="var(--ink-mute)">lost since 28 May &middot; 02:14 PM</text>
                 <!-- Pet photo placeholder -->
                 <rect x="20" y="150" width="240" height="180" rx="4" fill="color-mix(in srgb,var(--accent) 14%,transparent)" stroke="var(--accent)" stroke-width="1.2"/>
                 <!-- dog illustration -->
@@ -331,23 +332,23 @@
                 <path d="M 95 215 L 88 198 L 102 207 Z" fill="color-mix(in srgb,var(--accent) 38%,transparent)"/>
                 <circle cx="100" cy="223" r="2" fill="var(--accent)"/>
                 <ellipse cx="178" cy="270" rx="4" ry="6" fill="color-mix(in srgb,var(--accent) 42%,transparent)"/>
-                <text x="32" y="318" font-size="8.5" font-family="Source Serif 4" font-style="italic" fill="var(--bg)" font-weight="500" letter-spacing="0.5">3 PHOTOS &middot; TAP TO SWIPE</text>
+                <text x="32" y="318" font-size="8.5" font-family="Geist" font-style="italic" fill="var(--bg)" font-weight="500" letter-spacing="0.5">3 PHOTOS &middot; TAP TO SWIPE</text>
                 <!-- Details -->
-                <text x="20" y="358" font-size="9.5" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)" letter-spacing="0.4">LAST SEEN</text>
-                <text x="20" y="374" font-size="13" font-family="Cormorant Garamond" font-style="italic" fill="var(--ink)">Indiranagar 12th Main</text>
-                <text x="20" y="388" font-size="10" font-family="Source Serif 4" font-style="italic" fill="var(--ink-soft)">near HSR junction, Bangalore</text>
+                <text x="20" y="358" font-size="9.5" font-family="Geist" font-style="italic" fill="var(--ink-mute)" letter-spacing="0.4">LAST SEEN</text>
+                <text x="20" y="374" font-size="13" font-family="Instrument Serif" font-style="italic" fill="var(--ink)">Indiranagar 12th Main</text>
+                <text x="20" y="388" font-size="10" font-family="Geist" font-style="italic" fill="var(--ink-soft)">near HSR junction, Bangalore</text>
                 <line x1="20" y1="402" x2="260" y2="402" stroke="var(--line)" stroke-width="0.6"/>
-                <text x="20" y="420" font-size="9.5" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)" letter-spacing="0.4">DESCRIPTION</text>
-                <text x="20" y="436" font-size="11" font-family="Source Serif 4" fill="var(--ink)">Brown lab mix, white chest patch</text>
-                <text x="20" y="450" font-size="11" font-family="Source Serif 4" fill="var(--ink)">Red collar with brass tag</text>
-                <text x="20" y="464" font-size="11" font-family="Source Serif 4" fill="var(--ink)">Answers to &lsquo;Marx&rsquo; &middot; friendly</text>
+                <text x="20" y="420" font-size="9.5" font-family="Geist" font-style="italic" fill="var(--ink-mute)" letter-spacing="0.4">DESCRIPTION</text>
+                <text x="20" y="436" font-size="11" font-family="Geist" fill="var(--ink)">Brown lab mix, white chest patch</text>
+                <text x="20" y="450" font-size="11" font-family="Geist" fill="var(--ink)">Red collar with brass tag</text>
+                <text x="20" y="464" font-size="11" font-family="Geist" fill="var(--ink)">Answers to &lsquo;Marx&rsquo; &middot; friendly</text>
                 <line x1="20" y1="480" x2="260" y2="480" stroke="var(--line)" stroke-width="0.6"/>
                 <!-- Reward -->
-                <text x="20" y="500" font-size="9.5" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)" letter-spacing="0.4">REWARD</text>
-                <text x="20" y="518" font-size="14" font-family="Cormorant Garamond" font-style="italic" fill="var(--accent)">&#8377;25,000 on return</text>
+                <text x="20" y="500" font-size="9.5" font-family="Geist" font-style="italic" fill="var(--ink-mute)" letter-spacing="0.4">REWARD</text>
+                <text x="20" y="518" font-size="14" font-family="Instrument Serif" font-style="italic" fill="var(--accent)">&#8377;25,000 on return</text>
                 <!-- CTA -->
                 <rect x="20" y="538" width="240" height="40" rx="4" fill="var(--accent)"/>
-                <text x="140" y="563" font-size="13" font-family="Source Serif 4" font-weight="500" fill="var(--btn-ink)" text-anchor="middle">Spotted Marx? Tap to alert &rarr;</text>
+                <text x="140" y="563" font-size="13" font-family="Geist" font-weight="500" fill="var(--btn-ink)" text-anchor="middle">Spotted Marx? Tap to alert &rarr;</text>
               </svg>
             </div>
           </div>
@@ -406,53 +407,53 @@
               <svg viewBox="0 0 280 606" xmlns="http://www.w3.org/2000/svg">
                 <rect width="280" height="606" fill="var(--bg)"/>
                 <!-- status bar -->
-                <text x="20" y="32" font-size="11" font-family="Source Serif 4" font-weight="500" fill="var(--ink)">9:24</text>
+                <text x="20" y="32" font-size="11" font-family="Geist" font-weight="500" fill="var(--ink)">9:24</text>
                 <circle cx="240" cy="29" r="3" fill="var(--ink)"/>
                 <rect x="250" y="25" width="14" height="8" rx="1.5" fill="none" stroke="var(--ink)" stroke-width="0.8"/>
                 <rect x="252" y="27" width="10" height="4" fill="var(--ink)"/>
                 <!-- Header -->
-                <text x="20" y="72" font-size="11" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)" letter-spacing="0.4">WEDNESDAY, 28 MAY</text>
-                <text x="20" y="100" font-size="22" font-family="Cormorant Garamond" font-style="italic" fill="var(--ink)">Today&rsquo;s wellness</text>
+                <text x="20" y="72" font-size="11" font-family="Geist" font-style="italic" fill="var(--ink-mute)" letter-spacing="0.4">WEDNESDAY, 28 MAY</text>
+                <text x="20" y="100" font-size="22" font-family="Instrument Serif" font-style="italic" fill="var(--ink)">Today&rsquo;s wellness</text>
                 <!-- Calorie ring -->
                 <circle cx="140" cy="200" r="64" fill="none" stroke="var(--line)" stroke-width="6"/>
                 <circle cx="140" cy="200" r="64" fill="none" stroke="var(--accent)" stroke-width="6" stroke-dasharray="280 402" stroke-linecap="round" transform="rotate(-90 140 200)"/>
-                <text x="140" y="194" font-size="26" font-family="Cormorant Garamond" font-style="italic" fill="var(--ink)" text-anchor="middle">1,640</text>
-                <text x="140" y="210" font-size="10" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)" text-anchor="middle">of 2,100 kcal</text>
-                <text x="140" y="224" font-size="9" font-family="Source Serif 4" font-style="italic" fill="var(--accent)" text-anchor="middle">460 remaining</text>
+                <text x="140" y="194" font-size="26" font-family="Instrument Serif" font-style="italic" fill="var(--ink)" text-anchor="middle">1,640</text>
+                <text x="140" y="210" font-size="10" font-family="Geist" font-style="italic" fill="var(--ink-mute)" text-anchor="middle">of 2,100 kcal</text>
+                <text x="140" y="224" font-size="9" font-family="Geist" font-style="italic" fill="var(--accent)" text-anchor="middle">460 remaining</text>
                 <!-- Stats row -->
                 <line x1="20" y1="290" x2="260" y2="290" stroke="var(--line)" stroke-width="0.6"/>
-                <text x="50" y="312" font-size="11" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)" text-anchor="middle" letter-spacing="0.4">STEPS</text>
-                <text x="50" y="332" font-size="15" font-family="Cormorant Garamond" font-style="italic" fill="var(--ink)" text-anchor="middle">7,420</text>
-                <text x="50" y="346" font-size="9" font-family="Source Serif 4" font-style="italic" fill="var(--accent)" text-anchor="middle">74% goal</text>
+                <text x="50" y="312" font-size="11" font-family="Geist" font-style="italic" fill="var(--ink-mute)" text-anchor="middle" letter-spacing="0.4">STEPS</text>
+                <text x="50" y="332" font-size="15" font-family="Instrument Serif" font-style="italic" fill="var(--ink)" text-anchor="middle">7,420</text>
+                <text x="50" y="346" font-size="9" font-family="Geist" font-style="italic" fill="var(--accent)" text-anchor="middle">74% goal</text>
                 <line x1="100" y1="296" x2="100" y2="346" stroke="var(--line)" stroke-width="0.5"/>
-                <text x="140" y="312" font-size="11" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)" text-anchor="middle" letter-spacing="0.4">WATER</text>
-                <text x="140" y="332" font-size="15" font-family="Cormorant Garamond" font-style="italic" fill="var(--ink)" text-anchor="middle">1.8 L</text>
-                <text x="140" y="346" font-size="9" font-family="Source Serif 4" font-style="italic" fill="var(--accent)" text-anchor="middle">60% goal</text>
+                <text x="140" y="312" font-size="11" font-family="Geist" font-style="italic" fill="var(--ink-mute)" text-anchor="middle" letter-spacing="0.4">WATER</text>
+                <text x="140" y="332" font-size="15" font-family="Instrument Serif" font-style="italic" fill="var(--ink)" text-anchor="middle">1.8 L</text>
+                <text x="140" y="346" font-size="9" font-family="Geist" font-style="italic" fill="var(--accent)" text-anchor="middle">60% goal</text>
                 <line x1="190" y1="296" x2="190" y2="346" stroke="var(--line)" stroke-width="0.5"/>
-                <text x="230" y="312" font-size="11" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)" text-anchor="middle" letter-spacing="0.4">SLEEP</text>
-                <text x="230" y="332" font-size="15" font-family="Cormorant Garamond" font-style="italic" fill="var(--ink)" text-anchor="middle">7h 12m</text>
-                <text x="230" y="346" font-size="9" font-family="Source Serif 4" font-style="italic" fill="var(--accent)" text-anchor="middle">good</text>
+                <text x="230" y="312" font-size="11" font-family="Geist" font-style="italic" fill="var(--ink-mute)" text-anchor="middle" letter-spacing="0.4">SLEEP</text>
+                <text x="230" y="332" font-size="15" font-family="Instrument Serif" font-style="italic" fill="var(--ink)" text-anchor="middle">7h 12m</text>
+                <text x="230" y="346" font-size="9" font-family="Geist" font-style="italic" fill="var(--accent)" text-anchor="middle">good</text>
                 <line x1="20" y1="364" x2="260" y2="364" stroke="var(--line)" stroke-width="0.6"/>
                 <!-- Today's meals -->
-                <text x="20" y="388" font-size="11" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)" letter-spacing="0.4">TODAY&rsquo;S MEALS</text>
+                <text x="20" y="388" font-size="11" font-family="Geist" font-style="italic" fill="var(--ink-mute)" letter-spacing="0.4">TODAY&rsquo;S MEALS</text>
                 <rect x="20" y="398" width="240" height="42" fill="none" stroke="var(--line)" stroke-width="0.6"/>
-                <text x="32" y="416" font-size="11" font-family="Cormorant Garamond" font-style="italic" fill="var(--ink)">Idli &middot; coconut chutney</text>
-                <text x="32" y="430" font-size="9" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)">Breakfast &middot; 380 kcal</text>
-                <text x="248" y="424" font-size="13" font-family="Cormorant Garamond" font-style="italic" fill="var(--accent)" text-anchor="end">8:14</text>
+                <text x="32" y="416" font-size="11" font-family="Instrument Serif" font-style="italic" fill="var(--ink)">Idli &middot; coconut chutney</text>
+                <text x="32" y="430" font-size="9" font-family="Geist" font-style="italic" fill="var(--ink-mute)">Breakfast &middot; 380 kcal</text>
+                <text x="248" y="424" font-size="13" font-family="Instrument Serif" font-style="italic" fill="var(--accent)" text-anchor="end">8:14</text>
                 <rect x="20" y="446" width="240" height="42" fill="none" stroke="var(--line)" stroke-width="0.6"/>
-                <text x="32" y="464" font-size="11" font-family="Cormorant Garamond" font-style="italic" fill="var(--ink)">Dal &middot; jeera rice &middot; sabzi</text>
-                <text x="32" y="478" font-size="9" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)">Lunch &middot; 720 kcal</text>
-                <text x="248" y="472" font-size="13" font-family="Cormorant Garamond" font-style="italic" fill="var(--accent)" text-anchor="end">1:30</text>
+                <text x="32" y="464" font-size="11" font-family="Instrument Serif" font-style="italic" fill="var(--ink)">Dal &middot; jeera rice &middot; sabzi</text>
+                <text x="32" y="478" font-size="9" font-family="Geist" font-style="italic" fill="var(--ink-mute)">Lunch &middot; 720 kcal</text>
+                <text x="248" y="472" font-size="13" font-family="Instrument Serif" font-style="italic" fill="var(--accent)" text-anchor="end">1:30</text>
                 <rect x="20" y="494" width="240" height="42" fill="none" stroke="var(--line)" stroke-width="0.6"/>
-                <text x="32" y="512" font-size="11" font-family="Cormorant Garamond" font-style="italic" fill="var(--ink)">Chai &middot; biscuit</text>
-                <text x="32" y="526" font-size="9" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)">Snack &middot; 180 kcal</text>
-                <text x="248" y="520" font-size="13" font-family="Cormorant Garamond" font-style="italic" fill="var(--accent)" text-anchor="end">4:42</text>
+                <text x="32" y="512" font-size="11" font-family="Instrument Serif" font-style="italic" fill="var(--ink)">Chai &middot; biscuit</text>
+                <text x="32" y="526" font-size="9" font-family="Geist" font-style="italic" fill="var(--ink-mute)">Snack &middot; 180 kcal</text>
+                <text x="248" y="520" font-size="13" font-family="Instrument Serif" font-style="italic" fill="var(--accent)" text-anchor="end">4:42</text>
                 <!-- Bottom nav -->
                 <line x1="0" y1="552" x2="280" y2="552" stroke="var(--line)" stroke-width="0.8"/>
-                <text x="36" y="578" font-size="9" font-family="Source Serif 4" fill="var(--accent)" text-anchor="middle">Today</text>
-                <text x="104" y="578" font-size="9" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)" text-anchor="middle">Log</text>
-                <text x="174" y="578" font-size="9" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)" text-anchor="middle">Trends</text>
-                <text x="244" y="578" font-size="9" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)" text-anchor="middle">Coach</text>
+                <text x="36" y="578" font-size="9" font-family="Geist" fill="var(--accent)" text-anchor="middle">Today</text>
+                <text x="104" y="578" font-size="9" font-family="Geist" font-style="italic" fill="var(--ink-mute)" text-anchor="middle">Log</text>
+                <text x="174" y="578" font-size="9" font-family="Geist" font-style="italic" fill="var(--ink-mute)" text-anchor="middle">Trends</text>
+                <text x="244" y="578" font-size="9" font-family="Geist" font-style="italic" fill="var(--ink-mute)" text-anchor="middle">Coach</text>
                 <rect x="14" y="585" width="44" height="2" fill="var(--accent)"/>
               </svg>
             </div>

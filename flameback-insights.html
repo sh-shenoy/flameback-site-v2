@@ -6,32 +6,32 @@
 <title>flameback. — Insights</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#1A1714; --ink:#F2EDE3; --ink-soft:rgba(242,237,227,.64); --ink-mute:rgba(242,237,227,.42);
-    --line:rgba(242,237,227,.15); --panel:#221E1A; --accent:#FF6D0A; --btn-bg:#FF6D0A; --btn-ink:#1A1714;
+    --bg:#0B0C0E; --ink:#F5F2EA; --ink-soft:rgba(245,242,234,.64); --ink-mute:rgba(245,242,234,.42);
+    --line:rgba(245,242,234,.15); --panel:#221E1A; --accent:#B59669; --btn-bg:#B59669; --btn-ink:#0B0C0E;
     --grain-blend:screen; --grain-op:.05;
   }
   :root.light{
-    --bg:#FCFAF6; --ink:#1A1714; --ink-soft:rgba(26,23,20,.66); --ink-mute:rgba(26,23,20,.46);
-    --line:rgba(26,23,20,.13); --panel:#F4EFE7; --accent:#FF6D0A; --btn-bg:#1A1714; --btn-ink:#FCFAF6;
+    --bg:#F5F2EA; --ink:#0B0C0E; --ink-soft:rgba(11,12,14,.66); --ink-mute:rgba(11,12,14,.46);
+    --line:rgba(11,12,14,.13); --panel:#F4EFE7; --accent:#B59669; --btn-bg:#0B0C0E; --btn-ink:#F5F2EA;
     --grain-blend:multiply; --grain-op:.03;
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;scroll-behavior:smooth}
-  body{background:var(--bg);color:var(--ink);font-family:"Source Serif 4",serif;transition:background .5s,color .5s;font-variant-numeric:tabular-nums;font-feature-settings:"tnum"}
+  body{background:var(--bg);color:var(--ink);font-family:"Geist",serif;transition:background .5s,color .5s;font-variant-numeric:tabular-nums;font-feature-settings:"tnum"}
   body::after{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;mix-blend-mode:var(--grain-blend);opacity:var(--grain-op);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
   .wrap{max-width:1180px;margin:0 auto;padding:0 clamp(22px,5vw,44px)}
   section{position:relative;z-index:2}
 
-  .wm{font-family:"Source Serif 4",serif;font-weight:600;font-size:18px;letter-spacing:-.01em;color:var(--ink);text-decoration:none}
+  .wm{font-family:"Geist",serif;font-weight:600;font-size:18px;letter-spacing:-.01em;color:var(--ink);text-decoration:none}
   .wm .p{color:var(--accent)}
-  .lab{font-family:"Source Serif 4",serif;font-style:italic;font-size:14px;color:var(--ink-mute)}
+  .lab{font-family:"Geist",serif;font-style:italic;font-size:14px;color:var(--ink-mute)}
   .lab .n{font-style:normal;color:var(--accent);margin-right:10px}
-  h1,h2,h3,h4{font-family:"Cormorant Garamond",serif;font-weight:500;letter-spacing:-.012em;color:var(--ink)}
+  h1,h2,h3,h4{font-family:"Instrument Serif",serif;font-weight:500;letter-spacing:-.012em;color:var(--ink)}
 
-  .btn,.btn-out{display:inline-flex;align-items:center;justify-content:center;gap:11px;font-family:"Source Serif 4",serif;font-size:15px;font-weight:500;padding:12px 22px;text-decoration:none;transition:gap .35s,opacity .3s,border-color .3s}
+  .btn,.btn-out{display:inline-flex;align-items:center;justify-content:center;gap:11px;font-family:"Geist",serif;font-size:15px;font-weight:500;padding:12px 22px;text-decoration:none;transition:gap .35s,opacity .3s,border-color .3s}
   .btn{background:var(--btn-bg);color:var(--btn-ink)}
   .btn:hover{gap:15px;opacity:.92}
   .btn-out{background:transparent;color:var(--ink);border:1px solid var(--line)}
@@ -44,7 +44,7 @@
   .navr a{color:var(--ink-soft);text-decoration:none;font-size:14.5px;transition:color .3s}
   .navr a:hover{color:var(--ink)}
   .navr a.current{color:var(--ink)}
-  .toggle{background:none;border:1px solid var(--line);color:var(--ink-soft);cursor:pointer;font-family:"Source Serif 4",serif;font-size:13px;font-style:italic;padding:5px 13px;border-radius:999px;transition:border-color .3s,color .3s}
+  .toggle{background:none;border:1px solid var(--line);color:var(--ink-soft);cursor:pointer;font-family:"Geist",serif;font-size:13px;font-style:italic;padding:5px 13px;border-radius:999px;transition:border-color .3s,color .3s}
   .toggle:hover{border-color:var(--ink-mute);color:var(--ink)}
   .navr a.navbtn{background:var(--btn-bg);color:var(--btn-ink);padding:8px 17px;font-size:14.5px}
   .navr a.navbtn:hover{color:var(--btn-ink);opacity:.92}
@@ -53,28 +53,28 @@
 
   .subnav{border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--bg) 92%,transparent);position:sticky;top:58px;z-index:40;backdrop-filter:blur(8px)}
   .subnav-in{display:flex;align-items:baseline;gap:clamp(18px,2.5vw,34px);padding:11px 0;flex-wrap:wrap}
-  .subnav .sn-lab{font-family:"Source Serif 4",serif;font-style:italic;font-size:13px;color:var(--ink-mute);margin-right:6px}
-  .subnav a{font-family:"Source Serif 4",serif;font-size:13.5px;color:var(--ink-mute);text-decoration:none;transition:color .3s;padding-bottom:3px;border-bottom:1px solid transparent}
+  .subnav .sn-lab{font-family:"Geist",serif;font-style:italic;font-size:13px;color:var(--ink-mute);margin-right:6px}
+  .subnav a{font-family:"Geist",serif;font-size:13.5px;color:var(--ink-mute);text-decoration:none;transition:color .3s;padding-bottom:3px;border-bottom:1px solid transparent}
   .subnav a:hover{color:var(--ink)}
   .subnav a.current{color:var(--ink);border-bottom-color:var(--accent)}
 
   .hero{padding:clamp(48px,7vh,84px) 0 clamp(30px,4vh,48px)}
   .dateline{display:flex;align-items:center;gap:13px;margin-bottom:24px}
   .dateline .l{flex:0 0 26px;height:1px;background:var(--accent)}
-  .hero h1{font-family:"Cormorant Garamond",serif;font-weight:500;font-size:clamp(36px,5.4vw,62px);line-height:0.98;letter-spacing:-.018em;margin-bottom:22px;color:var(--ink)}
+  .hero h1{font-family:"Instrument Serif",serif;font-weight:500;font-size:clamp(36px,5.4vw,62px);line-height:0.98;letter-spacing:-.018em;margin-bottom:22px;color:var(--ink)}
   .hero-sub{font-size:17px;line-height:1.6;color:var(--ink);max-width:64ch;margin-bottom:30px}
 
   /* Subscribe strip */
   .substrip{padding:clamp(24px,3.5vw,36px) 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--ink) 2%,transparent)}
   .sub-grid{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center}
   @media(max-width:700px){.sub-grid{grid-template-columns:1fr;gap:14px}}
-  .sub-left h3{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:22px;color:var(--ink);margin-bottom:4px;line-height:1.15}
+  .sub-left h3{font-family:"Instrument Serif",serif;font-style:italic;font-size:22px;color:var(--ink);margin-bottom:4px;line-height:1.15}
   .sub-left p{font-size:13.5px;color:var(--ink-soft);font-style:italic}
   .sub-form{display:flex;gap:0;border:1px solid var(--line);background:var(--bg);min-width:340px}
   @media(max-width:480px){.sub-form{min-width:0;width:100%}}
-  .sub-form input{flex:1;background:transparent;border:none;color:var(--ink);font-family:"Source Serif 4",serif;font-size:14px;padding:11px 14px;outline:none}
+  .sub-form input{flex:1;background:transparent;border:none;color:var(--ink);font-family:"Geist",serif;font-size:14px;padding:11px 14px;outline:none}
   .sub-form input::placeholder{color:var(--ink-mute);font-style:italic}
-  .sub-form button{background:var(--accent);color:var(--btn-ink);border:none;font-family:"Source Serif 4",serif;font-weight:500;font-size:14px;padding:11px 22px;cursor:pointer;transition:opacity .25s}
+  .sub-form button{background:var(--accent);color:var(--btn-ink);border:none;font-family:"Geist",serif;font-weight:500;font-size:14px;padding:11px 22px;cursor:pointer;transition:opacity .25s}
   .sub-form button:hover{opacity:.92}
 
   /* Stream sections */
@@ -83,7 +83,7 @@
   .stream-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:clamp(22px,3vw,32px);gap:18px;flex-wrap:wrap}
   .stream-head h2{font-size:clamp(26px,3.6vw,38px);line-height:1.05}
   .stream-head h2 .acc{color:var(--accent);font-style:italic}
-  .stream-head .all{font-family:"Source Serif 4",serif;font-style:italic;font-size:14px;color:var(--ink-mute);text-decoration:none;display:inline-flex;align-items:center;gap:7px;transition:color .25s,gap .25s}
+  .stream-head .all{font-family:"Geist",serif;font-style:italic;font-size:14px;color:var(--ink-mute);text-decoration:none;display:inline-flex;align-items:center;gap:7px;transition:color .25s,gap .25s}
   .stream-head .all:hover{color:var(--accent);gap:11px}
 
   .stream-sub{font-size:14.5px;color:var(--ink-soft);font-style:italic;margin-bottom:24px;max-width:60ch;line-height:1.55}
@@ -95,9 +95,9 @@
   .card{border:1px solid var(--line);background:color-mix(in srgb,var(--ink) 2%,transparent);padding:20px 22px;display:flex;flex-direction:column;text-decoration:none;color:inherit;transition:border-color .3s,background .3s}
   .card:hover{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 3%,transparent)}
   .card-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:12px}
-  .card-tag{font-family:"Source Serif 4",serif;font-style:italic;font-size:10.5px;color:var(--accent);letter-spacing:.06em;text-transform:uppercase;line-height:1.3}
-  .card-date{font-family:"Source Serif 4",serif;font-style:italic;font-size:11.5px;color:var(--ink-mute);letter-spacing:.02em}
-  .card-title{font-family:"Cormorant Garamond",serif;font-size:21px;font-weight:500;line-height:1.15;color:var(--ink);margin-bottom:10px;letter-spacing:-.005em}
+  .card-tag{font-family:"Geist",serif;font-style:italic;font-size:10.5px;color:var(--accent);letter-spacing:.06em;text-transform:uppercase;line-height:1.3}
+  .card-date{font-family:"Geist",serif;font-style:italic;font-size:11.5px;color:var(--ink-mute);letter-spacing:.02em}
+  .card-title{font-family:"Instrument Serif",serif;font-size:21px;font-weight:500;line-height:1.15;color:var(--ink);margin-bottom:10px;letter-spacing:-.005em}
   .card-snippet{font-size:13.5px;line-height:1.55;color:var(--ink-soft);flex:1;margin-bottom:14px}
   .card-foot{display:flex;justify-content:space-between;align-items:center;padding-top:12px;border-top:1px solid var(--line);font-size:12px}
   .card-author{font-style:italic;color:var(--ink-mute)}
@@ -120,6 +120,7 @@
   .disc span{font-size:12.5px;color:var(--ink-mute);line-height:1.6}
   .disc .legal{max-width:64ch;font-style:italic}
 </style>
+  <link rel="stylesheet" href="v2.css">
 </head>
 <body>
 
