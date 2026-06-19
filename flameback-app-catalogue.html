@@ -102,6 +102,12 @@
 
   .backlink{display:block;text-align:center;margin-top:30px;font-family:"Geist Mono",monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-mute);text-decoration:none}
   .backlink:hover{color:var(--accent)}
+  .filterbar{margin-bottom:6px}
+  .filterbar .fl{font-family:"Geist Mono",monospace;font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-mute);margin-bottom:10px}
+  .fchips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+  .fchip{font-family:"Geist",serif;font-size:13.5px;color:var(--ink-soft);background:var(--card);border:1px solid var(--line);padding:7px 15px;border-radius:999px;cursor:pointer;transition:all .2s}
+  .fchip:hover{border-color:var(--ink-soft)}
+  .fchip.on{background:var(--accent);color:var(--btn-ink);border-color:var(--accent)}
 </style>
   <link rel="stylesheet" href="v2.css">
 </head>
@@ -127,34 +133,33 @@
 
         <span class="eyebrow"><span class="l"></span>Browse · no commitment</span>
         <h1 class="title">The <em>catalogue.</em></h1>
-        <p class="lede">A look at the strategies — slide across the bands, see what fits. Invest in any of them once you've looked.</p>
+        <p class="lede">Every strategy, in one place. Filter by risk level and style — invest in any of them once you've looked.</p>
 
-        <!-- spectrum -->
-        <div class="spectrum">
-          <div class="lab">Risk spectrum</div>
-          <div class="specbar">
-            <div class="stops" id="stops">
-              <div class="stop on" data-b="0"></div>
-              <div class="stop" data-b="1"></div>
-              <div class="stop" data-b="2"></div>
-              <div class="stop" data-b="3"></div>
-            </div>
+                <!-- filters -->
+        <div class="filterbar">
+          <div class="fl">Risk level</div>
+          <div class="fchips" id="riskChips">
+            <button class="fchip on" data-r="all">All strategies</button>
+            <button class="fchip" data-r="0">Conservative</button>
+            <button class="fchip" data-r="1">Moderate</button>
+            <button class="fchip" data-r="2">Aggressive</button>
+            <button class="fchip" data-r="3">Very aggressive</button>
           </div>
-          <div class="stoplabels" id="stoplabels">
-            <span class="on" data-b="0">Conservative</span>
-            <span data-b="1">Moderate</span>
-            <span data-b="2">Aggressive</span>
-            <span data-b="3">Very<br>aggressive</span>
+          <div class="fl">Style</div>
+          <div class="fchips" id="styleChips">
+            <button class="fchip on" data-s="all">All</button>
+            <button class="fchip" data-s="Static">Static &mdash; fixed rules</button>
+            <button class="fchip" data-s="Dynamic">Dynamic &mdash; adapts</button>
           </div>
-          <div class="anchors"><span>Less risk → stable</span><span>More risk → higher</span></div>
         </div>
 
+
         <a href="flameback-app-quick-profiler.html" class="quizcta">
-          <span class="qt"><b>Not sure where you sit?</b> Answer 5 quick questions and we'll set the spectrum for you.</span>
+          <span class="qt"><b>Not sure where you sit?</b> Answer 5 quick questions and we'll set the filter for you.</span>
           <span class="qa">Take the quiz &rarr;</span>
         </a>
 
-        <div class="bandhead">Two strategies for the <b id="bandName">Conservative</b> band</div>
+        <div class="bandhead"><b id="count">8</b> strategies</div>
 
         <div class="cards" id="cards"></div>
 
@@ -191,34 +196,27 @@
 
   var BANDS=['Conservative','Moderate','Aggressive','Very aggressive'];
 
-  // strategy data per band: [static, dynamic]
   var DATA=[
-    { // Conservative
-      static:{name:'The Steady Anchor',cagr:'8.4%',dd:'−6.2%',since:'+96%',phil:'Capital first. A debt-heavy mix that barely flinches when markets wobble.'},
-      dynamic:{name:'The Careful Navigator',cagr:'9.1%',dd:'−7.8%',since:'+108%',phil:'Mostly steady, with a small sleeve that shifts toward equity when the wind is fair.'}
-    },
-    { // Moderate
-      static:{name:'The Balanced Keel',cagr:'11.6%',dd:'−14.1%',since:'+182%',phil:'A classic 60/40 spirit — growth you can hold through, cushioned by debt.'},
-      dynamic:{name:'The Balanced Compounder',cagr:'14.2%',dd:'−18.4%',since:'+241%',phil:'Leans into quality compounders while a debt sleeve softens the falls.'}
-    },
-    { // Aggressive
-      static:{name:'The Growth Engine',cagr:'16.8%',dd:'−28.5%',since:'+318%',phil:'Equity-led and unapologetic. Built for those who can stomach the swing.'},
-      dynamic:{name:'The Momentum Rider',cagr:'18.9%',dd:'−34.2%',since:'+402%',phil:'Tilts hard toward what is working, trims what is not. Active by design.'}
-    },
-    { // Very aggressive
-      static:{name:'The High Conviction',cagr:'20.4%',dd:'−42.0%',since:'+512%',phil:'Concentrated, high-octane equity. Big upside, big nerve required.'},
-      dynamic:{name:'The Full Throttle',cagr:'22.7%',dd:'−49.6%',since:'+640%',phil:'Maximum swing, maximum ambition. For the seasoned and the patient.'}
-    }
+    { static:{name:'The Steady Anchor',cagr:'8.4%',dd:'−6.2%',since:'+96%',phil:'Capital first. A debt-heavy mix that barely flinches when markets wobble.'},
+      dynamic:{name:'The Careful Navigator',cagr:'9.1%',dd:'−7.8%',since:'+108%',phil:'Mostly steady, with a small sleeve that shifts toward equity when the wind is fair.'} },
+    { static:{name:'The Balanced Keel',cagr:'11.6%',dd:'−14.1%',since:'+182%',phil:'A classic 60/40 spirit — growth you can hold through, cushioned by debt.'},
+      dynamic:{name:'The Balanced Compounder',cagr:'14.2%',dd:'−18.4%',since:'+241%',phil:'Leans into quality compounders while a debt sleeve softens the falls.'} },
+    { static:{name:'The Growth Engine',cagr:'16.8%',dd:'−28.5%',since:'+318%',phil:'Equity-led and unapologetic. Built for those who can stomach the swing.'},
+      dynamic:{name:'The Momentum Rider',cagr:'18.9%',dd:'−34.2%',since:'+402%',phil:'Tilts hard toward what is working, trims what is not. Active by design.'} },
+    { static:{name:'The High Conviction',cagr:'20.4%',dd:'−42.0%',since:'+512%',phil:'Concentrated, high-octane equity. Big upside, big nerve required.'},
+      dynamic:{name:'The Full Throttle',cagr:'22.7%',dd:'−49.6%',since:'+640%',phil:'Maximum swing, maximum ambition. For the seasoned and the patient.'} }
   ];
 
-  var cur=0;
-  // default band from quick-profiler answers if present
-  try{var saved=sessionStorage.getItem('fb_quick_band');if(saved!==null){cur=Math.max(0,Math.min(3,parseInt(saved,10)));}}catch(e){}
+  var ALL=[];
+  DATA.forEach(function(b,i){ ALL.push({band:i,type:'Static',d:b.static}); ALL.push({band:i,type:'Dynamic',d:b.dynamic}); });
 
-  var stops=document.querySelectorAll('#stops .stop');
-  var labels=document.querySelectorAll('#stoplabels span');
+  var riskF='all', styleF='all';
+  try{var saved=sessionStorage.getItem('fb_quick_band');if(saved!==null){riskF=String(Math.max(0,Math.min(3,parseInt(saved,10))));}}catch(e){}
+
   var cardsEl=document.getElementById('cards');
-  var bandName=document.getElementById('bandName');
+  var countEl=document.getElementById('count');
+  var riskChips=document.querySelectorAll('#riskChips .fchip');
+  var styleChips=document.querySelectorAll('#styleChips .fchip');
 
   function card(type,d){
     return '<div class="scard">'+
@@ -245,12 +243,17 @@
   }
 
   function render(){
-    stops.forEach(function(s){s.classList.toggle('on',parseInt(s.dataset.b,10)===cur);});
-    labels.forEach(function(l){l.classList.toggle('on',parseInt(l.dataset.b,10)===cur);});
-    bandName.textContent=BANDS[cur];
-    var d=DATA[cur];
-    cardsEl.innerHTML=card('Static',d.static)+card('Dynamic',d.dynamic);
-    // wire dropdowns + periods on freshly-rendered cards
+    riskChips.forEach(function(c){c.classList.toggle('on', String(c.dataset.r)===String(riskF));});
+    styleChips.forEach(function(c){c.classList.toggle('on', String(c.dataset.s)===String(styleF));});
+    var list=ALL.filter(function(s){
+      var rk=(riskF==='all')||(s.band===parseInt(riskF,10));
+      var st=(styleF==='all')||(s.type===styleF);
+      return rk&&st;
+    });
+    if(countEl)countEl.textContent=list.length;
+    cardsEl.innerHTML = list.length
+      ? list.map(function(s){return card(BANDS[s.band]+' · '+s.type, s.d);}).join('')
+      : '<p class="noslot" style="grid-column:1/-1">No strategies match — widen the filters.</p>';
     cardsEl.querySelectorAll('.dd').forEach(function(dd){
       dd.querySelector('.dd-tog').onclick=function(){dd.classList.toggle('open');};
       var grp=dd.querySelector('.periods');
@@ -259,11 +262,8 @@
       });}
     });
   }
-
-  function go(b){cur=b;render();}
-  stops.forEach(function(s){s.onclick=function(){go(parseInt(s.dataset.b,10));};});
-  labels.forEach(function(l){l.onclick=function(){go(parseInt(l.dataset.b,10));};});
-
+  riskChips.forEach(function(c){c.onclick=function(){riskF=c.dataset.r;render();};});
+  styleChips.forEach(function(c){c.onclick=function(){styleF=c.dataset.s;render();};});
   render();
 </script>
   <script src="reload.js"></script>
