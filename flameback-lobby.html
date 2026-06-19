@@ -96,6 +96,44 @@
   .sheet li span:first-child{color:var(--ink-soft)}
   .sheet li span:last-child{font-family:"Geist Mono",monospace;font-size:11px;color:var(--ink)}
   .sheet .close{width:100%;background:none;border:1px solid var(--line);color:var(--ink);font-family:"Geist",serif;font-style:italic;font-size:14px;padding:12px;cursor:pointer}
+  .navcard{padding:20px}
+  .navhead{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px}
+  .navhead .nk{font-family:"Geist Mono",monospace;font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-mute);margin-bottom:6px}
+  .navhead .nv{font-family:"Instrument Serif",serif;font-size:34px;line-height:1}
+  .navchg{font-family:"Geist Mono",monospace;font-size:12px}
+  .navchg.up{color:var(--accent)}
+  .navchart{margin:4px 0 12px}
+  .periods{display:flex;gap:6px;flex-wrap:wrap}
+  .periods button{font-family:"Geist",serif;font-size:12px;color:var(--ink-soft);background:none;border:1px solid var(--line);padding:5px 13px;border-radius:999px;cursor:pointer;transition:all .2s}
+  .periods button.on{background:var(--accent);color:var(--btn-ink);border-color:var(--accent)}
+  .statgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin:18px 0}
+  @media(max-width:560px){.statgrid{grid-template-columns:1fr 1fr}}
+  .stat{background:var(--bg);padding:15px 14px}
+  .stat .k{font-family:"Geist Mono",monospace;font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-mute);margin-bottom:7px}
+  .stat .v{font-family:"Instrument Serif",serif;font-size:24px;line-height:1}
+  .stat .v.up,.stat .sub.up{color:var(--accent)}
+  .stat .sub{font-family:"Geist Mono",monospace;font-size:10px;margin-top:4px;color:var(--ink-soft)}
+  .streak-h{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px}
+  .streak-h .sk{font-family:"Geist Mono",monospace;font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-mute)}
+  .streak-h .sv{font-family:"Instrument Serif",serif;font-style:italic;font-size:20px;color:var(--ink)}
+  .cell12{display:flex;gap:4px}
+  .cell12 i{flex:1;height:24px;border-radius:2px;background:var(--line)}
+  .cell12 i.f{background:var(--accent)}
+  .streak-note{font-size:12px;font-style:italic;color:var(--ink-mute);margin-top:12px;line-height:1.5}
+  .commentary{border:1px solid var(--line);border-left:2px solid var(--accent);background:var(--card);padding:16px 18px;margin-bottom:18px}
+  .commentary .cm1{font-family:"Instrument Serif",serif;font-style:italic;font-size:21px;margin-bottom:5px;color:var(--ink)}
+  .commentary .cm2{font-size:13.5px;color:var(--ink-soft);line-height:1.55}
+  .rebanner{border:1px solid color-mix(in srgb,var(--accent) 40%,var(--line));background:color-mix(in srgb,var(--accent) 6%,transparent);padding:16px 18px;margin-bottom:18px}
+  .rebanner .rt{font-size:13.5px;color:var(--ink-soft);margin-bottom:13px;line-height:1.5}
+  .rebanner .rt b{color:var(--ink);font-weight:500}
+  .rebanner .ra{display:flex;gap:12px;align-items:center}
+  .rebtn{background:var(--btn-bg);color:var(--btn-ink);font-family:"Geist",serif;font-size:13.5px;font-weight:500;padding:9px 18px;text-decoration:none;border-radius:999px}
+  .snooze{background:none;border:none;color:var(--ink-mute);font-family:"Geist",serif;font-style:italic;font-size:13px;cursor:pointer;text-decoration:underline}
+  .ipsrow{display:flex;justify-content:space-between;align-items:center;gap:14px;border:1px solid var(--line);background:var(--card);padding:16px 18px;margin-bottom:28px;text-decoration:none}
+  .ipsrow:hover{border-color:var(--ink-soft)}
+  .ipsrow .ih{font-family:"Instrument Serif",serif;font-style:italic;font-size:18px;color:var(--ink)}
+  .ipsrow .is{font-size:12.5px;color:var(--ink-mute);font-style:italic;margin-top:2px}
+  .ipsrow .iar{color:var(--accent);font-size:18px;flex:none}
 </style>
   <link rel="stylesheet" href="v2.css">
 </head>
@@ -118,6 +156,7 @@
   <main>
     <div class="wrap">
       <div class="screen">
+        <div id="preView">
         <span class="eyebrow"><span class="l"></span>Your lobby · pre-investment</span>
         <h1 class="greet">Welcome in, <em>Aarav.</em></h1>
         <p class="greet-sub">Your profile is complete. Here's where you stand — and where we'd go next.</p>
@@ -147,6 +186,62 @@
         <div class="explainer">
           <span class="n">“</span>
           <span class="t"><b>How we manage this for you.</b> Once you fund a portfolio, this lobby becomes your live picture — value, gains, your SIP streak, and a quiet daily note on what the market did and why we're holding steady.</span>
+        </div>
+        </div><!--/preView-->
+
+        <div id="fundedView" style="display:none">
+          <span class="eyebrow"><span class="l"></span>Your lobby · invested</span>
+          <h1 class="greet" id="fGreet">Good morning, <em>Aarav.</em></h1>
+          <p class="greet-sub">As of the last market close &middot; “My growth bet” is live.</p>
+
+          <section class="card navcard">
+            <div class="navhead">
+              <div><div class="nk">Portfolio value</div><div class="nv">&#8377;11,84,000</div></div>
+              <div class="navchg up">&#9650; 18.4%</div>
+            </div>
+            <div class="navchart">
+              <svg viewBox="0 0 320 110" preserveAspectRatio="none" style="width:100%;height:108px;display:block">
+                <defs><linearGradient id="navg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--accent)" stop-opacity=".18"/><stop offset="1" stop-color="var(--accent)" stop-opacity="0"/></linearGradient></defs>
+                <path d="M2 96 C40 92,70 86,100 80 C140 72,160 78,196 60 C236 44,256 52,300 22 L318 14 L318 108 L2 108 Z" fill="url(#navg)"/>
+                <path d="M2 96 C40 92,70 86,100 80 C140 72,160 78,196 60 C236 44,256 52,300 22 L318 14" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="periods" id="navPeriods"><button>1M</button><button>3M</button><button>6M</button><button class="on">1Y</button><button>3Y</button><button>All</button></div>
+          </section>
+
+          <div class="statgrid">
+            <div class="stat"><div class="k">Current value</div><div class="v">&#8377;11,84,000</div></div>
+            <div class="stat"><div class="k">Invested</div><div class="v">&#8377;10,00,000</div></div>
+            <div class="stat"><div class="k">Gains</div><div class="v up">+&#8377;1,84,000</div><div class="sub up">&#9650; 18.4%</div></div>
+            <div class="stat"><div class="k">CAGR · <span class="mono" style="font-size:8px">XIRR</span></div><div class="v">14.2%</div></div>
+          </div>
+
+          <section class="card">
+            <div class="streak-h"><span class="sk">SIP discipline</span><span class="sv">7 months on track</span></div>
+            <div class="cell12" id="streak"></div>
+            <p class="streak-note">Every scheduled SIP cleared on time. A paused month freezes the streak — it never breaks it.</p>
+          </section>
+
+          <div class="commentary">
+            <div class="cm1">Up &#8377;46,000 over the last week.</div>
+            <div class="cm2">Mid-caps led, volume was thin — nothing for us to do. The strategy is holding.</div>
+          </div>
+
+          <div class="rebanner" id="reb">
+            <div class="rt"><b>We've tuned your strategy.</b> Have a look, then apply when you're ready.</div>
+            <div class="ra"><a href="#" class="rebtn">Rebalance now</a><button class="snooze" id="snooze">Snooze 7 days</button></div>
+          </div>
+
+          <a href="#" class="ipsrow">
+            <div><div class="ih">My Investment Policy Statement</div><div class="is">The plan we built together.</div></div>
+            <span class="iar">&rarr;</span>
+          </a>
+
+          <div class="sec-lab">Your tools</div>
+          <div class="tools">
+            <div class="tool"><span class="lock">Coming in v1.0</span><span class="ic">◇</span><h3>Asset Map</h3></div>
+            <div class="tool"><span class="lock">Coming in v1.0</span><span class="ic">⊕</span><h3>Portfolio X-Ray</h3></div>
+          </div>
         </div>
       </div>
     </div>
@@ -206,6 +301,19 @@
   document.getElementById('howBtn').onclick=function(){scrim.classList.add('open');};
   document.getElementById('closeBtn').onclick=function(){scrim.classList.remove('open');};
   scrim.onclick=function(e){if(e.target===scrim)scrim.classList.remove('open');};
+  (function(){
+    var p=new URLSearchParams(location.search);
+    if(p.get('funded')!=='1') return;
+    var pre=document.getElementById('preView'), fv=document.getElementById('fundedView');
+    if(pre)pre.style.display='none'; if(fv)fv.style.display='block';
+    var h=new Date().getHours(), g=h<12?'Good morning':(h<17?'Good afternoon':'Good evening');
+    var gr=document.getElementById('fGreet'); if(gr)gr.innerHTML=g+', <em>Aarav.</em>';
+    var sc=document.getElementById('streak');
+    if(sc){for(var i=0;i<12;i++){var b=document.createElement('i'); if(i>=5)b.className='f'; sc.appendChild(b);}}
+    var sn=document.getElementById('snooze'); if(sn)sn.onclick=function(){var r=document.getElementById('reb'); if(r)r.style.display='none';};
+    var pr=document.getElementById('navPeriods');
+    if(pr)pr.querySelectorAll('button').forEach(function(b){b.onclick=function(){pr.querySelectorAll('button').forEach(function(x){x.classList.remove('on');});b.classList.add('on');};});
+  })();
 </script>
   <script src="reload.js"></script>
 </body>
