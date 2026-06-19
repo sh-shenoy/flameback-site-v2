@@ -93,6 +93,15 @@
   .sec-link:hover{color:var(--ink)}
   .loader{display:inline-block;width:15px;height:15px;border:2px solid var(--line);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;vertical-align:-2px;margin-right:8px}
   @keyframes spin{to{transform:rotate(360deg)}}
+  .fld{margin-bottom:16px}
+  .fld label{display:flex;align-items:center;gap:8px;font-family:"Geist Mono",monospace;font-size:10px;color:var(--ink-mute);letter-spacing:.07em;text-transform:uppercase;margin-bottom:8px}
+  .fld .pf{font-family:"Geist",serif;font-style:italic;text-transform:none;letter-spacing:0;font-size:11px;color:var(--accent)}
+  .kinp{width:100%;background:var(--bg);border:1px solid var(--line);color:var(--ink);font-family:"Geist",serif;font-size:15.5px;padding:12px 13px;outline:none;transition:border-color .3s;resize:vertical}
+  .kinp:focus{border-color:var(--accent)}
+  .kchips{display:flex;flex-wrap:wrap;gap:8px}
+  .kchip{font-family:"Geist",serif;font-size:14px;color:var(--ink-soft);background:var(--bg);border:1px solid var(--line);padding:8px 18px;border-radius:999px;cursor:pointer;transition:all .2s}
+  .kchip:hover{border-color:var(--ink-soft)}
+  .kchip.on{background:var(--accent);color:var(--btn-ink);border-color:var(--accent)}
 </style>
   <link rel="stylesheet" href="v2.css">
 </head>
@@ -125,15 +134,34 @@
     <section class="stage show" id="intro">
       <span class="eyebrow"><span class="l"></span>Verification</span>
       <h1 class="head">Let's get you <em>set up.</em></h1>
-      <p class="lede">First, a quick KYC — we'll hand you over to our verification partner. Five minutes, and we're done.</p>
+      <p class="lede">We've pulled your details from your PAN — check they're right (edit anything that's off), then we'll hand you to our verification partner.</p>
 
       <div class="card">
-        <div class="need-h">What you'll need</div>
-        <ul class="need">
-          <li><span class="ic">▢</span> PAN card</li>
-          <li><span class="ic">◈</span> Aadhaar</li>
-          <li><span class="ic">◉</span> a quick selfie</li>
-        </ul>
+        <div class="need-h">Confirm your details — as per PAN</div>
+        <div class="fld">
+          <label>PAN number</label>
+          <input class="kinp" id="pan" value="ABCDE1234F" maxlength="10" autocomplete="off" spellcheck="false" style="text-transform:uppercase">
+        </div>
+        <div class="fld">
+          <label>Name as per PAN</label>
+          <input class="kinp" id="kname" value="Aarav Sharma" autocomplete="name">
+        </div>
+        <div class="fld">
+          <label>Date of birth <span class="pf">pre-filled · edit if needed</span></label>
+          <input class="kinp" id="kdob" type="date" value="1990-06-12" max="2007-12-31">
+        </div>
+        <div class="fld">
+          <label>Address</label>
+          <textarea class="kinp" id="kaddr" rows="2">14, Lavelle Road, Bengaluru, Karnataka 560001</textarea>
+        </div>
+        <div class="fld" style="margin-bottom:0">
+          <label>Marital status</label>
+          <div class="kchips" id="marital">
+            <button type="button" class="kchip on" data-v="Single">Single</button>
+            <button type="button" class="kchip" data-v="Married">Married</button>
+            <button type="button" class="kchip" data-v="Other">Other</button>
+          </div>
+        </div>
       </div>
 
       <div class="lock-note">
@@ -222,6 +250,9 @@
   document.getElementById('retryBtn').onclick=function(){show('waiting');};
   document.querySelectorAll('#waiting .sim button').forEach(function(b){
     b.onclick=function(){show(b.getAttribute('data-go'));};
+  });
+  document.querySelectorAll('#marital .kchip').forEach(function(c){
+    c.onclick=function(){document.querySelectorAll('#marital .kchip').forEach(function(x){x.classList.remove('on');});c.classList.add('on');};
   });
 </script>
   <script src="reload.js"></script>
