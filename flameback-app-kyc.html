@@ -102,6 +102,9 @@
   .kchip{font-family:"Geist",serif;font-size:14px;color:var(--ink-soft);background:var(--bg);border:1px solid var(--line);padding:8px 18px;border-radius:999px;cursor:pointer;transition:all .2s}
   .kchip:hover{border-color:var(--ink-soft)}
   .kchip.on{background:var(--accent);color:var(--btn-ink);border-color:var(--accent)}
+  .panhint{font-size:12px;font-style:italic;color:var(--ink-mute);margin-top:7px}
+  .panhint.err{color:var(--accent)}
+  .fetchnote{font-family:"Geist Mono",monospace;font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
 </style>
   <link rel="stylesheet" href="v2.css">
 </head>
@@ -134,30 +137,34 @@
     <section class="stage show" id="intro">
       <span class="eyebrow"><span class="l"></span>Verification</span>
       <h1 class="head">Let's get you <em>set up.</em></h1>
-      <p class="lede">We've pulled your details from your PAN — check they're right (edit anything that's off), then we'll hand you to our verification partner.</p>
+      <p class="lede">Enter your PAN and we'll pull your details — check they're right, then we'll hand you to our verification partner.</p>
 
       <div class="card">
-        <div class="need-h">Confirm your details — as per PAN</div>
-        <div class="fld">
-          <label>PAN number</label>
-          <input class="kinp" id="pan" value="ABCDE1234F" maxlength="10" autocomplete="off" spellcheck="false" style="text-transform:uppercase">
-        </div>
-        <div class="fld">
-          <label>Name as per PAN</label>
-          <input class="kinp" id="kname" value="Aarav Sharma" autocomplete="name">
-        </div>
-        <div class="fld">
-          <label>Date of birth <span class="pf">pre-filled · edit if needed</span></label>
-          <input class="kinp" id="kdob" type="date" value="1990-06-12" max="2007-12-31">
-        </div>
-        <div class="fld">
-          <label>Address</label>
-          <textarea class="kinp" id="kaddr" rows="2">14, Lavelle Road, Bengaluru, Karnataka 560001</textarea>
-        </div>
+        <div class="need-h">Verify your PAN</div>
         <div class="fld" style="margin-bottom:0">
+          <label>PAN number</label>
+          <input class="kinp" id="pan" placeholder="ABCDE1234F" maxlength="10" autocomplete="off" spellcheck="false" style="text-transform:uppercase;letter-spacing:.06em">
+          <div class="panhint" id="panHint"></div>
+        </div>
+        <div id="panFetched" style="display:none;margin-top:16px">
+          <div class="fetchnote">&#10003; Fetched from your PAN — edit if anything's off</div>
+          <div class="fld">
+            <label>Name as per PAN</label>
+            <input class="kinp" id="kname" autocomplete="name">
+          </div>
+          <div class="fld">
+            <label>Date of birth <span class="pf">as per PAN · editable</span></label>
+            <input class="kinp" id="kdob" type="date" max="2007-12-31">
+          </div>
+          <div class="fld" style="margin-bottom:0">
+            <label>Address</label>
+            <textarea class="kinp" id="kaddr" rows="2"></textarea>
+          </div>
+        </div>
+        <div class="fld" style="margin:16px 0 0">
           <label>Marital status</label>
           <div class="kchips" id="marital">
-            <button type="button" class="kchip on" data-v="Single">Single</button>
+            <button type="button" class="kchip" data-v="Single">Single</button>
             <button type="button" class="kchip" data-v="Married">Married</button>
             <button type="button" class="kchip" data-v="Other">Other</button>
           </div>
@@ -169,7 +176,7 @@
         <span class="t"><b>Your portfolio is now locked in.</b> Once you begin KYC, “My growth bet” is committed — any later strategy changes happen from the Lobby.</span>
       </div>
 
-      <button class="cta" id="beginBtn">Begin KYC &rarr;</button>
+      <button class="cta" id="beginBtn" disabled>Begin KYC &rarr;</button>
       <span class="sim-lab">Verification partner · Bureau eKYC</span>
     </section>
 
@@ -251,9 +258,36 @@
   document.querySelectorAll('#waiting .sim button').forEach(function(b){
     b.onclick=function(){show(b.getAttribute('data-go'));};
   });
+  // PAN-driven fill: enter PAN, then name/DOB/address auto-populate (editable)
+  var pan=document.getElementById('pan'), fetched=document.getElementById('panFetched');
+  var kname=document.getElementById('kname'), kdob=document.getElementById('kdob'), kaddr=document.getElementById('kaddr');
+  var panHint=document.getElementById('panHint'), beginBtn=document.getElementById('beginBtn');
+  var marital=null, panOk=false;
+  var PANRE=/^[A-Z]{5}[0-9]{4}[A-Z]$/;
+  function lookupPAN(){
+    var v=pan.value.toUpperCase(); pan.value=v;
+    panOk=PANRE.test(v);
+    if(panOk){
+      if(!kname.value)kname.value='Aarav Sharma';
+      if(!kdob.value)kdob.value='1990-06-12';
+      if(!kaddr.value)kaddr.value='14, Lavelle Road, Bengaluru, Karnataka 560001';
+      fetched.style.display='block'; panHint.textContent=''; panHint.classList.remove('err');
+    }else{
+      fetched.style.display='none';
+      panHint.textContent = v.length>=10 ? "That doesn't look like a valid PAN (e.g. ABCDE1234F)." : '';
+      panHint.classList.toggle('err', v.length>=10);
+    }
+    validate();
+  }
+  pan.addEventListener('input',lookupPAN);
   document.querySelectorAll('#marital .kchip').forEach(function(c){
-    c.onclick=function(){document.querySelectorAll('#marital .kchip').forEach(function(x){x.classList.remove('on');});c.classList.add('on');};
+    c.onclick=function(){document.querySelectorAll('#marital .kchip').forEach(function(x){x.classList.remove('on');});c.classList.add('on');marital=c.dataset.v;validate();};
   });
+  function validate(){
+    beginBtn.disabled = !(panOk && kname.value.trim() && kdob.value && kaddr.value.trim() && marital);
+  }
+  [kname,kdob,kaddr].forEach(function(el){el.addEventListener('input',validate);el.addEventListener('change',validate);});
+  validate();
 </script>
   <script src="reload.js"></script>
 </body>
