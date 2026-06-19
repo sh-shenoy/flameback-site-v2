@@ -211,13 +211,13 @@
   [nameEl,email,city].forEach(function(el){el.addEventListener('input',validate);});
 
   // city autocomplete
-  var cities=["Bengaluru","Mumbai","Delhi","Hyderabad","Chennai","Kolkata","Pune","Ahmedabad","Jaipur","Surat","Lucknow","Chandigarh","Indore","Kochi","Coimbatore","Gurugram","Noida","Nagpur"];
+  var cities=["Bengaluru, India","Mumbai, India","Delhi, India","New Delhi, India","Hyderabad, India","Chennai, India","Kolkata, India","Pune, India","Ahmedabad, India","Jaipur, India","Surat, India","Lucknow, India","Chandigarh, India","Indore, India","Kochi, India","Coimbatore, India","Gurugram, India","Noida, India","Nagpur, India","Visakhapatnam, India","Bhopal, India","Thiruvananthapuram, India","Vadodara, India","Mysuru, India","Dubai, UAE","Abu Dhabi, UAE","Singapore, Singapore","London, United Kingdom","New York, United States","San Francisco, United States","Chicago, United States","Boston, United States","Seattle, United States","Los Angeles, United States","Austin, United States","Dallas, United States","Jersey City, United States","Toronto, Canada","Vancouver, Canada","Sydney, Australia","Melbourne, Australia","Hong Kong, Hong Kong","Doha, Qatar","Riyadh, Saudi Arabia","Muscat, Oman","Kuala Lumpur, Malaysia","Frankfurt, Germany","Zurich, Switzerland","Geneva, Switzerland","Paris, France","Amsterdam, Netherlands","Dublin, Ireland","Tokyo, Japan","Auckland, New Zealand"];
   var cityList=document.getElementById('cityList');
   city.addEventListener('input',function(){
     var q=city.value.trim().toLowerCase();
     cityList.innerHTML='';
     if(!q){cityList.classList.remove('on');return;}
-    var m=cities.filter(function(c){return c.toLowerCase().indexOf(q)===0;}).slice(0,6);
+    var m=cities.filter(function(c){return c.toLowerCase().indexOf(q)===0;}).slice(0,7);
     if(!m.length){cityList.classList.remove('on');return;}
     m.forEach(function(c){
       var d=document.createElement('div');d.textContent=c;
