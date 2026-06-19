@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clients — flameback.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#1A1714;--ink:#F2EDE3;--ink-soft:rgba(242,237,227,.66);--ink-mute:rgba(242,237,227,.44);--line:rgba(242,237,227,.16);--panel:#221E1A;--accent:#FF6D0A;--btn-bg:#FF6D0A;--btn-ink:#1A1714;--grain-blend:screen;--grain-op:.055}
+  :root.light{--bg:#FCFAF6;--ink:#1A1714;--ink-soft:rgba(26,23,20,.68);--ink-mute:rgba(26,23,20,.46);--line:rgba(26,23,20,.14);--panel:#F4EFE7;--accent:#B23E08;--btn-bg:#1A1714;--btn-ink:#FCFAF6;--grain-blend:multiply;--grain-op:.035}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:"Source Serif 4",serif;transition:background .5s,color .5s;font-variant-numeric:tabular-nums;line-height:1.55}
+  body::after{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;mix-blend-mode:var(--grain-blend);opacity:var(--grain-op);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  .wrap{max-width:1200px;margin:0 auto;padding:0 clamp(22px,5vw,44px)}
+  section{position:relative;z-index:2}
+  .wm{font-family:"Source Serif 4",serif;font-weight:600;font-size:18px;color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+  .wm .p{color:var(--accent)}
+  h1,h2,h3,h4{font-family:"Cormorant Garamond",serif;font-weight:500;letter-spacing:-.014em;color:var(--ink);line-height:1.04}
+  h1 em,h2 em,h3 em,h4 em{color:var(--accent);font-style:italic;font-weight:500}
+  p{line-height:1.62}
+  .btn,.btn-out{display:inline-flex;align-items:center;gap:11px;font-family:"Source Serif 4",serif;font-size:15px;font-weight:500;padding:13px 24px;text-decoration:none;transition:gap .35s,opacity .3s,border-color .3s;cursor:pointer;border:none}
+  .btn{background:var(--btn-bg);color:var(--btn-ink)} .btn:hover{gap:15px;opacity:.92}
+  .btn-out{background:transparent;color:var(--ink);border:1px solid var(--line)} .btn-out:hover{gap:15px;border-color:var(--ink-mute)}
+  nav.top{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 84%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid transparent;transition:border-color .4s}
+  nav.top.scrolled{border-color:var(--line)}
+  .navin{display:flex;align-items:center;justify-content:space-between;padding:16px 0}
+  .navr{display:flex;align-items:center;gap:22px}
+  .navr a{color:var(--ink-soft);text-decoration:none;font-size:14.5px;transition:color .3s}
+  .navr a:hover{color:var(--ink)}
+  .navr a.active{color:var(--ink)}
+  .toggle{background:none;border:1px solid var(--line);color:var(--ink-soft);cursor:pointer;font-family:"Source Serif 4",serif;font-size:13px;font-style:italic;padding:5px 13px;border-radius:999px}
+  .navr a.cta{background:var(--btn-bg);color:var(--btn-ink);padding:9px 18px}
+  @media(max-width:1000px){.navr .navlink{display:none}}
+  .hero{padding:clamp(70px,11vh,130px) 0 clamp(54px,7vh,90px);border-bottom:1px solid var(--line);position:relative}
+  .hero-eb{display:flex;align-items:center;gap:14px;margin-bottom:32px;font-style:italic;font-size:13px;color:var(--ink-mute);letter-spacing:.04em}
+  .hero-eb .l{width:32px;height:1px;background:var(--accent)}
+  .hero-eb .dateline{font-family:"JetBrains Mono",monospace;font-style:normal;font-size:11.5px;margin-left:auto;letter-spacing:.05em}
+  @media(max-width:760px){.hero-eb .dateline{display:none}}
+  h1.h-h{font-size:clamp(58px,9vw,128px);line-height:.92;letter-spacing:-.025em;margin-bottom:32px;max-width:14ch;font-weight:500}
+  .h-sub{font-size:clamp(17px,1.7vw,21px);line-height:1.55;color:var(--ink-soft);max-width:54ch;font-style:italic;margin-bottom:38px}
+  .h-cta{display:flex;gap:12px;flex-wrap:wrap}
+  .wmark{position:absolute;right:0;bottom:0;font-family:"Cormorant Garamond",serif;font-style:italic;font-size:clamp(180px,30vw,360px);color:var(--ink);opacity:.02;line-height:.8;pointer-events:none;letter-spacing:-.04em;white-space:nowrap;overflow:hidden}
+  .sec{padding:clamp(70px,10vh,120px) 0;border-bottom:1px solid var(--line);position:relative}
+  .sec.tint{background:color-mix(in srgb,var(--ink) 2.2%,transparent)}
+  .sec-h{display:grid;grid-template-columns:160px 1fr;gap:48px;align-items:flex-start;margin-bottom:clamp(36px,4vw,52px)}
+  @media(max-width:760px){.sec-h{grid-template-columns:1fr;gap:14px}}
+  .sec-h .meta{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase;padding-top:14px;border-top:1px solid var(--line);line-height:1.7}
+  .sec-h h2{font-size:clamp(36px,5vw,62px);line-height:1.02;letter-spacing:-.015em;max-width:18ch}
+  .prose{max-width:62ch;font-size:17px;line-height:1.7;color:var(--ink)}
+  .prose p{margin-bottom:22px}
+  .prose p:last-child{margin-bottom:0}
+  .prose em{color:var(--accent);font-style:italic;font-weight:500}
+  .prose strong{font-weight:500;color:var(--ink);font-style:italic}
+  .prose-grid{display:grid;grid-template-columns:160px 1fr;gap:48px;align-items:flex-start}
+  @media(max-width:760px){.prose-grid{grid-template-columns:1fr;gap:14px}}
+  .meta.lab{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase;padding-top:14px;border-top:1px solid var(--line);line-height:1.7}
+  .meta.lab .n{color:var(--accent);margin-right:8px}
+
+  /* Disclosure ribbon */
+  .ribbon{margin-top:18px;padding:14px 20px;border:1px dashed var(--line);background:color-mix(in srgb,var(--accent) 3%,transparent);font-size:13px;line-height:1.6;color:var(--ink-soft);font-style:italic;max-width:880px}
+  .ribbon strong{font-family:"JetBrains Mono",monospace;font-style:normal;font-weight:500;font-size:10.5px;color:var(--accent);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:5px}
+
+  /* Profile cards */
+  .profiles{display:grid;grid-template-columns:1fr;gap:24px;margin-top:8px}
+  .prof{display:grid;grid-template-columns:260px 1fr;gap:36px;padding:36px;border:1px solid var(--line);background:var(--bg);align-items:flex-start}
+  @media(max-width:780px){.prof{grid-template-columns:1fr;gap:24px;padding:28px}}
+  .prof-id{aspect-ratio:4/5;background:color-mix(in srgb,var(--accent) 5%,transparent);border:1px solid var(--line);position:relative;overflow:hidden}
+  .prof-id svg{display:block;width:100%;height:100%}
+  .prof-id .badge{position:absolute;bottom:12px;left:12px;font-family:"JetBrains Mono",monospace;font-size:9.5px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase;padding:5px 9px;border:1px solid var(--line);background:var(--bg)}
+  .prof-body .pnum{font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--accent);font-size:18px;line-height:1;display:block;margin-bottom:6px}
+  .prof-body .nm{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:30px;color:var(--ink);line-height:1.05;letter-spacing:-.01em;margin-bottom:4px}
+  .prof-body .nm em{color:var(--accent);font-style:italic}
+  .prof-body .meta-row{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase;margin-bottom:22px;line-height:1.6}
+  .prof-body .meta-row span+span:before{content:" \00b7 ";color:var(--ink-mute);opacity:.6}
+  .prof-body .story{font-size:14.5px;line-height:1.7;color:var(--ink-soft);margin-bottom:18px}
+  .prof-body .story p{margin-bottom:13px}
+  .prof-body .story p:last-child{margin-bottom:0}
+  .prof-body .story em{color:var(--ink);font-style:italic;font-weight:500}
+  .prof-body .pq{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:18px;line-height:1.35;color:var(--ink);padding-left:18px;border-left:2px solid var(--accent);margin:18px 0;max-width:54ch}
+  .prof-body .pq em{color:var(--accent);font-style:italic}
+  .prof-body .pq .at{display:block;font-family:"Source Serif 4",serif;font-size:11.5px;font-style:italic;color:var(--ink-mute);letter-spacing:.02em;margin-top:10px;line-height:1.5}
+  .prof-body .tags{padding-top:14px;border-top:1px dashed var(--line);font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink-mute);letter-spacing:.05em;text-transform:uppercase;display:flex;gap:18px;flex-wrap:wrap}
+  .prof-body .tags em{color:var(--accent);font-style:normal}
+
+  /* Common traits panel */
+  .traits{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:8px}
+  @media(max-width:880px){.traits{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:520px){.traits{grid-template-columns:1fr}}
+  .trait{background:var(--bg);padding:28px 26px;display:flex;flex-direction:column;gap:10px;min-height:180px}
+  .trait .rn{font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--accent);font-size:22px;line-height:1}
+  .trait h4{font-size:20px;line-height:1.18;letter-spacing:-.005em}
+  .trait h4 em{color:var(--accent);font-style:italic}
+  .trait p{font-size:13.5px;line-height:1.65;color:var(--ink-soft);flex:1}
+  .trait p em{color:var(--ink);font-style:italic;font-weight:500}
+
+  /* First conversation */
+  .first{border:1px solid var(--line);background:var(--bg);padding:clamp(28px,4vw,44px);max-width:980px}
+  .first .pre{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--accent);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+  .first h3{font-size:clamp(26px,3.4vw,38px);line-height:1.1;letter-spacing:-.01em;margin-bottom:24px;max-width:24ch}
+  .first h3 em{color:var(--accent);font-style:italic}
+  .first .beat{display:grid;grid-template-columns:80px 1fr;gap:24px;padding:18px 0;border-bottom:1px dashed var(--line);align-items:flex-start}
+  .first .beat:last-child{border-bottom:none}
+  @media(max-width:680px){.first .beat{grid-template-columns:1fr;gap:6px}}
+  .first .beat .min{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--accent);letter-spacing:.04em;padding-top:3px}
+  .first .beat .w{font-size:14.5px;line-height:1.6;color:var(--ink)}
+  .first .beat .w em{color:var(--accent);font-style:italic;font-weight:500}
+  .first .beat .w .note{display:block;font-size:13px;color:var(--ink-soft);font-style:italic;margin-top:5px;line-height:1.55}
+
+  /* Pull quote */
+  .pq-big{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:clamp(28px,3.6vw,40px);line-height:1.25;color:var(--ink);max-width:28ch;padding-left:24px;border-left:2px solid var(--accent);margin:32px 0}
+  .pq-big em{color:var(--accent);font-style:italic}
+  .pq-big .at{display:block;font-family:"Source Serif 4",serif;font-size:13px;font-style:italic;color:var(--ink-mute);letter-spacing:.02em;margin-top:18px;line-height:1.5}
+
+  /* X-links + close + footer */
+  .xlinks{padding:clamp(70px,10vh,110px) 0;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--ink) 2.2%,transparent)}
+  .xl-h{margin-bottom:36px}
+  .xl-h h2{font-size:clamp(28px,3.4vw,40px);line-height:1.05;margin-bottom:10px}
+  .xl-h p{font-size:14.5px;color:var(--ink-soft);font-style:italic;max-width:48ch}
+  .xl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+  @media(max-width:760px){.xl-grid{grid-template-columns:1fr}}
+  .xl-card{background:var(--bg);padding:28px 26px;display:flex;flex-direction:column;gap:10px;text-decoration:none;color:var(--ink);transition:background .25s}
+  .xl-card:hover{background:color-mix(in srgb,var(--accent) 5%,transparent)}
+  .xl-card .n{font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--accent);font-size:20px;line-height:1}
+  .xl-card .t{font-family:"Cormorant Garamond",serif;font-size:24px;line-height:1.1;color:var(--ink);margin-top:2px}
+  .xl-card .t em{color:var(--accent);font-style:italic}
+  .xl-card .d{font-size:13.5px;line-height:1.55;color:var(--ink-soft);font-style:italic;flex:1}
+  .xl-card .arr{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-mute);letter-spacing:.04em;margin-top:6px}
+  .xl-card:hover .arr{color:var(--accent)}
+  .close{padding:clamp(80px,10vh,120px) 0;text-align:center;border-bottom:1px solid var(--line)}
+  .close h2{font-size:clamp(34px,5vw,56px);line-height:1.0;margin-bottom:22px;max-width:22ch;margin-left:auto;margin-right:auto}
+  .close h2 em{color:var(--accent);font-style:italic}
+  .close .sub{font-size:15.5px;color:var(--ink-soft);font-style:italic;max-width:48ch;margin:0 auto 32px;line-height:1.65}
+  .close .ct-row{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+  footer{padding:60px 0 36px}
+  .footin{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;margin-bottom:42px}
+  .footcols{display:flex;gap:clamp(38px,6vw,72px);flex-wrap:wrap}
+  .footcol h4{font-style:italic;font-weight:400;font-size:13px;color:var(--ink-mute);margin-bottom:14px;letter-spacing:.03em}
+  .footcol a{display:block;color:var(--ink-soft);text-decoration:none;font-size:14.5px;margin-bottom:9px}
+  .footcol a:hover{color:var(--accent)}
+  .disc{padding-top:24px;border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px}
+  .disc span{font-size:12px;color:var(--ink-mute);line-height:1.6}
+  .disc .legal{max-width:72ch;font-style:italic}
+</style>
+</head>
+<body>
+
+  <nav class="top" id="nav">
+    <div class="wrap navin">
+      <a class="wm" href="flameback-home.html">flameback<span class="p">.</span></a>
+      <div class="navr">
+        <a class="navlink" href="flameback-who-we-are.html">Who we are</a>
+        <a class="navlink" href="flameback-what-we-do.html">What we do</a>
+        <a class="navlink" href="flameback-our-work.html">Our work</a>
+        <a class="navlink" href="flameback-insights.html">Insights</a>
+        <a class="navlink" href="flameback-tools.html">Tools</a>
+        <a class="navlink" href="flameback-offbook.html">Off-book</a>
+        <a class="cta" href="flameback-app-splash.html">Start your journey</a>
+        <button class="toggle" id="toggle">Light</button>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-eb"><span class="l"></span><span>Clients</span><span class="dateline">FIVE PROFILES &middot; BY THE PEOPLE THEY ARE</span></div>
+      <h1 class="h-h">The <em>clients.</em></h1>
+      <p class="h-sub">Five illustrative profiles drawn from the firm&rsquo;s active relationships &mdash; anonymized, composite-edited, lightly paraphrased. Not a testimonials page. A way to recognise whether you&rsquo;d be a good fit before either of us spends a meeting finding out.</p>
+      <div class="h-cta">
+        <a class="btn" href="flameback-app-splash.html">Start your journey &rarr;</a>
+        <a class="btn-out" href="flameback-philosophy.html">Read the philosophy first</a>
+      </div>
+    </div>
+    <div class="wmark">clients.</div>
+  </section>
+
+  <!-- i. The frame -->
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-h">
+        <div class="meta">i. THE FRAME<br/>What this page is<br/>and is not</div>
+        <h2>Five composite profiles. <em>Not testimonials.</em></h2>
+      </div>
+
+      <div class="prose-grid">
+        <div class="meta lab"><span class="n">a.</span>Why composite, why anonymized</div>
+        <div class="prose">
+          <p>The firm does not publish client testimonials. Securities regulation in India restricts what investment advisers and portfolio managers can say in marketing using a client&rsquo;s words, and the firm&rsquo;s own preference is to leave clients out of its publicity entirely. Confidentiality is a defining feature of the relationship.</p>
+          <p>The page below is therefore the next best thing. Each of the five profiles is an <em>illustrative composite</em> drawn from real client engagements, with identifying details changed and quotes paraphrased to capture the tenor of typical conversations rather than the exact words of any one person. The intent is not to demonstrate the firm&rsquo;s record &mdash; <a href="flameback-our-work.html" style="color:var(--accent);text-decoration:underline">Our Work</a> is for that. The intent is to help you recognize whether you would belong on this page.</p>
+          <p>If, reading the profiles below, you find your situation strangely familiar, the firm would probably be a good fit. If the situations feel foreign or unappealing, we&rsquo;d both save time knowing that now.</p>
+        </div>
+      </div>
+
+      <div class="ribbon"><strong>On these profiles</strong>Each profile below is a composite drawn from multiple real client engagements, anonymized and lightly edited for confidentiality. Quotes are paraphrased in the spirit of typical client feedback and are not direct testimonials. No performance is implied, claimed, or representative of any specific outcome.</div>
+    </div>
+  </section>
+
+  <!-- ii. The profiles -->
+  <section class="sec tint">
+    <div class="wrap">
+      <div class="sec-h">
+        <div class="meta">ii. THE PROFILES<br/>Five illustrative<br/>client engagements</div>
+        <h2>Five people the firm has worked with. <em>Or someone like them.</em></h2>
+      </div>
+
+      <div class="profiles">
+
+        <!-- Profile 1: M.A. -->
+        <div class="prof">
+          <div class="prof-id">
+            <svg viewBox="0 0 200 250" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+              <rect width="200" height="250" fill="color-mix(in srgb,var(--accent) 8%,var(--bg))"/>
+              <rect x="20" y="20" width="160" height="210" fill="none" stroke="var(--accent)" stroke-width="0.6" opacity="0.4"/>
+              <text x="100" y="118" text-anchor="middle" font-family="Cormorant Garamond" font-style="italic" font-size="72" fill="var(--accent)" opacity="0.8" letter-spacing="-0.04em">M.A.</text>
+              <text x="100" y="146" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="var(--ink-mute)" letter-spacing="0.1em">PROFILE I</text>
+              <line x1="60" y1="160" x2="140" y2="160" stroke="var(--accent)" stroke-width="0.6" opacity="0.5"/>
+              <text x="100" y="180" text-anchor="middle" font-family="Cormorant Garamond" font-style="italic" font-size="11" fill="var(--ink-mute)">bangalore &middot; founder</text>
+            </svg>
+            <div class="badge">Composite, anonymized</div>
+          </div>
+          <div class="prof-body">
+            <span class="pnum">i.</span>
+            <div class="nm">M.A. &middot; <em>SaaS founder</em></div>
+            <div class="meta-row"><span>Bangalore</span><span>Age 47</span><span>Client since 2019</span><span>PWM</span></div>
+            <div class="story">
+              <p>Built and partially exited a B2B SaaS company in 2018. The proceeds were the first meaningful liquidity event in his career, and they came with a question he had not previously had to think about: <em>how do you invest several years of compounded effort in a way that doesn&rsquo;t require becoming a stock-picker yourself?</em></p>
+              <p>He had friends in finance, but the incentive structures around what they could offer made him uncomfortable. He found the firm through a former colleague who was already a client. The first conversation was thirty minutes; he signed on a few months later, after reading the firm&rsquo;s philosophy document end to end.</p>
+              <p>What kept him through 2020 was not the recovery &mdash; <em>which he didn&rsquo;t know was coming</em> &mdash; but the firm&rsquo;s communication during the drawdown. The position-sizing rules de-grossed automatically in March. The monthly letter explained what had happened and what had not. Today he uses the firm for his personal portfolio and is exploring a treasury arrangement for his new company.</p>
+            </div>
+            <div class="pq">When the COVID drawdown hit, I was prepared to call them and panic. Instead, they called me. <em>The system had already done something about it.</em>
+              <span class="at">M.A., in a follow-up conversation, 2020 &middot; paraphrased</span>
+            </div>
+            <div class="tags"><span>Mandate: <em>growth-tilted PWM</em></span><span>Tenure: <em>~6 years</em></span><span>Behaviour: <em>steady through 2020</em></span></div>
+          </div>
+        </div>
+
+        <!-- Profile 2: R.M. -->
+        <div class="prof">
+          <div class="prof-id">
+            <svg viewBox="0 0 200 250" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+              <rect width="200" height="250" fill="color-mix(in srgb,var(--accent) 8%,var(--bg))"/>
+              <rect x="20" y="20" width="160" height="210" fill="none" stroke="var(--accent)" stroke-width="0.6" opacity="0.4"/>
+              <text x="100" y="120" text-anchor="middle" font-family="Cormorant Garamond" font-style="italic" font-size="72" fill="var(--accent)" opacity="0.8" letter-spacing="-0.04em">R.M.</text>
+              <text x="100" y="146" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="var(--ink-mute)" letter-spacing="0.1em">PROFILE II</text>
+              <line x1="60" y1="160" x2="140" y2="160" stroke="var(--accent)" stroke-width="0.6" opacity="0.5"/>
+              <text x="100" y="180" text-anchor="middle" font-family="Cormorant Garamond" font-style="italic" font-size="11" fill="var(--ink-mute)">bombay &middot; family office</text>
+            </svg>
+            <div class="badge">Composite, anonymized</div>
+          </div>
+          <div class="prof-body">
+            <span class="pnum">ii.</span>
+            <div class="nm">R.M. &middot; <em>family-office principal</em></div>
+            <div class="meta-row"><span>Bombay</span><span>Age 64</span><span>Client since 2017</span><span>PWM &amp; Advisory</span></div>
+            <div class="story">
+              <p>Inherited a textile business from her father; ran it for thirty years and sold the operating piece in 2014. The family office that runs the proceeds now serves three generations &mdash; her, her two adult children, and the grandchildren&rsquo;s trusts. <em>The wealth is older than she is. The mandate is for it to outlive her grandchildren.</em></p>
+              <p>Before the firm, she worked with a private bank&rsquo;s wealth arm. The relationship managers were polite, the structured products were sophisticated, and the fees were, in her words, &ldquo;buried in language no one was meant to read.&rdquo; She moved to the firm in 2017 after a friend who was already a client recommended she meet the founders.</p>
+              <p>What she values is the writing. The annual letter. The quarterly review. The post-mortem after every drawdown. Her two adult children now have their own engagements with the firm. <strong>The relationship is now in its second generation.</strong></p>
+            </div>
+            <div class="pq">The previous bank sent very impressive presentations. <em>This firm sends very honest letters.</em> I&rsquo;ve come to prefer the letters.
+              <span class="at">R.M., in conversation at an annual review &middot; paraphrased</span>
+            </div>
+            <div class="tags"><span>Mandate: <em>multi-generational</em></span><span>Tenure: <em>~9 years</em></span><span>Touches: <em>3 generations</em></span></div>
+          </div>
+        </div>
+
+        <!-- Profile 3: V.K. -->
+        <div class="prof">
+          <div class="prof-id">
+            <svg viewBox="0 0 200 250" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+              <rect width="200" height="250" fill="color-mix(in srgb,var(--accent) 8%,var(--bg))"/>
+              <rect x="20" y="20" width="160" height="210" fill="none" stroke="var(--accent)" stroke-width="0.6" opacity="0.4"/>
+              <text x="100" y="122" text-anchor="middle" font-family="Cormorant Garamond" font-style="italic" font-size="72" fill="var(--accent)" opacity="0.8" letter-spacing="-0.04em">V.K.</text>
+              <text x="100" y="146" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="var(--ink-mute)" letter-spacing="0.1em">PROFILE III</text>
+              <line x1="60" y1="160" x2="140" y2="160" stroke="var(--accent)" stroke-width="0.6" opacity="0.5"/>
+              <text x="100" y="180" text-anchor="middle" font-family="Cormorant Garamond" font-style="italic" font-size="11" fill="var(--ink-mute)">california &middot; nri tech exec</text>
+            </svg>
+            <div class="badge">Composite, anonymized</div>
+          </div>
+          <div class="prof-body">
+            <span class="pnum">iii.</span>
+            <div class="nm">V.K. &middot; <em>NRI engineering leader</em></div>
+            <div class="meta-row"><span>Bay Area, California</span><span>Age 41</span><span>Client since 2021</span><span>PWM &amp; QX</span></div>
+            <div class="story">
+              <p>Senior engineering manager at a US tech company. The equity component of his compensation has compounded faster than he expected, and the resulting portfolio is bilingual &mdash; an Indian piece and a US piece that don&rsquo;t talk to each other unless someone makes them.</p>
+              <p>He wanted Indian exposure managed by people he could actually talk to during his twice-yearly trips home. He wanted his US exposure run by someone who would not be impressed by the Indian growth narrative he&rsquo;d already chosen to believe. <em>What he didn&rsquo;t want was three different relationship managers across two countries telling him three different things.</em></p>
+              <p>He travels to Bangalore in March and October. The firm books a two-hour review each time. Between visits, communication is asynchronous &mdash; the quarterly letter, the post-event note, the response to his occasional question. He likes that the firm doesn&rsquo;t call him unprompted.</p>
+            </div>
+            <div class="pq">I needed one team that could see both halves of my balance sheet without pretending the two halves were the same thing. <em>This firm sees both halves and remembers which is which.</em>
+              <span class="at">V.K., during a review meeting in Bangalore &middot; paraphrased</span>
+            </div>
+            <div class="tags"><span>Mandate: <em>cross-border</em></span><span>Tenure: <em>~5 years</em></span><span>Touches: <em>India + US</em></span></div>
+          </div>
+        </div>
+
+        <!-- Profile 4: S.N. -->
+        <div class="prof">
+          <div class="prof-id">
+            <svg viewBox="0 0 200 250" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+              <rect width="200" height="250" fill="color-mix(in srgb,var(--accent) 8%,var(--bg))"/>
+              <rect x="20" y="20" width="160" height="210" fill="none" stroke="var(--accent)" stroke-width="0.6" opacity="0.4"/>
+              <text x="100" y="120" text-anchor="middle" font-family="Cormorant Garamond" font-style="italic" font-size="68" fill="var(--accent)" opacity="0.8" letter-spacing="-0.04em">S.N.</text>
+              <text x="100" y="146" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="var(--ink-mute)" letter-spacing="0.1em">PROFILE IV</text>
+              <line x1="60" y1="160" x2="140" y2="160" stroke="var(--accent)" stroke-width="0.6" opacity="0.5"/>
+              <text x="100" y="180" text-anchor="middle" font-family="Cormorant Garamond" font-style="italic" font-size="11" fill="var(--ink-mute)">bangalore &middot; retired</text>
+            </svg>
+            <div class="badge">Composite, anonymized</div>
+          </div>
+          <div class="prof-body">
+            <span class="pnum">iv.</span>
+            <div class="nm">S.N. &middot; <em>retired couple</em></div>
+            <div class="meta-row"><span>Bangalore</span><span>Age 71 &amp; 69</span><span>Clients since 2018</span><span>PWM</span></div>
+            <div class="story">
+              <p>Sold a successful agricultural-equipment business in 2017 after thirty-eight years of running it. They have three adult children and seven grandchildren. The proceeds are the family&rsquo;s primary asset, alongside a Bangalore home that will pass to the children. <em>Succession planning is now the active conversation; capital growth is no longer the headline goal.</em></p>
+              <p>What they needed when they came to the firm was something most wealth managers do not openly sell: <strong>permission to be cautious.</strong> The retirement-industrial complex insists that 71 is too young to de-risk, that they need equity exposure for the next twenty years, that drawdown protection is for the timid. None of that matched how they actually wanted to feel about the money.</p>
+              <p>The firm structured a portfolio dominated by Risk Parity and a defensive multi-factor sleeve, with explicit drawdown control. The conversation is now mostly about distributions to children, the trust structure that will hold the residual, and the small philanthropic foundation the couple is setting up.</p>
+            </div>
+            <div class="pq">The other firms wanted us to take more risk than we wanted. <em>These people listened to what we actually said.</em>
+              <span class="at">S.N., during an early review &middot; paraphrased</span>
+            </div>
+            <div class="tags"><span>Mandate: <em>preservation + succession</em></span><span>Tenure: <em>~8 years</em></span><span>Behaviour: <em>cautious, by choice</em></span></div>
+          </div>
+        </div>
+
+        <!-- Profile 5: P.D. -->
+        <div class="prof">
+          <div class="prof-id">
+            <svg viewBox="0 0 200 250" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+              <rect width="200" height="250" fill="color-mix(in srgb,var(--accent) 8%,var(--bg))"/>
+              <rect x="20" y="20" width="160" height="210" fill="none" stroke="var(--accent)" stroke-width="0.6" opacity="0.4"/>
+              <text x="100" y="120" text-anchor="middle" font-family="Cormorant Garamond" font-style="italic" font-size="72" fill="var(--accent)" opacity="0.8" letter-spacing="-0.04em">P.D.</text>
+              <text x="100" y="146" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="var(--ink-mute)" letter-spacing="0.1em">PROFILE V</text>
+              <line x1="60" y1="160" x2="140" y2="160" stroke="var(--accent)" stroke-width="0.6" opacity="0.5"/>
+              <text x="100" y="180" text-anchor="middle" font-family="Cormorant Garamond" font-style="italic" font-size="11" fill="var(--ink-mute)">pune &middot; second-generation</text>
+            </svg>
+            <div class="badge">Composite, anonymized</div>
+          </div>
+          <div class="prof-body">
+            <span class="pnum">v.</span>
+            <div class="nm">P.D. &middot; <em>second-generation industrialist</em></div>
+            <div class="meta-row"><span>Pune</span><span>Age 38</span><span>Client since 2022</span><span>Advisory &amp; PWM</span></div>
+            <div class="story">
+              <p>Took over the family&rsquo;s industrial business from his father three years ago. The business is operating well; the family&rsquo;s wealth, however, is heavily concentrated in it. <em>Diversifying the family&rsquo;s capital out of the operating business &mdash; without signalling lack of confidence in it &mdash; is now an active project he&rsquo;s leading quietly.</em></p>
+              <p>He uses the firm for both advisory work (the partial divestments, the restructuring of holding-company shares, the family trust) and private wealth management (his and his wife&rsquo;s personal portfolios, distinct from the family pool). The two engagements are explicitly walled; the firm reports them separately to him.</p>
+              <p>What he values most is having one outside voice that <strong>understands both halves of his life without conflating them.</strong> The business decisions and the wealth decisions are connected but not identical. Few firms can hold both threads at once. He chose this one because it could.</p>
+            </div>
+            <div class="pq">My banker wanted to talk about the business. My broker wanted to talk about the portfolio. <em>I needed someone who could hold both conversations at the same table.</em>
+              <span class="at">P.D., describing the gap that brought him to the firm &middot; paraphrased</span>
+            </div>
+            <div class="tags"><span>Mandate: <em>diversification + advisory</em></span><span>Tenure: <em>~3 years</em></span><span>Streams: <em>family + personal</em></span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- iii. What clients have in common -->
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-h">
+        <div class="meta">iii. WHAT THEY SHARE<br/>The mindset the firm&rsquo;s<br/>clients all carry</div>
+        <h2>Six things our clients have in common. <em>None of them is net worth.</em></h2>
+      </div>
+
+      <div class="prose-grid" style="margin-bottom:32px">
+        <div class="meta lab"><span class="n">a.</span>Mindset over minimums</div>
+        <div class="prose">
+          <p>The firm does not advertise an investment minimum. Whether a relationship begins at a particular figure is a question for a specific conversation and a specific mandate. The qualifying criterion is something else &mdash; a shared mindset about what the work is for. <em>The six traits below describe that mindset.</em> Together, they are what makes a client a good fit for the firm and the firm a good fit for the client.</p>
+        </div>
+      </div>
+
+      <div class="traits">
+        <div class="trait"><span class="rn">i.</span><h4>Patient <em>capital.</em></h4><p>Their horizon is measured in decades, not quarters. <em>They do not require liquidity events.</em> They are not, as a rule, in a hurry.</p></div>
+        <div class="trait"><span class="rn">ii.</span><h4>Comfort with <em>drawdowns.</em></h4><p>They understand that strategies fall sometimes and that the falling, when it happens by design, is not the same as the strategy failing. <em>They can stay seated.</em></p></div>
+        <div class="trait"><span class="rn">iii.</span><h4>A preference for a <em>partner,</em> not a product.</h4><p>They are not shopping for a return number. They are looking for a counterparty they can trust with a complicated set of decisions over a long period.</p></div>
+        <div class="trait"><span class="rn">iv.</span><h4>A <em>global</em> outlook.</h4><p>They think across geographies, asset classes, and generations. India is a major part of their picture but rarely the whole of it. <em>Cross-border is normal here.</em></p></div>
+        <div class="trait"><span class="rn">v.</span><h4>Behavioural <em>self-awareness.</em></h4><p>They know that the biggest enemy of a portfolio is usually the person who owns it. They want a structure that protects them from that enemy. <em>Including from themselves.</em></p></div>
+        <div class="trait"><span class="rn">vi.</span><h4>An interest in the <em>writing.</em></h4><p>They read the letter. They read the philosophy document. They read the post-mortem. <em>If they don&rsquo;t, the firm probably isn&rsquo;t the right fit.</em></p></div>
+      </div>
+
+      <div class="pq-big" style="margin-top:54px">
+        We don&rsquo;t look for clients of a certain size. <em>We look for clients of a certain temperament.</em>
+        <span class="at">&mdash; A line from the firm&rsquo;s onboarding script, used roughly once a week.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- iv. The conversation that starts it -->
+  <section class="sec tint">
+    <div class="wrap">
+      <div class="sec-h">
+        <div class="meta">iv. THE FIRST CALL<br/>What an initial conversation<br/>actually looks like</div>
+        <h2>Thirty minutes. <em>No slides.</em></h2>
+      </div>
+
+      <div class="prose-grid" style="margin-bottom:32px">
+        <div class="meta lab"><span class="n">a.</span>The shape of it</div>
+        <div class="prose">
+          <p>A first conversation is just a conversation. It is not a sales call. It is not a portfolio audit. It is the firm and the prospective client trying to figure out, together and honestly, whether the engagement makes sense for both sides. Roughly half the conversations the firm has do not lead to engagement &mdash; and that is the intended outcome of conversations where the fit isn&rsquo;t there. <strong>Both sides benefit from finding that out at minute thirty rather than month six.</strong></p>
+        </div>
+      </div>
+
+      <div class="first">
+        <div class="pre">A typical thirty-minute introductory call</div>
+        <h3>The shape of an initial <em>conversation.</em></h3>
+
+        <div class="beat"><span class="min">0&ndash;5 min</span><span class="w"><em>Why you&rsquo;re here.</em> What prompted the call. What you&rsquo;ve tried before. What you&rsquo;re hoping a firm like this might solve. <span class="note">This is the most important five minutes. Most of what follows depends on it.</span></span></div>
+        <div class="beat"><span class="min">5&ndash;12 min</span><span class="w"><em>Your situation.</em> What your circumstances are &mdash; profession, family, business interests, existing arrangements. The firm asks more than it answers here. <span class="note">No documents required. No portfolio review. Just listening.</span></span></div>
+        <div class="beat"><span class="min">12&ndash;20 min</span><span class="w"><em>How the firm works.</em> Plain explanation of the engagement model &mdash; what PWM, Advisory, and QX actually mean for someone in your situation. What the firm does. What it doesn&rsquo;t. <span class="note">No deck. The conversation goes off the prepared script very quickly.</span></span></div>
+        <div class="beat"><span class="min">20&ndash;25 min</span><span class="w"><em>Hard questions.</em> Your questions about fees, alignment, conflicts, drawdowns, exit terms. The firm prefers the difficult questions here, in conversation, rather than discovering them six months later in writing. <span class="note">Ask the worst question you have. The firm has heard it.</span></span></div>
+        <div class="beat"><span class="min">25&ndash;30 min</span><span class="w"><em>An honest verdict on fit.</em> Either side can say so. If the firm thinks the fit isn&rsquo;t there, it says so directly and tries to refer you to someone who would be a better match. <span class="note">No follow-up sequence. No salesperson will call.</span></span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cross-links -->
+  <section class="xlinks">
+    <div class="wrap">
+      <div class="xl-h"><h2>If a profile <em>caught.</em></h2><p>Three pages that, between them, describe the rest of the relationship.</p></div>
+      <div class="xl-grid">
+        <a class="xl-card" href="flameback-philosophy.html"><span class="n">i.</span><span class="t"><em>Philosophy.</em></span><span class="d">Five tenets. Four schools of thought. Eight books. The disciplined refusals that shape the relationship.</span><span class="arr">Read &rarr;</span></a>
+        <a class="xl-card" href="flameback-what-we-do.html"><span class="n">ii.</span><span class="t">What we <em>do.</em></span><span class="d">Private Wealth Management, Advisory, and QX Funds &mdash; the three forms an engagement takes.</span><span class="arr">Read &rarr;</span></a>
+        <a class="xl-card" href="flameback-our-work.html"><span class="n">iii.</span><span class="t">Our <em>work.</em></span><span class="d">The eighteen live strategies. The featured eight-layer stack. The track record, drawdowns included.</span><span class="arr">Read &rarr;</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="close">
+    <div class="wrap">
+      <h2>If one of these profiles <em>sounded like you.</em></h2>
+      <p class="sub">The conversation starts with thirty minutes, no slides, and a series of mutual questions. Half of them are ours. Half of them should be yours. The fit, if there is one, will be obvious by the end of it.</p>
+      <div class="ct-row">
+        <a class="btn" href="flameback-app-splash.html">Start your journey &rarr;</a>
+        <a class="btn-out" href="flameback-who-we-are.html">Read about the firm first</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <div class="footin">
+        <a class="wm" href="flameback-home.html">flameback<span class="p">.</span></a>
+        <div class="footcols">
+          <div class="footcol"><h4>Who we are</h4><a href="flameback-firm.html">The firm</a><a href="flameback-team.html">Team</a><a href="flameback-philosophy.html">Philosophy</a><a href="flameback-strategy-rd.html">Strategy R&amp;D</a><a href="flameback-technology.html">Technology</a></div>
+          <div class="footcol"><h4>What we do</h4><a href="flameback-what-we-do.html#pwm">Private Wealth Management</a><a href="flameback-what-we-do.html#advisory">Advisory</a><a href="flameback-what-we-do.html#qx">QX Funds</a></div>
+          <div class="footcol"><h4>Open</h4><a href="flameback-our-work.html">Our work</a><a href="flameback-insights.html">Insights</a><a href="flameback-tools.html">Tools</a><a href="flameback-offbook.html">Off-book</a></div>
+          <div class="footcol"><h4>Regulatory</h4><a href="flameback-pms-disclosure.html">PMS disclosure</a><a href="flameback-advisory-disclosure.html">Advisory disclosure</a><a href="flameback-app-splash.html">Start your journey</a></div>
+        </div>
+      </div>
+      <div class="disc"><span>&copy; 2026 Flameback Capital Pvt Ltd</span><span class="legal">SEBI registered &middot; SEC filed for US strategy. Client profiles on this page are composite, anonymized illustrations drawn from real engagements; quotes are paraphrased. They are not testimonials and do not represent specific client outcomes or performance.</span></div>
+    </div>
+  </footer>
+
+<script>
+  var root=document.documentElement, tg=document.getElementById('toggle');
+  tg.addEventListener('click',function(){root.classList.toggle('light');tg.textContent=root.classList.contains('light')?'Dark':'Light';});
+  var nav=document.getElementById('nav');
+  window.addEventListener('scroll',function(){nav.classList.toggle('scrolled',window.scrollY>16)});
+</script>
+  <script src="reload.js"></script>
+</body>
+</html>

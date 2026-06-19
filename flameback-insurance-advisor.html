@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>flameback. — Insurance Advisor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#1A1714; --ink:#F2EDE3; --ink-soft:rgba(242,237,227,.64); --ink-mute:rgba(242,237,227,.42);
+    --line:rgba(242,237,227,.15); --accent:#FF6D0A; --btn-bg:#FF6D0A; --btn-ink:#1A1714;
+    --grain-blend:screen; --grain-op:.05; --good:#8FB87A; --warn:#E8A547; --bad:#D04A2A;
+  }
+  :root.light{
+    --bg:#FCFAF6; --ink:#1A1714; --ink-soft:rgba(26,23,20,.66); --ink-mute:rgba(26,23,20,.46);
+    --line:rgba(26,23,20,.13); --accent:#FF6D0A; --btn-bg:#1A1714; --btn-ink:#FCFAF6;
+    --grain-blend:multiply; --grain-op:.03; --good:#5F8048; --warn:#C8821E; --bad:#A03615;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:"Source Serif 4",serif;transition:background .5s,color .5s;font-variant-numeric:tabular-nums}
+  body::after{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;mix-blend-mode:var(--grain-blend);opacity:var(--grain-op);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 clamp(22px,5vw,44px)}
+  section{position:relative;z-index:2}
+  .wm{font-family:"Source Serif 4",serif;font-weight:600;font-size:18px;color:var(--ink);text-decoration:none}
+  .wm .p{color:var(--accent)}
+  .lab{font-family:"Source Serif 4",serif;font-style:italic;font-size:14px;color:var(--ink-mute)}
+  .lab .n{font-style:normal;color:var(--accent);margin-right:10px}
+  h1,h2,h3,h4{font-family:"Cormorant Garamond",serif;font-weight:500;letter-spacing:-.012em;color:var(--ink)}
+  .btn,.btn-out{display:inline-flex;align-items:center;gap:11px;font-family:"Source Serif 4",serif;font-size:15px;font-weight:500;padding:12px 22px;text-decoration:none;transition:gap .3s,opacity .3s,border-color .3s;cursor:pointer;border:none}
+  .btn{background:var(--btn-bg);color:var(--btn-ink)}.btn:hover{gap:15px;opacity:.92}
+  .btn-out{background:transparent;color:var(--ink);border:1px solid var(--line)}.btn-out:hover{gap:15px;border-color:var(--ink-mute)}
+
+  nav{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 86%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid transparent;transition:border-color .4s}
+  nav.scrolled{border-color:var(--line)}
+  .navin{display:flex;align-items:center;justify-content:space-between;padding:15px 0}
+  .navr{display:flex;align-items:center;gap:21px}
+  .navr a{color:var(--ink-soft);text-decoration:none;font-size:14.5px;transition:color .3s}
+  .navr a:hover{color:var(--ink)} .navr a.current{color:var(--ink)}
+  .toggle{background:none;border:1px solid var(--line);color:var(--ink-soft);cursor:pointer;font-family:"Source Serif 4",serif;font-size:13px;font-style:italic;padding:5px 13px;border-radius:999px}
+  .navr a.navbtn{background:var(--btn-bg);color:var(--btn-ink);padding:8px 17px}
+  @media(max-width:880px){.navr .navlink{display:none}}
+
+  .subnav{border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--bg) 92%,transparent);position:sticky;top:58px;z-index:40;backdrop-filter:blur(8px)}
+  .subnav-in{display:flex;align-items:baseline;gap:clamp(14px,2vw,28px);padding:11px 0;flex-wrap:wrap}
+  .subnav .sn-lab{font-style:italic;font-size:13px;color:var(--ink-mute);margin-right:6px}
+  .subnav a{font-size:13.5px;color:var(--ink-mute);text-decoration:none;padding-bottom:3px;border-bottom:1px solid transparent;white-space:nowrap}
+  .subnav a:hover{color:var(--ink)} .subnav a.current{color:var(--ink);border-bottom-color:var(--accent)}
+
+  .hero{padding:clamp(40px,5vh,68px) 0 clamp(20px,3vh,32px)}
+  .dateline{display:flex;align-items:center;gap:13px;margin-bottom:20px}
+  .dateline .l{width:26px;height:1px;background:var(--accent)}
+  .hero h1{font-size:clamp(34px,5vw,58px);line-height:0.98;letter-spacing:-.018em;margin-bottom:18px;max-width:16ch}
+  .hero h1 .acc{color:var(--accent);font-style:italic}
+  .hero-sub{font-size:16px;line-height:1.6;max-width:60ch;margin-bottom:24px}
+  .h-status{display:inline-flex;align-items:center;gap:7px;padding:4px 12px;border:1px solid color-mix(in srgb,var(--accent) 45%,transparent);font-style:italic;font-size:11px;color:var(--accent);letter-spacing:.06em;text-transform:uppercase;margin-bottom:18px}
+  .h-status .dot{width:6px;height:6px;border-radius:50%;background:var(--accent)}
+
+  /* Quiz panel */
+  .quiz-sec{padding:clamp(28px,3.5vw,44px) 0;border-top:1px solid var(--line)}
+  .quiz-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:32px;align-items:start}
+  @media(max-width:900px){.quiz-grid{grid-template-columns:1fr}}
+
+  .quiz{border:1px solid var(--line);background:color-mix(in srgb,var(--ink) 2%,transparent);padding:clamp(22px,2.5vw,30px)}
+  .q-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+  .q-head h3{font-size:22px;line-height:1.15}
+  .q-head .progress{font-style:italic;font-size:12px;color:var(--ink-mute)}
+  .q-head .progress .acc{color:var(--accent);font-style:normal;font-weight:500}
+
+  .q-block{padding:14px 0;border-top:1px solid var(--line)}
+  .q-block:first-of-type{border-top:none;padding-top:0}
+  .q-label{font-family:"Source Serif 4",serif;font-style:italic;font-size:11px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px;display:block}
+  .q-block label.q-text{font-family:"Cormorant Garamond",serif;font-size:18px;color:var(--ink);display:block;margin-bottom:12px;line-height:1.2}
+  .q-input{display:flex;align-items:center;border:1px solid var(--line);background:var(--bg);max-width:380px}
+  .q-input .pfx{padding:10px 14px;font-style:italic;color:var(--ink-mute);font-size:14px;border-right:1px solid var(--line)}
+  .q-input input{flex:1;background:transparent;border:none;color:var(--ink);font-family:"Source Serif 4",serif;font-size:14px;padding:10px 12px;outline:none}
+  .q-opts{display:flex;gap:8px;flex-wrap:wrap}
+  .q-opt{padding:8px 16px;border:1px solid var(--line);background:transparent;color:var(--ink-soft);font-family:"Source Serif 4",serif;font-size:13.5px;cursor:pointer;transition:border-color .25s,color .25s,background .25s}
+  .q-opt:hover{border-color:var(--ink-mute);color:var(--ink)}
+  .q-opt.selected{border-color:var(--accent);color:var(--accent);background:color-mix(in srgb,var(--accent) 5%,transparent)}
+
+  .q-foot{padding-top:16px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-top:18px}
+
+  .quiz-side{border:1px solid var(--line);padding:24px;background:color-mix(in srgb,var(--ink) 2%,transparent)}
+  .quiz-side h4{font-size:18px;margin-bottom:12px}
+  .quiz-side .why-list{list-style:none}
+  .quiz-side .why-list li{padding:10px 0;border-top:1px dashed var(--line);font-size:13px;line-height:1.5;color:var(--ink-soft);display:flex;gap:10px;align-items:flex-start}
+  .quiz-side .why-list li:first-child{border-top:none}
+  .quiz-side .why-list li::before{content:"";flex-shrink:0;width:5px;height:5px;border-radius:50%;background:var(--accent);margin-top:7px}
+
+  /* Recommendations */
+  .recs{padding:clamp(28px,3.5vw,44px) 0;border-top:1px solid var(--line)}
+  .recs-head{margin-bottom:24px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;align-items:baseline}
+  .recs-head h2{font-size:clamp(26px,3.4vw,38px)}
+  .recs-head .stamp{font-style:italic;font-size:12.5px;color:var(--ink-mute)}
+
+  /* Coverage summary */
+  .cov-summary{padding:24px;border:1px solid var(--accent);background:color-mix(in srgb,var(--accent) 5%,transparent);margin-bottom:28px}
+  .cov-summary h3{font-size:22px;margin-bottom:8px;line-height:1.15}
+  .cov-summary p{font-size:14px;color:var(--ink-soft);line-height:1.6;max-width:62ch}
+
+  .cov-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:30px}
+  @media(max-width:760px){.cov-grid{grid-template-columns:1fr}}
+  .cov{padding:22px 24px;border:1px solid var(--line);background:color-mix(in srgb,var(--ink) 2%,transparent);position:relative;overflow:hidden}
+  .cov-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+  .cov-head h4{font-size:20px;line-height:1.15}
+  .cov-status{font-style:italic;font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;padding:3px 9px;border:1px solid var(--line);color:var(--ink-mute)}
+  .cov-status.gap{border-color:var(--bad);color:var(--bad)}
+  .cov-status.short{border-color:var(--warn);color:var(--warn)}
+  .cov-status.ok{border-color:var(--good);color:var(--good)}
+
+  .cov-rec{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:24px;color:var(--accent);margin-bottom:4px;line-height:1.1}
+  .cov-lab{font-style:italic;font-size:11.5px;color:var(--ink-mute);margin-bottom:14px}
+  .cov-detail{font-size:13.5px;line-height:1.55;color:var(--ink);margin-bottom:14px}
+  .cov-vs{display:flex;justify-content:space-between;padding-top:12px;border-top:1px solid var(--line);font-size:12.5px}
+  .cov-vs .l{font-style:italic;color:var(--ink-mute)}
+  .cov-vs .v{font-weight:500}
+  .cov-vs .v.bad{color:var(--bad)}
+  .cov-vs .v.warn{color:var(--warn)}
+  .cov-vs .v.good{color:var(--good)}
+
+  .cov-cta{padding:22px 24px;border:1px solid var(--line);background:color-mix(in srgb,var(--ink) 2%,transparent);display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap;margin-bottom:32px}
+  .cov-cta p{flex:1;min-width:240px;font-size:13.5px;line-height:1.6;color:var(--ink-soft)}
+  .cov-cta p strong{color:var(--ink);font-weight:500}
+
+  /* Methodology / how */
+  .meth{padding:clamp(28px,3.5vw,40px) 0;border-top:1px solid var(--line)}
+  .meth-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px}
+  @media(max-width:760px){.meth-grid{grid-template-columns:1fr}}
+  .meth-card{padding:18px 20px;border:1px solid var(--line);background:color-mix(in srgb,var(--ink) 2%,transparent)}
+  .meth-card h4{font-size:17px;margin-bottom:6px;line-height:1.2}
+  .meth-card p{font-size:13px;line-height:1.55;color:var(--ink-soft)}
+
+  .lim{padding:clamp(28px,3vw,40px) 0;background:color-mix(in srgb,var(--ink) 2%,transparent);border-top:1px solid var(--line)}
+  .lim h3{font-size:22px;margin-bottom:12px}
+  .lim p{font-size:14px;color:var(--ink-soft);line-height:1.65;max-width:64ch}
+
+  footer{border-top:1px solid var(--line);padding:48px 0 36px}
+  .footin{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;margin-bottom:36px}
+  .footcols{display:flex;gap:clamp(34px,6vw,68px);flex-wrap:wrap}
+  .footcol h4{font-style:italic;font-weight:400;font-size:14px;color:var(--ink-mute);margin-bottom:13px}
+  .footcol a{display:block;color:var(--ink-soft);text-decoration:none;font-size:15px;margin-bottom:9px}
+  .footcol a:hover{color:var(--accent)}
+  .disc{padding-top:22px;border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px}
+  .disc span{font-size:12.5px;color:var(--ink-mute);line-height:1.6}
+  .disc .legal{max-width:64ch;font-style:italic}
+</style>
+</head>
+<body>
+
+  <nav id="nav">
+    <div class="wrap navin">
+      <a class="wm" href="index.html">flameback<span class="p">.</span></a>
+      <div class="navr">
+        <a class="navlink" href="flameback-firm.html">Firm</a>
+        <a class="navlink" href="flameback-strategies.html">Strategies</a>
+        <a class="navlink" href="flameback-offerings.html">Offerings</a>
+        <a class="navlink" href="flameback-insights.html">Insights</a>
+        <a class="navlink current" href="flameback-resources.html">Resources</a>
+        <a class="login" href="#">Login</a>
+        <a class="navbtn" href="flameback-app-splash.html">Start your journey</a>
+        <button class="toggle" id="toggle">Light</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="subnav">
+    <div class="wrap subnav-in">
+      <span class="sn-lab">Resources</span>
+      <a href="flameback-resources.html">Overview</a>
+      <a href="flameback-portfolio-doctor.html">Portfolio doctor</a>
+      <a href="flameback-asset-map.html">Asset map</a>
+      <a class="current" href="#">Insurance advisor</a>
+      <a href="flameback-economic-indicators.html">Economic data</a>
+      <a href="flameback-market-indicators.html">Market data</a>
+      <a href="flameback-screener.html">Screener</a>
+      <a href="flameback-opensource.html">Open source</a>
+    </div>
+  </div>
+
+  <section class="hero">
+    <div class="wrap">
+      <div class="dateline"><span class="l"></span><span class="lab">Insurance advisor</span></div>
+      <span class="h-status"><span class="dot"></span>Beta &middot; no policies sold</span>
+      <h1>What the household <span class="acc">actually needs.</span></h1>
+      <p class="hero-sub">A six-minute questionnaire on family composition, income, dependents, and existing coverage. The tool returns a structured recommendation across term life, health, disability, and property &mdash; with quantum estimates. No commissions, no policy sales, no provider partnerships.</p>
+    </div>
+  </section>
+
+  <section class="quiz-sec">
+    <div class="wrap">
+      <div class="quiz-grid">
+
+        <div class="quiz">
+          <div class="q-head">
+            <h3>Tell the tool about the household</h3>
+            <span class="progress">Step <span class="acc">04</span> of 06</span>
+          </div>
+
+          <div class="q-block">
+            <span class="q-label">Household composition</span>
+            <label class="q-text">Who depends on the primary earners financially?</label>
+            <div class="q-opts">
+              <button class="q-opt">Self only</button>
+              <button class="q-opt">Spouse only</button>
+              <button class="q-opt selected">Spouse + children</button>
+              <button class="q-opt">Spouse + children + parents</button>
+              <button class="q-opt">Extended family</button>
+            </div>
+          </div>
+
+          <div class="q-block">
+            <span class="q-label">Income</span>
+            <label class="q-text">Combined household annual income (post-tax).</label>
+            <div class="q-input">
+              <span class="pfx">&#8377;</span>
+              <input type="text" value="1,40,00,000" />
+            </div>
+          </div>
+
+          <div class="q-block">
+            <span class="q-label">Liabilities</span>
+            <label class="q-text">Outstanding debt that would survive a sudden loss of income?</label>
+            <div class="q-input">
+              <span class="pfx">&#8377;</span>
+              <input type="text" value="2,15,00,000" />
+            </div>
+          </div>
+
+          <div class="q-block">
+            <span class="q-label">Existing cover</span>
+            <label class="q-text">Term life cover already in place (across all policies).</label>
+            <div class="q-input">
+              <span class="pfx">&#8377;</span>
+              <input type="text" value="1,00,00,000" />
+            </div>
+          </div>
+
+          <div class="q-block">
+            <span class="q-label">Health</span>
+            <label class="q-text">Existing health cover (family floater + individual policies).</label>
+            <div class="q-input">
+              <span class="pfx">&#8377;</span>
+              <input type="text" value="20,00,000" />
+            </div>
+          </div>
+
+          <div class="q-foot">
+            <span style="font-style:italic;font-size:12.5px;color:var(--ink-mute)">Answers are not stored. Restart anytime.</span>
+            <button class="btn" onclick="document.getElementById('recs').scrollIntoView({behavior:'smooth'});">See recommendation &rarr;</button>
+          </div>
+        </div>
+
+        <div class="quiz-side">
+          <h4>What the tool computes.</h4>
+          <ul class="why-list">
+            <li>Term life cover sufficient to clear all debt and replace 8&ndash;10 years of household income</li>
+            <li>Health cover scaled to city tier (Tier-1 metro requires higher floor)</li>
+            <li>Critical illness cover for primary earners, scaled to income</li>
+            <li>Disability cover that replaces 60% of earned income for the disabled period</li>
+            <li>Property cover sized to current replacement value</li>
+            <li>An umbrella view of cover ratios versus typical norms</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="recs" id="recs">
+    <div class="wrap">
+      <div class="recs-head">
+        <h2>The recommendation</h2>
+        <span class="stamp">Illustrative output &middot; sample household</span>
+      </div>
+
+      <div class="cov-summary">
+        <h3>Three of four cover types are materially under-provided.</h3>
+        <p>Term life is approximately 75% short of the suggested floor. Disability cover is absent. Health cover, while present, is below the metro-tier suggested floor. Property cover is in range.</p>
+      </div>
+
+      <div class="cov-grid">
+
+        <div class="cov">
+          <div class="cov-head">
+            <h4>Term life cover</h4>
+            <span class="cov-status gap">Gap &middot; high</span>
+          </div>
+          <div class="cov-rec">&#8377;4.00 Cr suggested</div>
+          <div class="cov-lab">Per primary earner &middot; 30-year term</div>
+          <p class="cov-detail">Sized to clear &#8377;2.15 Cr in liabilities and replace ~9 years of household income. Pure term, no return-of-premium, no investment-linked riders. Estimated premium: &#8377;42,000&ndash;58,000 / year per policy.</p>
+          <div class="cov-vs">
+            <span class="l">Existing cover</span>
+            <span class="v bad">&#8377;1.00 Cr &middot; 75% short</span>
+          </div>
+        </div>
+
+        <div class="cov">
+          <div class="cov-head">
+            <h4>Health cover</h4>
+            <span class="cov-status short">Short of floor</span>
+          </div>
+          <div class="cov-rec">&#8377;50,00,000 suggested</div>
+          <div class="cov-lab">Family floater &middot; with super top-up</div>
+          <p class="cov-detail">Base floater of &#8377;15&ndash;20 lakhs + super top-up to &#8377;50 lakhs. Family histories suggest cardiac and oncology should be specifically covered. Estimated premium: &#8377;45,000&ndash;65,000 / year combined.</p>
+          <div class="cov-vs">
+            <span class="l">Existing cover</span>
+            <span class="v warn">&#8377;20 L &middot; 60% short</span>
+          </div>
+        </div>
+
+        <div class="cov">
+          <div class="cov-head">
+            <h4>Disability cover</h4>
+            <span class="cov-status gap">Gap &middot; high</span>
+          </div>
+          <div class="cov-rec">&#8377;1.20 Cr suggested</div>
+          <div class="cov-lab">Per primary earner &middot; income replacement</div>
+          <p class="cov-detail">A permanent or partial disability could end earning capacity for 10+ years. Recommended quantum replaces 60% of annual earned income for an assumed 10-year disability window. Standalone disability policies are limited in India; explored typically as a rider.</p>
+          <div class="cov-vs">
+            <span class="l">Existing cover</span>
+            <span class="v bad">None &middot; full gap</span>
+          </div>
+        </div>
+
+        <div class="cov">
+          <div class="cov-head">
+            <h4>Property cover</h4>
+            <span class="cov-status ok">In range</span>
+          </div>
+          <div class="cov-rec">&#8377;3.50 Cr suggested</div>
+          <div class="cov-lab">Both properties &middot; replacement cost basis</div>
+          <p class="cov-detail">Cover sum should match current rebuild cost, not market value. Earthquake and content add-ons strongly recommended. Existing &#8377;3.20 Cr is acceptable; revise upward at renewal.</p>
+          <div class="cov-vs">
+            <span class="l">Existing cover</span>
+            <span class="v good">&#8377;3.20 Cr &middot; adequate</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="cov-cta">
+        <p><strong>What to do next.</strong> The tool deliberately does not link out to providers. Suggested workflow: shop term life across at least four insurers; revise health cover at renewal; speak with a SEBI-registered investment adviser about how the gap reshapes the household&rsquo;s risk capacity.</p>
+        <a class="btn" href="flameback-app-splash.html">Discuss with an adviser &rarr;</a>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="meth">
+    <div class="wrap">
+      <span class="lab"><span class="n">i</span>How the suggestions are made</span>
+      <h2 style="font-size:clamp(24px,3.2vw,32px);margin-top:8px;margin-bottom:6px">The rubric, in three parts.</h2>
+      <div class="meth-grid">
+        <div class="meth-card"><h4>i. Income replacement</h4><p>Term life uses 8&ndash;10x annual income plus liabilities, adjusted for years to expected financial independence of dependents.</p></div>
+        <div class="meth-card"><h4>ii. Floor by tier</h4><p>Health cover floors scale by city tier (Tier-1 metro requires 1.5&ndash;2x Tier-2 floor). Family medical history adjusts the floor upward.</p></div>
+        <div class="meth-card"><h4>iii. Disability gap</h4><p>Disability cover targets 60% earned-income replacement for a 10-year window, the conservative end of actuarial norms.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="lim">
+    <div class="wrap">
+      <span class="lab"><span class="n">ii</span>Important caveats</span>
+      <h3 style="margin-top:8px">What this tool does not do.</h3>
+      <p>The Insurance Advisor does not sell, recommend, or commission policies from any provider. Output figures are heuristics intended for orientation, not actuarial certifications. Policy structure, exclusions, claim history, and provider reputation matter as much as cover quantum &mdash; the tool does not evaluate those. For decisions involving significant premium commitments, speak with a SEBI-registered investment adviser or an IRDAI-registered insurance broker.</p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <div class="footin">
+        <a class="wm" href="index.html">flameback<span class="p">.</span></a>
+        <div class="footcols">
+          <div class="footcol"><h4>Firm</h4><a href="flameback-firm.html">Team</a><a href="flameback-philosophy.html">Investment philosophy</a><a href="flameback-strategy-rd.html">Strategy R&amp;D</a></div>
+          <div class="footcol"><h4>Resources</h4><a href="flameback-resources.html">Overview</a><a href="flameback-portfolio-doctor.html">Portfolio doctor</a><a href="flameback-asset-map.html">Asset map</a></div>
+          <div class="footcol"><h4>Contact</h4><a href="#">Bangalore, India</a><a href="#">hello@flameback.in</a></div>
+        </div>
+      </div>
+      <div class="disc">
+        <span>&copy; 2026 Flameback Capital Pvt Ltd</span>
+        <span class="legal">Insurance Advisor is an educational tool only. The firm holds no IRDAI registration. Outputs are not insurance advice; consult an IRDAI-registered insurance broker or a SEBI-registered investment adviser before purchasing policies.</span>
+      </div>
+    </div>
+  </footer>
+
+<script>
+  var root=document.documentElement, tg=document.getElementById('toggle');
+  tg.addEventListener('click',function(){root.classList.toggle('light');tg.textContent=root.classList.contains('light')?'Dark':'Light';});
+  var nav=document.getElementById('nav');
+  window.addEventListener('scroll',function(){nav.classList.toggle('scrolled',window.scrollY>16)});
+  document.querySelectorAll('.q-opts').forEach(function(g){
+    g.addEventListener('click',function(e){
+      if(e.target.classList.contains('q-opt')){
+        g.querySelectorAll('.q-opt').forEach(function(o){o.classList.remove('selected');});
+        e.target.classList.add('selected');
+      }
+    });
+  });
+</script>
+  <script src="reload.js"></script>
+</body>
+</html>

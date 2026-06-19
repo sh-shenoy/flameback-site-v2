@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>flameback. — International</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#1A1714; --ink:#F2EDE3; --ink-soft:rgba(242,237,227,.64); --ink-mute:rgba(242,237,227,.42);
+    --line:rgba(242,237,227,.15); --panel:#221E1A; --accent:#FF6D0A; --btn-bg:#FF6D0A; --btn-ink:#1A1714;
+    --grain-blend:screen; --grain-op:.05;
+  }
+  :root.light{
+    --bg:#FCFAF6; --ink:#1A1714; --ink-soft:rgba(26,23,20,.66); --ink-mute:rgba(26,23,20,.46);
+    --line:rgba(26,23,20,.13); --panel:#F4EFE7; --accent:#FF6D0A; --btn-bg:#1A1714; --btn-ink:#FCFAF6;
+    --grain-blend:multiply; --grain-op:.03;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:"Source Serif 4",serif;
+    transition:background .5s,color .5s;font-variant-numeric:tabular-nums;font-feature-settings:"tnum"}
+  body::after{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;mix-blend-mode:var(--grain-blend);opacity:var(--grain-op);
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  .wrap{max-width:1160px;margin:0 auto;padding:0 clamp(22px,5vw,44px)}
+  section{position:relative;z-index:2}
+
+  .wm{font-family:"Source Serif 4",serif;font-weight:600;font-size:18px;letter-spacing:-.01em;color:var(--ink);text-decoration:none}
+  .wm .p{color:var(--accent)}
+  .lab{font-family:"Source Serif 4",serif;font-style:italic;font-size:14px;color:var(--ink-mute)}
+  .lab .n{font-style:normal;color:var(--accent);margin-right:10px}
+  h1,h2,h3,h4{font-family:"Cormorant Garamond",serif;font-weight:500;letter-spacing:-.012em;color:var(--ink)}
+  h2{font-size:clamp(28px,4vw,42px);line-height:1.06}
+
+  .btn,.btn-out{display:inline-flex;align-items:center;justify-content:center;gap:11px;font-family:"Source Serif 4",serif;font-size:16px;font-weight:500;letter-spacing:.01em;padding:13px 28px;text-decoration:none;transition:gap .35s,opacity .3s,border-color .3s}
+  .btn{background:var(--btn-bg);color:var(--btn-ink)}
+  .btn:hover{gap:15px;opacity:.92}
+  .btn-out{background:transparent;color:var(--ink);border:1px solid var(--line)}
+  .btn-out:hover{gap:15px;border-color:var(--ink-mute)}
+  .btn .ar{transition:transform .35s cubic-bezier(.16,1,.3,1)}
+  .btn:hover .ar{transform:translateX(3px)}
+
+  nav{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 86%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid transparent;transition:border-color .4s}
+  nav.scrolled{border-color:var(--line)}
+  .navin{display:flex;align-items:center;justify-content:space-between;padding:15px 0}
+  .navr{display:flex;align-items:center;gap:21px}
+  .navr a{color:var(--ink-soft);text-decoration:none;font-size:14.5px;transition:color .3s}
+  .navr a:hover{color:var(--ink)}
+  .navr a.current{color:var(--ink)}
+  .toggle{background:none;border:1px solid var(--line);color:var(--ink-soft);cursor:pointer;font-family:"Source Serif 4",serif;font-size:13px;font-style:italic;padding:5px 13px;border-radius:999px;transition:border-color .3s,color .3s}
+  .toggle:hover{border-color:var(--ink-mute);color:var(--ink)}
+  .navr a.navbtn{background:var(--btn-bg);color:var(--btn-ink);padding:8px 17px;font-size:14.5px;text-decoration:none;transition:opacity .3s}
+  .navr a.navbtn:hover{color:var(--btn-ink);opacity:.92}
+  @media(max-width:880px){.navr .navlink{display:none}}
+  @media(max-width:520px){.navr{gap:14px}.navr .login{display:none}}
+
+  .subnav{border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--bg) 92%,transparent);position:sticky;top:58px;z-index:40;backdrop-filter:blur(8px)}
+  .subnav-in{display:flex;align-items:baseline;gap:clamp(18px,2.5vw,34px);padding:11px 0;flex-wrap:wrap}
+  .subnav .sn-lab{font-family:"Source Serif 4",serif;font-style:italic;font-size:13px;color:var(--ink-mute);margin-right:6px}
+  .subnav a{font-family:"Source Serif 4",serif;font-size:13.5px;color:var(--ink-mute);text-decoration:none;transition:color .3s;padding-bottom:3px;border-bottom:1px solid transparent}
+  .subnav a:hover{color:var(--ink)}
+  .subnav a.current{color:var(--ink);border-bottom-color:var(--accent)}
+
+  .hero{padding:clamp(48px,8vh,90px) 0 clamp(28px,4vh,48px)}
+  .dateline{display:flex;align-items:center;gap:13px;margin-bottom:clamp(22px,3vw,34px);opacity:0;animation:up .9s ease .12s forwards}
+  .dateline .l{flex:0 0 26px;height:1px;background:var(--accent)}
+  .hero-statement{font-family:"Cormorant Garamond",serif;font-weight:500;font-size:clamp(30px,4.2vw,50px);line-height:1.12;letter-spacing:-.012em;color:var(--ink);margin-bottom:26px;opacity:0;animation:up 1.1s cubic-bezier(.16,1,.3,1) .2s forwards}
+  .hero-meta{padding-top:18px;opacity:0;animation:up 1s ease .42s forwards}
+  .hero-meta p{font-size:16.5px;line-height:1.66;color:var(--ink);max-width:78ch}
+  .hero-reg{margin-top:22px;padding:12px 16px;border:1px solid var(--line);background:color-mix(in srgb,var(--ink) 3%,transparent);display:inline-flex;flex-direction:column;gap:2px}
+  .hr-lab{font-style:italic;font-size:11px;color:var(--ink-mute);letter-spacing:.05em;text-transform:uppercase}
+  .hr-val{font-size:13.5px;color:var(--ink);line-height:1.45}
+  .hr-val .b{font-weight:500}
+  .hr-val .reg{color:var(--accent);font-variant-numeric:tabular-nums}
+
+  .power{padding:clamp(44px,6vw,76px) 0 clamp(18px,3vw,30px);text-align:center}
+  .power::before{content:"";display:block;width:42px;height:1px;background:var(--accent);margin:0 auto clamp(26px,4vw,40px)}
+  .power h2{font-size:clamp(34px,5vw,62px);line-height:1.06;max-width:18ch;margin:0 auto 18px}
+  .power p{font-size:16.5px;color:var(--ink-soft);line-height:1.6;max-width:54ch;margin:0 auto}
+
+  .sec{padding:clamp(40px,5.6vw,72px) 0}
+  .sec .wrap{display:grid;grid-template-columns:minmax(250px,0.82fr) 1.7fr;gap:clamp(32px,4.5vw,64px);align-items:start}
+  @media(max-width:860px){.sec .wrap{grid-template-columns:1fr;gap:26px}}
+  .head{max-width:32ch}
+  .head .lab{display:block;margin-bottom:15px}
+  .head h2{margin-bottom:15px}
+  .head .intro{font-size:16px;line-height:1.56;color:var(--ink-soft)}
+  .prose p{font-size:16.5px;line-height:1.7;color:var(--ink);max-width:62ch;margin-bottom:18px}
+  .prose p:last-child{margin-bottom:0}
+
+  .items{margin-top:22px;padding-top:18px;border-top:1px solid var(--line);font-size:14.5px;line-height:2;color:var(--ink);max-width:62ch}
+  .items .it{margin-right:6px}
+  .items .it::after{content:"\00B7";color:var(--accent);margin:0 12px}
+  .items .it:last-child::after{content:""}
+
+  .dia{display:block;width:100%;height:auto;max-width:520px;margin:0 0 8px}
+  .dia text{font-family:"Source Serif 4",serif;fill:var(--ink-soft)}
+  .dia .d-lab{font-size:11.5px;font-style:italic;fill:var(--ink-mute)}
+  .dia .d-lab-acc{font-size:11.5px;font-style:italic;fill:var(--accent)}
+  .dia-cap{display:block;font-family:"Source Serif 4",serif;font-style:italic;font-size:13px;color:var(--ink-mute);margin:0 0 28px}
+
+  /* routes diagram nodes */
+  .dia .r-node{fill:var(--bg);stroke:var(--line);stroke-width:1}
+  .dia .r-node-acc{fill:color-mix(in srgb,var(--accent) 10%,transparent);stroke:var(--accent);stroke-width:1.5}
+  .dia .r-title{font-family:"Source Serif 4",serif;font-style:italic;font-size:11px;fill:var(--ink-mute);letter-spacing:.05em;text-transform:uppercase}
+  .dia .r-name{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:13px;fill:var(--ink)}
+  .dia .r-sub{font-family:"Source Serif 4",serif;font-size:10.5px;fill:var(--ink-soft)}
+
+  /* portfolio cards */
+  .pf-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:0 0 16px;max-width:600px}
+  @media(max-width:600px){.pf-grid{grid-template-columns:1fr}}
+  .pf-card{border:1px solid var(--line);background:color-mix(in srgb,var(--ink) 3%,transparent);padding:18px 20px;transition:border-color .3s,background .3s}
+  .pf-card:hover{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 3%,transparent)}
+  .pf-tag{font-style:italic;font-size:10.5px;color:var(--accent);letter-spacing:.07em;text-transform:uppercase;display:block;margin-bottom:6px}
+  .pf-name{font-family:"Cormorant Garamond",serif;font-size:20px;font-weight:500;margin-bottom:8px;line-height:1.1;color:var(--ink)}
+  .pf-desc{font-size:13.5px;color:var(--ink-soft);line-height:1.55}
+
+  /* steps */
+  .steps{counter-reset:s;margin:0 0 14px;max-width:60ch}
+  .step{counter-increment:s;display:grid;grid-template-columns:32px 1fr;gap:18px;padding:13px 0;border-bottom:1px solid var(--line);align-items:baseline}
+  .step::before{content:counter(s);font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--accent);font-size:20px;text-align:center;line-height:1}
+  .step:last-child{border-bottom:none}
+  .step-name{font-family:"Source Serif 4",serif;font-weight:500;font-size:15px;color:var(--ink);margin-bottom:3px;display:block}
+  .step-desc{font-size:13.5px;color:var(--ink-soft);line-height:1.55}
+
+  /* fee card */
+  .fee-card{margin:0 0 22px;border:1.5px solid var(--accent);background:color-mix(in srgb,var(--accent) 4%,transparent);padding:24px 26px;max-width:520px}
+  .fcc-lab{font-family:"Source Serif 4",serif;font-style:italic;font-size:11.5px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase;margin-bottom:18px;display:block}
+  .fcc-row{display:grid;grid-template-columns:1fr auto;gap:18px;padding:14px 0;border-top:1px solid var(--line);align-items:baseline}
+  .fcc-row:last-of-type{padding-bottom:0}
+  .fcc-l{font-style:italic;color:var(--ink);font-size:14px}
+  .fcc-v{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:22px;color:var(--accent);font-weight:500;line-height:1;text-align:right;font-variant-numeric:tabular-nums}
+  .fcc-v small{font-family:"Source Serif 4",serif;font-style:italic;font-size:11.5px;color:var(--ink-mute);font-weight:400;display:block;margin-top:3px;letter-spacing:0}
+  .fcc-row.zero .fcc-v{color:var(--ink-soft);font-size:18px}
+  .fcc-foot{margin-top:18px;padding-top:14px;border-top:1px solid var(--line);font-style:italic;font-size:12.5px;color:var(--ink-soft);line-height:1.55}
+
+  /* statutory */
+  .statutory{padding:clamp(48px,7vw,88px) 0;border-top:1px solid var(--line);background:color-mix(in srgb,var(--ink) 2%,transparent)}
+  .statutory .wrap{display:block}
+  .stat-head{margin-bottom:32px}
+  .stat-head .lab{display:block;margin-bottom:8px}
+  .stat-head h2{font-size:clamp(24px,3.4vw,34px)}
+  .stat-reg{border:1px solid var(--line);background:var(--bg);padding:22px 26px;margin-bottom:24px;max-width:780px}
+  .sr-lab{font-style:italic;font-size:11px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px;display:block}
+  .sr-name{font-family:"Cormorant Garamond",serif;font-size:22px;margin-bottom:6px;line-height:1.1}
+  .sr-detail{font-style:italic;font-size:13.5px;color:var(--ink-soft);line-height:1.5}
+  .sr-detail .reg{color:var(--accent);font-style:normal;font-variant-numeric:tabular-nums}
+  .stat-links{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:780px}
+  @media(max-width:780px){.stat-links{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:480px){.stat-links{grid-template-columns:1fr}}
+  .stat-link{display:block;border:1px solid var(--line);padding:16px 18px;text-decoration:none;background:var(--bg);transition:border-color .3s,background .3s}
+  .stat-link:hover{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 3%,transparent)}
+  .sl-name{display:block;font-family:"Cormorant Garamond",serif;font-style:italic;font-size:17px;color:var(--ink);margin-bottom:4px;line-height:1.15}
+  .sl-desc{display:block;font-size:11.5px;color:var(--ink-soft);font-style:italic;line-height:1.5}
+  .stat-contact{margin-top:24px;font-style:italic;font-size:13px;color:var(--ink-soft);line-height:1.7;max-width:780px}
+  .stat-contact .lbl{color:var(--ink-mute)}
+
+  .final{padding:clamp(56px,9vw,104px) 0;border-top:1px solid var(--line);text-align:center}
+  .final h2{font-size:clamp(36px,5.4vw,62px);margin:0 auto 18px;max-width:14ch}
+  .final p{font-size:16.5px;line-height:1.58;color:var(--ink-soft);max-width:46ch;margin:0 auto 34px}
+  .final-ctas{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;margin-bottom:clamp(36px,6vw,56px)}
+  .final .seal{font-style:italic;font-size:14px;color:var(--ink-mute)}
+  .final .seal .p{color:var(--accent)}
+
+  footer{border-top:1px solid var(--line);padding:48px 0 36px}
+  .footin{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;margin-bottom:36px}
+  .footcols{display:flex;gap:clamp(34px,6vw,68px);flex-wrap:wrap}
+  .footcol h4{font-style:italic;font-weight:400;font-size:14px;color:var(--ink-mute);margin-bottom:13px}
+  .footcol a{display:block;color:var(--ink-soft);text-decoration:none;font-size:15px;margin-bottom:9px;transition:color .3s}
+  .footcol a:hover{color:var(--accent)}
+  .disc{padding-top:22px;border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px}
+  .disc span{font-size:12.5px;color:var(--ink-mute);line-height:1.6}
+  .disc .legal{max-width:64ch;font-style:italic}
+
+  @keyframes up{from{opacity:0;transform:translateY(13px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+
+  <nav id="nav">
+    <div class="wrap navin">
+      <a class="wm" href="index.html">flameback<span class="p">.</span></a>
+      <div class="navr">
+        <a class="navlink" href="flameback-firm.html">Firm</a>
+        <a class="navlink" href="#">Strategies</a>
+        <a class="navlink current" href="flameback-offerings.html">Offerings</a>
+        <a class="navlink" href="#">Insights</a>
+        <a class="navlink" href="#">Resources</a>
+        <a class="login" href="#">Login</a>
+        <a class="navbtn" href="flameback-app-splash.html">Start your journey</a>
+        <button class="toggle" id="toggle" aria-label="Switch theme">Light</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="subnav">
+    <div class="wrap subnav-in">
+      <span class="sn-lab">Offerings</span>
+      <a href="flameback-advisory.html">Advisory</a>
+      <a href="flameback-pms.html">Portfolio Management</a>
+      <a href="flameback-qx-funds.html">QX Funds</a>
+      <a class="current" href="#">International</a>
+    </div>
+  </div>
+
+  <section class="hero" id="top">
+    <div class="wrap">
+      <div class="dateline"><span class="l"></span><span class="lab">International investing</span></div>
+      <h1 class="hero-statement">Global markets. Built around the client.</h1>
+      <div class="hero-meta">
+        <p>Managed portfolios in US and global markets, accessible to Indian residents under the Liberalised Remittance Scheme and to NRIs investing globally. The same systematic approach as the firm&rsquo;s India strategies, applied to dollar-denominated wealth-building.</p>
+        <div class="hero-reg">
+          <span class="hr-lab">Registered offering</span>
+          <span class="hr-val"><span class="b">Flameback Investment Advisors Pvt Ltd</span></span>
+          <span class="hr-val">SEBI Investment Adviser &middot; Reg <span class="reg">INA200013798</span></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="power">
+    <div class="wrap">
+      <h2>Researched in India. Tested in the US.</h2>
+      <p>The research engine that runs Flameback&rsquo;s India portfolios has been live on US markets for years. The International offering brings that capability to clients who want global exposure and a dollar asset base.</p>
+    </div>
+  </section>
+
+  <!-- i The routes -->
+  <section class="sec" id="routes">
+    <div class="wrap">
+      <div class="head">
+        <span class="lab"><span class="n">i</span>The routes</span>
+        <h2>Two paths. One managed portfolio.</h2>
+        <p class="intro">Indian residents access global markets through the Liberalised Remittance Scheme. NRIs and OCI cardholders access them through global accounts directly, or through a GIFT City vehicle.</p>
+      </div>
+      <div class="prose">
+
+        <svg class="dia" viewBox="0 0 520 350" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <!-- LEFT: Indian resident path -->
+          <text x="120" y="22" text-anchor="middle" class="r-title">Indian resident</text>
+
+          <rect class="r-node" x="35" y="38" width="170" height="46" rx="2"/>
+          <text x="120" y="58" text-anchor="middle" class="r-name">LRS remittance</text>
+          <text x="120" y="74" text-anchor="middle" class="r-sub">up to $250K per year</text>
+
+          <line x1="120" y1="84" x2="120" y2="106" stroke="var(--ink-mute)" stroke-opacity="0.5" stroke-width="1"/>
+          <polygon points="120,108 116,102 124,102" fill="var(--accent)"/>
+
+          <rect class="r-node" x="35" y="116" width="170" height="46" rx="2"/>
+          <text x="120" y="136" text-anchor="middle" class="r-name">IBKR USD account</text>
+          <text x="120" y="152" text-anchor="middle" class="r-sub">in client&rsquo;s name</text>
+
+          <!-- RIGHT: NRI path -->
+          <text x="400" y="22" text-anchor="middle" class="r-title">NRI / OCI</text>
+
+          <rect class="r-node" x="315" y="38" width="170" height="46" rx="2"/>
+          <text x="400" y="58" text-anchor="middle" class="r-name">Existing global account</text>
+          <text x="400" y="74" text-anchor="middle" class="r-sub">or GIFT City vehicle</text>
+
+          <line x1="400" y1="84" x2="400" y2="106" stroke="var(--ink-mute)" stroke-opacity="0.5" stroke-width="1"/>
+          <polygon points="400,108 396,102 404,102" fill="var(--accent)"/>
+
+          <rect class="r-node" x="315" y="116" width="170" height="46" rx="2"/>
+          <text x="400" y="136" text-anchor="middle" class="r-name">IBKR / GIFT City</text>
+          <text x="400" y="152" text-anchor="middle" class="r-sub">in client&rsquo;s name or via fund</text>
+
+          <!-- Convergence lines -->
+          <line x1="120" y1="162" x2="120" y2="200" stroke="var(--ink-mute)" stroke-opacity="0.5"/>
+          <line x1="400" y1="162" x2="400" y2="200" stroke="var(--ink-mute)" stroke-opacity="0.5"/>
+          <line x1="120" y1="200" x2="400" y2="200" stroke="var(--ink-mute)" stroke-opacity="0.5"/>
+          <line x1="260" y1="200" x2="260" y2="224" stroke="var(--ink-mute)" stroke-opacity="0.5"/>
+          <polygon points="260,226 256,220 264,220" fill="var(--accent)"/>
+
+          <!-- Managed by Flameback -->
+          <rect class="r-node-acc" x="170" y="234" width="180" height="46" rx="2"/>
+          <text x="260" y="254" text-anchor="middle" class="r-name" style="fill:var(--ink)">Managed by Flameback</text>
+          <text x="260" y="270" text-anchor="middle" class="r-sub" style="fill:var(--accent)">research-led portfolios</text>
+
+          <line x1="260" y1="280" x2="260" y2="304" stroke="var(--ink-mute)" stroke-opacity="0.5"/>
+          <polygon points="260,306 256,300 264,300" fill="var(--accent)"/>
+
+          <!-- Outcome -->
+          <text x="260" y="328" text-anchor="middle" class="r-name" style="font-size:14px;fill:var(--ink)">A dollar asset base</text>
+        </svg>
+        <span class="dia-cap">Two routes &mdash; LRS for residents, direct or GIFT City for NRIs &mdash; converging to a managed dollar portfolio</span>
+
+        <p>For Indian residents, the route runs through the Liberalised Remittance Scheme. Each individual can remit up to USD 250,000 per financial year for permitted transactions including overseas investments. Funds move from the client&rsquo;s Indian bank account to their own IBKR USD account, which holds securities in the client&rsquo;s name throughout. Flameback acts as Investment Adviser; the broker holds custody.</p>
+        <p>For NRIs and OCI cardholders, the route is more direct. Clients with existing US or global accounts can have Flameback advise on those directly. For clients wanting an Indian-domiciled wrapper, the GIFT City IFSC vehicle is the alternative &mdash; a fund structure regulated by IFSCA that holds global assets for NRI and accredited investors.</p>
+        <div class="items">
+          <span class="it">LRS for Indian residents</span><span class="it">$250K annual remittance limit</span><span class="it">IBKR primary platform</span><span class="it">NRI direct accounts</span><span class="it">GIFT City vehicle</span><span class="it">In client&rsquo;s name</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ii Portfolios -->
+  <section class="sec" id="portfolios">
+    <div class="wrap">
+      <div class="head">
+        <span class="lab"><span class="n">ii</span>Portfolios</span>
+        <h2>Strategies for global markets.</h2>
+        <p class="intro">Several managed portfolios drawn from the firm&rsquo;s research, adapted to US and global market characteristics.</p>
+      </div>
+      <div class="prose">
+
+        <div class="pf-grid">
+          <div class="pf-card">
+            <span class="pf-tag">US Equity</span>
+            <h4 class="pf-name">US large-cap systematic</h4>
+            <p class="pf-desc">Momentum and quality signals applied to the S&amp;P 500 universe. Long-only, monthly rebalance, the global counterpart to the firm&rsquo;s India large-cap strategy.</p>
+          </div>
+          <div class="pf-card">
+            <span class="pf-tag">US Equity</span>
+            <h4 class="pf-name">US multi-cap growth</h4>
+            <p class="pf-desc">Broader US universe across large, mid, and small caps. Captures growth and momentum across the full market.</p>
+          </div>
+          <div class="pf-card">
+            <span class="pf-tag">Sector-specific</span>
+            <h4 class="pf-name">US technology</h4>
+            <p class="pf-desc">Concentrated portfolio of US technology and innovation leaders. Higher volatility, higher conviction.</p>
+          </div>
+          <div class="pf-card">
+            <span class="pf-tag">Global</span>
+            <h4 class="pf-name">Global diversified</h4>
+            <p class="pf-desc">Multi-region equity allocation across US, Europe, Japan, and developed Asia &mdash; built from regional ETFs and selected single names.</p>
+          </div>
+          <div class="pf-card">
+            <span class="pf-tag">Phased</span>
+            <h4 class="pf-name">Phased SPY deployment</h4>
+            <p class="pf-desc">For larger lump sums entering at once: a systematic phased deployment into the S&amp;P 500 to manage entry timing across multiple scenarios.</p>
+          </div>
+          <div class="pf-card">
+            <span class="pf-tag">Custom</span>
+            <h4 class="pf-name">Custom mandate</h4>
+            <p class="pf-desc">For larger accounts, a bespoke portfolio built around the client&rsquo;s currency goals, tax position, and existing global exposures.</p>
+          </div>
+        </div>
+        <span class="dia-cap">International portfolio options &mdash; the right mix depends on the client&rsquo;s currency goals and risk profile</span>
+
+        <p>The portfolios share the firm&rsquo;s systematic, research-led approach. What changes is the universe, the rebalance cadence in some cases, and the tax and operational considerations of cross-border investing. The firm&rsquo;s FIST production system has run on US markets alongside Indian markets for years, so the infrastructure is not new.</p>
+        <p>For most clients, the right starting point is a blended global portfolio &mdash; US large-cap as the anchor, with selected sector or thematic exposure layered on top. Larger accounts work with the team to design a portfolio against their specific currency, tax, and time-horizon picture.</p>
+        <div class="items">
+          <span class="it">US large-cap systematic</span><span class="it">US multi-cap growth</span><span class="it">US technology</span><span class="it">Global diversified</span><span class="it">Phased deployment</span><span class="it">Custom mandates</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- iii How it works -->
+  <section class="sec" id="how">
+    <div class="wrap">
+      <div class="head">
+        <span class="lab"><span class="n">iii</span>How it works</span>
+        <h2>From onboarding to deployment.</h2>
+        <p class="intro">A few weeks end to end, with the bulk of the time on account opening and remittance.</p>
+      </div>
+      <div class="prose">
+
+        <div class="steps">
+          <div class="step"><div><span class="step-name">Conversation &amp; profile</span><span class="step-desc">Initial conversation to understand currency goals, time horizon, existing global exposure, and tax position. Profile and portfolio shortlisted.</span></div></div>
+          <div class="step"><div><span class="step-name">KYC &amp; account opening</span><span class="step-desc">KYC with Flameback and account opening with IBKR (or the chosen platform). For NRIs, existing accounts can usually be used.</span></div></div>
+          <div class="step"><div><span class="step-name">Remittance &amp; funding</span><span class="step-desc">For LRS clients, INR is remitted to USD into the IBKR account through the client&rsquo;s bank. The bank handles A2 Form and FEMA documentation.</span></div></div>
+          <div class="step"><div><span class="step-name">Portfolio construction &amp; deployment</span><span class="step-desc">Portfolio constructed and deployed into the account. Phased deployment is the default for lump sums above a threshold, to manage entry timing.</span></div></div>
+          <div class="step"><div><span class="step-name">Advisory &amp; review</span><span class="step-desc">Trades are recommended by Flameback and approved by the client. Quarterly reviews keep the mandate current. Monthly reporting through the IBKR statements plus Flameback&rsquo;s performance overlay.</span></div></div>
+          <div class="step"><div><span class="step-name">Tax filing &amp; compliance</span><span class="step-desc">Year-end tax documents from IBKR &mdash; required for both Indian and US tax filings. The team assists with the documentation, though tax filing remains the client&rsquo;s responsibility.</span></div></div>
+        </div>
+
+        <p>Because the relationship is advisory rather than discretionary, every trade in the client&rsquo;s international account passes through the client for approval &mdash; the same gate as the Advisory service, applied to a USD portfolio.</p>
+        <div class="items">
+          <span class="it">Onboard in weeks</span><span class="it">KYC &amp; IBKR setup</span><span class="it">LRS remittance handled by bank</span><span class="it">Phased deployment available</span><span class="it">Client-approved trades</span><span class="it">Monthly reporting</span><span class="it">Year-end tax documentation</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- iv Fees -->
+  <section class="sec" id="fees">
+    <div class="wrap">
+      <div class="head">
+        <span class="lab"><span class="n">iv</span>Fees</span>
+        <h2>Flat advisory fee. No performance fee.</h2>
+        <p class="intro">Charged on assets under advice in the client&rsquo;s international account.</p>
+      </div>
+      <div class="prose">
+
+        <div class="fee-card">
+          <span class="fcc-lab">Fee structure &middot; International</span>
+          <div class="fcc-row">
+            <span class="fcc-l">Advisory fee</span>
+            <span class="fcc-v">1.5%<small>per annum on assets under advice</small></span>
+          </div>
+          <div class="fcc-row">
+            <span class="fcc-l">Onboarding fee</span>
+            <span class="fcc-v">&#8377;25,000<small>one-time, at sign-up</small></span>
+          </div>
+          <div class="fcc-row zero">
+            <span class="fcc-l">Performance fee</span>
+            <span class="fcc-v">None</span>
+          </div>
+          <div class="fcc-foot">Brokerage, FX spreads, and platform charges are paid by the client to IBKR (or the chosen platform) as per the platform&rsquo;s tariff. Bank charges for LRS remittance are paid to the remitting bank. GST as applicable.</div>
+        </div>
+
+        <p>A flat advisory fee, billed annually on the dollar value of assets under advice, kept consistent with the firm&rsquo;s Indian Advisory service. The fee structure mirrors Advisory deliberately: simple, no performance-based incentive to over-trade, no churn upside.</p>
+        <p>Brokerage, foreign exchange spreads, and the platform&rsquo;s own charges are paid by the client to the platform directly. Bank charges for LRS remittance are paid to the remitting bank. None of these flow through Flameback.</p>
+        <div class="items">
+          <span class="it">1.5% per annum</span><span class="it">&#8377;25,000 onboarding</span><span class="it">No performance fee</span><span class="it">Brokerage paid to platform</span><span class="it">GST as applicable</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- v Minimum & eligibility -->
+  <section class="sec" id="eligibility">
+    <div class="wrap">
+      <div class="head">
+        <span class="lab"><span class="n">v</span>Minimum &amp; eligibility</span>
+        <h2>From $25,000.</h2>
+        <p class="intro">A practical minimum to make cross-border investing worthwhile after costs. Eligibility depends on the route &mdash; LRS for residents, NRI status for direct accounts.</p>
+      </div>
+      <div class="prose">
+        <p>The minimum recommended size for an International advisory portfolio is USD 25,000, approximately &#8377;20 lakh at current rates. The figure is practical rather than regulatory &mdash; below this, the fixed costs of cross-border investing erode returns. There is no maximum, and many clients run portfolios well above the minimum.</p>
+        <p>For Indian residents, eligibility is straightforward: any individual with a PAN, an Indian bank account, and the willingness to complete the LRS remittance paperwork can participate. The $250,000 per-year LRS cap is the only structural ceiling on flows.</p>
+        <p>NRIs and OCI cardholders should already have, or be willing to open, a global brokerage account. Tax residency, double-taxation treaty position, and FATCA disclosures need attention up front. The team helps map the right path during the initial conversation.</p>
+        <p>Many of the firm&rsquo;s Indian clients add an International allocation alongside their existing PMS or Advisory portfolio &mdash; treating the two as complementary, with the Indian portfolio building rupee wealth and the international portfolio building dollar wealth, often in parallel.</p>
+        <div class="items">
+          <span class="it">Minimum $25,000 &middot; &#8377;20 lakh</span><span class="it">LRS for Indian residents</span><span class="it">$250K LRS annual cap</span><span class="it">NRI / OCI direct access</span><span class="it">Tax residency assessment</span><span class="it">Complementary to India portfolios</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Statutory -->
+  <section class="statutory" id="statutory">
+    <div class="wrap">
+      <div class="stat-head">
+        <span class="lab"><span class="n">vi</span>Statutory information</span>
+        <h2>Disclosures &amp; cross-border considerations.</h2>
+      </div>
+
+      <div class="stat-reg">
+        <span class="sr-lab">Registered investment adviser</span>
+        <div class="sr-name">Flameback Investment Advisors Private Limited</div>
+        <div class="sr-detail">SEBI Registered Investment Adviser &middot; Registration No. <span class="reg">INA200013798</span></div>
+        <div class="sr-detail">The International offering is provided under SEBI RIA registration. The GIFT City vehicle, when operational, will operate under separate IFSCA registration.</div>
+        <div class="sr-detail">Platform: Interactive Brokers (IBKR) &middot; Custody: Held by the platform in the client&rsquo;s name</div>
+      </div>
+
+      <div class="stat-links">
+        <a class="stat-link" href="#">
+          <span class="sl-name">Disclosure Document</span>
+          <span class="sl-desc">SEBI-mandated client disclosures</span>
+        </a>
+        <a class="stat-link" href="#">
+          <span class="sl-name">Investor Charter</span>
+          <span class="sl-desc">Client rights and service standards</span>
+        </a>
+        <a class="stat-link" href="#">
+          <span class="sl-name">Grievance Redressal</span>
+          <span class="sl-desc">Escalation matrix &middot; SCORES &middot; ODR</span>
+        </a>
+        <a class="stat-link" href="#">
+          <span class="sl-name">FEMA &amp; LRS Guide</span>
+          <span class="sl-desc">Liberalised Remittance Scheme reference</span>
+        </a>
+        <a class="stat-link" href="#">
+          <span class="sl-name">Risk Disclosure</span>
+          <span class="sl-desc">Market, currency, and country risk</span>
+        </a>
+        <a class="stat-link" href="#">
+          <span class="sl-name">Tax Considerations</span>
+          <span class="sl-desc">DTAA, FATCA, and Indian tax notes</span>
+        </a>
+        <a class="stat-link" href="#">
+          <span class="sl-name">Most Important Terms</span>
+          <span class="sl-desc">Summary of key contract terms</span>
+        </a>
+        <a class="stat-link" href="#">
+          <span class="sl-name">Platform Terms (IBKR)</span>
+          <span class="sl-desc">Linked broker terms and tariff</span>
+        </a>
+        <a class="stat-link" href="#">
+          <span class="sl-name">Privacy Policy</span>
+          <span class="sl-desc">Data handling and consent</span>
+        </a>
+      </div>
+
+      <div class="stat-contact">
+        <span class="lbl">Investor grievance:</span> grievance@flameback.in &nbsp;<span class="lbl">&middot;</span>&nbsp;
+        <span class="lbl">International desk:</span> global@flameback.in &nbsp;<span class="lbl">&middot;</span>&nbsp;
+        <span class="lbl">SCORES:</span> <a style="color:var(--accent);text-decoration:none" href="https://scores.sebi.gov.in" target="_blank" rel="noopener">scores.sebi.gov.in</a> &nbsp;<span class="lbl">&middot;</span>&nbsp;
+        <span class="lbl">ODR:</span> <a style="color:var(--accent);text-decoration:none" href="https://smartodr.in" target="_blank" rel="noopener">smartodr.in</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="final">
+    <div class="wrap">
+      <h2>Get in touch.</h2>
+      <p>The right route depends on residency, currency goals, and existing global exposure. The conversation starts with a profile.</p>
+      <div class="final-ctas">
+        <a class="btn" href="flameback-app-splash.html">Begin onboarding <span class="ar">&rarr;</span></a>
+        <a class="btn-out" href="flameback-app-splash.html">Start your journey</a>
+      </div>
+      <p class="seal">A safe pair of hands &nbsp;<span class="p">&middot;</span>&nbsp; 2026</p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <div class="footin">
+        <a class="wm" href="index.html">flameback<span class="p">.</span></a>
+        <div class="footcols">
+          <div class="footcol"><h4>Firm</h4><a href="flameback-firm.html">Team</a><a href="flameback-philosophy.html">Investment philosophy</a><a href="flameback-strategy-rd.html">Strategy R&amp;D</a><a href="flameback-technology.html">Technology</a></div>
+          <div class="footcol"><h4>Offerings</h4><a href="flameback-advisory.html">Advisory</a><a href="flameback-pms.html">Portfolio Management</a><a href="flameback-qx-funds.html">QX Funds</a><a href="flameback-international.html">International</a></div>
+          <div class="footcol"><h4>Contact</h4><a href="#">Bangalore, India</a><a href="#">hello@flameback.in</a></div>
+        </div>
+      </div>
+      <div class="disc">
+        <span>&copy; 2026 Flameback Investment Advisors Pvt Ltd &middot; SEBI RIA INA200013798</span>
+        <span class="legal">Investments in international markets are subject to market, currency, country, and tax risks. The Liberalised Remittance Scheme is governed by RBI guidelines under FEMA. Past performance is not indicative of future results. The platform and custody are provided by Interactive Brokers (or another chosen platform); Flameback acts as Investment Adviser only and does not hold client assets. Read all related documents carefully before investing.</span>
+      </div>
+    </div>
+  </footer>
+
+<script>
+  var root=document.documentElement, tg=document.getElementById('toggle');
+  tg.addEventListener('click',function(){root.classList.toggle('light');tg.textContent=root.classList.contains('light')?'Dark':'Light';});
+  var nav=document.getElementById('nav');
+  window.addEventListener('scroll',function(){nav.classList.toggle('scrolled',window.scrollY>16)});
+</script>
+  <script src="reload.js"></script>
+</body>
+</html>

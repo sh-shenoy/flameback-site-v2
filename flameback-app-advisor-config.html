@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>flameback. — Talk to an advisor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#1A1714;--ink:#F2EDE3;--ink-soft:rgba(242,237,227,.66);--ink-mute:rgba(242,237,227,.44);--line:rgba(242,237,227,.16);--accent:#FF6D0A;--btn-bg:#FF6D0A;--btn-ink:#1A1714;--grain-blend:screen;--grain-op:.055;--card:rgba(242,237,227,.03)}
+  :root.light{--bg:#FCFAF6;--ink:#1A1714;--ink-soft:rgba(26,23,20,.68);--ink-mute:rgba(26,23,20,.46);--line:rgba(26,23,20,.14);--accent:#B23E08;--btn-bg:#1A1714;--btn-ink:#FCFAF6;--grain-blend:multiply;--grain-op:.035;--card:rgba(26,23,20,.025)}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:"Source Serif 4",serif;transition:background .5s,color .5s;line-height:1.55;font-variant-numeric:tabular-nums;min-height:100vh;display:flex;flex-direction:column}
+  body::after{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;mix-blend-mode:var(--grain-blend);opacity:var(--grain-op);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  h1,h2,h3,h4{font-family:"Cormorant Garamond",serif;font-weight:500;letter-spacing:-.014em;line-height:1.04}
+  h1 em,h2 em,h3 em{color:var(--accent);font-style:italic;font-weight:500}
+  .mono{font-family:"JetBrains Mono",monospace;letter-spacing:.07em;text-transform:uppercase}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 clamp(22px,5vw,44px)}
+
+  /* ===== site chrome (matches marketing pages) ===== */
+  nav{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 84%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid transparent;transition:border-color .4s}
+  nav.scrolled{border-color:var(--line)}
+  .navin{display:flex;align-items:center;justify-content:space-between;padding:14px 0;gap:24px}
+  .wm{font-family:"Source Serif 4",serif;font-weight:600;font-size:18px;color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+  .wm .p{color:var(--accent)}
+  .navr{display:flex;align-items:center;gap:22px}
+  .navr a{color:var(--ink-soft);text-decoration:none;font-size:14px;transition:color .3s}
+  .navr a:hover{color:var(--ink)}
+  .toggle{background:none;border:1px solid var(--line);color:var(--ink-soft);cursor:pointer;font-family:"Source Serif 4",serif;font-size:12.5px;font-style:italic;padding:5px 13px;border-radius:999px}
+  @media(max-width:1020px){.navr .navlink{display:none}}
+
+  footer{padding:60px 0 32px;position:relative;z-index:2;border-top:1px solid var(--line);margin-top:auto}
+  .footin{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;margin-bottom:36px}
+  .footcols{display:flex;gap:clamp(34px,5vw,64px);flex-wrap:wrap}
+  .footcol h4{font-style:italic;font-weight:400;font-size:12.5px;color:var(--ink-mute);margin-bottom:14px;letter-spacing:.04em;text-transform:uppercase;font-family:"JetBrains Mono",monospace}
+  .footcol a{display:block;color:var(--ink-soft);text-decoration:none;font-size:14px;margin-bottom:9px}
+  .footcol a:hover{color:var(--accent)}
+  .disc{padding-top:22px;border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px}
+  .disc span{font-size:11.5px;color:var(--ink-mute);line-height:1.6}
+  .disc .legal{max-width:72ch;font-style:italic}
+  .disc .reg-links a{color:var(--ink-mute);text-decoration:none;font-size:11.5px;font-style:italic;margin-left:14px}
+
+  /* ===== screen content — centred column on the wide page ===== */
+  main{position:relative;z-index:2;flex:1}
+  .screen{max-width:600px;margin:0 auto;padding:clamp(44px,7vh,84px) 0 clamp(56px,9vh,96px)}
+  .back-link{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-style:italic;color:var(--ink-mute);text-decoration:none;margin-bottom:30px;transition:color .3s}
+  .back-link:hover{color:var(--ink-soft)}
+
+  .eyebrow{display:inline-flex;align-items:center;gap:10px;font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink-mute);letter-spacing:.09em;text-transform:uppercase;margin-bottom:14px}
+  .eyebrow .l{width:20px;height:1px;background:var(--accent)}
+
+  h1.ttl{font-size:clamp(38px,5.4vw,56px);line-height:1.02;margin-bottom:10px}
+  .lede{font-size:14.5px;font-style:italic;color:var(--ink-soft);margin-bottom:24px}
+
+  .hours{border:1px solid var(--line);background:var(--card);padding:13px 16px;display:flex;align-items:center;gap:11px;margin-bottom:18px;font-size:13px;color:var(--ink-soft)}
+  .hours .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);flex:none}
+  .hours b{color:var(--ink);font-weight:500}
+
+  /* what the advisor has seen */
+  .seen{border:1px solid var(--line);border-left:2px solid var(--accent);background:var(--card);padding:16px 18px;margin-bottom:22px}
+  .seen .sh{font-family:"JetBrains Mono",monospace;font-size:9.5px;color:var(--ink-mute);letter-spacing:.07em;text-transform:uppercase;margin-bottom:12px}
+  .seen .row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--line);font-size:13.5px;color:var(--ink-soft)}
+  .seen .row:last-child{border-bottom:none}
+  .seen .row b{color:var(--ink);font-weight:500;font-family:"Cormorant Garamond",serif;font-size:16px}
+
+  /* pre-filled message preview */
+  .msglab{font-family:"JetBrains Mono",monospace;font-size:9.5px;color:var(--ink-mute);letter-spacing:.07em;text-transform:uppercase;margin-bottom:8px;display:block}
+  .msg{border:1px solid var(--line);background:var(--card);padding:14px 16px;font-size:13.5px;font-style:italic;color:var(--ink-soft);line-height:1.6;margin-bottom:6px}
+  .msg b{color:var(--accent);font-style:normal;font-weight:500}
+  .editnote{font-size:11.5px;font-style:italic;color:var(--ink-mute);margin-bottom:24px}
+
+  .cta{display:flex;align-items:center;justify-content:center;gap:11px;width:100%;background:var(--btn-bg);color:var(--btn-ink);font-family:"Source Serif 4",serif;font-size:15.5px;font-weight:500;padding:16px;text-decoration:none;border:none;cursor:pointer;transition:gap .35s,opacity .3s}
+  .cta:hover{gap:15px;opacity:.93}
+
+  /* return / confirmation state */
+  .ret{display:none}
+  .ret.show{display:block;animation:fade .5s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .checkmark{width:54px;height:54px;border-radius:50%;border:1.5px solid var(--accent);display:grid;place-items:center;color:var(--accent);font-size:24px;margin-bottom:20px}
+  .ret .sub{font-size:14px;color:var(--ink-soft);line-height:1.6;margin-bottom:28px}
+  .ret .sub b{color:var(--ink);font-weight:500}
+  .orlab{font-family:"JetBrains Mono",monospace;font-size:9.5px;color:var(--ink-mute);letter-spacing:.08em;text-transform:uppercase;margin:8px 0 14px;display:block}
+
+  .ocard{border:1px solid var(--line);background:var(--card);padding:18px 16px;margin-bottom:12px;cursor:pointer;text-decoration:none;display:block;transition:border-color .2s}
+  .ocard:hover{border-color:var(--ink-mute)}
+  .ocard h3{font-size:20px;margin-bottom:4px;color:var(--ink)}
+  .ocard .meta{font-size:12.5px;color:var(--ink-soft)}
+  .ocard .meta span{color:var(--accent)}
+
+  .resume{display:inline-block;margin-top:18px;font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase;text-decoration:none}
+  .resume:hover{color:var(--accent)}
+</style>
+</head>
+<body>
+
+  <nav id="nav">
+    <div class="wrap navin">
+      <a class="wm" href="index.html">flameback<span class="p">.</span></a>
+      <div class="navr">
+        <a class="navlink" href="flameback-who-we-are.html">Who we are</a>
+        <a class="navlink" href="flameback-what-we-do.html">What we do</a>
+        <a class="navlink" href="flameback-our-work.html">Our work</a>
+        <a class="navlink" href="flameback-insights.html">Insights</a>
+        <button class="toggle" id="toggle">Light</button>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <div class="wrap">
+      <div class="screen">
+
+    <!-- ── PRE-REDIRECT STATE ── -->
+    <div id="pre">
+      <a href="flameback-app-portfolio-path.html" class="back-link">&larr; Back to path</a>
+      <span class="eyebrow"><span class="l"></span>Talk to an advisor</span>
+      <h1 class="ttl">We'll put you with one of our <em>advisors.</em></h1>
+      <p class="lede">A quick WhatsApp message gets the conversation going — they'll already have your profile in front of them.</p>
+
+      <div class="hours"><span class="dot"></span><span><b>Advisors are in</b> · Mon–Sat, 9am–7pm IST</span></div>
+
+      <div class="seen">
+        <p class="sh">What your advisor has already seen</p>
+        <div class="row"><span>Risk score</span><b id="seenScore">62 · Moderate</b></div>
+        <div class="row"><span>Strategy tier</span><b>Moderate</b></div>
+        <div class="row"><span>Investment</span><b id="seenInv">₹5 lakh</b></div>
+      </div>
+
+      <span class="msglab">Your message — edit before sending if you like</span>
+      <div class="msg" id="msgPreview">Hi — I'd like to talk through my portfolio with an advisor. My risk score's <b>62</b>, and I'm looking at <b>₹5 lakh</b> plus <b>₹0</b>/month.</div>
+      <p class="editnote">Opens WhatsApp with this text pre-filled. You can change it before you hit send.</p>
+
+      <a href="#" class="cta" id="waBtn">Open WhatsApp &rarr;</a>
+    </div>
+
+    <!-- ── RETURN / CONFIRMATION STATE ── -->
+    <div id="ret" class="ret">
+      <span class="eyebrow"><span class="l"></span>You're in good hands</span>
+      <div class="checkmark">&#10003;</div>
+      <h1 class="ttl">We've got it from <em>here.</em></h1>
+      <p class="sub">One of our advisors will go through your profile and call you within <b>4 business hours</b>. Nothing's been committed — they'll talk you through the right fit first.</p>
+
+      <span class="orlab">Or pick up where you left off</span>
+
+      <a href="flameback-app-portfolio-review.html" class="ocard" id="aiCard">
+        <h3>Start with AI Portfolio</h3>
+        <p class="meta"><span>Instant</span> · Can always change later</p>
+      </a>
+      <a href="flameback-app-marketplace.html" class="ocard" id="byoCard">
+        <h3>Build My Own</h3>
+        <p class="meta"><span>5–10 min</span> · Full control</p>
+      </a>
+
+      <a href="flameback-lobby.html" class="resume">&larr; Back to lobby</a>
+    </div>
+
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <div class="footin">
+        <a class="wm" href="index.html">flameback<span class="p">.</span></a>
+        <div class="footcols">
+          <div class="footcol"><h4>The firm</h4><a href="flameback-who-we-are.html">Who we are</a><a href="flameback-what-we-do.html">What we do</a><a href="flameback-our-work.html">Our work</a><a href="flameback-clients.html">Clients</a></div>
+          <div class="footcol"><h4>Open</h4><a href="flameback-insights.html">Insights</a><a href="flameback-tools.html">Tools</a><a href="flameback-offbook.html">Off-book</a></div>
+          <div class="footcol"><h4>Contact</h4><a href="flameback-app-splash.html">Start your journey</a><a href="#">hello@flameback.in</a><a href="#">Bangalore, India</a></div>
+        </div>
+      </div>
+      <div class="disc">
+        <span>&copy; 2026 Flameback Capital Pvt Ltd</span>
+        <span class="legal">SEBI registered &middot; SEC filed for US strategy. Investments are subject to market risk. Past performance is not indicative of future results.</span>
+        <span class="reg-links"><a href="flameback-pms-disclosure.html">PMS disclosure</a><a href="flameback-advisory-disclosure.html">IA disclosure</a></span>
+      </div>
+    </div>
+  </footer>
+
+<script>
+  var t=document.getElementById('toggle');
+  t.onclick=function(){var l=document.documentElement.classList.toggle('light');t.textContent=l?'Dark':'Light';};
+  // nav border on scroll
+  var nv=document.getElementById('nav');
+  window.addEventListener('scroll',function(){nv.classList.toggle('scrolled',window.scrollY>8);});
+
+  // ── ₹ formatting ──
+  function fmtIN(n){n=String(Math.round(n));var last3=n.slice(-3),rest=n.slice(0,-3);if(rest)last3=','+last3;rest=rest.replace(/\B(?=(\d\d)+(?!\d))/g,',');return rest+last3;}
+  function trim2(x){return parseFloat(x.toFixed(2));}
+  function lakhCrore(n){if(n>=10000000){return '₹'+trim2(n/10000000)+' crore';}if(n>=100000){return '₹'+trim2(n/100000)+' lakh';}return '₹'+fmtIN(n);}
+
+  // ── system config: Flameback's registered advisory WhatsApp number ──
+  // PLACEHOLDER — set this to Flameback's real advisory WhatsApp number (E.164, no +).
+  // Left intentionally invalid so the link never opens a random real account.
+  var ADVISOR_WA='91XXXXXXXXXX';
+
+  // amounts carried from S-D01 / S-D02
+  var p=new URLSearchParams(location.search);
+  var lump=parseInt(p.get('lump')||'500000',10), sip=parseInt(p.get('sip')||'0',10);
+  var score='62';
+
+  document.getElementById('seenScore').textContent=score+' · Moderate';
+  document.getElementById('seenInv').textContent=lakhCrore(lump)+(sip>0?' + '+lakhCrore(sip)+'/mo':'');
+
+  // pre-filled message text + preview
+  var msgText="Hi — I'd like to talk through my portfolio with an advisor. My risk score's "+score+", and I'm looking at "+lakhCrore(lump)+" plus "+lakhCrore(sip)+"/month.";
+  document.getElementById('msgPreview').innerHTML="Hi — I'd like to talk through my portfolio with an advisor. My risk score's <b>"+score+"</b>, and I'm looking at <b>"+lakhCrore(lump)+"</b> plus <b>"+lakhCrore(sip)+"</b>/month.";
+
+  // carry context onto the return-state secondary cards
+  var carry='?lump='+lump+'&sip='+sip+'&hz='+encodeURIComponent(p.get('hz')||'')+'&path=advisor';
+  document.getElementById('aiCard').href='flameback-app-portfolio-review.html'+carry;
+  document.getElementById('byoCard').href='flameback-app-marketplace.html'+carry;
+
+  // open WhatsApp deep link, then flip to the return/confirmation state
+  var waBtn=document.getElementById('waBtn');
+  waBtn.href='https://wa.me/'+ADVISOR_WA+'?text='+encodeURIComponent(msgText);
+  waBtn.setAttribute('target','_blank');
+  waBtn.setAttribute('rel','noopener');
+  waBtn.onclick=function(){
+    // simulate app-resume after redirect — show the "we've got it from here" return state
+    setTimeout(function(){
+      document.getElementById('pre').style.display='none';
+      document.getElementById('ret').classList.add('show');
+      window.scrollTo(0,0);
+    },600);
+  };
+</script>
+  <script src="reload.js"></script>
+</body>
+</html>

@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>flameback. — Asset Map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#1A1714; --ink:#F2EDE3; --ink-soft:rgba(242,237,227,.64); --ink-mute:rgba(242,237,227,.42);
+    --line:rgba(242,237,227,.15); --accent:#FF6D0A; --btn-bg:#FF6D0A; --btn-ink:#1A1714;
+    --grain-blend:screen; --grain-op:.05;
+    --asset:#FF6D0A; --income:#8FB87A; --liability:#D04A2A; --expense:#A66B3E;
+    --good:#8FB87A; --warn:#E8A547; --bad:#D04A2A;
+  }
+  :root.light{
+    --bg:#FCFAF6; --ink:#1A1714; --ink-soft:rgba(26,23,20,.66); --ink-mute:rgba(26,23,20,.46);
+    --line:rgba(26,23,20,.13); --accent:#FF6D0A; --btn-bg:#1A1714; --btn-ink:#FCFAF6;
+    --grain-blend:multiply; --grain-op:.03;
+    --asset:#FF6D0A; --income:#5F8048; --liability:#A03615; --expense:#7A4D1F;
+    --good:#5F8048; --warn:#C8821E; --bad:#A03615;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:"Source Serif 4",serif;transition:background .5s,color .5s;font-variant-numeric:tabular-nums}
+  body::after{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;mix-blend-mode:var(--grain-blend);opacity:var(--grain-op);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  .wrap{max-width:1280px;margin:0 auto;padding:0 clamp(22px,5vw,44px)}
+  section{position:relative;z-index:2}
+  .wm{font-family:"Source Serif 4",serif;font-weight:600;font-size:18px;color:var(--ink);text-decoration:none}
+  .wm .p{color:var(--accent)}
+  .lab{font-family:"Source Serif 4",serif;font-style:italic;font-size:14px;color:var(--ink-mute)}
+  .lab .n{font-style:normal;color:var(--accent);margin-right:10px}
+  h1,h2,h3,h4{font-family:"Cormorant Garamond",serif;font-weight:500;letter-spacing:-.012em;color:var(--ink)}
+  .btn,.btn-out{display:inline-flex;align-items:center;gap:11px;font-family:"Source Serif 4",serif;font-size:15px;font-weight:500;padding:12px 22px;text-decoration:none;transition:gap .3s,opacity .3s,border-color .3s;cursor:pointer;border:none}
+  .btn{background:var(--btn-bg);color:var(--btn-ink)}.btn:hover{gap:15px;opacity:.92}
+  .btn-out{background:transparent;color:var(--ink);border:1px solid var(--line)}.btn-out:hover{gap:15px;border-color:var(--ink-mute)}
+
+  nav{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 86%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid transparent;transition:border-color .4s}
+  nav.scrolled{border-color:var(--line)}
+  .navin{display:flex;align-items:center;justify-content:space-between;padding:15px 0}
+  .navr{display:flex;align-items:center;gap:21px}
+  .navr a{color:var(--ink-soft);text-decoration:none;font-size:14.5px;transition:color .3s}
+  .navr a:hover{color:var(--ink)} .navr a.current{color:var(--ink)}
+  .toggle{background:none;border:1px solid var(--line);color:var(--ink-soft);cursor:pointer;font-family:"Source Serif 4",serif;font-size:13px;font-style:italic;padding:5px 13px;border-radius:999px}
+  .navr a.navbtn{background:var(--btn-bg);color:var(--btn-ink);padding:8px 17px}
+  @media(max-width:880px){.navr .navlink{display:none}}
+
+  .subnav{border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--bg) 92%,transparent);position:sticky;top:58px;z-index:40;backdrop-filter:blur(8px)}
+  .subnav-in{display:flex;align-items:baseline;gap:clamp(14px,2vw,28px);padding:11px 0;flex-wrap:wrap}
+  .subnav .sn-lab{font-style:italic;font-size:13px;color:var(--ink-mute);margin-right:6px}
+  .subnav a{font-size:13.5px;color:var(--ink-mute);text-decoration:none;padding-bottom:3px;border-bottom:1px solid transparent;white-space:nowrap}
+  .subnav a:hover{color:var(--ink)} .subnav a.current{color:var(--ink);border-bottom-color:var(--accent)}
+
+  .hero{padding:clamp(40px,5vh,68px) 0 clamp(22px,3vh,36px)}
+  .dateline{display:flex;align-items:center;gap:13px;margin-bottom:20px}
+  .dateline .l{width:26px;height:1px;background:var(--accent)}
+  .hero h1{font-size:clamp(34px,5vw,58px);line-height:0.98;letter-spacing:-.018em;margin-bottom:18px;max-width:18ch}
+  .hero h1 .acc{color:var(--accent);font-style:italic}
+  .hero-sub{font-size:16px;line-height:1.6;color:var(--ink);max-width:60ch;margin-bottom:24px}
+  .h-status{display:inline-flex;align-items:center;gap:7px;padding:4px 12px;border:1px solid color-mix(in srgb,var(--accent) 45%,transparent);font-style:italic;font-size:11px;color:var(--accent);letter-spacing:.06em;text-transform:uppercase;margin-bottom:18px}
+  .h-status .dot{width:6px;height:6px;border-radius:50%;background:var(--accent)}
+
+  /* Summary tiles */
+  .summary{padding:clamp(22px,3vw,32px) 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .sum-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+  @media(max-width:760px){.sum-row{grid-template-columns:repeat(2,1fr)}}
+  .sum-tile{background:var(--bg);padding:18px 20px;position:relative}
+  .sum-tile::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px}
+  .sum-tile.income::before{background:var(--income)}
+  .sum-tile.assets::before{background:var(--asset)}
+  .sum-tile.expenses::before{background:var(--expense)}
+  .sum-tile.liab::before{background:var(--liability)}
+  .sum-l{display:block;font-style:italic;font-size:11px;color:var(--ink-mute);letter-spacing:.05em;text-transform:uppercase;line-height:1.2;margin-bottom:8px}
+  .sum-v{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:28px;color:var(--ink);line-height:1;letter-spacing:-.01em}
+  .sum-d{font-style:italic;font-size:11.5px;color:var(--ink-mute);margin-top:6px}
+
+  /* Map section */
+  .map-sec{padding:clamp(30px,4vw,52px) 0;border-bottom:1px solid var(--line)}
+  .map-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:24px;flex-wrap:wrap;gap:14px}
+  .map-head h2{font-size:clamp(26px,3.4vw,38px);line-height:1.05}
+  .map-head h2 .acc{color:var(--accent);font-style:italic}
+  .map-head .stamp{font-style:italic;font-size:12.5px;color:var(--ink-mute)}
+  .map-canvas{border:1px solid var(--line);background:color-mix(in srgb,var(--ink) 2%,transparent);padding:24px;overflow-x:auto}
+  .map-svg{display:block;width:100%;min-width:900px;height:auto}
+  .map-legend{display:flex;gap:22px;margin-top:18px;flex-wrap:wrap;font-size:12.5px;color:var(--ink-soft);font-style:italic}
+  .leg-i{display:flex;align-items:center;gap:8px}
+  .leg-i .sw{width:11px;height:11px;border-radius:2px}
+
+  /* Categories */
+  .cats{padding:clamp(30px,4vw,52px) 0;border-bottom:1px solid var(--line)}
+  .cats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:24px}
+  @media(max-width:760px){.cats-grid{grid-template-columns:1fr}}
+  .cat{padding:24px;border:1px solid var(--line);background:color-mix(in srgb,var(--ink) 2%,transparent)}
+  .cat-head{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+  .cat-head .dot{width:9px;height:9px;border-radius:50%}
+  .cat-head h3{font-size:22px;line-height:1.15}
+  .cat-head .total{margin-left:auto;font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--accent);font-size:18px}
+  .cat-list{list-style:none}
+  .cat-list li{padding:9px 0;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:baseline;font-size:13.5px}
+  .cat-list li:first-child{border-top:none}
+  .cat-list .name{color:var(--ink)}
+  .cat-list .meta{font-style:italic;color:var(--ink-mute);font-size:11.5px;display:block;margin-top:2px}
+  .cat-list .v{color:var(--ink);font-weight:500}
+  .cat-list .v.acc{color:var(--accent)}
+
+  /* PROJECTION SECTION */
+  .proj-sec{padding:clamp(36px,4.5vw,60px) 0;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--ink) 1.5%,transparent)}
+  .proj-head{margin-bottom:24px}
+  .proj-head h2{font-size:clamp(28px,3.8vw,42px);line-height:1.02;margin-bottom:8px;max-width:22ch}
+  .proj-head h2 .acc{color:var(--accent);font-style:italic}
+  .proj-head p{font-style:italic;font-size:14.5px;color:var(--ink-soft);max-width:64ch;line-height:1.55}
+
+  /* Configuration row */
+  .config-row{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:24px;padding:18px 20px;border:1px solid var(--line);background:var(--bg)}
+  @media(max-width:900px){.config-row{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:520px){.config-row{grid-template-columns:1fr}}
+  .config-i{display:flex;flex-direction:column;gap:6px}
+  .config-i label{font-style:italic;font-size:10.5px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase}
+  .config-i .val{font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--accent);font-size:22px;line-height:1}
+  .config-i .ctrl{display:flex;align-items:center;gap:8px;margin-top:2px}
+  .config-i input[type=range]{flex:1;accent-color:var(--accent);background:var(--line);height:2px}
+  .config-i .meta{font-style:italic;font-size:10px;color:var(--ink-mute);letter-spacing:.04em}
+
+  /* Chart container */
+  .chart-block{border:1px solid var(--line);background:var(--bg);padding:24px;margin-bottom:20px;overflow-x:auto}
+  .chart-block svg{display:block;width:100%;min-width:780px;height:auto}
+  .chart-legend{display:flex;gap:20px;margin-top:16px;flex-wrap:wrap;font-size:12px;color:var(--ink-soft);font-style:italic}
+  .chart-legend .li{display:flex;align-items:center;gap:7px}
+  .chart-legend .lc{width:18px;height:2px;flex-shrink:0}
+  .chart-legend .lc.dash{background:repeating-linear-gradient(to right,var(--accent) 0,var(--accent) 3px,transparent 3px,transparent 6px)}
+
+  /* Projection tiles */
+  .proj-tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-bottom:20px}
+  @media(max-width:760px){.proj-tiles{grid-template-columns:repeat(2,1fr)}}
+  .ptile{background:var(--bg);padding:18px 20px;position:relative}
+  .ptile::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent)}
+  .ptile.good::before{background:var(--good)}
+  .ptile-l{display:block;font-style:italic;font-size:11px;color:var(--ink-mute);letter-spacing:.05em;text-transform:uppercase;margin-bottom:8px}
+  .ptile-v{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:26px;color:var(--ink);line-height:1.05;display:block}
+  .ptile-v.acc{color:var(--accent)}
+  .ptile-v.good{color:var(--good)}
+  .ptile-d{font-style:italic;font-size:11px;color:var(--ink-mute);margin-top:6px;line-height:1.45}
+
+  /* Status banner */
+  .status-banner{padding:18px 24px;border:1px solid var(--good);background:color-mix(in srgb,var(--good) 7%,transparent);display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .status-banner .badge{flex-shrink:0;width:38px;height:38px;border-radius:50%;border:1.5px solid var(--good);display:flex;align-items:center;justify-content:center;color:var(--good);font-family:"Cormorant Garamond",serif;font-style:italic;font-size:22px;line-height:1}
+  .status-banner .txt{flex:1;min-width:240px}
+  .status-banner h4{font-size:18px;line-height:1.2;margin-bottom:4px;color:var(--good)}
+  .status-banner p{font-size:13px;color:var(--ink-soft);line-height:1.55;max-width:64ch}
+
+  /* AA integration */
+  .aa-block{padding:clamp(32px,4.5vw,56px) 0;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--accent) 3%,transparent)}
+  .aa-grid{display:grid;grid-template-columns:1fr 1fr;gap:42px;align-items:center}
+  @media(max-width:860px){.aa-grid{grid-template-columns:1fr;gap:24px}}
+  .aa-text h2{font-size:clamp(26px,3.4vw,36px);line-height:1.1;margin-bottom:14px}
+  .aa-text h2 .acc{color:var(--accent);font-style:italic}
+  .aa-text p{font-size:15px;line-height:1.65;color:var(--ink);max-width:54ch;margin-bottom:18px}
+  .aa-text ul{list-style:none;margin-top:14px}
+  .aa-text li{padding:8px 0;font-size:13.5px;line-height:1.55;color:var(--ink-soft);display:flex;gap:12px;align-items:flex-start}
+  .aa-text li::before{content:"";flex-shrink:0;width:5px;height:5px;border-radius:50%;background:var(--accent);margin-top:7px}
+  .aa-diag{border:1px solid var(--line);background:var(--bg);padding:22px;font-family:"JetBrains Mono",monospace;font-size:11.5px;line-height:1.7;color:var(--ink-soft)}
+  .aa-diag .step{display:flex;gap:14px;padding:9px 0;border-top:1px dashed var(--line)}
+  .aa-diag .step:first-child{border-top:none}
+  .aa-diag .n{color:var(--accent);font-style:italic;font-family:"Cormorant Garamond",serif;font-size:14px;width:18px;flex-shrink:0}
+  .aa-diag .label{color:var(--ink);font-weight:500}
+
+  /* CTA */
+  .build-cta{padding:clamp(40px,5vw,68px) 0;border-bottom:1px solid var(--line);text-align:center}
+  .build-cta h2{font-size:clamp(28px,4vw,42px);max-width:24ch;margin:0 auto 14px;line-height:1.05}
+  .build-cta h2 .acc{color:var(--accent);font-style:italic}
+  .build-cta p{font-size:14.5px;color:var(--ink-soft);max-width:50ch;margin:0 auto 26px;line-height:1.6}
+  .build-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+
+  /* Limitations */
+  .lim{padding:clamp(28px,3.5vw,40px) 0;background:color-mix(in srgb,var(--ink) 2%,transparent)}
+  .lim h3{font-size:22px;margin-bottom:12px}
+  .lim p{font-size:14px;color:var(--ink-soft);line-height:1.65;max-width:64ch}
+
+  footer{border-top:1px solid var(--line);padding:48px 0 36px}
+  .footin{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;margin-bottom:36px}
+  .footcols{display:flex;gap:clamp(34px,6vw,68px);flex-wrap:wrap}
+  .footcol h4{font-style:italic;font-weight:400;font-size:14px;color:var(--ink-mute);margin-bottom:13px}
+  .footcol a{display:block;color:var(--ink-soft);text-decoration:none;font-size:15px;margin-bottom:9px}
+  .footcol a:hover{color:var(--accent)}
+  .disc{padding-top:22px;border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px}
+  .disc span{font-size:12.5px;color:var(--ink-mute);line-height:1.6}
+  .disc .legal{max-width:64ch;font-style:italic}
+</style>
+</head>
+<body>
+
+  <nav id="nav">
+    <div class="wrap navin">
+      <a class="wm" href="index.html">flameback<span class="p">.</span></a>
+      <div class="navr">
+        <a class="navlink" href="flameback-firm.html">Firm</a>
+        <a class="navlink" href="flameback-strategies.html">Strategies</a>
+        <a class="navlink" href="flameback-offerings.html">Offerings</a>
+        <a class="navlink" href="flameback-insights.html">Insights</a>
+        <a class="navlink current" href="flameback-resources.html">Resources</a>
+        <a class="navlink" href="flameback-offbook.html">Off-book</a>
+        <a class="login" href="#">Login</a>
+        <a class="navbtn" href="flameback-app-splash.html">Start your journey</a>
+        <button class="toggle" id="toggle">Light</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="subnav">
+    <div class="wrap subnav-in">
+      <span class="sn-lab">Resources</span>
+      <a href="flameback-resources.html">Overview</a>
+      <a href="flameback-portfolio-doctor.html">Portfolio doctor</a>
+      <a class="current" href="#">Asset map</a>
+      <a href="flameback-insurance-advisor.html">Insurance advisor</a>
+      <a href="flameback-economic-indicators.html">Economic data</a>
+      <a href="flameback-market-indicators.html">Market data</a>
+      <a href="flameback-screener.html">Screener</a>
+      <a href="flameback-opensource.html">Open source</a>
+    </div>
+  </div>
+
+  <section class="hero">
+    <div class="wrap">
+      <div class="dateline"><span class="l"></span><span class="lab">Asset map</span></div>
+      <span class="h-status"><span class="dot"></span>Beta &middot; Account Aggregator integrated</span>
+      <h1>See the whole household, <span class="acc">on one page.</span></h1>
+      <p class="hero-sub">A visual tree connecting income, expenses, assets, and liabilities &mdash; refreshed automatically through India&rsquo;s Account Aggregator framework. Project the household forward to retirement with realistic assumptions on inflation, growth, and lifecycle events.</p>
+    </div>
+  </section>
+
+  <!-- Summary -->
+  <section class="summary">
+    <div class="wrap">
+      <div class="sum-row">
+        <div class="sum-tile income">
+          <span class="sum-l">Monthly inflow</span>
+          <span class="sum-v">&#8377;14,80,000</span>
+          <span class="sum-d">Salary + business + dividends</span>
+        </div>
+        <div class="sum-tile assets">
+          <span class="sum-l">Total assets</span>
+          <span class="sum-v">&#8377;18,42,00,000</span>
+          <span class="sum-d">Across 31 holdings</span>
+        </div>
+        <div class="sum-tile expenses">
+          <span class="sum-l">Monthly outflow</span>
+          <span class="sum-v">&#8377;6,20,000</span>
+          <span class="sum-d">Living + debt servicing</span>
+        </div>
+        <div class="sum-tile liab">
+          <span class="sum-l">Liabilities</span>
+          <span class="sum-v">&#8377;2,15,00,000</span>
+          <span class="sum-d">Home loan + LAS</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Asset Map visualization -->
+  <section class="map-sec">
+    <div class="wrap">
+      <div class="map-head">
+        <h2>The <span class="acc">Sharma family</span> map.</h2>
+        <span class="stamp">Sample household &middot; for illustration</span>
+      </div>
+
+      <div class="map-canvas">
+        <svg class="map-svg" viewBox="0 0 1000 540" xmlns="http://www.w3.org/2000/svg">
+          <text x="120" y="30" font-size="11" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)" letter-spacing="0.5">INFLOWS</text>
+          <text x="500" y="30" font-size="11" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)" letter-spacing="0.5" text-anchor="middle">HOUSEHOLD</text>
+          <text x="880" y="30" font-size="11" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)" letter-spacing="0.5" text-anchor="end">OUTFLOWS</text>
+          <circle cx="500" cy="270" r="48" fill="var(--bg)" stroke="var(--accent)" stroke-width="1.8"/>
+          <text x="500" y="262" font-size="14" font-family="Cormorant Garamond" font-style="italic" fill="var(--ink)" text-anchor="middle">Sharma</text>
+          <text x="500" y="280" font-size="11" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)" text-anchor="middle">family</text>
+          <text x="500" y="295" font-size="9" font-family="Source Serif 4" font-style="italic" fill="var(--accent)" text-anchor="middle">4 members</text>
+
+          <!-- Income branches -->
+          <line x1="120" y1="100" x2="452" y2="262" stroke="var(--income)" stroke-width="1.2" opacity="0.55"/>
+          <circle cx="120" cy="100" r="7" fill="var(--income)"/>
+          <text x="105" y="103" font-size="11" font-family="Cormorant Garamond" font-style="italic" fill="var(--ink)" text-anchor="end">Salary &mdash; Rajesh</text>
+          <text x="105" y="118" font-size="9.5" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)" text-anchor="end">&#8377;9.2 L / month</text>
+          <line x1="120" y1="180" x2="452" y2="262" stroke="var(--income)" stroke-width="1.2" opacity="0.55"/>
+          <circle cx="120" cy="180" r="7" fill="var(--income)"/>
+          <text x="105" y="183" font-size="11" font-family="Cormorant Garamond" font-style="italic" fill="var(--ink)" text-anchor="end">Business &mdash; Priya</text>
+          <text x="105" y="198" font-size="9.5" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)" text-anchor="end">&#8377;4.5 L / month</text>
+          <line x1="120" y1="260" x2="452" y2="266" stroke="var(--income)" stroke-width="1.2" opacity="0.55"/>
+          <circle cx="120" cy="260" r="7" fill="var(--income)"/>
+          <text x="105" y="263" font-size="11" font-family="Cormorant Garamond" font-style="italic" fill="var(--ink)" text-anchor="end">Rental income</text>
+          <text x="105" y="278" font-size="9.5" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)" text-anchor="end">&#8377;85,000 / month</text>
+          <line x1="120" y1="340" x2="452" y2="274" stroke="var(--income)" stroke-width="1.2" opacity="0.55"/>
+          <circle cx="120" cy="340" r="7" fill="var(--income)"/>
+          <text x="105" y="343" font-size="11" font-family="Cormorant Garamond" font-style="italic" fill="var(--ink)" text-anchor="end">Dividends</text>
+          <text x="105" y="358" font-size="9.5" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)" text-anchor="end">&#8377;48,000 / month</text>
+          <line x1="120" y1="420" x2="452" y2="282" stroke="var(--income)" stroke-width="1.2" opacity="0.55"/>
+          <circle cx="120" cy="420" r="7" fill="var(--income)"/>
+          <text x="105" y="423" font-size="11" font-family="Cormorant Garamond" font-style="italic" fill="var(--ink)" text-anchor="end">Interest income</text>
+          <text x="105" y="438" font-size="9.5" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)" text-anchor="end">&#8377;55,000 / month</text>
+
+          <!-- Assets (top, orange) -->
+          <line x1="380" y1="80" x2="490" y2="232" stroke="var(--asset)" stroke-width="1.3" opacity="0.55"/>
+          <circle cx="380" cy="80" r="9" fill="var(--asset)"/>
+          <text x="380" y="62" font-size="11" font-family="Cormorant Garamond" font-style="italic" fill="var(--ink)" text-anchor="middle">Equity PMS</text>
+          <text x="380" y="50" font-size="9.5" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)" text-anchor="middle">&#8377;6.8 Cr</text>
+          <line x1="450" y1="60" x2="496" y2="226" stroke="var(--asset)" stroke-width="1.3" opacity="0.55"/>
+          <circle cx="450" cy="60" r="9" fill="var(--asset)"/>
+          <text x="450" y="42" font-size="11" font-family="Cormorant Garamond" font-style="italic" fill="var(--ink)" text-anchor="middle">Mutual funds</text>
+          <text x="450" y="30" font-size="9.5" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)" text-anchor="middle">&#8377;2.4 Cr</text>
+          <line x1="540" y1="60" x2="504" y2="226" stroke="var(--asset)" stroke-width="1.3" opacity="0.55"/>
+          <circle cx="540" cy="60" r="9" fill="var(--asset)"/>
+          <text x="540" y="42" font-size="11" font-family="Cormorant Garamond" font-style="italic" fill="var(--ink)" text-anchor="middle">Real estate</text>
+          <text x="540" y="30" font-size="9.5" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)" text-anchor="middle">&#8377;7.2 Cr</text>
+          <line x1="610" y1="80" x2="510" y2="232" stroke="var(--asset)" stroke-width="1.3" opacity="0.55"/>
+          <circle cx="610" cy="80" r="9" fill="var(--asset)"/>
+          <text x="610" y="62" font-size="11" font-family="Cormorant Garamond" font-style="italic" fill="var(--ink)" text-anchor="middle">Gold &amp; bonds</text>
+          <text x="610" y="50" font-size="9.5" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)" text-anchor="middle">&#8377;1.3 Cr</text>
+          <line x1="670" y1="120" x2="514" y2="240" stroke="var(--asset)" stroke-width="1.3" opacity="0.55"/>
+          <circle cx="670" cy="120" r="9" fill="var(--asset)"/>
+          <text x="685" y="115" font-size="11" font-family="Cormorant Garamond" font-style="italic" fill="var(--ink)" text-anchor="start">Cash &amp; FD</text>
+          <text x="685" y="130" font-size="9.5" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)" text-anchor="start">&#8377;67 L</text>
+
+          <!-- Expenses -->
+          <line x1="880" y1="100" x2="548" y2="262" stroke="var(--expense)" stroke-width="1.2" opacity="0.55"/>
+          <circle cx="880" cy="100" r="7" fill="var(--expense)"/>
+          <text x="895" y="103" font-size="11" font-family="Cormorant Garamond" font-style="italic" fill="var(--ink)" text-anchor="start">Living &amp; lifestyle</text>
+          <text x="895" y="118" font-size="9.5" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)" text-anchor="start">&#8377;3.2 L / month</text>
+          <line x1="880" y1="180" x2="548" y2="262" stroke="var(--expense)" stroke-width="1.2" opacity="0.55"/>
+          <circle cx="880" cy="180" r="7" fill="var(--expense)"/>
+          <text x="895" y="183" font-size="11" font-family="Cormorant Garamond" font-style="italic" fill="var(--ink)" text-anchor="start">Education</text>
+          <text x="895" y="198" font-size="9.5" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)" text-anchor="start">&#8377;75,000 / month</text>
+          <line x1="880" y1="260" x2="548" y2="266" stroke="var(--expense)" stroke-width="1.2" opacity="0.55"/>
+          <circle cx="880" cy="260" r="7" fill="var(--expense)"/>
+          <text x="895" y="263" font-size="11" font-family="Cormorant Garamond" font-style="italic" fill="var(--ink)" text-anchor="start">Insurance premia</text>
+          <text x="895" y="278" font-size="9.5" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)" text-anchor="start">&#8377;45,000 / month</text>
+          <line x1="880" y1="340" x2="548" y2="274" stroke="var(--expense)" stroke-width="1.2" opacity="0.55"/>
+          <circle cx="880" cy="340" r="7" fill="var(--expense)"/>
+          <text x="895" y="343" font-size="11" font-family="Cormorant Garamond" font-style="italic" fill="var(--ink)" text-anchor="start">Travel &amp; leisure</text>
+          <text x="895" y="358" font-size="9.5" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)" text-anchor="start">&#8377;55,000 / month</text>
+
+          <!-- Liabilities -->
+          <line x1="380" y1="460" x2="490" y2="308" stroke="var(--liability)" stroke-width="1.3" opacity="0.55"/>
+          <circle cx="380" cy="460" r="9" fill="var(--liability)"/>
+          <text x="380" y="490" font-size="11" font-family="Cormorant Garamond" font-style="italic" fill="var(--ink)" text-anchor="middle">Home loan</text>
+          <text x="380" y="504" font-size="9.5" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)" text-anchor="middle">&#8377;1.85 Cr &middot; 8.4% &middot; 14y</text>
+          <line x1="620" y1="460" x2="510" y2="308" stroke="var(--liability)" stroke-width="1.3" opacity="0.55"/>
+          <circle cx="620" cy="460" r="9" fill="var(--liability)"/>
+          <text x="620" y="490" font-size="11" font-family="Cormorant Garamond" font-style="italic" fill="var(--ink)" text-anchor="middle">Loan against shares</text>
+          <text x="620" y="504" font-size="9.5" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)" text-anchor="middle">&#8377;30 L &middot; 9.5% &middot; revolving</text>
+
+          <rect x="20" y="510" width="170" height="22" fill="none" stroke="var(--accent)" stroke-width="0.6" opacity="0.7"/>
+          <circle cx="32" cy="521" r="3" fill="var(--accent)"/>
+          <text x="42" y="525" font-size="9.5" font-family="Source Serif 4" font-style="italic" fill="var(--accent)" letter-spacing="0.3">Live via Account Aggregator</text>
+        </svg>
+      </div>
+
+      <div class="map-legend">
+        <span class="leg-i"><span class="sw" style="background:var(--income)"></span>Inflows</span>
+        <span class="leg-i"><span class="sw" style="background:var(--asset)"></span>Assets</span>
+        <span class="leg-i"><span class="sw" style="background:var(--expense)"></span>Outflows</span>
+        <span class="leg-i"><span class="sw" style="background:var(--liability)"></span>Liabilities</span>
+        <span class="leg-i"><span class="sw" style="background:var(--accent);border-radius:50%"></span>Household node</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Categories -->
+  <section class="cats">
+    <div class="wrap">
+      <span class="lab"><span class="n">i</span>Breakdown</span>
+      <h2 style="font-size:clamp(24px,3.2vw,32px);margin-top:8px;margin-bottom:6px">Each branch, opened up.</h2>
+      <p style="font-size:14px;color:var(--ink-soft);font-style:italic;max-width:54ch">The four major branches summarised side by side for reference.</p>
+
+      <div class="cats-grid">
+        <div class="cat">
+          <div class="cat-head"><span class="dot" style="background:var(--asset)"></span><h3>Assets</h3><span class="total">&#8377;18.42 Cr</span></div>
+          <ul class="cat-list">
+            <li><span class="name">Real estate <span class="meta">2 properties &middot; primary + rental</span></span><span class="v">&#8377;7.20 Cr</span></li>
+            <li><span class="name">Equity PMS <span class="meta">Flameback Large-cap &middot; Multi-cap</span></span><span class="v acc">&#8377;6.80 Cr</span></li>
+            <li><span class="name">Mutual funds <span class="meta">7 schemes &middot; equity &amp; debt</span></span><span class="v">&#8377;2.40 Cr</span></li>
+            <li><span class="name">Gold &amp; sovereign bonds <span class="meta">SGBs + physical</span></span><span class="v">&#8377;1.30 Cr</span></li>
+            <li><span class="name">Cash &amp; FD <span class="meta">2 banks</span></span><span class="v">&#8377;0.67 Cr</span></li>
+            <li><span class="name">Other (vehicles, fine art) <span class="meta">market-valued</span></span><span class="v">&#8377;0.05 Cr</span></li>
+          </ul>
+        </div>
+        <div class="cat">
+          <div class="cat-head"><span class="dot" style="background:var(--income)"></span><h3>Monthly inflows</h3><span class="total">&#8377;14.80 L</span></div>
+          <ul class="cat-list">
+            <li><span class="name">Salary &mdash; Rajesh <span class="meta">CTO, listed firm</span></span><span class="v">&#8377;9.20 L</span></li>
+            <li><span class="name">Business income &mdash; Priya <span class="meta">design consultancy</span></span><span class="v">&#8377;4.50 L</span></li>
+            <li><span class="name">Rental <span class="meta">commercial property, Bengaluru</span></span><span class="v">&#8377;0.85 L</span></li>
+            <li><span class="name">Interest <span class="meta">FD + bond coupons</span></span><span class="v">&#8377;0.55 L</span></li>
+            <li><span class="name">Dividends <span class="meta">across PMS + MF</span></span><span class="v">&#8377;0.48 L</span></li>
+          </ul>
+        </div>
+        <div class="cat">
+          <div class="cat-head"><span class="dot" style="background:var(--expense)"></span><h3>Monthly outflows</h3><span class="total">&#8377;6.20 L</span></div>
+          <ul class="cat-list">
+            <li><span class="name">Living &amp; lifestyle <span class="meta">groceries, utilities, household</span></span><span class="v">&#8377;3.20 L</span></li>
+            <li><span class="name">Home loan EMI <span class="meta">8.4%, 14y residual</span></span><span class="v">&#8377;1.25 L</span></li>
+            <li><span class="name">Education <span class="meta">2 children</span></span><span class="v">&#8377;0.75 L</span></li>
+            <li><span class="name">Travel &amp; leisure <span class="meta">12-mo average</span></span><span class="v">&#8377;0.55 L</span></li>
+            <li><span class="name">Insurance premia <span class="meta">life, health, motor</span></span><span class="v">&#8377;0.45 L</span></li>
+          </ul>
+        </div>
+        <div class="cat">
+          <div class="cat-head"><span class="dot" style="background:var(--liability)"></span><h3>Liabilities</h3><span class="total">&#8377;2.15 Cr</span></div>
+          <ul class="cat-list">
+            <li><span class="name">Home loan <span class="meta">primary residence &middot; 8.4% &middot; 14y remaining</span></span><span class="v">&#8377;1.85 Cr</span></li>
+            <li><span class="name">Loan against securities <span class="meta">9.5% &middot; revolving</span></span><span class="v">&#8377;0.30 Cr</span></li>
+            <li style="border-top:1px solid var(--line);padding-top:14px"><span class="name" style="font-weight:500">Net worth <span class="meta">assets minus liabilities</span></span><span class="v acc">&#8377;16.27 Cr</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTION SECTION -->
+  <section class="proj-sec">
+    <div class="wrap">
+      <div class="proj-head">
+        <span class="lab"><span class="n">ii</span>Projection</span>
+        <h2 style="margin-top:8px">From today to <span class="acc">retirement.</span></h2>
+        <p>The household&rsquo;s trajectory under stated assumptions on inflation, growth, and lifecycle expenses. Vertical markers show major life events; the horizontal line is the corpus required to sustain current lifestyle through a 30-year retirement.</p>
+      </div>
+
+      <!-- Configuration -->
+      <div class="config-row">
+        <div class="config-i">
+          <label>Inflation</label>
+          <span class="val">5.0%</span>
+          <div class="ctrl"><input type="range" min="2" max="9" value="5" step="0.5"/></div>
+          <span class="meta">CPI long-run assumption</span>
+        </div>
+        <div class="config-i">
+          <label>Equity returns</label>
+          <span class="val">12.0%</span>
+          <div class="ctrl"><input type="range" min="6" max="16" value="12" step="0.5"/></div>
+          <span class="meta">long-run nominal</span>
+        </div>
+        <div class="config-i">
+          <label>Debt returns</label>
+          <span class="val">7.0%</span>
+          <div class="ctrl"><input type="range" min="4" max="10" value="7" step="0.5"/></div>
+          <span class="meta">long-run nominal</span>
+        </div>
+        <div class="config-i">
+          <label>Salary growth</label>
+          <span class="val">8.0%</span>
+          <div class="ctrl"><input type="range" min="3" max="15" value="8" step="0.5"/></div>
+          <span class="meta">annual nominal</span>
+        </div>
+        <div class="config-i">
+          <label>Retirement age</label>
+          <span class="val">60</span>
+          <div class="ctrl"><input type="range" min="50" max="70" value="60" step="1"/></div>
+          <span class="meta">Rajesh &middot; current 40</span>
+        </div>
+      </div>
+
+      <!-- Projection chart -->
+      <div class="chart-block">
+        <svg viewBox="0 0 1000 480" xmlns="http://www.w3.org/2000/svg">
+          <!-- Y axis labels -->
+          <g font-family="Source Serif 4" font-size="10" font-style="italic" fill="var(--ink-mute)" letter-spacing="0.04em">
+            <text x="62" y="38" text-anchor="end">&#8377;120 Cr</text>
+            <text x="62" y="105" text-anchor="end">&#8377;90 Cr</text>
+            <text x="62" y="172" text-anchor="end">&#8377;60 Cr</text>
+            <text x="62" y="239" text-anchor="end">&#8377;30 Cr</text>
+            <text x="62" y="306" text-anchor="end">&#8377;0</text>
+          </g>
+
+          <!-- Y axis gridlines -->
+          <g stroke="var(--line)" stroke-width="0.5">
+            <line x1="70" y1="35" x2="980" y2="35"/>
+            <line x1="70" y1="102" x2="980" y2="102"/>
+            <line x1="70" y1="169" x2="980" y2="169"/>
+            <line x1="70" y1="236" x2="980" y2="236"/>
+            <line x1="70" y1="303" x2="980" y2="303"/>
+          </g>
+
+          <!-- X axis labels -->
+          <g font-family="Source Serif 4" font-size="10" font-style="italic" fill="var(--ink-mute)" letter-spacing="0.04em" text-anchor="middle">
+            <text x="70" y="324">2026</text>
+            <text x="184" y="324">2029</text>
+            <text x="298" y="324">2032</text>
+            <text x="412" y="324">2035</text>
+            <text x="526" y="324">2038</text>
+            <text x="640" y="324">2041</text>
+            <text x="754" y="324">2044</text>
+            <text x="868" y="324">2047</text>
+            <text x="980" y="324">2050</text>
+          </g>
+
+          <!-- Required corpus target line -->
+          <line x1="70" y1="194" x2="980" y2="194" stroke="var(--good)" stroke-width="1.2" stroke-dasharray="6,4" opacity="0.7"/>
+          <text x="976" y="188" font-size="10" font-family="Source Serif 4" font-style="italic" fill="var(--good)" text-anchor="end" letter-spacing="0.04em">REQUIRED CORPUS AT RETIREMENT: &#8377;49 Cr</text>
+
+          <!-- Event markers (vertical dashed lines) -->
+          <g stroke="var(--ink-mute)" stroke-width="0.8" stroke-dasharray="4,4" opacity="0.5">
+            <line x1="222" y1="35" x2="222" y2="303"/>
+            <line x1="335" y1="35" x2="335" y2="303"/>
+            <line x1="411" y1="35" x2="411" y2="303"/>
+            <line x1="828" y1="35" x2="828" y2="303"/>
+          </g>
+
+          <!-- Event labels -->
+          <g font-family="Cormorant Garamond" font-size="11" font-style="italic" fill="var(--ink-soft)">
+            <rect x="180" y="42" width="84" height="22" fill="var(--bg)" stroke="var(--line)" stroke-width="0.6"/>
+            <text x="222" y="57" text-anchor="middle">Child 1 college</text>
+            <rect x="293" y="64" width="84" height="22" fill="var(--bg)" stroke="var(--line)" stroke-width="0.6"/>
+            <text x="335" y="79" text-anchor="middle">Child 2 college</text>
+            <rect x="369" y="42" width="84" height="22" fill="var(--bg)" stroke="var(--line)" stroke-width="0.6"/>
+            <text x="411" y="57" text-anchor="middle">Second house</text>
+            <rect x="786" y="42" width="84" height="22" fill="var(--bg)" stroke="var(--accent)" stroke-width="0.9"/>
+            <text x="828" y="57" text-anchor="middle" fill="var(--accent)">Retirement</text>
+          </g>
+
+          <!-- Net Worth (nominal, orange solid) -->
+          <path d="M 70,269 L 184,253 L 222,243 L 260,236 L 298,230 L 335,222 L 374,219 L 411,219 L 450,213 L 488,204 L 526,194 L 564,182 L 602,168 L 640,152 L 678,136 L 716,118 L 754,98 L 792,80 L 828,66 L 866,60 L 904,55 L 942,52 L 980,49"
+                fill="none" stroke="var(--accent)" stroke-width="2.4" stroke-linejoin="round"/>
+
+          <!-- Net Worth (inflation-adjusted, orange dashed) -->
+          <path d="M 70,269 L 184,254 L 222,251 L 260,252 L 298,251 L 335,250 L 374,249 L 411,251 L 450,246 L 488,240 L 526,234 L 564,228 L 602,221 L 640,214 L 678,206 L 716,198 L 754,189 L 792,182 L 828,178 L 866,180 L 904,182 L 942,184 L 980,186"
+                fill="none" stroke="var(--accent)" stroke-width="1.6" stroke-dasharray="5,4" opacity="0.7"/>
+
+          <!-- Data point dots at key years -->
+          <g fill="var(--accent)">
+            <circle cx="70" cy="269" r="3"/>
+            <circle cx="222" cy="243" r="3"/>
+            <circle cx="411" cy="219" r="3"/>
+            <circle cx="640" cy="152" r="3.5"/>
+            <circle cx="828" cy="66" r="4" stroke="var(--bg)" stroke-width="1.5"/>
+            <circle cx="980" cy="49" r="3"/>
+          </g>
+
+          <!-- Annotations for key points -->
+          <text x="70" y="287" font-size="9" font-family="JetBrains Mono" fill="var(--accent)" text-anchor="start">&#8377;16 Cr</text>
+          <text x="828" y="54" font-size="11" font-family="Cormorant Garamond" font-style="italic" fill="var(--accent)" text-anchor="middle">&#8377;95 Cr</text>
+          <text x="975" y="42" font-size="10" font-family="JetBrains Mono" fill="var(--accent)" text-anchor="end">&#8377;110 Cr</text>
+
+          <!-- Y axis line -->
+          <line x1="70" y1="35" x2="70" y2="303" stroke="var(--line)" stroke-width="1"/>
+          <line x1="70" y1="303" x2="980" y2="303" stroke="var(--line)" stroke-width="1"/>
+
+          <!-- Footer note -->
+          <text x="70" y="350" font-size="10" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)" letter-spacing="0.04em">YEAR</text>
+        </svg>
+
+        <div class="chart-legend">
+          <span class="li"><span class="lc" style="background:var(--accent);height:2.4px"></span>Net worth, nominal</span>
+          <span class="li"><span class="lc dash"></span>Net worth, inflation-adjusted (2026 rupees)</span>
+          <span class="li"><span class="lc" style="background:var(--good);height:1.2px"></span>Required corpus at retirement</span>
+          <span class="li"><span class="lc" style="background:var(--ink-mute);height:0.8px;opacity:0.5"></span>Lifecycle events</span>
+        </div>
+      </div>
+
+      <!-- Projection tiles -->
+      <div class="proj-tiles">
+        <div class="ptile">
+          <span class="ptile-l">Projected net worth at 60</span>
+          <span class="ptile-v acc">&#8377;95 Cr</span>
+          <span class="ptile-d">Nominal &middot; ~&#8377;36 Cr in 2026 rupees</span>
+        </div>
+        <div class="ptile">
+          <span class="ptile-l">Required corpus</span>
+          <span class="ptile-v">&#8377;49 Cr</span>
+          <span class="ptile-d">For 30 years at current lifestyle (inflation-adjusted)</span>
+        </div>
+        <div class="ptile good">
+          <span class="ptile-l">Surplus over target</span>
+          <span class="ptile-v good">+&#8377;46 Cr</span>
+          <span class="ptile-d">Cushion of ~94% above required corpus</span>
+        </div>
+        <div class="ptile">
+          <span class="ptile-l">Years till retirement</span>
+          <span class="ptile-v">20</span>
+          <span class="ptile-d">Rajesh &middot; from age 40 to 60</span>
+        </div>
+      </div>
+
+      <!-- Status banner -->
+      <div class="status-banner">
+        <div class="badge">&#10003;</div>
+        <div class="txt">
+          <h4>On track for retirement.</h4>
+          <p>Under the stated assumptions, the household reaches retirement with a corpus nearly twice the required floor. The main sensitivities are equity-return assumptions (a 3 pp lower return narrows surplus to ~&#8377;18 Cr) and inflation (a 7% scenario lifts required corpus to ~&#8377;72 Cr). Adjust the sliders above to stress-test.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AA integration -->
+  <section class="aa-block">
+    <div class="wrap">
+      <div class="aa-grid">
+        <div class="aa-text">
+          <span class="lab"><span class="n">iii</span>Account Aggregator</span>
+          <h2 style="margin-top:10px">Auto-refreshed, with <span class="acc">consent.</span></h2>
+          <p>The map updates itself through India&rsquo;s SEBI- and RBI-supervised Account Aggregator framework. Banks, depositories, mutual fund registries, and insurance providers stream verified data on a consent-based, time-bound, purpose-bound basis &mdash; no scraping, no shared passwords.</p>
+          <ul>
+            <li>One consent flow links all connected financial accounts in the household</li>
+            <li>Data refreshes happen automatically on the cadence the user sets (daily, weekly, monthly)</li>
+            <li>Read-only by design &mdash; the tool cannot transact, transfer, or alter accounts</li>
+            <li>Consent can be revoked at any time, immediately stopping all data flow</li>
+          </ul>
+        </div>
+        <div class="aa-diag">
+          <div class="step"><span class="n">i</span><div><span class="label">Add household members</span><br/>Each member generates own consent</div></div>
+          <div class="step"><span class="n">ii</span><div><span class="label">Choose an AA</span><br/>Finvu, OneMoney, CAMS, Setu &mdash; any registered AA</div></div>
+          <div class="step"><span class="n">iii</span><div><span class="label">Link financial accounts</span><br/>Banks, demat, MF, insurance</div></div>
+          <div class="step"><span class="n">iv</span><div><span class="label">Set refresh cadence</span><br/>Recommended: weekly</div></div>
+          <div class="step"><span class="n">v</span><div><span class="label">Map populates</span><br/>Around 2&ndash;6 minutes per first sync</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="build-cta">
+    <div class="wrap">
+      <h2>Build the household&rsquo;s <span class="acc">own map.</span></h2>
+      <p>Free for any household to use. No data leaves the AA framework. Standard SEBI/RBI consent flow with full revocation.</p>
+      <div class="build-row">
+        <a class="btn-out" href="#">Learn about consent flow</a>
+        <a class="btn" href="#">Start with consent &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="lim">
+    <div class="wrap">
+      <span class="lab"><span class="n">iv</span>Limitations</span>
+      <h3 style="margin-top:8px">What this tool does not do.</h3>
+      <p>The Asset Map is a viewing and structuring tool. It does not move money, execute trades, or recommend specific products. Insurance values shown reflect cover sum, not surrender value. Real estate values rely on user-input estimates unless connected to a registered valuer feed. Projection assumptions are nominal long-run averages &mdash; actual sequence of returns can vary substantially and is not modelled. For decisions involving material capital, the firm recommends a personal consultation.</p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <div class="footin">
+        <a class="wm" href="index.html">flameback<span class="p">.</span></a>
+        <div class="footcols">
+          <div class="footcol"><h4>Firm</h4><a href="flameback-firm.html">Team</a><a href="flameback-philosophy.html">Investment philosophy</a><a href="flameback-strategy-rd.html">Strategy R&amp;D</a><a href="flameback-technology.html">Technology</a></div>
+          <div class="footcol"><h4>Resources</h4><a href="flameback-resources.html">Overview</a><a href="flameback-portfolio-doctor.html">Portfolio doctor</a><a href="flameback-insurance-advisor.html">Insurance advisor</a><a href="flameback-screener.html">Screener</a></div>
+          <div class="footcol"><h4>Contact</h4><a href="#">Bangalore, India</a><a href="#">hello@flameback.in</a></div>
+        </div>
+      </div>
+      <div class="disc">
+        <span>&copy; 2026 Flameback Capital Pvt Ltd</span>
+        <span class="legal">Asset Map is a household visualisation and projection tool. It does not constitute investment, tax, or estate-planning advice. Account Aggregator integration follows RBI &amp; SEBI consent frameworks.</span>
+      </div>
+    </div>
+  </footer>
+
+<script>
+  var root=document.documentElement, tg=document.getElementById('toggle');
+  tg.addEventListener('click',function(){root.classList.toggle('light');tg.textContent=root.classList.contains('light')?'Dark':'Light';});
+  var nav=document.getElementById('nav');
+  window.addEventListener('scroll',function(){nav.classList.toggle('scrolled',window.scrollY>16)});
+</script>
+  <script src="reload.js"></script>
+</body>
+</html>

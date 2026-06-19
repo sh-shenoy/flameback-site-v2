@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>flameback. — Economic Indicators</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#1A1714; --ink:#F2EDE3; --ink-soft:rgba(242,237,227,.64); --ink-mute:rgba(242,237,227,.42);
+    --line:rgba(242,237,227,.15); --accent:#FF6D0A; --btn-bg:#FF6D0A; --btn-ink:#1A1714;
+    --grain-blend:screen; --grain-op:.05; --up:#8FB87A; --down:#D04A2A;
+  }
+  :root.light{
+    --bg:#FCFAF6; --ink:#1A1714; --ink-soft:rgba(26,23,20,.66); --ink-mute:rgba(26,23,20,.46);
+    --line:rgba(26,23,20,.13); --accent:#FF6D0A; --btn-bg:#1A1714; --btn-ink:#FCFAF6;
+    --grain-blend:multiply; --grain-op:.03; --up:#5F8048; --down:#A03615;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:"Source Serif 4",serif;transition:background .5s,color .5s;font-variant-numeric:tabular-nums}
+  body::after{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;mix-blend-mode:var(--grain-blend);opacity:var(--grain-op);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  .wrap{max-width:1280px;margin:0 auto;padding:0 clamp(22px,5vw,44px)}
+  section{position:relative;z-index:2}
+  .mono{font-family:"JetBrains Mono",monospace;font-variant-numeric:tabular-nums}
+  .wm{font-family:"Source Serif 4",serif;font-weight:600;font-size:18px;color:var(--ink);text-decoration:none}
+  .wm .p{color:var(--accent)}
+  .lab{font-family:"Source Serif 4",serif;font-style:italic;font-size:14px;color:var(--ink-mute)}
+  .lab .n{font-style:normal;color:var(--accent);margin-right:10px}
+  h1,h2,h3,h4{font-family:"Cormorant Garamond",serif;font-weight:500;letter-spacing:-.012em;color:var(--ink)}
+
+  nav{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 86%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid transparent;transition:border-color .4s}
+  nav.scrolled{border-color:var(--line)}
+  .navin{display:flex;align-items:center;justify-content:space-between;padding:15px 0}
+  .navr{display:flex;align-items:center;gap:21px}
+  .navr a{color:var(--ink-soft);text-decoration:none;font-size:14.5px;transition:color .3s}
+  .navr a:hover{color:var(--ink)} .navr a.current{color:var(--ink)}
+  .toggle{background:none;border:1px solid var(--line);color:var(--ink-soft);cursor:pointer;font-family:"Source Serif 4",serif;font-size:13px;font-style:italic;padding:5px 13px;border-radius:999px}
+  .navr a.navbtn{background:var(--btn-bg);color:var(--btn-ink);padding:8px 17px}
+  @media(max-width:880px){.navr .navlink{display:none}}
+
+  .subnav{border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--bg) 92%,transparent);position:sticky;top:58px;z-index:40;backdrop-filter:blur(8px)}
+  .subnav-in{display:flex;align-items:baseline;gap:clamp(14px,2vw,28px);padding:11px 0;flex-wrap:wrap}
+  .subnav .sn-lab{font-style:italic;font-size:13px;color:var(--ink-mute);margin-right:6px}
+  .subnav a{font-size:13.5px;color:var(--ink-mute);text-decoration:none;padding-bottom:3px;border-bottom:1px solid transparent;white-space:nowrap}
+  .subnav a:hover{color:var(--ink)} .subnav a.current{color:var(--ink);border-bottom-color:var(--accent)}
+
+  .hero{padding:clamp(34px,4vh,52px) 0 clamp(18px,2.4vh,28px)}
+  .hero-row{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap}
+  .dateline{display:flex;align-items:center;gap:13px;margin-bottom:16px}
+  .dateline .l{width:26px;height:1px;background:var(--accent)}
+  .hero h1{font-size:clamp(30px,4.4vw,46px);line-height:1;letter-spacing:-.018em;max-width:20ch}
+  .hero h1 .acc{color:var(--accent);font-style:italic}
+  .hero-sub{font-size:15px;line-height:1.6;color:var(--ink-soft);max-width:60ch;margin-top:14px}
+  .live-stamp{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;border:1px solid color-mix(in srgb,var(--accent) 45%,transparent);font-style:italic;font-size:11px;color:var(--accent);letter-spacing:.06em;text-transform:uppercase;width:fit-content}
+  .live-stamp .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+
+  /* Section title */
+  .sect{padding:clamp(28px,3.5vw,44px) 0;border-top:1px solid var(--line)}
+  .sect-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:20px;flex-wrap:wrap;gap:14px}
+  .sect-head h2{font-size:clamp(24px,3vw,32px);line-height:1.05}
+  .sect-head h2 .acc{color:var(--accent);font-style:italic}
+  .sect-head .stamp{font-style:italic;font-size:12px;color:var(--ink-mute)}
+
+  /* Indicator grid */
+  .ind-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  @media(max-width:1024px){.ind-grid{grid-template-columns:repeat(3,1fr)}}
+  @media(max-width:760px){.ind-grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:480px){.ind-grid{grid-template-columns:1fr}}
+
+  .ind{padding:18px 20px;border:1px solid var(--line);background:color-mix(in srgb,var(--ink) 2%,transparent);position:relative;display:flex;flex-direction:column;min-height:172px;transition:border-color .3s}
+  .ind:hover{border-color:var(--accent)}
+  .ind-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;gap:8px}
+  .ind-name{font-family:"Source Serif 4",serif;font-style:italic;font-size:11px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase;line-height:1.3}
+  .ind-period{font-family:"Source Serif 4",serif;font-style:italic;font-size:10px;color:var(--ink-mute);letter-spacing:.04em}
+  .ind-val{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:34px;color:var(--ink);line-height:1;letter-spacing:-.015em;margin-bottom:6px}
+  .ind-unit{font-family:"Source Serif 4",serif;font-style:italic;font-size:12px;color:var(--ink-mute);margin-left:4px;letter-spacing:.02em}
+  .ind-chg{font-family:"Source Serif 4",serif;font-style:italic;font-size:12.5px;letter-spacing:.02em;margin-bottom:10px}
+  .ind-chg.up{color:var(--up)}
+  .ind-chg.down{color:var(--down)}
+  .ind-chg .arr{margin-right:4px;font-style:normal}
+  .ind-spark{margin-top:auto}
+  .ind-spark svg{display:block;width:100%;height:34px}
+  .ind-src{font-family:"Source Serif 4",serif;font-style:italic;font-size:10px;color:var(--ink-mute);padding-top:8px;border-top:1px dashed var(--line);margin-top:10px;letter-spacing:.02em}
+
+  /* Notes / context */
+  .ctx{padding:clamp(28px,3.5vw,40px) 0;border-top:1px solid var(--line);background:color-mix(in srgb,var(--ink) 2%,transparent)}
+  .ctx h3{font-size:22px;margin-bottom:12px}
+  .ctx p{font-size:14px;line-height:1.65;color:var(--ink-soft);max-width:64ch}
+
+  footer{border-top:1px solid var(--line);padding:48px 0 36px}
+  .footin{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;margin-bottom:36px}
+  .footcols{display:flex;gap:clamp(34px,6vw,68px);flex-wrap:wrap}
+  .footcol h4{font-style:italic;font-weight:400;font-size:14px;color:var(--ink-mute);margin-bottom:13px}
+  .footcol a{display:block;color:var(--ink-soft);text-decoration:none;font-size:15px;margin-bottom:9px}
+  .footcol a:hover{color:var(--accent)}
+  .disc{padding-top:22px;border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px}
+  .disc span{font-size:12.5px;color:var(--ink-mute);line-height:1.6}
+  .disc .legal{max-width:64ch;font-style:italic}
+</style>
+</head>
+<body>
+
+  <nav id="nav">
+    <div class="wrap navin">
+      <a class="wm" href="index.html">flameback<span class="p">.</span></a>
+      <div class="navr">
+        <a class="navlink" href="flameback-firm.html">Firm</a>
+        <a class="navlink" href="flameback-strategies.html">Strategies</a>
+        <a class="navlink" href="flameback-offerings.html">Offerings</a>
+        <a class="navlink" href="flameback-insights.html">Insights</a>
+        <a class="navlink current" href="flameback-resources.html">Resources</a>
+        <a class="login" href="#">Login</a>
+        <a class="navbtn" href="flameback-app-splash.html">Start your journey</a>
+        <button class="toggle" id="toggle">Light</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="subnav">
+    <div class="wrap subnav-in">
+      <span class="sn-lab">Resources</span>
+      <a href="flameback-resources.html">Overview</a>
+      <a href="flameback-portfolio-doctor.html">Portfolio doctor</a>
+      <a href="flameback-asset-map.html">Asset map</a>
+      <a href="flameback-insurance-advisor.html">Insurance advisor</a>
+      <a class="current" href="#">Economic data</a>
+      <a href="flameback-market-indicators.html">Market data</a>
+      <a href="flameback-screener.html">Screener</a>
+      <a href="flameback-opensource.html">Open source</a>
+    </div>
+  </div>
+
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-row">
+        <div>
+          <div class="dateline"><span class="l"></span><span class="lab">Economic indicators</span></div>
+          <h1>The Indian economy, <span class="acc">one screen.</span></h1>
+          <p class="hero-sub">Twelve indicators sourced from RBI, MOSPI, NSO, S&amp;P Global, and CCIL &mdash; refreshed on each indicator&rsquo;s publication schedule. Built for orientation, not for trading.</p>
+        </div>
+        <span class="live-stamp"><span class="dot"></span>Live &middot; last refresh 12 min ago</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- GROWTH section -->
+  <section class="sect">
+    <div class="wrap">
+      <div class="sect-head">
+        <h2><span class="acc">i.</span> Growth.</h2>
+        <span class="stamp">National income series, industrial output, PMI</span>
+      </div>
+
+      <div class="ind-grid">
+
+        <div class="ind">
+          <div class="ind-head"><span class="ind-name">Real GDP growth</span><span class="ind-period">Q-o-Q</span></div>
+          <div class="ind-val">6.8<span class="ind-unit">%</span></div>
+          <div class="ind-chg up"><span class="arr">&uarr;</span>+0.3 pp from prior</div>
+          <div class="ind-spark"><svg viewBox="0 0 140 34" preserveAspectRatio="none"><polyline points="0,22 20,20 40,24 60,18 80,16 100,14 120,12 140,10" fill="none" stroke="var(--up)" stroke-width="1.6"/></svg></div>
+          <div class="ind-src">MOSPI &middot; Q4 FY26 estimate</div>
+        </div>
+
+        <div class="ind">
+          <div class="ind-head"><span class="ind-name">IIP growth</span><span class="ind-period">Y-o-Y</span></div>
+          <div class="ind-val">5.4<span class="ind-unit">%</span></div>
+          <div class="ind-chg down"><span class="arr">&darr;</span>&minus;0.8 pp from prior</div>
+          <div class="ind-spark"><svg viewBox="0 0 140 34" preserveAspectRatio="none"><polyline points="0,12 20,10 40,14 60,16 80,12 100,18 120,20 140,22" fill="none" stroke="var(--down)" stroke-width="1.6"/></svg></div>
+          <div class="ind-src">MOSPI &middot; March 2026</div>
+        </div>
+
+        <div class="ind">
+          <div class="ind-head"><span class="ind-name">PMI Manufacturing</span><span class="ind-period">Monthly</span></div>
+          <div class="ind-val">56.4</div>
+          <div class="ind-chg up"><span class="arr">&uarr;</span>+0.6 pts from prior</div>
+          <div class="ind-spark"><svg viewBox="0 0 140 34" preserveAspectRatio="none"><polyline points="0,20 20,18 40,16 60,20 80,14 100,12 120,10 140,8" fill="none" stroke="var(--up)" stroke-width="1.6"/></svg></div>
+          <div class="ind-src">S&amp;P Global &middot; April 2026</div>
+        </div>
+
+        <div class="ind">
+          <div class="ind-head"><span class="ind-name">PMI Services</span><span class="ind-period">Monthly</span></div>
+          <div class="ind-val">58.1</div>
+          <div class="ind-chg up"><span class="arr">&uarr;</span>+0.4 pts from prior</div>
+          <div class="ind-spark"><svg viewBox="0 0 140 34" preserveAspectRatio="none"><polyline points="0,18 20,14 40,16 60,12 80,10 100,12 120,8 140,6" fill="none" stroke="var(--up)" stroke-width="1.6"/></svg></div>
+          <div class="ind-src">S&amp;P Global &middot; April 2026</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- INFLATION & RATES -->
+  <section class="sect">
+    <div class="wrap">
+      <div class="sect-head">
+        <h2><span class="acc">ii.</span> Inflation &amp; rates.</h2>
+        <span class="stamp">Price indices and policy rates</span>
+      </div>
+
+      <div class="ind-grid">
+
+        <div class="ind">
+          <div class="ind-head"><span class="ind-name">CPI inflation</span><span class="ind-period">Y-o-Y</span></div>
+          <div class="ind-val">5.2<span class="ind-unit">%</span></div>
+          <div class="ind-chg up"><span class="arr">&uarr;</span>+0.4 pp from prior</div>
+          <div class="ind-spark"><svg viewBox="0 0 140 34" preserveAspectRatio="none"><polyline points="0,22 20,24 40,20 60,18 80,16 100,14 120,12 140,10" fill="none" stroke="var(--down)" stroke-width="1.6"/></svg></div>
+          <div class="ind-src">MOSPI &middot; April 2026</div>
+        </div>
+
+        <div class="ind">
+          <div class="ind-head"><span class="ind-name">WPI inflation</span><span class="ind-period">Y-o-Y</span></div>
+          <div class="ind-val">3.8<span class="ind-unit">%</span></div>
+          <div class="ind-chg up"><span class="arr">&uarr;</span>+0.5 pp from prior</div>
+          <div class="ind-spark"><svg viewBox="0 0 140 34" preserveAspectRatio="none"><polyline points="0,26 20,24 40,22 60,20 80,18 100,16 120,14 140,12" fill="none" stroke="var(--down)" stroke-width="1.6"/></svg></div>
+          <div class="ind-src">Office of Economic Adviser</div>
+        </div>
+
+        <div class="ind">
+          <div class="ind-head"><span class="ind-name">RBI repo rate</span><span class="ind-period">Policy</span></div>
+          <div class="ind-val">6.00<span class="ind-unit">%</span></div>
+          <div class="ind-chg"><span class="arr" style="color:var(--ink-mute)">&mdash;</span>Unchanged for 3 meetings</div>
+          <div class="ind-spark"><svg viewBox="0 0 140 34" preserveAspectRatio="none"><polyline points="0,8 30,8 60,12 90,16 120,18 140,18" fill="none" stroke="var(--accent)" stroke-width="1.6"/></svg></div>
+          <div class="ind-src">RBI &middot; 04 April 2026</div>
+        </div>
+
+        <div class="ind">
+          <div class="ind-head"><span class="ind-name">10Y G-Sec yield</span><span class="ind-period">EOD</span></div>
+          <div class="ind-val">6.78<span class="ind-unit">%</span></div>
+          <div class="ind-chg up"><span class="arr">&uarr;</span>+12 bps from prior week</div>
+          <div class="ind-spark"><svg viewBox="0 0 140 34" preserveAspectRatio="none"><polyline points="0,16 20,18 40,14 60,16 80,12 100,14 120,10 140,8" fill="none" stroke="var(--down)" stroke-width="1.6"/></svg></div>
+          <div class="ind-src">CCIL &middot; 30 May 2026</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- EXTERNAL -->
+  <section class="sect">
+    <div class="wrap">
+      <div class="sect-head">
+        <h2><span class="acc">iii.</span> External sector.</h2>
+        <span class="stamp">Currency, commodities, reserves, trade</span>
+      </div>
+
+      <div class="ind-grid">
+
+        <div class="ind">
+          <div class="ind-head"><span class="ind-name">USD / INR</span><span class="ind-period">RBI ref</span></div>
+          <div class="ind-val">83.42</div>
+          <div class="ind-chg up"><span class="arr">&uarr;</span>+0.6% from month-ago</div>
+          <div class="ind-spark"><svg viewBox="0 0 140 34" preserveAspectRatio="none"><polyline points="0,22 20,20 40,18 60,16 80,14 100,16 120,12 140,10" fill="none" stroke="var(--down)" stroke-width="1.6"/></svg></div>
+          <div class="ind-src">RBI reference rate</div>
+        </div>
+
+        <div class="ind">
+          <div class="ind-head"><span class="ind-name">Brent crude</span><span class="ind-period">Spot</span></div>
+          <div class="ind-val">$78<span class="ind-unit">.40</span></div>
+          <div class="ind-chg down"><span class="arr">&darr;</span>&minus;3.2% from month-ago</div>
+          <div class="ind-spark"><svg viewBox="0 0 140 34" preserveAspectRatio="none"><polyline points="0,10 20,12 40,8 60,14 80,16 100,18 120,20 140,22" fill="none" stroke="var(--up)" stroke-width="1.6"/></svg></div>
+          <div class="ind-src">ICE Brent &middot; spot</div>
+        </div>
+
+        <div class="ind">
+          <div class="ind-head"><span class="ind-name">FX reserves</span><span class="ind-period">Weekly</span></div>
+          <div class="ind-val">$682<span class="ind-unit">bn</span></div>
+          <div class="ind-chg up"><span class="arr">&uarr;</span>+$4.2 bn this week</div>
+          <div class="ind-spark"><svg viewBox="0 0 140 34" preserveAspectRatio="none"><polyline points="0,24 20,20 40,18 60,16 80,14 100,12 120,10 140,8" fill="none" stroke="var(--up)" stroke-width="1.6"/></svg></div>
+          <div class="ind-src">RBI weekly statistical supplement</div>
+        </div>
+
+        <div class="ind">
+          <div class="ind-head"><span class="ind-name">Trade deficit</span><span class="ind-period">Monthly</span></div>
+          <div class="ind-val">$22<span class="ind-unit">.4 bn</span></div>
+          <div class="ind-chg down"><span class="arr">&darr;</span>&minus;$1.8 bn from prior</div>
+          <div class="ind-spark"><svg viewBox="0 0 140 34" preserveAspectRatio="none"><polyline points="0,12 20,14 40,18 60,16 80,20 100,22 120,18 140,20" fill="none" stroke="var(--up)" stroke-width="1.6"/></svg></div>
+          <div class="ind-src">DGCI&amp;S &middot; April 2026</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Context -->
+  <section class="ctx">
+    <div class="wrap">
+      <span class="lab"><span class="n">iv</span>Note</span>
+      <h3 style="margin-top:8px">How to read this page.</h3>
+      <p>Each tile shows the current value, the change from the previous reported period, and a 12-month trend. The colour of the arrow reflects directional change in the indicator itself, not interpretation &mdash; rising inflation is &ldquo;up&rdquo; but is generally an unwelcome direction. Sources are listed below each tile and link to the official series. Refresh cadences vary: weekly for FX reserves, monthly for PMI/CPI/IIP, quarterly for GDP, on-announcement for the repo rate.</p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <div class="footin">
+        <a class="wm" href="index.html">flameback<span class="p">.</span></a>
+        <div class="footcols">
+          <div class="footcol"><h4>Firm</h4><a href="flameback-firm.html">Team</a><a href="flameback-philosophy.html">Investment philosophy</a><a href="flameback-strategy-rd.html">Strategy R&amp;D</a></div>
+          <div class="footcol"><h4>Resources</h4><a href="flameback-resources.html">Overview</a><a href="flameback-market-indicators.html">Market indicators</a><a href="flameback-screener.html">Screener</a></div>
+          <div class="footcol"><h4>Contact</h4><a href="#">Bangalore, India</a><a href="#">hello@flameback.in</a></div>
+        </div>
+      </div>
+      <div class="disc">
+        <span>&copy; 2026 Flameback Capital Pvt Ltd</span>
+        <span class="legal">Indicator values are taken from official published sources and refreshed on each source&rsquo;s schedule. The firm makes no warranty as to accuracy or timeliness; consult the original sources for decisions.</span>
+      </div>
+    </div>
+  </footer>
+
+<script>
+  var root=document.documentElement, tg=document.getElementById('toggle');
+  tg.addEventListener('click',function(){root.classList.toggle('light');tg.textContent=root.classList.contains('light')?'Dark':'Light';});
+  var nav=document.getElementById('nav');
+  window.addEventListener('scroll',function(){nav.classList.toggle('scrolled',window.scrollY>16)});
+</script>
+  <script src="reload.js"></script>
+</body>
+</html>

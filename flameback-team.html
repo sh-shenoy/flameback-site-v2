@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The team — flameback.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#1A1714;--ink:#F2EDE3;--ink-soft:rgba(242,237,227,.66);--ink-mute:rgba(242,237,227,.44);--line:rgba(242,237,227,.16);--panel:#221E1A;--accent:#FF6D0A;--btn-bg:#FF6D0A;--btn-ink:#1A1714;--grain-blend:screen;--grain-op:.055}
+  :root.light{--bg:#FCFAF6;--ink:#1A1714;--ink-soft:rgba(26,23,20,.68);--ink-mute:rgba(26,23,20,.46);--line:rgba(26,23,20,.14);--panel:#F4EFE7;--accent:#B23E08;--btn-bg:#1A1714;--btn-ink:#FCFAF6;--grain-blend:multiply;--grain-op:.035}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:"Source Serif 4",serif;transition:background .5s,color .5s;font-variant-numeric:tabular-nums;line-height:1.55}
+  body::after{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;mix-blend-mode:var(--grain-blend);opacity:var(--grain-op);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  .wrap{max-width:1200px;margin:0 auto;padding:0 clamp(22px,5vw,44px)}
+  section{position:relative;z-index:2}
+  .wm{font-family:"Source Serif 4",serif;font-weight:600;font-size:18px;color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+  .wm .p{color:var(--accent)}
+  .lab{font-family:"Source Serif 4",serif;font-style:italic;font-size:13.5px;color:var(--ink-mute);letter-spacing:.02em}
+  .lab .n{font-style:normal;color:var(--accent);margin-right:10px;font-family:"Cormorant Garamond",serif}
+  h1,h2,h3,h4{font-family:"Cormorant Garamond",serif;font-weight:500;letter-spacing:-.014em;color:var(--ink);line-height:1.04}
+  h1 em,h2 em,h3 em{color:var(--accent);font-style:italic;font-weight:500}
+  p{line-height:1.62}
+  .btn,.btn-out{display:inline-flex;align-items:center;gap:11px;font-family:"Source Serif 4",serif;font-size:15px;font-weight:500;padding:13px 24px;text-decoration:none;transition:gap .35s,opacity .3s,border-color .3s;cursor:pointer;border:none}
+  .btn{background:var(--btn-bg);color:var(--btn-ink)} .btn:hover{gap:15px;opacity:.92}
+  .btn-out{background:transparent;color:var(--ink);border:1px solid var(--line)} .btn-out:hover{gap:15px;border-color:var(--ink-mute)}
+  nav.top{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 84%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid transparent;transition:border-color .4s}
+  nav.top.scrolled{border-color:var(--line)}
+  .navin{display:flex;align-items:center;justify-content:space-between;padding:16px 0}
+  .navr{display:flex;align-items:center;gap:22px}
+  .navr a{color:var(--ink-soft);text-decoration:none;font-size:14.5px;transition:color .3s}
+  .navr a:hover{color:var(--ink)}
+  .navr a.active{color:var(--ink)}
+  .toggle{background:none;border:1px solid var(--line);color:var(--ink-soft);cursor:pointer;font-family:"Source Serif 4",serif;font-size:13px;font-style:italic;padding:5px 13px;border-radius:999px}
+  .navr a.cta{background:var(--btn-bg);color:var(--btn-ink);padding:9px 18px}
+  @media(max-width:1000px){.navr .navlink{display:none}}
+  .crumb{padding:14px 0;border-bottom:1px solid var(--line);font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-mute);letter-spacing:.05em;text-transform:uppercase}
+  .crumb a{color:var(--ink-mute);text-decoration:none}
+  .crumb a:hover{color:var(--accent)}
+  .crumb .sep{margin:0 10px;opacity:.55}
+  .crumb .cur{color:var(--accent)}
+  .hero{padding:clamp(70px,11vh,130px) 0 clamp(54px,7vh,90px);border-bottom:1px solid var(--line);position:relative}
+  .hero-eb{display:flex;align-items:center;gap:14px;margin-bottom:32px;font-style:italic;font-size:13px;color:var(--ink-mute);letter-spacing:.04em}
+  .hero-eb .l{width:32px;height:1px;background:var(--accent)}
+  .hero-eb .dateline{font-family:"JetBrains Mono",monospace;font-style:normal;font-size:11.5px;margin-left:auto;letter-spacing:.05em}
+  @media(max-width:760px){.hero-eb .dateline{display:none}}
+  h1.h-h{font-size:clamp(58px,9vw,128px);line-height:.92;letter-spacing:-.025em;margin-bottom:32px;max-width:14ch;font-weight:500}
+  .h-sub{font-size:clamp(17px,1.7vw,21px);line-height:1.55;color:var(--ink-soft);max-width:54ch;font-style:italic;margin-bottom:38px}
+  .h-cta{display:flex;gap:12px;flex-wrap:wrap}
+  .wmark{position:absolute;right:0;bottom:0;font-family:"Cormorant Garamond",serif;font-style:italic;font-size:clamp(180px,30vw,360px);color:var(--ink);opacity:.02;line-height:.8;pointer-events:none;letter-spacing:-.04em;white-space:nowrap;overflow:hidden}
+  .sec{padding:clamp(70px,10vh,120px) 0;border-bottom:1px solid var(--line);position:relative}
+  .sec.tint{background:color-mix(in srgb,var(--ink) 2.2%,transparent)}
+  .sec-h{display:grid;grid-template-columns:160px 1fr;gap:48px;align-items:flex-start;margin-bottom:clamp(36px,4vw,52px)}
+  @media(max-width:760px){.sec-h{grid-template-columns:1fr;gap:14px}}
+  .sec-h .meta{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase;padding-top:14px;border-top:1px solid var(--line);line-height:1.7}
+  .sec-h h2{font-size:clamp(36px,5vw,62px);line-height:1.02;letter-spacing:-.015em;max-width:18ch}
+  .prose{max-width:62ch;font-size:17px;line-height:1.7;color:var(--ink)}
+  .prose p{margin-bottom:22px}
+  .prose p:last-child{margin-bottom:0}
+  .prose em{color:var(--accent);font-style:italic;font-weight:500}
+  .prose strong{font-weight:500;color:var(--ink);font-style:italic}
+  .prose-grid{display:grid;grid-template-columns:160px 1fr;gap:48px;align-items:flex-start}
+  @media(max-width:760px){.prose-grid{grid-template-columns:1fr;gap:14px}}
+  .pq{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:clamp(28px,3.6vw,40px);line-height:1.25;color:var(--ink);max-width:24ch;padding-left:24px;border-left:2px solid var(--accent);margin:32px 0}
+
+  /* Leadership cards */
+  .leaders{display:grid;grid-template-columns:1fr;gap:24px}
+  .leader{display:grid;grid-template-columns:280px 1fr;gap:36px;padding:36px;border:1px solid var(--line);background:var(--bg);align-items:flex-start}
+  @media(max-width:760px){.leader{grid-template-columns:1fr;gap:24px;padding:28px}}
+  .leader-portrait{aspect-ratio:4/5;background:color-mix(in srgb,var(--accent) 5%,transparent);border:1px solid var(--line);position:relative;overflow:hidden}
+  .leader-portrait svg{display:block;width:100%;height:100%}
+  .leader-portrait .stamp{position:absolute;bottom:10px;left:10px;font-family:"JetBrains Mono",monospace;font-size:9px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase;padding:4px 8px;border:1px solid var(--line);background:var(--bg)}
+  .leader-body .num{font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--accent);font-size:18px;line-height:1;display:block;margin-bottom:6px}
+  .leader-body .nm{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:34px;color:var(--ink);line-height:1.05;letter-spacing:-.01em;margin-bottom:4px}
+  .leader-body .nm em{color:var(--accent);font-style:italic}
+  .leader-body .role{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase;margin-bottom:24px}
+  .leader-body .bio{font-size:14.5px;line-height:1.7;color:var(--ink-soft)}
+  .leader-body .bio p{margin-bottom:14px}
+  .leader-body .bio p:last-child{margin-bottom:0}
+  .leader-body .bio em{color:var(--ink);font-style:italic;font-weight:500}
+  .leader-body .codebase{margin-top:18px;padding-top:14px;border-top:1px dashed var(--line);font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--ink-mute);letter-spacing:.04em;text-transform:uppercase;display:flex;gap:18px;flex-wrap:wrap}
+  .leader-body .codebase em{color:var(--accent);font-style:normal}
+
+  /* Team structure */
+  .struct{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+  @media(max-width:900px){.struct{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:520px){.struct{grid-template-columns:1fr}}
+  .st-c{background:var(--bg);padding:28px 24px;display:flex;flex-direction:column;gap:10px;min-height:200px}
+  .st-c .n{font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--accent);font-size:18px;line-height:1}
+  .st-c .pillar{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:24px;color:var(--ink);line-height:1.1}
+  .st-c .pillar em{color:var(--accent)}
+  .st-c .who{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase}
+  .st-c .desc{font-size:13.5px;line-height:1.6;color:var(--ink-soft);flex:1;margin-top:4px}
+
+  /* Hiring funnel */
+  .funnel{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:28px}
+  @media(max-width:760px){.funnel{grid-template-columns:repeat(2,1fr)}}
+  .fn{background:var(--bg);padding:24px 22px;text-align:center}
+  .fn .stat{font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--accent);font-size:36px;line-height:1;letter-spacing:-.01em;margin-bottom:8px}
+  .fn .lbl{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase;line-height:1.5}
+
+  /* Values cards */
+  .values{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:28px}
+  @media(max-width:680px){.values{grid-template-columns:1fr}}
+  .vc{background:var(--bg);padding:30px 28px;display:flex;flex-direction:column;gap:12px;min-height:200px}
+  .vc .n{font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--accent);font-size:18px}
+  .vc h4{font-size:22px;line-height:1.1;color:var(--ink)}
+  .vc h4 em{color:var(--accent);font-style:italic}
+  .vc p{font-size:14.5px;line-height:1.65;color:var(--ink-soft);flex:1}
+  .vc p em{color:var(--ink);font-style:italic;font-weight:500}
+  .vc .ftr{padding-top:12px;border-top:1px dashed var(--line);font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink-mute);letter-spacing:.05em;text-transform:uppercase}
+
+  .xlinks{padding:clamp(70px,10vh,110px) 0;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--ink) 2.2%,transparent)}
+  .xl-h{margin-bottom:36px}
+  .xl-h h2{font-size:clamp(28px,3.4vw,40px);line-height:1.05;margin-bottom:10px}
+  .xl-h p{font-size:14.5px;color:var(--ink-soft);font-style:italic;max-width:48ch}
+  .xl-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+  @media(max-width:900px){.xl-grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:540px){.xl-grid{grid-template-columns:1fr}}
+  .xl-card{background:var(--bg);padding:28px 26px;display:flex;flex-direction:column;gap:10px;text-decoration:none;color:var(--ink);transition:background .25s}
+  .xl-card:hover{background:color-mix(in srgb,var(--accent) 5%,transparent)}
+  .xl-card .n{font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--accent);font-size:20px;line-height:1}
+  .xl-card .t{font-family:"Cormorant Garamond",serif;font-size:24px;line-height:1.1;color:var(--ink);margin-top:2px}
+  .xl-card .t em{color:var(--accent);font-style:italic}
+  .xl-card .d{font-size:13.5px;line-height:1.55;color:var(--ink-soft);font-style:italic;flex:1}
+  .xl-card .arr{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-mute);letter-spacing:.04em;margin-top:6px}
+  .xl-card:hover .arr{color:var(--accent)}
+  .close{padding:clamp(80px,10vh,120px) 0;text-align:center;border-bottom:1px solid var(--line)}
+  .close h2{font-size:clamp(34px,5vw,56px);line-height:1.0;margin-bottom:22px;max-width:22ch;margin-left:auto;margin-right:auto}
+  .close h2 em{color:var(--accent);font-style:italic}
+  .close .sub{font-size:15.5px;color:var(--ink-soft);font-style:italic;max-width:48ch;margin:0 auto 32px;line-height:1.65}
+  .close .ct-row{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+  footer{padding:60px 0 36px}
+  .footin{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;margin-bottom:42px}
+  .footcols{display:flex;gap:clamp(38px,6vw,72px);flex-wrap:wrap}
+  .footcol h4{font-style:italic;font-weight:400;font-size:13px;color:var(--ink-mute);margin-bottom:14px;letter-spacing:.03em}
+  .footcol a{display:block;color:var(--ink-soft);text-decoration:none;font-size:14.5px;margin-bottom:9px}
+  .footcol a:hover{color:var(--accent)}
+  .disc{padding-top:24px;border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px}
+  .disc span{font-size:12px;color:var(--ink-mute);line-height:1.6}
+  .disc .legal{max-width:72ch;font-style:italic}
+</style>
+</head>
+<body>
+
+  <nav class="top" id="nav">
+    <div class="wrap navin">
+      <a class="wm" href="flameback-home.html">flameback<span class="p">.</span></a>
+      <div class="navr">
+        <a class="navlink active" href="flameback-who-we-are.html">Who we are</a>
+        <a class="navlink" href="flameback-what-we-do.html">What we do</a>
+        <a class="navlink" href="flameback-our-work.html">Our work</a>
+        <a class="navlink" href="flameback-insights.html">Insights</a>
+        <a class="navlink" href="flameback-tools.html">Tools</a>
+        <a class="navlink" href="flameback-offbook.html">Off-book</a>
+        <a class="cta" href="flameback-app-splash.html">Start your journey</a>
+        <button class="toggle" id="toggle">Light</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="crumb wrap"><a href="flameback-who-we-are.html">Who we are</a><span class="sep">&#8250;</span><span class="cur">Team</span></div>
+
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-eb"><span class="l"></span><span>Who we are &middot; section ii</span><span class="dateline">FIFTEEN PEOPLE &middot; BANGALORE</span></div>
+      <h1 class="h-h">The <em>team.</em></h1>
+      <p class="h-sub">Fifteen people, all in one office in Bangalore. The investment side and the engineering side are the same side. Every model in production was written, tested, and deployed by someone whose name is on the next few pages.</p>
+      <div class="h-cta">
+        <a class="btn" href="flameback-app-splash.html">Start your journey &rarr;</a>
+        <a class="btn-out" href="flameback-philosophy.html">Read the philosophy</a>
+      </div>
+    </div>
+    <div class="wmark">the team.</div>
+  </section>
+
+  <!-- Engineering-first intro -->
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-h">
+        <div class="meta">i. PRINCIPLE<br/>Engineering-first<br/>In practice</div>
+        <h2>Everyone on the investment side <em>writes code.</em></h2>
+      </div>
+
+      <div class="prose-grid">
+        <div class="meta lab"><span class="n">a.</span>The rule</div>
+        <div class="prose">
+          <p>The firm has one structural rule that decides almost everything else: <em>everyone who has authority over investment decisions also has commits in the production codebase</em>. There is no separation between people who think about markets and people who implement what the thinking produces. Every model that allocates client capital was written, debugged, paper-traded, and deployed by someone who could explain not just what it does but why every line of it does it that way.</p>
+          <p>This sounds obvious. In practice, almost no asset manager works this way. The industry standard is that portfolio managers describe their intent in PowerPoint and analyst notes, and engineering teams implement &mdash; with a translation layer in between that loses fidelity at every step. The firm decided in 2017 to eliminate the translation layer.</p>
+        </div>
+      </div>
+
+      <div class="pq">A strategy is a piece of working code. <em>If you cannot write it, you do not understand it.</em></div>
+
+      <div class="prose-grid" style="margin-top:42px">
+        <div class="meta lab"><span class="n">b.</span>What this changes</div>
+        <div class="prose">
+          <p>The downstream consequences of the engineering-first principle are visible in how the firm operates day to day. Strategies are version-controlled, not documented. When the investment committee decides to modify a position-sizing rule, the modification is a pull request, reviewed line by line, with a test suite that has to pass before merge. There is no &ldquo;the model said X but we&rsquo;re going to do Y because we have a feel for it&rdquo;. Whatever overrides happen, happen as code, with an auditable history.</p>
+          <p>This also changes who the firm hires. Most candidates fail one of the two tests &mdash; either they can do the finance but not the engineering, or the engineering but not the finance. The intersection is small. The firm interviews slowly, often for several months, before extending offers.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Leadership -->
+  <section class="sec tint">
+    <div class="wrap">
+      <div class="sec-h">
+        <div class="meta">ii. LEADERSHIP<br/>Three named principals<br/>One supporting role</div>
+        <h2>The people <em>making the calls.</em></h2>
+      </div>
+
+      <div class="leaders">
+
+        <div class="leader">
+          <div class="leader-portrait">
+            <svg viewBox="0 0 200 250" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+              <rect width="200" height="250" fill="color-mix(in srgb,var(--accent) 8%,var(--bg))"/>
+              <circle cx="100" cy="92" r="36" fill="color-mix(in srgb,var(--accent) 22%,transparent)"/>
+              <ellipse cx="100" cy="200" rx="56" ry="58" fill="color-mix(in srgb,var(--accent) 18%,transparent)"/>
+              <line x1="160" y1="40" x2="160" y2="200" stroke="var(--accent)" stroke-width="0.6" opacity="0.4"/>
+              <line x1="170" y1="50" x2="170" y2="180" stroke="var(--accent)" stroke-width="0.4" opacity="0.3"/>
+            </svg>
+            <div class="stamp">Portrait pending</div>
+          </div>
+          <div class="leader-body">
+            <span class="num">i.</span>
+            <div class="nm">Kishan Murjani <em>Nair</em></div>
+            <div class="role">Founder &middot; Managing Director</div>
+            <div class="bio">
+              <p>Founded the firm in 2017 after deciding that the kind of wealth-management practice he wanted to entrust his own family&rsquo;s capital to <em>did not exist in India</em> &mdash; so he built it.</p>
+              <p>Trained in finance and engineering across multiple roles before founding the firm; brings the original conviction that quantitative discipline, applied with patience, is how Indian high net worth wealth should be managed. Sets the firm&rsquo;s direction on capital deployment, client relationships, and the long-horizon strategy. Personally responsible for the founding capital that runs alongside client money in the firm&rsquo;s own strategies.</p>
+              <p>Reads widely outside finance &mdash; geopolitics, systems thinking, the long history of credit cycles. Believes the most important thing a firm of this kind can do is <em>refuse the trades it doesn&rsquo;t need to make</em>.</p>
+            </div>
+            <div class="codebase">
+              <span>Codebase commits this month: <em>active</em></span>
+              <span>Areas: strategy, capital, governance</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="leader">
+          <div class="leader-portrait">
+            <svg viewBox="0 0 200 250" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+              <rect width="200" height="250" fill="color-mix(in srgb,var(--accent) 8%,var(--bg))"/>
+              <circle cx="100" cy="92" r="36" fill="color-mix(in srgb,var(--accent) 22%,transparent)"/>
+              <ellipse cx="100" cy="200" rx="56" ry="58" fill="color-mix(in srgb,var(--accent) 18%,transparent)"/>
+              <line x1="42" y1="50" x2="42" y2="200" stroke="var(--accent)" stroke-width="0.4" opacity="0.3"/>
+              <line x1="32" y1="40" x2="32" y2="210" stroke="var(--accent)" stroke-width="0.6" opacity="0.4"/>
+            </svg>
+            <div class="stamp">Portrait pending</div>
+          </div>
+          <div class="leader-body">
+            <span class="num">ii.</span>
+            <div class="nm">Devesh <em>Sati</em></div>
+            <div class="role">Chief Technology Officer</div>
+            <div class="bio">
+              <p>Built FIST &mdash; the firm&rsquo;s trade engine &mdash; from the first prototype in 2017 to the production system that has run live for eight years. Architecturally responsible for everything underneath the investment strategies: the data pipeline, the execution layer, the monitoring infrastructure, the disaster-recovery posture.</p>
+              <p>Computer science background; brings the engineering instincts that prevent the firm from accumulating the kind of <em>technical debt that quietly erodes a quant shop over a decade</em>. The codebase is reviewed, tested, and rewritten more often than most firms would consider economical. He thinks that&rsquo;s the point.</p>
+              <p>Operates on the principle that infrastructure should be invisible when working and obvious when failing &mdash; not the other way around.</p>
+            </div>
+            <div class="codebase">
+              <span>Codebase commits this month: <em>active</em></span>
+              <span>Areas: FIST, data lake, production engineering</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="leader">
+          <div class="leader-portrait">
+            <svg viewBox="0 0 200 250" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+              <rect width="200" height="250" fill="color-mix(in srgb,var(--accent) 8%,var(--bg))"/>
+              <circle cx="100" cy="92" r="36" fill="color-mix(in srgb,var(--accent) 22%,transparent)"/>
+              <ellipse cx="100" cy="200" rx="56" ry="58" fill="color-mix(in srgb,var(--accent) 18%,transparent)"/>
+              <line x1="100" y1="32" x2="100" y2="50" stroke="var(--accent)" stroke-width="0.6" opacity="0.5"/>
+              <circle cx="100" cy="92" r="42" fill="none" stroke="var(--accent)" stroke-width="0.4" opacity="0.3"/>
+            </svg>
+            <div class="stamp">Portrait pending</div>
+          </div>
+          <div class="leader-body">
+            <span class="num">iii.</span>
+            <div class="nm">Ashrith <em>Rao</em></div>
+            <div class="role">Fund Manager</div>
+            <div class="bio">
+              <p>Responsible for the day-to-day management of the strategies in production &mdash; oversight of signals, monitoring of risk budgets, decisions on when to take a strategy offline for review, and the final accountability for the client portfolios.</p>
+              <p>Originally trained as a researcher; came to the firm because he wanted to be at the place where research and execution were the same activity. Writes the post-mortem after every drawdown above a threshold, regardless of cause &mdash; <em>the discipline of writing it forces clarity about what actually happened</em>.</p>
+              <p>Has the deepest understanding of how the eighteen strategies interact with each other in different market regimes, and is the person most likely to spot when something looks correct in isolation but wrong in combination.</p>
+            </div>
+            <div class="codebase">
+              <span>Codebase commits this month: <em>active</em></span>
+              <span>Areas: strategy oversight, risk, portfolio construction</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="leader">
+          <div class="leader-portrait">
+            <svg viewBox="0 0 200 250" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+              <rect width="200" height="250" fill="color-mix(in srgb,var(--accent) 8%,var(--bg))"/>
+              <circle cx="100" cy="92" r="36" fill="color-mix(in srgb,var(--accent) 22%,transparent)"/>
+              <ellipse cx="100" cy="200" rx="56" ry="58" fill="color-mix(in srgb,var(--accent) 18%,transparent)"/>
+              <line x1="38" y1="240" x2="162" y2="240" stroke="var(--accent)" stroke-width="0.4" opacity="0.3"/>
+              <line x1="30" y1="60" x2="170" y2="60" stroke="var(--accent)" stroke-width="0.4" opacity="0.3"/>
+            </svg>
+            <div class="stamp">Portrait pending</div>
+          </div>
+          <div class="leader-body">
+            <span class="num">iv.</span>
+            <div class="nm">Sarakshi <em>Khanna</em></div>
+            <div class="role">Marketing &amp; Communications</div>
+            <div class="bio">
+              <p>Responsible for how the firm explains itself to the world &mdash; the website you are reading, the client communications, the regulatory filings as a written document, the research notes that go out to clients. The principle she works by: <em>say what is true, in language the reader can check</em>.</p>
+              <p>The communications discipline at a quantitative firm is unusual because everything the firm says has to be accurate to within the precision that a sophisticated client will actually verify. There is no marketing flourish that won&rsquo;t be tested. She ensures that everything from the firm passes that test.</p>
+              <p>Does not write code &mdash; the only exception to the engineering-first rule, and only because her job is communication, not investment decisions.</p>
+            </div>
+            <div class="codebase">
+              <span>Codebase commits this month: <em>n/a</em></span>
+              <span>Areas: communications, brand, client letters</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Team structure -->
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-h">
+        <div class="meta">iii. STRUCTURE<br/>Fifteen people<br/>Four pillars</div>
+        <h2>How the team is <em>organised.</em></h2>
+      </div>
+
+      <div class="prose" style="margin-bottom:32px">
+        <p>Beyond the named leadership, the firm runs with four functional pillars. Most team members rotate across more than one of them at any given time &mdash; the pillars describe the work, not the silos.</p>
+      </div>
+
+      <div class="struct">
+        <div class="st-c">
+          <span class="n">i.</span>
+          <span class="pillar">Research <em>&amp; engineering</em></span>
+          <span class="who">~ 7 people</span>
+          <p class="desc">The largest pillar. Builds the strategies, the back-test infrastructure, the FIST engine, the data pipelines, the QX research environment. Everyone here writes code daily and is expected to develop a working point of view on at least one of the firm&rsquo;s active research questions.</p>
+        </div>
+        <div class="st-c">
+          <span class="n">ii.</span>
+          <span class="pillar">Operations <em>&amp; risk</em></span>
+          <span class="who">~ 3 people</span>
+          <p class="desc">Daily reconciliation, NAV calculation, trade settlement, custodian reconciliation, risk dashboards. The work that&rsquo;s invisible when correct and immediately catastrophic when not. Standards here are unforgiving by design.</p>
+        </div>
+        <div class="st-c">
+          <span class="n">iii.</span>
+          <span class="pillar">Client <em>service</em></span>
+          <span class="who">~ 2 people</span>
+          <p class="desc">Relationship management with existing clients, onboarding for new ones, quarterly reviews, ad-hoc questions. Each relationship manager carries a small book by design &mdash; depth, not breadth.</p>
+        </div>
+        <div class="st-c">
+          <span class="n">iv.</span>
+          <span class="pillar">Compliance <em>&amp; legal</em></span>
+          <span class="who">~ 2 people + external</span>
+          <p class="desc">SEBI and SEC filings, audit support, legal documentation, regulatory monitoring. Supported by external counsel for material matters. Files weeks before deadline as a matter of practice.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Hiring funnel -->
+  <section class="sec tint">
+    <div class="wrap">
+      <div class="sec-h">
+        <div class="meta">iv. HIRING<br/>The slow filter<br/>What it looks like</div>
+        <h2>How we <em>hire</em>, and why it takes months.</h2>
+      </div>
+
+      <div class="prose-grid">
+        <div class="meta lab"><span class="n">a.</span>The funnel</div>
+        <div class="prose">
+          <p>The firm receives roughly a thousand CVs a year. It hires, on average, two to three people. The funnel below describes a single year&rsquo;s pass-through.</p>
+        </div>
+      </div>
+
+      <div class="funnel">
+        <div class="fn"><div class="stat">~ 1,000</div><div class="lbl">CVs received<br/>Per year</div></div>
+        <div class="fn"><div class="stat">~ 30</div><div class="lbl">First-round interviews<br/>3% of inbound</div></div>
+        <div class="fn"><div class="stat">~ 10</div><div class="lbl">Onsite + technical<br/>1% of inbound</div></div>
+        <div class="fn"><div class="stat">2&ndash;3</div><div class="lbl">Offers extended<br/>~0.25% of inbound</div></div>
+      </div>
+
+      <div class="prose-grid" style="margin-top:42px">
+        <div class="meta lab"><span class="n">b.</span>What we test for</div>
+        <div class="prose">
+          <p>Most candidates fail one of two specific tests. The first is engineering ability &mdash; can they write production code under time pressure, can they reason about systems that have to work for years without intervention, can they read someone else&rsquo;s code and understand it well enough to improve it. The second is financial literacy &mdash; do they understand what a Sharpe ratio actually measures, why volatility is not risk, what a regime is, what causes a strategy to decay.</p>
+          <p>A few candidates pass both. The remaining test is a softer one: <em>do they have the temperament for an infinite game</em>? Will they still be doing this work in five years, in ten, when the markets have changed, the strategies have evolved, the clients have grown, and the firm itself is recognisably the same place? <strong>The firm hires people who plan to stay.</strong></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Values -->
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-h">
+        <div class="meta">v. VALUES<br/>What the team<br/>Believes in practice</div>
+        <h2>Values, in <em>working order.</em></h2>
+      </div>
+
+      <div class="prose" style="margin-bottom:28px">
+        <p>Most firms publish values. Few of them describe the actual behaviour of the team. Here are four that we recognise in our work daily &mdash; not aspirations, but observations.</p>
+      </div>
+
+      <div class="values">
+        <div class="vc">
+          <span class="n">i.</span>
+          <h4>Quiet over <em>loud.</em></h4>
+          <p>The team prefers a small careful claim to a large impressive one. <em>Nobody on the team is comfortable being quoted in business television.</em> Research notes are written as if the reader is a sceptical colleague, not a prospect.</p>
+          <div class="ftr">In practice: no public predictions</div>
+        </div>
+        <div class="vc">
+          <span class="n">ii.</span>
+          <h4>Writing <em>over meetings.</em></h4>
+          <p>Most decisions inside the firm happen in writing first. A proposal becomes a memo, the memo is reviewed asynchronously, the meeting (if any) is for the dissent. <em>Most of the meetings the team does have are shorter than thirty minutes.</em></p>
+          <div class="ftr">In practice: written decision logs</div>
+        </div>
+        <div class="vc">
+          <span class="n">iii.</span>
+          <h4>Patience as <em>operating system.</em></h4>
+          <p>Strategies live for years. Relationships compound over decades. The firm refuses to rush research, refuses to onboard clients faster than the operations team can support, refuses to grow the team faster than the existing team can absorb. <em>Patience is not a virtue here; it is the architecture.</em></p>
+          <div class="ftr">In practice: slow hiring, slow scaling</div>
+        </div>
+        <div class="vc">
+          <span class="n">iv.</span>
+          <h4>Candour, <em>especially uncomfortable.</em></h4>
+          <p>When a strategy underperforms, the client letter says so, in the first paragraph, with the reason. When a position-sizing rule is changed, the change is documented and dated. When the team gets something wrong, the post-mortem is written, distributed internally, and referenced in future decisions. <em>The firm is built on the assumption that honesty compounds.</em></p>
+          <div class="ftr">In practice: open post-mortems</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Note on alignment -->
+  <section class="sec tint">
+    <div class="wrap">
+      <div class="sec-h">
+        <div class="meta">vi. ALIGNMENT<br/>The principal<br/>The team</div>
+        <h2>What it means that the founders&rsquo; capital <em>runs alongside.</em></h2>
+      </div>
+
+      <div class="prose-grid">
+        <div class="meta lab"><span class="n">a.</span>The structural point</div>
+        <div class="prose">
+          <p>Every member of the leadership team has a material portion of their personal capital invested in the firm&rsquo;s strategies. Not symbolically. Not a token allocation to demonstrate alignment. <em>Substantially.</em> When the strategies have a difficult quarter, the principals lose money personally, in the same proportion, with no separate hedge.</p>
+          <p>This is the only credible form of alignment in asset management. Fee structures can be designed to look aligned and not actually be. Performance fees with the wrong hurdle, high-water marks that reset on subscription, share classes that distribute risk asymmetrically &mdash; the industry is full of arrangements that look fair on paper and aren&rsquo;t. <strong>The only test that matters is whether the person making the decisions feels the same loss the client feels.</strong></p>
+          <p>The firm passes that test. It is also why the firm hires slowly &mdash; over time, new senior members of the team will join the principals&rsquo; capital alongside, and the alignment will broaden naturally. It is a posture the team grows into, not a marketing claim.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cross-links -->
+  <section class="xlinks">
+    <div class="wrap">
+      <div class="xl-h"><h2>The <em>other sections</em> of who we are.</h2><p>If the people made sense, the rest of what the firm believes is one click away.</p></div>
+      <div class="xl-grid">
+        <a class="xl-card" href="flameback-firm.html"><span class="n">i.</span><span class="t">The <em>firm.</em></span><span class="d">Origin, raison d&rsquo;&ecirc;tre, capital structure, mise en place, finite vs infinite games, regulatory standing.</span><span class="arr">Read &rarr;</span></a>
+        <a class="xl-card" href="flameback-philosophy.html"><span class="n">iii.</span><span class="t"><em>Philosophy.</em></span><span class="d">What the firm believes about markets, about risk, about the human side of compounding.</span><span class="arr">Read &rarr;</span></a>
+        <a class="xl-card" href="flameback-strategy-rd.html"><span class="n">iv.</span><span class="t">Strategy <em>R&amp;D.</em></span><span class="d">How an idea becomes live capital. The funnel. The kill rate. Why so few survive.</span><span class="arr">Read &rarr;</span></a>
+        <a class="xl-card" href="flameback-technology.html"><span class="n">v.</span><span class="t"><em>Technology.</em></span><span class="d">FIST, the data lake, QX, Jarvis. What we built. What we don&rsquo;t.</span><span class="arr">Read &rarr;</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="close">
+    <div class="wrap">
+      <h2>The team is the <em>practice.</em></h2>
+      <p class="sub">Most decisions in wealth management are, in the end, about whether you trust the people making them. A first conversation is the way to find out.</p>
+      <div class="ct-row">
+        <a class="btn" href="flameback-app-splash.html">Start your journey &rarr;</a>
+        <a class="btn-out" href="flameback-who-we-are.html">Back to the overview</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <div class="footin">
+        <a class="wm" href="flameback-home.html">flameback<span class="p">.</span></a>
+        <div class="footcols">
+          <div class="footcol"><h4>Who we are</h4><a href="flameback-firm.html">The firm</a><a href="flameback-team.html">Team</a><a href="flameback-philosophy.html">Philosophy</a><a href="flameback-strategy-rd.html">Strategy R&amp;D</a><a href="flameback-technology.html">Technology</a></div>
+          <div class="footcol"><h4>What we do</h4><a href="flameback-what-we-do.html#pwm">Private Wealth Management</a><a href="flameback-what-we-do.html#advisory">Advisory</a><a href="flameback-what-we-do.html#qx">QX Funds</a></div>
+          <div class="footcol"><h4>Open</h4><a href="flameback-our-work.html">Our work</a><a href="flameback-insights.html">Insights</a><a href="flameback-tools.html">Tools</a><a href="flameback-offbook.html">Off-book</a></div>
+          <div class="footcol"><h4>Regulatory</h4><a href="flameback-pms-disclosure.html">PMS disclosure</a><a href="flameback-advisory-disclosure.html">Advisory disclosure</a><a href="flameback-app-splash.html">Start your journey</a></div>
+        </div>
+      </div>
+      <div class="disc"><span>&copy; 2026 Flameback Capital Pvt Ltd</span><span class="legal">SEBI registered &middot; SEC filed for US strategy. Investments are subject to market risk. Past performance is not indicative of future results.</span></div>
+    </div>
+  </footer>
+
+<script>
+  var root=document.documentElement, tg=document.getElementById('toggle');
+  tg.addEventListener('click',function(){root.classList.toggle('light');tg.textContent=root.classList.contains('light')?'Dark':'Light';});
+  var nav=document.getElementById('nav');
+  window.addEventListener('scroll',function(){nav.classList.toggle('scrolled',window.scrollY>16)});
+</script>
+  <script src="reload.js"></script>
+</body>
+</html>

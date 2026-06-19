@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>flameback. — Chapter 1: Who you are</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#1A1714; --ink:#F2EDE3; --ink-soft:rgba(242,237,227,.64); --ink-mute:rgba(242,237,227,.42);
+    --line:rgba(242,237,227,.15); --accent:#FF6D0A; --btn-bg:#FF6D0A; --btn-ink:#1A1714;
+    --rm-bg:#1F1B17; --grain-blend:screen; --grain-op:.05;
+  }
+  :root.light{
+    --bg:#FCFAF6; --ink:#1A1714; --ink-soft:rgba(26,23,20,.66); --ink-mute:rgba(26,23,20,.46);
+    --line:rgba(26,23,20,.13); --accent:#FF6D0A; --btn-bg:#1A1714; --btn-ink:#FCFAF6;
+    --rm-bg:#F5F0E6; --grain-blend:multiply; --grain-op:.03;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-font-smoothing:antialiased}
+  body{background:var(--bg);color:var(--ink);font-family:"Source Serif 4",serif;transition:background .5s,color .5s;font-variant-numeric:tabular-nums;min-height:100vh;display:flex;flex-direction:column}
+  body::after{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;mix-blend-mode:var(--grain-blend);opacity:var(--grain-op);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  section,nav,main,aside,.layout{position:relative;z-index:2}
+  .wm{font-family:"Source Serif 4",serif;font-weight:600;font-size:18px;color:var(--ink);text-decoration:none}
+  .wm .p{color:var(--accent)}
+  h1,h2,h3,h4{font-family:"Cormorant Garamond",serif;font-weight:500;letter-spacing:-.012em;color:var(--ink)}
+
+  /* Nav with RM mode indicator */
+  nav{padding:14px 0;border-bottom:1px solid var(--line)}
+  .navin{display:flex;align-items:center;justify-content:space-between;padding:0 clamp(22px,3vw,32px)}
+  .navl{display:flex;align-items:center;gap:14px}
+  .mode-pill{display:inline-flex;align-items:center;gap:7px;padding:4px 11px;border:1px solid var(--accent);background:color-mix(in srgb,var(--accent) 8%,transparent);color:var(--accent);font-style:italic;font-size:11px;letter-spacing:.05em;text-transform:uppercase}
+  .mode-pill .dot{width:5px;height:5px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 0 var(--accent);animation:pulse 2s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,109,10,.6)}70%{box-shadow:0 0 0 6px rgba(255,109,10,0)}100%{box-shadow:0 0 0 0 rgba(255,109,10,0)}}
+  .navr{display:flex;align-items:center;gap:18px}
+  .navr .nlink{color:var(--ink-soft);text-decoration:none;font-size:13px;font-style:italic;cursor:pointer}
+  .navr .nlink:hover{color:var(--ink)}
+  .toggle{background:none;border:1px solid var(--line);color:var(--ink-soft);cursor:pointer;font-family:"Source Serif 4",serif;font-size:13px;font-style:italic;padding:5px 13px;border-radius:999px}
+
+  /* Chapter ribbon */
+  .ribbon{padding:14px clamp(22px,3vw,32px);border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--bg) 95%,transparent);display:flex;align-items:center;gap:clamp(10px,1.5vw,14px);overflow-x:auto;white-space:nowrap;flex-wrap:nowrap}
+  .ch{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-family:"Source Serif 4",serif;font-style:italic;color:var(--ink-mute);cursor:pointer;text-decoration:none}
+  .ch:hover{color:var(--ink-soft)}
+  .ch .ci{width:18px;height:18px;border-radius:50%;border:1px solid var(--ink-mute);display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-style:normal;flex-shrink:0;background:transparent;color:var(--ink-mute)}
+  .ch.done .ci{background:color-mix(in srgb,var(--accent) 25%,transparent);border-color:var(--accent);color:var(--accent)}
+  .ch.done{color:var(--ink-soft)}
+  .ch.curr .ci{background:var(--accent);border-color:var(--accent);color:var(--btn-ink)}
+  .ch.curr{color:var(--ink);font-weight:500;font-style:italic}
+  .ch-sep{width:14px;height:1px;background:var(--line);flex-shrink:0}
+
+  /* Two-column layout */
+  .layout{display:grid;grid-template-columns:1fr 340px;flex:1}
+  @media(max-width:980px){.layout{grid-template-columns:1fr}}
+
+  main{padding:clamp(36px,5vh,60px) clamp(28px,5vw,72px)}
+  .col-main{max-width:680px}
+
+  /* Chapter header */
+  .ch-lab{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+  .ch-lab .num{font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--accent);font-size:18px}
+  .ch-lab .lab{font-style:italic;font-size:13px;color:var(--ink-mute);letter-spacing:.04em}
+
+  h1{font-size:clamp(32px,4.6vw,48px);line-height:1.02;letter-spacing:-.018em;margin-bottom:14px;max-width:20ch}
+  h1 .acc{color:var(--accent);font-style:italic}
+  .lede{font-size:15.5px;line-height:1.6;color:var(--ink-soft);margin-bottom:clamp(28px,4vw,40px);max-width:54ch}
+  .lede em{color:var(--ink);font-style:italic;font-weight:500}
+
+  /* Form */
+  .form{display:flex;flex-direction:column;gap:18px;margin-bottom:32px}
+  .form-row{display:flex;flex-direction:column;gap:7px}
+  .form-row.split{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:520px){.form-row.split{grid-template-columns:1fr}}
+  .form-row label{font-size:11px;color:var(--ink-mute);font-style:italic;letter-spacing:.05em;text-transform:uppercase}
+  .form-row input,.form-row select{background:transparent;border:none;border-bottom:1px solid var(--line);padding:8px 0;color:var(--ink);font-family:"Source Serif 4",serif;font-size:16px;transition:border-color .15s;font-variant-numeric:tabular-nums}
+  .form-row input:focus,.form-row select:focus{outline:none;border-bottom-color:var(--accent)}
+  .form-row input::placeholder{color:var(--ink-mute);font-style:italic}
+  .form-row .hint{font-size:11.5px;color:var(--ink-mute);font-style:italic}
+
+  /* Radio chips for who-it's-for */
+  .question{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:20px;color:var(--ink);margin-bottom:6px}
+  .question .acc{color:var(--accent)}
+  .qhint{font-size:13px;color:var(--ink-mute);font-style:italic;margin-bottom:14px}
+  .chip-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px}
+  .chip{padding:9px 16px;border:1px solid var(--line);background:transparent;color:var(--ink-soft);font-family:"Source Serif 4",serif;font-size:13.5px;cursor:pointer;font-style:italic;transition:border-color .15s,color .15s,background .15s}
+  .chip:hover{border-color:var(--ink-mute);color:var(--ink)}
+  .chip.sel{background:var(--accent);color:var(--btn-ink);border-color:var(--accent);font-style:normal;font-weight:500}
+
+  /* Section divider */
+  .div-sec{margin:32px 0 24px;padding-top:24px;border-top:1px dashed var(--line)}
+  .div-sec h3{font-size:18px;margin-bottom:4px}
+  .div-sec h3 .acc{color:var(--accent);font-style:italic}
+  .div-sec .d{font-size:13px;color:var(--ink-mute);font-style:italic;margin-bottom:18px}
+
+  /* Action bar */
+  .actions{margin-top:36px;padding-top:24px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px}
+  .actions .back{font-size:14px;color:var(--ink-mute);text-decoration:none;font-style:italic;cursor:pointer}
+  .actions .back:hover{color:var(--ink-soft)}
+  .actions-r{display:flex;align-items:center;gap:14px}
+  .actions .skip{font-size:13px;color:var(--ink-mute);text-decoration:none;font-style:italic;cursor:pointer}
+  .actions .skip:hover{color:var(--ink-soft)}
+  .btn{background:var(--btn-bg);color:var(--btn-ink);border:none;font-family:"Source Serif 4",serif;font-size:15px;font-weight:500;padding:12px 24px;cursor:pointer;display:inline-flex;align-items:center;gap:11px;transition:gap .3s,opacity .3s;text-decoration:none}
+  .btn:hover{gap:15px;opacity:.92}
+
+  /* RM sidebar */
+  aside.rm{background:var(--rm-bg);border-left:1px solid var(--line);padding:clamp(20px,2vw,26px);display:flex;flex-direction:column;gap:22px;font-size:13.5px}
+  @media(max-width:980px){aside.rm{display:none}}
+
+  .rm-banner{padding:14px 0;border-bottom:1px solid var(--line)}
+  .rm-banner .who{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:16px;color:var(--ink);line-height:1.15}
+  .rm-banner .stat{font-size:11px;color:var(--ink-mute);font-style:italic;letter-spacing:.04em;margin-top:4px;display:flex;align-items:center;gap:8px}
+  .rm-banner .stat .d{width:5px;height:5px;border-radius:50%;background:var(--accent)}
+
+  .rm-sec h4{font-family:"Source Serif 4",serif;font-style:italic;font-size:11px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px}
+  .rm-mode{display:flex;border:1px solid var(--line)}
+  .rm-mode button{flex:1;padding:9px 8px;background:transparent;border:none;font-family:"Source Serif 4",serif;font-size:12.5px;color:var(--ink-mute);font-style:italic;cursor:pointer}
+  .rm-mode button.active{background:var(--accent);color:var(--btn-ink);font-style:normal;font-weight:500}
+
+  .rm-notes{display:flex;flex-direction:column;gap:8px}
+  .rm-notes textarea{background:var(--bg);border:1px solid var(--line);padding:10px 12px;color:var(--ink);font-family:"Source Serif 4",serif;font-size:13px;font-style:italic;min-height:90px;resize:vertical;line-height:1.5}
+  .rm-notes textarea:focus{outline:none;border-color:var(--accent)}
+  .rm-notes .saving{font-size:10.5px;color:var(--ink-mute);font-style:italic;letter-spacing:.04em;display:flex;align-items:center;gap:6px}
+  .rm-notes .saving .d{width:4px;height:4px;border-radius:50%;background:var(--accent)}
+
+  .rm-acts{display:flex;flex-direction:column;gap:7px}
+  .rm-acts button{background:transparent;border:1px solid var(--line);color:var(--ink-soft);padding:9px 12px;font-family:"Source Serif 4",serif;font-size:13px;font-style:italic;text-align:left;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+  .rm-acts button:hover{border-color:var(--ink-mute);color:var(--ink)}
+  .rm-acts button .ic{color:var(--accent);font-size:14px}
+
+  .rm-jump{display:flex;flex-direction:column;gap:2px;font-size:12.5px}
+  .rm-jump a{color:var(--ink-mute);text-decoration:none;padding:5px 0;display:flex;justify-content:space-between;align-items:center;font-style:italic;border-bottom:1px dashed transparent}
+  .rm-jump a:hover{color:var(--ink-soft);border-bottom-color:var(--line)}
+  .rm-jump a.curr{color:var(--ink);font-style:italic;font-weight:500}
+  .rm-jump a .ix{color:var(--ink-mute);font-size:10.5px;font-style:italic}
+  .rm-jump a.done .ix{color:var(--accent)}
+
+  /* Ping bubble (for client view, kept here as reference; hidden in RM mode) */
+  .ping{position:fixed;bottom:24px;right:24px;display:none;align-items:center;gap:8px;padding:10px 16px;background:var(--accent);color:var(--btn-ink);font-family:"Source Serif 4",serif;font-size:13.5px;font-weight:500;text-decoration:none;cursor:pointer;box-shadow:0 8px 24px -8px rgba(0,0,0,.4);z-index:30}
+
+</style>
+</head>
+<body>
+
+  <nav>
+    <div class="navin">
+      <div class="navl">
+        <a class="wm" href="index.html">flameback<span class="p">.</span></a>
+        <span class="mode-pill"><span class="dot"></span>RM mode &middot; Ashrith</span>
+      </div>
+      <div class="navr">
+        <span class="nlink">Save &amp; exit</span>
+        <span class="nlink">Help</span>
+        <button class="toggle" id="toggle">Light</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Chapter ribbon -->
+  <div class="ribbon">
+    <a class="ch curr" href="#"><span class="ci">i</span>Who you are</a>
+    <span class="ch-sep"></span>
+    <a class="ch" href="flameback-onboard-goals.html"><span class="ci">ii</span>What you want</a>
+    <span class="ch-sep"></span>
+    <a class="ch" href="#"><span class="ci">iii</span>What you have</a>
+    <span class="ch-sep"></span>
+    <a class="ch" href="#"><span class="ci">iv</span>Risk</a>
+    <span class="ch-sep"></span>
+    <a class="ch" href="#"><span class="ci">v</span>Preferences</a>
+    <span class="ch-sep"></span>
+    <a class="ch" href="#"><span class="ci">vi</span>Paperwork</a>
+    <span class="ch-sep"></span>
+    <a class="ch" href="#"><span class="ci">vii</span>Recommendation</a>
+    <span class="ch-sep"></span>
+    <a class="ch" href="#"><span class="ci">viii</span>Sign &amp; connect</a>
+    <span class="ch-sep"></span>
+    <a class="ch" href="#"><span class="ci">ix</span>Done</a>
+  </div>
+
+  <div class="layout">
+
+    <main>
+      <div class="col-main">
+
+        <div class="ch-lab">
+          <span class="num">i.</span>
+          <span class="lab">Chapter 1 of 9 &middot; About 3&ndash;4 minutes</span>
+        </div>
+
+        <h1>Let&rsquo;s start with <span class="acc">who you are.</span></h1>
+        <p class="lede">Standard details. Anything you don&rsquo;t know off the top of your head, leave blank &mdash; we&rsquo;ll come back to it. <em>Phone and email are the only ones we really need to move forward.</em></p>
+
+        <div class="form">
+          <div class="form-row split">
+            <div class="form-row">
+              <label for="f-first">First name</label>
+              <input type="text" id="f-first" value="Kishan"/>
+            </div>
+            <div class="form-row">
+              <label for="f-last">Last name</label>
+              <input type="text" id="f-last" value="Murjani Nair"/>
+            </div>
+          </div>
+
+          <div class="form-row split">
+            <div class="form-row">
+              <label for="f-email">Email</label>
+              <input type="email" id="f-email" value="kishan@example.com"/>
+            </div>
+            <div class="form-row">
+              <label for="f-phone">Phone</label>
+              <input type="tel" id="f-phone" value="+91 98765 43210"/>
+            </div>
+          </div>
+
+          <div class="form-row split">
+            <div class="form-row">
+              <label for="f-city">City</label>
+              <input type="text" id="f-city" value="Bangalore"/>
+            </div>
+            <div class="form-row">
+              <label for="f-tax">Tax residency</label>
+              <select id="f-tax">
+                <option>India &mdash; resident</option>
+                <option>India &mdash; NRI</option>
+                <option>Other</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <label>Communication preference</label>
+            <div class="chip-row" style="margin-top:6px">
+              <button class="chip sel">Email</button>
+              <button class="chip">WhatsApp</button>
+              <button class="chip">Call</button>
+              <button class="chip">Whichever is easiest</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="div-sec">
+          <h3>Investor <span class="acc">type.</span></h3>
+          <p class="d">For KYC and the structure of any agreement, we need to know who the legal investor will be.</p>
+          <div class="chip-row">
+            <button class="chip sel">Resident individual</button>
+            <button class="chip">NRI</button>
+            <button class="chip">HUF</button>
+            <button class="chip">Corporate</button>
+            <button class="chip">Trust</button>
+            <button class="chip">Family office</button>
+          </div>
+        </div>
+
+        <div class="div-sec">
+          <p class="question">Who is this investment <span class="acc">for?</span></p>
+          <p class="qhint">Often the person filling this in isn&rsquo;t the eventual beneficiary. If that&rsquo;s the case, we&rsquo;ll need a few details about them too in a moment.</p>
+          <div class="chip-row">
+            <button class="chip sel">Myself</button>
+            <button class="chip">Myself + spouse</button>
+            <button class="chip">My parents</button>
+            <button class="chip">My children</button>
+            <button class="chip">A company / trust</button>
+            <button class="chip">Someone else</button>
+          </div>
+        </div>
+
+        <div class="actions">
+          <a class="back" href="flameback-app-splash.html">&larr; Back</a>
+          <div class="actions-r">
+            <a class="skip" href="#">Save &amp; finish later</a>
+            <a class="btn" href="flameback-onboard-goals.html">Continue to goals &rarr;</a>
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+    <!-- RM sidebar -->
+    <aside class="rm">
+      <div class="rm-banner">
+        <div class="who">Kishan Murjani Nair</div>
+        <div class="stat"><span class="d"></span>In progress &middot; Chapter 1 &middot; Started 8 minutes ago</div>
+      </div>
+
+      <div class="rm-sec">
+        <h4>Mode</h4>
+        <div class="rm-mode">
+          <button class="active">Together</button>
+          <button>Apart</button>
+        </div>
+        <p style="font-size:11.5px;color:var(--ink-mute);font-style:italic;margin-top:8px;line-height:1.5">Screen-share open. Client watching as you type. Toggle to <em>Apart</em> to send a magic link and let them continue alone.</p>
+      </div>
+
+      <div class="rm-sec rm-notes">
+        <h4>Private notes</h4>
+        <textarea placeholder="Anything to remember about this client. Not visible to them.">First conversation went well. Mentioned father's portfolio &mdash; possible second mandate later. Sensitive about overpaying advisory fees; previous experience with a wealth shop left a bad taste.</textarea>
+        <span class="saving"><span class="d"></span>Saved 4 seconds ago</span>
+      </div>
+
+      <div class="rm-sec rm-acts">
+        <h4>Actions</h4>
+        <button>Send magic link to client <span class="ic">&#8599;</span></button>
+        <button>Hand over typing <span class="ic">&#8644;</span></button>
+        <button>Schedule follow-up <span class="ic">&#9744;</span></button>
+        <button>Mark complete &amp; continue <span class="ic">&rarr;</span></button>
+      </div>
+
+      <div class="rm-sec">
+        <h4>Jump to chapter</h4>
+        <div class="rm-jump">
+          <a href="#" class="done">Welcome <span class="ix">done</span></a>
+          <a href="#" class="curr">Who you are <span class="ix">current</span></a>
+          <a href="flameback-onboard-goals.html">What you want <span class="ix">ii</span></a>
+          <a href="#">What you have <span class="ix">iii</span></a>
+          <a href="#">Risk <span class="ix">iv</span></a>
+          <a href="#">Preferences <span class="ix">v</span></a>
+          <a href="#">Paperwork <span class="ix">vi</span></a>
+          <a href="#">Recommendation <span class="ix">vii</span></a>
+          <a href="#">Sign &amp; connect <span class="ix">viii</span></a>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+
+  <a class="ping" href="#"><span>?</span>Ask Ashrith</a>
+
+<script>
+  var root=document.documentElement, tg=document.getElementById('toggle');
+  tg.addEventListener('click',function(){root.classList.toggle('light');tg.textContent=root.classList.contains('light')?'Dark':'Light';});
+
+  // Chip selection
+  document.querySelectorAll('.chip-row').forEach(function(row){
+    row.querySelectorAll('.chip').forEach(function(c){
+      c.addEventListener('click',function(){
+        row.querySelectorAll('.chip').forEach(function(x){x.classList.remove('sel')});
+        c.classList.add('sel');
+      });
+    });
+  });
+</script>
+  <script src="reload.js"></script>
+</body>
+</html>

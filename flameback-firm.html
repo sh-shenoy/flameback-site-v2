@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The firm — flameback.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#1A1714;--ink:#F2EDE3;--ink-soft:rgba(242,237,227,.66);--ink-mute:rgba(242,237,227,.44);--line:rgba(242,237,227,.16);--panel:#221E1A;--accent:#FF6D0A;--btn-bg:#FF6D0A;--btn-ink:#1A1714;--grain-blend:screen;--grain-op:.055}
+  :root.light{--bg:#FCFAF6;--ink:#1A1714;--ink-soft:rgba(26,23,20,.68);--ink-mute:rgba(26,23,20,.46);--line:rgba(26,23,20,.14);--panel:#F4EFE7;--accent:#B23E08;--btn-bg:#1A1714;--btn-ink:#FCFAF6;--grain-blend:multiply;--grain-op:.035}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:"Source Serif 4",serif;transition:background .5s,color .5s;font-variant-numeric:tabular-nums;line-height:1.55}
+  body::after{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;mix-blend-mode:var(--grain-blend);opacity:var(--grain-op);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  .wrap{max-width:1200px;margin:0 auto;padding:0 clamp(22px,5vw,44px)}
+  section{position:relative;z-index:2}
+  .wm{font-family:"Source Serif 4",serif;font-weight:600;font-size:18px;color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+  .wm .p{color:var(--accent)}
+  .lab{font-family:"Source Serif 4",serif;font-style:italic;font-size:13.5px;color:var(--ink-mute);letter-spacing:.02em}
+  .lab .n{font-style:normal;color:var(--accent);margin-right:10px;font-family:"Cormorant Garamond",serif}
+  h1,h2,h3,h4{font-family:"Cormorant Garamond",serif;font-weight:500;letter-spacing:-.014em;color:var(--ink);line-height:1.04}
+  h1 em,h2 em,h3 em{color:var(--accent);font-style:italic;font-weight:500}
+  p{line-height:1.62}
+  .btn,.btn-out{display:inline-flex;align-items:center;gap:11px;font-family:"Source Serif 4",serif;font-size:15px;font-weight:500;padding:13px 24px;text-decoration:none;transition:gap .35s,opacity .3s,border-color .3s;cursor:pointer;border:none}
+  .btn{background:var(--btn-bg);color:var(--btn-ink)} .btn:hover{gap:15px;opacity:.92}
+  .btn-out{background:transparent;color:var(--ink);border:1px solid var(--line)} .btn-out:hover{gap:15px;border-color:var(--ink-mute)}
+  nav.top{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 84%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid transparent;transition:border-color .4s}
+  nav.top.scrolled{border-color:var(--line)}
+  .navin{display:flex;align-items:center;justify-content:space-between;padding:16px 0}
+  .navr{display:flex;align-items:center;gap:22px}
+  .navr a{color:var(--ink-soft);text-decoration:none;font-size:14.5px;transition:color .3s}
+  .navr a:hover{color:var(--ink)}
+  .navr a.active{color:var(--ink)}
+  .toggle{background:none;border:1px solid var(--line);color:var(--ink-soft);cursor:pointer;font-family:"Source Serif 4",serif;font-size:13px;font-style:italic;padding:5px 13px;border-radius:999px}
+  .navr a.cta{background:var(--btn-bg);color:var(--btn-ink);padding:9px 18px}
+  @media(max-width:1000px){.navr .navlink{display:none}}
+  .crumb{padding:14px 0;border-bottom:1px solid var(--line);font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-mute);letter-spacing:.05em;text-transform:uppercase}
+  .crumb a{color:var(--ink-mute);text-decoration:none}
+  .crumb a:hover{color:var(--accent)}
+  .crumb .sep{margin:0 10px;opacity:.55}
+  .crumb .cur{color:var(--accent)}
+  .hero{padding:clamp(70px,11vh,130px) 0 clamp(54px,7vh,90px);border-bottom:1px solid var(--line);position:relative}
+  .hero-eb{display:flex;align-items:center;gap:14px;margin-bottom:32px;font-style:italic;font-size:13px;color:var(--ink-mute);letter-spacing:.04em}
+  .hero-eb .l{width:32px;height:1px;background:var(--accent)}
+  .hero-eb .dateline{font-family:"JetBrains Mono",monospace;font-style:normal;font-size:11.5px;margin-left:auto;letter-spacing:.05em}
+  @media(max-width:760px){.hero-eb .dateline{display:none}}
+  h1.h-h{font-size:clamp(58px,9vw,128px);line-height:.92;letter-spacing:-.025em;margin-bottom:32px;max-width:14ch;font-weight:500}
+  .h-sub{font-size:clamp(17px,1.7vw,21px);line-height:1.55;color:var(--ink-soft);max-width:54ch;font-style:italic;margin-bottom:38px}
+  .h-cta{display:flex;gap:12px;flex-wrap:wrap}
+  .wmark{position:absolute;right:0;bottom:0;font-family:"Cormorant Garamond",serif;font-style:italic;font-size:clamp(180px,30vw,360px);color:var(--ink);opacity:.02;line-height:.8;pointer-events:none;letter-spacing:-.04em;white-space:nowrap;overflow:hidden}
+  .sec{padding:clamp(70px,10vh,120px) 0;border-bottom:1px solid var(--line);position:relative}
+  .sec.tint{background:color-mix(in srgb,var(--ink) 2.2%,transparent)}
+  .sec-h{display:grid;grid-template-columns:160px 1fr;gap:48px;align-items:flex-start;margin-bottom:clamp(36px,4vw,52px)}
+  @media(max-width:760px){.sec-h{grid-template-columns:1fr;gap:14px}}
+  .sec-h .meta{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase;padding-top:14px;border-top:1px solid var(--line);line-height:1.7}
+  .sec-h h2{font-size:clamp(36px,5vw,62px);line-height:1.02;letter-spacing:-.015em;max-width:18ch}
+  .prose{max-width:62ch;font-size:17px;line-height:1.7;color:var(--ink)}
+  .prose p{margin-bottom:22px}
+  .prose p:last-child{margin-bottom:0}
+  .prose em{color:var(--accent);font-style:italic;font-weight:500}
+  .prose strong{font-weight:500;color:var(--ink);font-style:italic}
+  .prose-grid{display:grid;grid-template-columns:160px 1fr;gap:48px;align-items:flex-start}
+  @media(max-width:760px){.prose-grid{grid-template-columns:1fr;gap:14px}}
+  .pq{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:clamp(28px,3.6vw,40px);line-height:1.25;color:var(--ink);max-width:24ch;padding-left:24px;border-left:2px solid var(--accent);margin:32px 0}
+  .pq em{color:var(--accent);font-style:italic}
+  .timeline{display:grid;grid-template-columns:1fr;gap:0;border:1px solid var(--line);background:var(--bg);max-width:880px;margin-top:28px}
+  .tl-row{display:grid;grid-template-columns:130px 1fr;gap:32px;padding:24px 28px;border-bottom:1px solid var(--line);align-items:flex-start}
+  .tl-row:last-child{border-bottom:none}
+  .tl-row .yr{font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--accent);font-size:30px;letter-spacing:0;line-height:1}
+  .tl-row .body{font-size:15px;line-height:1.65;color:var(--ink)}
+  .tl-row .body em{color:var(--accent);font-style:italic}
+  .tl-row .body strong{font-weight:500;font-style:italic}
+  @media(max-width:560px){.tl-row{grid-template-columns:1fr;gap:8px}}
+  .cap-list{list-style:none;border:1px solid var(--line);background:var(--bg);max-width:920px}
+  .cap-list li{padding:28px 32px;border-bottom:1px solid var(--line);display:grid;grid-template-columns:54px 1fr 180px;gap:24px;align-items:flex-start;font-size:15.5px}
+  .cap-list li:last-child{border-bottom:none}
+  @media(max-width:760px){.cap-list li{grid-template-columns:1fr;gap:10px}.cap-list .who{margin-top:6px}}
+  .cap-list .rn{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:24px;color:var(--accent);line-height:1}
+  .cap-list .body-l{line-height:1.7;color:var(--ink-soft)}
+  .cap-list .body-l em{color:var(--ink);font-style:italic;font-weight:500}
+  .cap-list .who{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--ink-mute);letter-spacing:.05em;text-transform:uppercase;text-align:right;line-height:1.7}
+  @media(max-width:760px){.cap-list .who{text-align:left}}
+  .miseen{display:grid;grid-template-columns:1.15fr 1fr;gap:clamp(40px,5vw,72px);align-items:flex-start}
+  @media(max-width:880px){.miseen{grid-template-columns:1fr;gap:32px}}
+  .miseen .vis{aspect-ratio:4/5;border:1px solid var(--line);background:color-mix(in srgb,var(--ink) 3%,transparent);position:relative;overflow:hidden}
+  .miseen .vis svg{display:block;width:100%;height:100%}
+  .miseen .vis .stamp{position:absolute;bottom:14px;left:14px;font-family:"JetBrains Mono",monospace;font-size:9.5px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase;padding:5px 10px;border:1px solid var(--line);background:var(--bg)}
+  .terms{margin-top:30px;display:flex;gap:14px;flex-wrap:wrap}
+  .term{padding:10px 16px;border:1px solid var(--line);font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--ink);font-size:16px;background:color-mix(in srgb,var(--ink) 2%,transparent)}
+  .term .ja{display:block;font-family:"Source Serif 4",serif;font-size:10.5px;color:var(--ink-mute);text-transform:uppercase;letter-spacing:.08em;font-style:italic;margin-top:2px}
+  .games{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);margin-top:28px}
+  @media(max-width:680px){.games{grid-template-columns:1fr}}
+  .game-c{background:var(--bg);padding:36px 32px;display:flex;flex-direction:column;gap:14px;min-height:280px}
+  .game-c.us{background:color-mix(in srgb,var(--accent) 4%,transparent)}
+  .game-c .kind{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--ink-mute);letter-spacing:.08em;text-transform:uppercase}
+  .game-c.us .kind{color:var(--accent)}
+  .game-c h3{font-size:30px;line-height:1.08;margin-bottom:4px}
+  .game-c h3 em{font-style:italic;color:var(--accent)}
+  .game-c .desc{font-size:14.5px;line-height:1.65;color:var(--ink-soft);flex:1}
+  .game-c .desc em{font-style:italic;color:var(--ink);font-weight:500}
+  .game-c .tag{padding-top:14px;border-top:1px dashed var(--line);font-family:"Source Serif 4",serif;font-size:12px;font-style:italic;color:var(--ink-mute);letter-spacing:.02em}
+  .reg-tbl{border:1px solid var(--line);background:var(--bg);overflow-x:auto;max-width:920px}
+  .reg-tbl table{width:100%;border-collapse:collapse;min-width:560px}
+  .reg-tbl th,.reg-tbl td{padding:16px 22px;text-align:left;font-size:13.5px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.55}
+  .reg-tbl th{font-family:"Source Serif 4",serif;font-style:italic;font-size:11px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase;font-weight:400;background:color-mix(in srgb,var(--ink) 2%,transparent)}
+  .reg-tbl td{color:var(--ink)}
+  .reg-tbl td:first-child{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:18px;color:var(--ink);width:200px;letter-spacing:-.005em}
+  .reg-tbl td.num{font-family:"JetBrains Mono",monospace;font-size:11.5px;color:var(--ink-mute);letter-spacing:.04em;width:200px}
+  .reg-tbl tr:last-child td{border-bottom:none}
+  .xlinks{padding:clamp(70px,10vh,110px) 0;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--ink) 2.2%,transparent)}
+  .xl-h{margin-bottom:36px}
+  .xl-h h2{font-size:clamp(28px,3.4vw,40px);line-height:1.05;margin-bottom:10px}
+  .xl-h p{font-size:14.5px;color:var(--ink-soft);font-style:italic;max-width:48ch}
+  .xl-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+  @media(max-width:900px){.xl-grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:540px){.xl-grid{grid-template-columns:1fr}}
+  .xl-card{background:var(--bg);padding:28px 26px;display:flex;flex-direction:column;gap:10px;text-decoration:none;color:var(--ink);transition:background .25s}
+  .xl-card:hover{background:color-mix(in srgb,var(--accent) 5%,transparent)}
+  .xl-card .n{font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--accent);font-size:20px;line-height:1}
+  .xl-card .t{font-family:"Cormorant Garamond",serif;font-size:24px;line-height:1.1;color:var(--ink);margin-top:2px}
+  .xl-card .t em{color:var(--accent);font-style:italic}
+  .xl-card .d{font-size:13.5px;line-height:1.55;color:var(--ink-soft);font-style:italic;flex:1}
+  .xl-card .arr{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-mute);letter-spacing:.04em;margin-top:6px}
+  .xl-card:hover .arr{color:var(--accent)}
+  .close{padding:clamp(80px,10vh,120px) 0;text-align:center;border-bottom:1px solid var(--line)}
+  .close h2{font-size:clamp(34px,5vw,56px);line-height:1.0;margin-bottom:22px;max-width:22ch;margin-left:auto;margin-right:auto}
+  .close .sub{font-size:15.5px;color:var(--ink-soft);font-style:italic;max-width:48ch;margin:0 auto 32px;line-height:1.65}
+  .close .ct-row{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+  footer{padding:60px 0 36px}
+  .footin{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;margin-bottom:42px}
+  .footcols{display:flex;gap:clamp(38px,6vw,72px);flex-wrap:wrap}
+  .footcol h4{font-style:italic;font-weight:400;font-size:13px;color:var(--ink-mute);margin-bottom:14px;letter-spacing:.03em}
+  .footcol a{display:block;color:var(--ink-soft);text-decoration:none;font-size:14.5px;margin-bottom:9px}
+  .footcol a:hover{color:var(--accent)}
+  .disc{padding-top:24px;border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px}
+  .disc span{font-size:12px;color:var(--ink-mute);line-height:1.6}
+  .disc .legal{max-width:72ch;font-style:italic}
+</style>
+</head>
+<body>
+
+  <nav class="top" id="nav">
+    <div class="wrap navin">
+      <a class="wm" href="flameback-home.html">flameback<span class="p">.</span></a>
+      <div class="navr">
+        <a class="navlink active" href="flameback-who-we-are.html">Who we are</a>
+        <a class="navlink" href="flameback-what-we-do.html">What we do</a>
+        <a class="navlink" href="flameback-our-work.html">Our work</a>
+        <a class="navlink" href="flameback-insights.html">Insights</a>
+        <a class="navlink" href="flameback-tools.html">Tools</a>
+        <a class="navlink" href="flameback-offbook.html">Off-book</a>
+        <a class="cta" href="flameback-app-splash.html">Start your journey</a>
+        <button class="toggle" id="toggle">Light</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="crumb wrap"><a href="flameback-who-we-are.html">Who we are</a><span class="sep">&#8250;</span><span class="cur">The firm</span></div>
+
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-eb"><span class="l"></span><span>Who we are &middot; section i</span><span class="dateline">EST. 2017 &middot; BANGALORE</span></div>
+      <h1 class="h-h">The <em>firm.</em></h1>
+      <p class="h-sub">A quantitative investment firm built in Bangalore by a small team that decided, in the founding meeting, that everyone on the investment side would also write code. Nine years later, the discipline holds.</p>
+      <div class="h-cta">
+        <a class="btn" href="flameback-app-splash.html">Start your journey &rarr;</a>
+        <a class="btn-out" href="flameback-team.html">Read about the team</a>
+      </div>
+    </div>
+    <div class="wmark">the firm.</div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-h">
+        <div class="meta">i. ORIGIN<br/>Founded 2017<br/>Bangalore, India</div>
+        <h2>How a small team decided to build the firm <em>differently.</em></h2>
+      </div>
+
+      <div class="prose-grid">
+        <div class="meta lab"><span class="n">a.</span>Founding</div>
+        <div class="prose">
+          <p>The firm began with two convictions and one frustration.</p>
+          <p>The first conviction was that <em>quantitative methods, applied with discipline over multi-year horizons, would outperform discretionary stock-picking</em> after fees, transaction costs, and the natural attrition of star managers. This wasn&rsquo;t a novel claim. It was the academic consensus, the AQR-Fama-French insight, and the empirical record across every developed market over fifty years.</p>
+          <p>The second conviction was that <strong>nobody in India was offering this approach to high net worth individuals on terms that matched the integrity of the underlying methodology</strong>. The PMS industry was largely discretionary. The mutual fund industry was scale-driven. The wealth-management arms of banks were product distributors. There was no quantitative private wealth firm that took the methodology seriously, kept its alignment honest, and worked with families one at a time.</p>
+          <p>The frustration was personal. The founding team had each, separately, been on the receiving end of bad wealth management &mdash; either as clients themselves or watching family members be sold structured products they did not understand by people whose incentives were not aligned. The decision to build the firm came out of that frustration as much as out of any business plan.</p>
+        </div>
+      </div>
+
+      <div class="prose-grid" style="margin-top:42px">
+        <div class="meta lab"><span class="n">b.</span>The engineering-first decision</div>
+        <div class="prose">
+          <p>At the founding meeting in a small office in Indiranagar, the team made one decision that would prove harder to keep than to make: <em>everyone on the investment side would also code</em>. Not a separation between &lsquo;quants&rsquo; who build models and &lsquo;portfolio managers&rsquo; who run them. One team. One stack. One discipline.</p>
+          <p>Nine years later, this remains the firm&rsquo;s defining structural choice. The fund manager, the chief technology officer, the research head &mdash; each of them has commits in the production codebase from this month. It means that strategies are not described in PowerPoint and handed to engineers to implement. They are written, tested, and deployed by the same people who understand what they are supposed to do.</p>
+          <p>It also means the firm hires slowly. Most candidates fail one of the two tests &mdash; either the financial-reasoning side or the engineering side. Of every hundred CVs the firm receives, fewer than three result in interviews. Of those, fewer than one in five receive an offer.</p>
+        </div>
+      </div>
+
+      <div class="timeline">
+        <div class="tl-row"><span class="yr">2017</span><div class="body"><em>The firm is founded</em> in Bangalore. Three engineers and one fund manager. First version of <strong>FIST</strong>, the trade engine, deployed to paper trading.</div></div>
+        <div class="tl-row"><span class="yr">2018</span><div class="body">FIST goes live with a single momentum strategy on a small book of founders&rsquo; capital. Eight months of out-of-sample data confirm the back-tested behaviour within tolerance.</div></div>
+        <div class="tl-row"><span class="yr">2019</span><div class="body"><em>First external clients.</em> A handful of patient individuals, all of whom knew the founders personally, deposit capital. The firm declines to take more than it can responsibly manage at the time.</div></div>
+        <div class="tl-row"><span class="yr">2020</span><div class="body">SEBI registration as a Portfolio Manager. The COVID drawdown becomes the firm&rsquo;s first <strong>real-world stress test</strong>: strategies de-gross automatically, drawdown is contained, clients stay invested.</div></div>
+        <div class="tl-row"><span class="yr">2022</span><div class="body">Strategy count reaches twelve. The R&amp;D pipeline matures. Walk-forward and regime testing become standard. <em>The firm declines two VC overtures.</em></div></div>
+        <div class="tl-row"><span class="yr">2023</span><div class="body">SEC filing for the US strategy. SEBI AIF Category-III process initiated for the QX fund. The team grows to its current size of fifteen.</div></div>
+        <div class="tl-row"><span class="yr">2025</span><div class="body"><em>AUM crosses &#8377;100 crore.</em> Eighteen strategies in production. The firm chooses to keep its client count below 100 to maintain the depth of relationship that defines the practice.</div></div>
+        <div class="tl-row"><span class="yr">2026</span><div class="body">Today. A quantitative private wealth manager based in Bangalore, with strategies in India and the US, founders&rsquo; capital running alongside, and no obligation to grow beyond capacity.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec tint">
+    <div class="wrap">
+      <div class="sec-h">
+        <div class="meta">ii. RAISON D&rsquo;&Ecirc;TRE<br/>The question<br/>The firm exists to answer</div>
+        <h2>How do you stay invested <em>through treacherous times.</em></h2>
+      </div>
+
+      <div class="prose-grid">
+        <div class="meta lab"><span class="n">a.</span>The problem</div>
+        <div class="prose">
+          <p>Markets are, by their nature, uncertain. Human beings are not built to hold investment positions through drawdowns of 20%, 35%, or sometimes 50%. The data on this is overwhelming and not in dispute: <em>investor returns lag investment returns by between 1% and 3% annually</em> across every developed market, every product category, every time horizon studied. The gap is not caused by fees. It is caused by behaviour &mdash; selling at the wrong time, buying at the wrong time, and refusing to stay still during periods when staying still is exactly what compounds.</p>
+          <p>This is not a moral failing of investors. It is a consequence of being human. The cortisol response that helped early hominids survive on a savannah is the same response that causes a sophisticated forty-year-old founder to liquidate a long-horizon portfolio at the bottom of a drawdown.</p>
+          <p>The wealth-management industry has historically tried to solve this by appealing to discipline &mdash; <em>&lsquo;stay the course&rsquo;</em>, <em>&lsquo;trust the process&rsquo;</em>, <em>&lsquo;think long-term&rsquo;</em>. These appeals do not work. They have not worked for fifty years. The neurochemistry does not care about the manager&rsquo;s pep talk.</p>
+        </div>
+      </div>
+
+      <div class="pq">A strategy you cannot hold through its worst quarter is not, in any meaningful sense, <em>your strategy.</em></div>
+
+      <div class="prose-grid" style="margin-top:42px">
+        <div class="meta lab"><span class="n">b.</span>The firm&rsquo;s answer</div>
+        <div class="prose">
+          <p>The firm&rsquo;s approach is to <em>remove the need for the client to make these decisions emotionally</em>. The strategies de-gross automatically when volatility rises. Drawdown control is built into the construction. Position-sizing is risk-budgeted, not conviction-weighted. A client who panics during a drawdown will find that the firm has already done something measured about the drawdown, and that the response is documented in writing, in advance, with the same explanation that was given to them when they signed on.</p>
+          <p>This is not a guarantee against losses. It is a commitment that <strong>losses, when they occur, will be the losses the system was designed to take &mdash; not the losses introduced by emotional override</strong>. The first kind of loss is recoverable through patience. The second kind compounds against you.</p>
+          <p>This is what the firm means by &lsquo;all-weather&rsquo;. Not that it never loses money. But that when it loses money, the loss is part of the strategy, not a deviation from it.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-h">
+        <div class="meta">iii. CAPITAL<br/>Whose money<br/>Runs the firm</div>
+        <h2>Three things to know about <em>who funds us.</em></h2>
+      </div>
+
+      <ul class="cap-list">
+        <li>
+          <span class="rn">i</span>
+          <div class="body-l"><em>The founders&rsquo; own capital.</em> A meaningful portion of the founding team&rsquo;s personal wealth is invested in the firm&rsquo;s own strategies. Not symbolically &mdash; substantially. We compound alongside the clients, in the same products, on the same terms, paying the same fees. There is no separate proprietary book that gets the better trades. Every signal flows to one set of accounts, sized by capacity.</div>
+          <span class="who">Founding team<br/>Skin in the game</span>
+        </li>
+        <li>
+          <span class="rn">ii</span>
+          <div class="body-l"><em>Patient private investors.</em> A small number of long-horizon individuals &mdash; in most cases, clients who came to know the firm well before they backed it &mdash; have provided supporting capital for the firm&rsquo;s growth. They expect no exit timeline. They were not promised one when they invested. This is, by design, the opposite of how venture capital works.</div>
+          <span class="who">Private<br/>No exit pressure</span>
+        </li>
+        <li>
+          <span class="rn">iii</span>
+          <div class="body-l"><em>No venture capital. No private equity. No bank ownership.</em> The firm has never raised institutional venture capital and has no plans to. This is a structural choice with downstream consequences: <em>we have no requirement to grow AUM beyond the size we can responsibly manage</em>, no pressure to introduce thematic products that don&rsquo;t fit the methodology, no exit clock running in the background that would push us toward decisions we wouldn&rsquo;t otherwise make.</div>
+          <span class="who">Independent<br/>No forced scale</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="sec tint">
+    <div class="wrap">
+      <div class="sec-h">
+        <div class="meta">iv. OFFICE<br/>The space<br/>The discipline</div>
+        <h2><em>Mise en place,</em> applied to wealth.</h2>
+      </div>
+
+      <div class="miseen">
+        <div class="lhs">
+          <div class="prose">
+            <p>The firm runs on a single Japanese principle: <em>mise en place</em>, borrowed from the kitchen but practised across every part of the operation. Everything in its proper place, ready for use, nothing left undone.</p>
+            <p>In the kitchen, <em>mise en place</em> means the chef has all ingredients chopped, measured, and arranged before service begins. There is no scrambling during the work itself. The pressure is moved upstream, into the calm hours of preparation. When the orders start arriving, the only thing left is execution.</p>
+            <p>In wealth management, the analogue is exact. <strong>The calm hours of preparation</strong> are when strategies are researched, tested, validated, documented, and stress-checked. <strong>The orders arriving</strong> are the daily flow of market movements, client questions, regulatory filings, and operational tasks. If the preparation is done well, the daily flow is not stressful &mdash; it is just execution.</p>
+            <p>The firm extends this to <em>Kaizen</em> &mdash; continuous, small improvement. Every strategy that goes live is reviewed monthly. Every operational process is logged, audited, and shortened. Every quarter, the team picks three things that took too long and engineers them down by a factor of two.</p>
+            <p>And to <em>Seiri</em> and <em>Seiton</em> &mdash; sort and set in order. Files are named consistently. Code is reviewed before it merges. Compliance filings are completed weeks before deadline. The office itself is, by visitor reports, quieter than people expect a financial firm to be.</p>
+            <p>None of this is decorative. <strong>It is what allows a team of fifteen to manage a hundred crores responsibly</strong> &mdash; and to keep managing it, indefinitely, through every kind of weather.</p>
+          </div>
+
+          <div class="terms">
+            <div class="term">Mise en place<span class="ja">A place for everything</span></div>
+            <div class="term">Kaizen<span class="ja">Continuous improvement</span></div>
+            <div class="term">Seiri<span class="ja">Sort &middot; what stays, what goes</span></div>
+            <div class="term">Seiton<span class="ja">Set in order &middot; where things live</span></div>
+          </div>
+        </div>
+
+        <div class="vis">
+          <svg viewBox="0 0 320 400" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+            <rect width="320" height="400" fill="var(--bg)"/>
+            <line x1="0" y1="320" x2="320" y2="320" stroke="var(--line)" stroke-width="0.6"/>
+            <line x1="0" y1="60" x2="320" y2="60" stroke="var(--line)" stroke-width="0.5"/>
+            <rect x="34" y="120" width="58" height="200" fill="none" stroke="var(--ink-mute)" stroke-width="0.6" opacity="0.5"/>
+            <line x1="34" y1="160" x2="92" y2="160" stroke="var(--ink-mute)" stroke-width="0.4" opacity="0.4"/>
+            <line x1="34" y1="200" x2="92" y2="200" stroke="var(--ink-mute)" stroke-width="0.4" opacity="0.4"/>
+            <line x1="34" y1="240" x2="92" y2="240" stroke="var(--ink-mute)" stroke-width="0.4" opacity="0.4"/>
+            <line x1="34" y1="280" x2="92" y2="280" stroke="var(--ink-mute)" stroke-width="0.4" opacity="0.4"/>
+            <rect x="37" y="125" width="3" height="32" fill="var(--ink-soft)" opacity="0.45"/>
+            <rect x="41" y="128" width="3" height="29" fill="var(--ink-soft)" opacity="0.4"/>
+            <rect x="45" y="123" width="3" height="34" fill="var(--ink-soft)" opacity="0.5"/>
+            <rect x="49" y="126" width="3" height="31" fill="var(--accent)" opacity="0.7"/>
+            <rect x="53" y="129" width="3" height="28" fill="var(--ink-soft)" opacity="0.4"/>
+            <rect x="57" y="124" width="3" height="33" fill="var(--ink-soft)" opacity="0.45"/>
+            <rect x="61" y="127" width="3" height="30" fill="var(--ink-soft)" opacity="0.5"/>
+            <rect x="65" y="125" width="3" height="32" fill="var(--ink-soft)" opacity="0.4"/>
+            <rect x="69" y="128" width="3" height="29" fill="var(--ink-soft)" opacity="0.45"/>
+            <rect x="73" y="123" width="3" height="34" fill="var(--ink-soft)" opacity="0.5"/>
+            <rect x="77" y="126" width="3" height="31" fill="var(--ink-soft)" opacity="0.4"/>
+            <rect x="81" y="129" width="3" height="28" fill="var(--ink-soft)" opacity="0.45"/>
+            <rect x="37" y="165" width="3" height="32" fill="var(--ink-soft)" opacity="0.4"/>
+            <rect x="41" y="168" width="3" height="29" fill="var(--ink-soft)" opacity="0.45"/>
+            <rect x="45" y="163" width="3" height="34" fill="var(--ink-soft)" opacity="0.5"/>
+            <rect x="49" y="166" width="3" height="31" fill="var(--ink-soft)" opacity="0.4"/>
+            <rect x="53" y="169" width="3" height="28" fill="var(--ink-soft)" opacity="0.45"/>
+            <rect x="57" y="164" width="3" height="33" fill="var(--ink-soft)" opacity="0.5"/>
+            <ellipse cx="200" cy="270" rx="74" ry="14" fill="none" stroke="var(--ink-mute)" stroke-width="0.6" opacity="0.6"/>
+            <line x1="200" y1="284" x2="200" y2="320" stroke="var(--ink-mute)" stroke-width="0.6" opacity="0.6"/>
+            <circle cx="155" cy="262" r="6" fill="none" stroke="var(--ink-mute)" stroke-width="0.5" opacity="0.5"/>
+            <circle cx="245" cy="262" r="6" fill="none" stroke="var(--ink-mute)" stroke-width="0.5" opacity="0.5"/>
+            <circle cx="180" cy="288" r="6" fill="none" stroke="var(--ink-mute)" stroke-width="0.5" opacity="0.5"/>
+            <circle cx="220" cy="288" r="6" fill="none" stroke="var(--ink-mute)" stroke-width="0.5" opacity="0.5"/>
+            <line x1="200" y1="60" x2="200" y2="180" stroke="var(--ink-mute)" stroke-width="0.4" opacity="0.5"/>
+            <circle cx="200" cy="186" r="14" fill="none" stroke="var(--accent)" stroke-width="0.8" opacity="0.6"/>
+            <circle cx="200" cy="186" r="6" fill="var(--accent)" opacity="0.3"/>
+            <rect x="140" y="100" width="34" height="42" fill="none" stroke="var(--ink-mute)" stroke-width="0.5" opacity="0.5"/>
+            <rect x="180" y="100" width="34" height="42" fill="none" stroke="var(--accent)" stroke-width="0.5" opacity="0.6"/>
+            <rect x="220" y="100" width="34" height="42" fill="none" stroke="var(--ink-mute)" stroke-width="0.5" opacity="0.5"/>
+            <line x1="0" y1="345" x2="320" y2="345" stroke="var(--ink-mute)" stroke-width="0.3" opacity="0.3"/>
+            <line x1="0" y1="365" x2="320" y2="365" stroke="var(--ink-mute)" stroke-width="0.3" opacity="0.2"/>
+            <line x1="290" y1="80" x2="290" y2="240" stroke="var(--accent)" stroke-width="0.5" opacity="0.4"/>
+            <text x="160" y="392" text-anchor="middle" font-family="Cormorant Garamond" font-style="italic" font-size="11" fill="var(--ink-mute)" letter-spacing="0.04em">the office &middot; bangalore</text>
+          </svg>
+          <div class="stamp">Sketch &middot; office photography forthcoming</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-h">
+        <div class="meta">v. ON GAMES<br/>James Carse<br/>Berkshire as exemplar</div>
+        <h2>Wealth management is an <em>infinite game.</em></h2>
+      </div>
+
+      <div class="prose-grid">
+        <div class="meta lab"><span class="n">a.</span>Two kinds of games</div>
+        <div class="prose">
+          <p>The philosopher James Carse distinguished, in 1986, between two kinds of games. <em>Finite games are played to win.</em> They have rules, boundaries, and a definitive end. Chess is a finite game. So is a tennis match. So is a quarterly earnings cycle.</p>
+          <p><em>Infinite games are played to keep playing.</em> There is no defined end. The rules can evolve. The goal is not to defeat the other players but to perpetuate the game itself, often by inviting more participants. Marriage is an infinite game. So is the practice of medicine. So, when done well, is the management of family wealth across generations.</p>
+        </div>
+      </div>
+
+      <div class="games">
+        <div class="game-c">
+          <span class="kind">i. Finite game</span>
+          <h3>Played to <em>win.</em></h3>
+          <p class="desc">Beat the benchmark this quarter. Outperform the peer group this year. Raise the next fund. Hit the AUM target. Defeat the index. The metrics are clear. The clock is running. <em>The strategy that wins is often the strategy that takes more risk than it appears to be taking</em> &mdash; because winning the quarter and surviving the decade are different objectives, and the finite-game player only needs the first.</p>
+          <p class="tag">Most of the wealth-management industry, by structural incentive.</p>
+        </div>
+        <div class="game-c us">
+          <span class="kind">ii. Infinite game</span>
+          <h3>Played to <em>keep playing.</em></h3>
+          <p class="desc">Compound through generations. Stay invested through every regime. Build a practice that outlasts the founders. The metric is <em>continuation</em>, not victory. The strategy that wins is the one that survives the longest tail of weather you haven&rsquo;t yet seen. Berkshire Hathaway has been doing this since 1965. The firm has been doing it since 2017.</p>
+          <p class="tag">The firm, by structural choice.</p>
+        </div>
+      </div>
+
+      <div class="prose-grid" style="margin-top:42px">
+        <div class="meta lab"><span class="n">b.</span>Berkshire as the exemplar</div>
+        <div class="prose">
+          <p>The firm takes inspiration from Berkshire Hathaway not for its specific strategies &mdash; we don&rsquo;t pick individual companies and have nothing to add on whether See&rsquo;s Candies should expand &mdash; but for its <em>posture</em>. The patience. The deliberate refusal to grow faster than what could be done responsibly. The candour in the annual letters. The alignment between the principal&rsquo;s capital and the shareholders&rsquo; capital. The structural choices that make the firm difficult to acquire, difficult to disrupt, and easy to compound.</p>
+          <p>The firm aspires to be, in a quiet and quantitative way, the Berkshire of Indian private wealth management. Not in size. In <strong>posture</strong>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec tint">
+    <div class="wrap">
+      <div class="sec-h">
+        <div class="meta">vi. STRUCTURE<br/>Where the firm sits<br/>Regulatorily</div>
+        <h2>The firm&rsquo;s <em>regulatory standing.</em></h2>
+      </div>
+
+      <div class="prose" style="margin-bottom:28px">
+        <p>The firm operates under the supervision of the Securities and Exchange Board of India (SEBI) for its Indian activity, and under the supervision of the Securities and Exchange Commission (SEC) for its US strategy. The registrations below are current as of the date of this page; they are also verifiable directly on the regulators&rsquo; respective public registries.</p>
+      </div>
+
+      <div class="reg-tbl">
+        <table>
+          <thead><tr><th>Registration</th><th>Authority</th><th>Reference</th></tr></thead>
+          <tbody>
+            <tr><td>Investment Adviser</td><td>SEBI &middot; India</td><td class="num">INA200013798</td></tr>
+            <tr><td>Portfolio Manager</td><td>SEBI &middot; India</td><td class="num">INP000007358</td></tr>
+            <tr><td>Alternative Investment Fund &middot; Category III</td><td>SEBI &middot; India</td><td class="num">IN/AIF3/22-23/[pending]</td></tr>
+            <tr><td>Investment Adviser</td><td>SEC &middot; United States</td><td class="num">801-129576</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="prose" style="margin-top:24px;font-size:14px;color:var(--ink-mute);font-style:italic">For the complete regulatory disclosures &mdash; including fee structure as filed, conflicts of interest, redressal mechanisms, and audited financial statements &mdash; see the <a href="flameback-pms-disclosure.html" style="color:var(--accent);text-decoration:underline">PMS disclosure document</a> and the <a href="flameback-advisory-disclosure.html" style="color:var(--accent);text-decoration:underline">Investment Advisory disclosure document</a>.</p>
+    </div>
+  </section>
+
+  <section class="xlinks">
+    <div class="wrap">
+      <div class="xl-h"><h2>Read on, into the <em>other sections.</em></h2><p>Each of the four following pages goes one layer deeper than the Who-we-are overview.</p></div>
+      <div class="xl-grid">
+        <a class="xl-card" href="flameback-team.html"><span class="n">ii.</span><span class="t">The <em>team.</em></span><span class="d">Who builds the strategies, who manages the relationships, what the engineering-first principle looks like in practice.</span><span class="arr">Read &rarr;</span></a>
+        <a class="xl-card" href="flameback-philosophy.html"><span class="n">iii.</span><span class="t"><em>Philosophy.</em></span><span class="d">What the firm believes about markets, about risk, about the human side of compounding wealth.</span><span class="arr">Read &rarr;</span></a>
+        <a class="xl-card" href="flameback-strategy-rd.html"><span class="n">iv.</span><span class="t">Strategy <em>R&amp;D.</em></span><span class="d">How an idea becomes a tested signal becomes a paper-traded prototype becomes live client capital. Approximately 2% of ideas survive.</span><span class="arr">Read &rarr;</span></a>
+        <a class="xl-card" href="flameback-technology.html"><span class="n">v.</span><span class="t"><em>Technology.</em></span><span class="d">FIST, the data lake, the QX research environment, the Jarvis agent layer. What we built ourselves. What we don&rsquo;t.</span><span class="arr">Read &rarr;</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="close">
+    <div class="wrap">
+      <h2>If any of this feels like <em>the right kind of firm</em> for your capital.</h2>
+      <p class="sub">A first conversation is just a conversation. Thirty minutes, no slides, no pitch. We&rsquo;ll ask more questions than we answer. If the fit is not there, we&rsquo;ll say so.</p>
+      <div class="ct-row">
+        <a class="btn" href="flameback-app-splash.html">Start your journey &rarr;</a>
+        <a class="btn-out" href="flameback-who-we-are.html">Back to the overview</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <div class="footin">
+        <a class="wm" href="flameback-home.html">flameback<span class="p">.</span></a>
+        <div class="footcols">
+          <div class="footcol"><h4>Who we are</h4><a href="flameback-firm.html">The firm</a><a href="flameback-team.html">Team</a><a href="flameback-philosophy.html">Philosophy</a><a href="flameback-strategy-rd.html">Strategy R&amp;D</a><a href="flameback-technology.html">Technology</a></div>
+          <div class="footcol"><h4>What we do</h4><a href="flameback-what-we-do.html#pwm">Private Wealth Management</a><a href="flameback-what-we-do.html#advisory">Advisory</a><a href="flameback-what-we-do.html#qx">QX Funds</a></div>
+          <div class="footcol"><h4>Open</h4><a href="flameback-our-work.html">Our work</a><a href="flameback-insights.html">Insights</a><a href="flameback-tools.html">Tools</a><a href="flameback-offbook.html">Off-book</a></div>
+          <div class="footcol"><h4>Regulatory</h4><a href="flameback-pms-disclosure.html">PMS disclosure</a><a href="flameback-advisory-disclosure.html">Advisory disclosure</a><a href="flameback-app-splash.html">Start your journey</a></div>
+        </div>
+      </div>
+      <div class="disc"><span>&copy; 2026 Flameback Capital Pvt Ltd</span><span class="legal">SEBI registered &middot; SEC filed for US strategy. Investments are subject to market risk. Past performance is not indicative of future results.</span></div>
+    </div>
+  </footer>
+
+<script>
+  var root=document.documentElement, tg=document.getElementById('toggle');
+  tg.addEventListener('click',function(){root.classList.toggle('light');tg.textContent=root.classList.contains('light')?'Dark':'Light';});
+  var nav=document.getElementById('nav');
+  window.addEventListener('scroll',function(){nav.classList.toggle('scrolled',window.scrollY>16)});
+</script>
+  <script src="reload.js"></script>
+</body>
+</html>

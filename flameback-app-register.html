@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>flameback. — Create my account</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#1A1714;--ink:#F2EDE3;--ink-soft:rgba(242,237,227,.66);--ink-mute:rgba(242,237,227,.44);--line:rgba(242,237,227,.16);--accent:#FF6D0A;--btn-bg:#FF6D0A;--btn-ink:#1A1714;--grain-blend:screen;--grain-op:.055;--card:rgba(242,237,227,.03)}
+  :root.light{--bg:#FCFAF6;--ink:#1A1714;--ink-soft:rgba(26,23,20,.68);--ink-mute:rgba(26,23,20,.46);--line:rgba(26,23,20,.14);--accent:#B23E08;--btn-bg:#1A1714;--btn-ink:#FCFAF6;--grain-blend:multiply;--grain-op:.035;--card:rgba(26,23,20,.025)}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:"Source Serif 4",serif;transition:background .5s,color .5s;line-height:1.55;font-variant-numeric:tabular-nums;min-height:100vh;display:flex;flex-direction:column}
+  body::after{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;mix-blend-mode:var(--grain-blend);opacity:var(--grain-op);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  h1,h2,h3,h4{font-family:"Cormorant Garamond",serif;font-weight:500;letter-spacing:-.014em;line-height:1.04}
+  h1 em,h2 em,h3 em{color:var(--accent);font-style:italic;font-weight:500}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 clamp(22px,5vw,44px)}
+
+  /* ===== site chrome (matches marketing pages) ===== */
+  nav{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 84%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid transparent;transition:border-color .4s}
+  nav.scrolled{border-color:var(--line)}
+  .navin{display:flex;align-items:center;justify-content:space-between;padding:14px 0;gap:24px}
+  .wm{font-family:"Source Serif 4",serif;font-weight:600;font-size:18px;color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+  .wm .p{color:var(--accent)}
+  .navr{display:flex;align-items:center;gap:22px}
+  .navr a{color:var(--ink-soft);text-decoration:none;font-size:14px;transition:color .3s}
+  .navr a:hover{color:var(--ink)}
+  .navr a.cta{background:var(--btn-bg);color:var(--btn-ink);padding:8px 16px;font-weight:500}
+  .toggle{background:none;border:1px solid var(--line);color:var(--ink-soft);cursor:pointer;font-family:"Source Serif 4",serif;font-size:12.5px;font-style:italic;padding:5px 13px;border-radius:999px}
+  @media(max-width:1020px){.navr .navlink{display:none}}
+
+  footer{padding:60px 0 32px;position:relative;z-index:2;border-top:1px solid var(--line);margin-top:auto}
+  .footin{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;margin-bottom:36px}
+  .footcols{display:flex;gap:clamp(34px,5vw,64px);flex-wrap:wrap}
+  .footcol h4{font-style:italic;font-weight:400;font-size:12.5px;color:var(--ink-mute);margin-bottom:14px;letter-spacing:.04em;text-transform:uppercase;font-family:"JetBrains Mono",monospace}
+  .footcol a{display:block;color:var(--ink-soft);text-decoration:none;font-size:14px;margin-bottom:9px}
+  .footcol a:hover{color:var(--accent)}
+  .disc{padding-top:22px;border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px}
+  .disc span{font-size:11.5px;color:var(--ink-mute);line-height:1.6}
+  .disc .legal{max-width:72ch;font-style:italic}
+  .disc .reg-links a{color:var(--ink-mute);text-decoration:none;font-size:11.5px;font-style:italic;margin-left:14px}
+
+  /* ===== screen content — centred column on the wide page ===== */
+  main{position:relative;z-index:2;flex:1}
+  .screen{max-width:600px;margin:0 auto;padding:clamp(44px,7vh,84px) 0 clamp(56px,9vh,96px)}
+  .back-link{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-style:italic;color:var(--ink-mute);text-decoration:none;margin-bottom:30px;transition:color .3s}
+  .back-link:hover{color:var(--ink-soft)}
+
+  .eyebrow{display:inline-flex;align-items:center;gap:10px;font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink-mute);letter-spacing:.09em;text-transform:uppercase;margin-bottom:16px}
+  .eyebrow .l{width:20px;height:1px;background:var(--accent)}
+  h1.head{font-size:clamp(38px,5.4vw,56px);line-height:1.05;margin-bottom:10px}
+  .lede{font-size:16px;font-style:italic;color:var(--ink-soft);margin-bottom:34px;max-width:380px}
+
+  .field{margin-bottom:20px}
+  label.fl{display:flex;align-items:center;gap:8px;font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink-mute);letter-spacing:.07em;text-transform:uppercase;margin-bottom:9px}
+  label.fl .lk{border:1px solid var(--line);border-radius:999px;padding:1px 6px;font-size:8px;color:var(--ink-mute)}
+  .inp{width:100%;background:var(--card);border:1px solid var(--line);color:var(--ink);font-family:"Source Serif 4",serif;font-size:16px;padding:14px 14px;outline:none;transition:border-color .3s}
+  .inp:focus{border-color:var(--accent)}
+  .inp::placeholder{color:var(--ink-mute)}
+  .inp:disabled{opacity:.62;cursor:not-allowed}
+  .phone{display:flex;border:1px solid var(--line);background:var(--card)}
+  .phone .cc{display:flex;align-items:center;padding:0 13px;border-right:1px solid var(--line);font-size:15px;color:var(--ink)}
+  .phone input{flex:1;background:none;border:none;outline:none;color:var(--ink);font-family:"Source Serif 4",serif;font-size:16px;padding:14px}
+  .phone.locked{opacity:.62}
+
+  /* city autocomplete */
+  .ac{position:relative}
+  .ac-list{position:absolute;left:0;right:0;top:calc(100% - 1px);z-index:20;background:var(--bg);border:1px solid var(--line);max-height:180px;overflow-y:auto;display:none}
+  .ac-list.on{display:block}
+  .ac-list div{padding:11px 14px;font-size:14.5px;cursor:pointer;border-bottom:1px solid var(--line)}
+  .ac-list div:last-child{border-bottom:none}
+  .ac-list div:hover{background:var(--card);color:var(--accent)}
+
+  .chips{display:flex;flex-wrap:wrap;gap:9px}
+  .chip{font-family:"Source Serif 4",serif;font-size:13.5px;color:var(--ink-soft);background:var(--card);border:1px solid var(--line);padding:8px 15px;border-radius:999px;cursor:pointer;transition:all .25s}
+  .chip:hover{border-color:var(--ink-soft)}
+  .chip.on{background:var(--accent);color:var(--btn-ink);border-color:var(--accent)}
+
+  .opt{font-family:"JetBrains Mono",monospace;font-size:8.5px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--line);border-radius:999px;padding:1px 6px}
+
+  /* whatsapp toggle */
+  .toggrow{display:flex;align-items:flex-start;gap:13px;border:1px solid var(--line);background:var(--card);padding:15px 16px}
+  .sw{flex:none;width:46px;height:26px;border-radius:999px;background:var(--line);position:relative;cursor:pointer;transition:background .3s;margin-top:2px}
+  .sw::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:var(--ink);transition:left .25s}
+  .sw.on{background:var(--accent)}
+  .sw.on::after{left:23px;background:var(--btn-ink)}
+  .toggrow .tt{flex:1}
+  .toggrow .tt .lab{font-size:14.5px;color:var(--ink)}
+  .toggrow .tt .hlp{font-size:12.5px;font-style:italic;color:var(--ink-soft);margin-top:3px}
+
+  .cta{display:flex;align-items:center;justify-content:center;gap:11px;width:100%;background:var(--btn-bg);color:var(--btn-ink);font-family:"Source Serif 4",serif;font-size:15.5px;font-weight:500;padding:16px;text-decoration:none;border:none;cursor:pointer;transition:gap .35s,opacity .3s;margin-top:28px}
+  .cta:hover:not(:disabled){gap:15px;opacity:.93}
+  .cta:disabled{opacity:.34;cursor:not-allowed}
+
+  .privacy{font-size:12.5px;font-style:italic;color:var(--ink-mute);text-align:center;margin-top:20px;line-height:1.55}
+</style>
+</head>
+<body>
+
+  <nav id="nav">
+    <div class="wrap navin">
+      <a class="wm" href="index.html">flameback<span class="p">.</span></a>
+      <div class="navr">
+        <a class="navlink" href="flameback-who-we-are.html">Who we are</a>
+        <a class="navlink" href="flameback-what-we-do.html">What we do</a>
+        <a class="navlink" href="flameback-our-work.html">Our work</a>
+        <a class="navlink" href="flameback-insights.html">Insights</a>
+        <button class="toggle" id="toggle">Light</button>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <div class="wrap">
+      <div class="screen">
+        <a href="flameback-app-login.html" class="back-link">&larr; Back to sign in</a>
+
+        <span class="eyebrow"><span class="l"></span>Create my account</span>
+        <h1 class="head">A little <em>about you.</em></h1>
+        <p class="lede">Just the essentials — enough to set up your account and keep it yours.</p>
+
+        <div class="field">
+          <label class="fl">Your full name</label>
+          <input class="inp req" id="name" type="text" placeholder="Aarav Sharma" autocomplete="name">
+        </div>
+
+        <div class="field">
+          <label class="fl">Email address</label>
+          <input class="inp req" id="email" type="email" placeholder="aarav@email.com" autocomplete="email">
+        </div>
+
+        <div class="field">
+          <label class="fl">Mobile number <span class="lk">verified · locked</span></label>
+          <div class="phone locked">
+            <span class="cc">+91</span>
+            <input type="tel" value="98765 43210" disabled>
+          </div>
+        </div>
+
+        <div class="field ac">
+          <label class="fl">City</label>
+          <input class="inp req" id="city" type="text" placeholder="Start typing — e.g. Bengaluru" autocomplete="off">
+          <div class="ac-list" id="cityList"></div>
+        </div>
+
+        <div class="field">
+          <label class="fl">How'd you find us? <span class="opt">optional</span></label>
+          <div class="chips" id="findChips">
+            <div class="chip">Friend</div>
+            <div class="chip">Advisor</div>
+            <div class="chip">Social media</div>
+            <div class="chip">Google</div>
+            <div class="chip">News</div>
+            <div class="chip">Event</div>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="toggrow">
+            <div class="sw on" id="waToggle" role="switch" aria-checked="true"></div>
+            <div class="tt">
+              <div class="lab">Updates on WhatsApp</div>
+              <div class="hlp">Updates on WhatsApp — only the ones that matter.</div>
+            </div>
+          </div>
+        </div>
+
+        <button class="cta" id="createBtn" disabled>Create my account &rarr;</button>
+
+        <p class="privacy">We'll only ever message you about your money. Nothing else, ever.</p>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <div class="footin">
+        <a class="wm" href="index.html">flameback<span class="p">.</span></a>
+        <div class="footcols">
+          <div class="footcol"><h4>The firm</h4><a href="flameback-who-we-are.html">Who we are</a><a href="flameback-what-we-do.html">What we do</a><a href="flameback-our-work.html">Our work</a><a href="flameback-clients.html">Clients</a></div>
+          <div class="footcol"><h4>Open</h4><a href="flameback-insights.html">Insights</a><a href="flameback-tools.html">Tools</a><a href="flameback-offbook.html">Off-book</a></div>
+          <div class="footcol"><h4>Contact</h4><a href="flameback-app-splash.html">Start your journey</a><a href="#">hello@flameback.in</a><a href="#">Bangalore, India</a></div>
+        </div>
+      </div>
+      <div class="disc">
+        <span>&copy; 2026 Flameback Capital Pvt Ltd</span>
+        <span class="legal">SEBI registered &middot; SEC filed for US strategy. Investments are subject to market risk. Past performance is not indicative of future results.</span>
+        <span class="reg-links"><a href="flameback-pms-disclosure.html">PMS disclosure</a><a href="flameback-advisory-disclosure.html">IA disclosure</a></span>
+      </div>
+    </div>
+  </footer>
+
+<script>
+  // light/dark toggle
+  var t=document.getElementById('toggle');
+  t.onclick=function(){var l=document.documentElement.classList.toggle('light');t.textContent=l?'Dark':'Light';};
+  // nav border on scroll
+  var nv=document.getElementById('nav');
+  window.addEventListener('scroll',function(){nv.classList.toggle('scrolled',window.scrollY>8);});
+
+  var nameEl=document.getElementById('name'),email=document.getElementById('email'),city=document.getElementById('city');
+  var createBtn=document.getElementById('createBtn');
+
+  function emailOk(v){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);}
+  function validate(){
+    var ok=nameEl.value.trim()&&emailOk(email.value.trim())&&city.value.trim();
+    createBtn.disabled=!ok;
+  }
+  [nameEl,email,city].forEach(function(el){el.addEventListener('input',validate);});
+
+  // city autocomplete
+  var cities=["Bengaluru","Mumbai","Delhi","Hyderabad","Chennai","Kolkata","Pune","Ahmedabad","Jaipur","Surat","Lucknow","Chandigarh","Indore","Kochi","Coimbatore","Gurugram","Noida","Nagpur"];
+  var cityList=document.getElementById('cityList');
+  city.addEventListener('input',function(){
+    var q=city.value.trim().toLowerCase();
+    cityList.innerHTML='';
+    if(!q){cityList.classList.remove('on');return;}
+    var m=cities.filter(function(c){return c.toLowerCase().indexOf(q)===0;}).slice(0,6);
+    if(!m.length){cityList.classList.remove('on');return;}
+    m.forEach(function(c){
+      var d=document.createElement('div');d.textContent=c;
+      d.onclick=function(){city.value=c;cityList.classList.remove('on');validate();};
+      cityList.appendChild(d);
+    });
+    cityList.classList.add('on');
+  });
+  document.addEventListener('click',function(e){if(!city.parentNode.contains(e.target))cityList.classList.remove('on');});
+
+  // single-select "find us" chips
+  document.getElementById('findChips').addEventListener('click',function(e){
+    if(!e.target.classList.contains('chip'))return;
+    var was=e.target.classList.contains('on');
+    this.querySelectorAll('.chip').forEach(function(c){c.classList.remove('on');});
+    if(!was)e.target.classList.add('on');
+  });
+
+  // whatsapp toggle
+  var wa=document.getElementById('waToggle');
+  wa.onclick=function(){var on=wa.classList.toggle('on');wa.setAttribute('aria-checked',on);};
+
+  createBtn.onclick=function(){if(!createBtn.disabled)window.location.href='flameback-app-path.html';};
+</script>
+  <script src="reload.js"></script>
+</body>
+</html>

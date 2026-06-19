@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>flameback. — Strategy catalogue</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#1A1714;--ink:#F2EDE3;--ink-soft:rgba(242,237,227,.66);--ink-mute:rgba(242,237,227,.44);--line:rgba(242,237,227,.16);--accent:#FF6D0A;--btn-bg:#FF6D0A;--btn-ink:#1A1714;--grain-blend:screen;--grain-op:.055;--card:rgba(242,237,227,.03)}
+  :root.light{--bg:#FCFAF6;--ink:#1A1714;--ink-soft:rgba(26,23,20,.68);--ink-mute:rgba(26,23,20,.46);--line:rgba(26,23,20,.14);--accent:#B23E08;--btn-bg:#1A1714;--btn-ink:#FCFAF6;--grain-blend:multiply;--grain-op:.035;--card:rgba(26,23,20,.025)}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:"Source Serif 4",serif;transition:background .5s,color .5s;line-height:1.55;font-variant-numeric:tabular-nums;min-height:100vh;display:flex;flex-direction:column}
+  body::after{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;mix-blend-mode:var(--grain-blend);opacity:var(--grain-op);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  h1,h2,h3,h4{font-family:"Cormorant Garamond",serif;font-weight:500;letter-spacing:-.014em;line-height:1.04}
+  h1 em,h2 em,h3 em{color:var(--accent);font-style:italic;font-weight:500}
+  .mono{font-family:"JetBrains Mono",monospace;letter-spacing:.07em;text-transform:uppercase}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 clamp(22px,5vw,44px)}
+
+  /* ===== site chrome (matches marketing pages) ===== */
+  nav{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 84%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid transparent;transition:border-color .4s}
+  nav.scrolled{border-color:var(--line)}
+  .navin{display:flex;align-items:center;justify-content:space-between;padding:14px 0;gap:24px}
+  .wm{font-family:"Source Serif 4",serif;font-weight:600;font-size:18px;color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+  .wm .p{color:var(--accent)}
+  .navr{display:flex;align-items:center;gap:22px}
+  .navr a{color:var(--ink-soft);text-decoration:none;font-size:14px;transition:color .3s}
+  .navr a:hover{color:var(--ink)}
+  .navr a.cta{background:var(--btn-bg);color:var(--btn-ink);padding:8px 16px;font-weight:500}
+  .toggle{background:none;border:1px solid var(--line);color:var(--ink-soft);cursor:pointer;font-family:"Source Serif 4",serif;font-size:12.5px;font-style:italic;padding:5px 13px;border-radius:999px}
+  @media(max-width:1020px){.navr .navlink{display:none}}
+
+  footer{padding:60px 0 32px;position:relative;z-index:2;border-top:1px solid var(--line);margin-top:auto}
+  .footin{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;margin-bottom:36px}
+  .footcols{display:flex;gap:clamp(34px,5vw,64px);flex-wrap:wrap}
+  .footcol h4{font-style:italic;font-weight:400;font-size:12.5px;color:var(--ink-mute);margin-bottom:14px;letter-spacing:.04em;text-transform:uppercase;font-family:"JetBrains Mono",monospace}
+  .footcol a{display:block;color:var(--ink-soft);text-decoration:none;font-size:14px;margin-bottom:9px}
+  .footcol a:hover{color:var(--accent)}
+  .disc{padding-top:22px;border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px}
+  .disc span{font-size:11.5px;color:var(--ink-mute);line-height:1.6}
+  .disc .legal{max-width:72ch;font-style:italic}
+  .disc .reg-links a{color:var(--ink-mute);text-decoration:none;font-size:11.5px;font-style:italic;margin-left:14px}
+
+  /* ===== screen content — wider centred column for rich charts ===== */
+  main{position:relative;z-index:2;flex:1}
+  .screen{max-width:760px;margin:0 auto;padding:clamp(44px,7vh,84px) 0 clamp(56px,9vh,96px)}
+  .back-link{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-style:italic;color:var(--ink-mute);text-decoration:none;margin-bottom:30px;transition:color .3s}
+  .back-link:hover{color:var(--ink-soft)}
+
+  .eyebrow{display:inline-flex;align-items:center;gap:10px;font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink-mute);letter-spacing:.09em;text-transform:uppercase;margin-bottom:14px}
+  .eyebrow .l{width:20px;height:1px;background:var(--accent)}
+  h1.title{font-size:clamp(38px,5.4vw,60px);margin-bottom:8px}
+  .lede{font-size:16px;font-style:italic;color:var(--ink-soft);margin-bottom:28px;line-height:1.55}
+
+  /* risk spectrum slider */
+  .spectrum{margin-bottom:26px;max-width:560px}
+  .spectrum .lab{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-mute);margin-bottom:18px}
+  .specbar{position:relative;height:8px;border-radius:999px;background:linear-gradient(90deg,#3FA34D 0%,#C9A227 50%,#C0392B 100%);margin:0 8px 0}
+  :root.light .specbar{background:linear-gradient(90deg,#2E7D32 0%,#B7791F 50%,#A93226 100%)}
+  .stops{display:flex;justify-content:space-between;position:absolute;inset:0;align-items:center;margin:0 -8px;padding:0 6px}
+  .stop{width:18px;height:18px;border-radius:50%;background:var(--bg);border:2px solid var(--ink-mute);cursor:pointer;transition:all .3s;position:relative;z-index:2}
+  .stop.on{border-color:var(--accent);background:var(--accent);width:24px;height:24px;box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 22%,transparent)}
+  .stoplabels{display:flex;justify-content:space-between;margin-top:14px}
+  .stoplabels span{font-family:"JetBrains Mono",monospace;font-size:8.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-mute);text-align:center;width:25%;cursor:pointer;line-height:1.3}
+  .stoplabels span.on{color:var(--accent)}
+  .anchors{display:flex;justify-content:space-between;margin-top:12px;font-size:11px;font-style:italic;color:var(--ink-mute)}
+
+  /* cards */
+  .quizcta{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;border:1px solid var(--line);border-left:2px solid var(--accent);background:var(--card);padding:16px 18px;margin-bottom:26px;text-decoration:none;transition:border-color .25s}
+  .quizcta:hover{border-color:color-mix(in srgb,var(--accent) 45%,var(--line))}
+  .quizcta .qt{font-size:13.5px;color:var(--ink-soft);line-height:1.5}
+  .quizcta .qt b{color:var(--ink);font-weight:500}
+  .quizcta .qa{flex:none;font-family:"Source Serif 4",serif;font-size:14px;font-weight:500;color:var(--accent)}
+  .bandhead{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:24px;color:var(--ink);margin:6px 0 16px}
+  .bandhead b{color:var(--accent);font-style:normal;font-weight:500}
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:640px){.cards{grid-template-columns:1fr}}
+  .scard{border:1px solid var(--line);background:var(--card);padding:18px}
+  .scard .typetag{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);border:1px solid color-mix(in srgb,var(--accent) 45%,transparent);border-radius:999px;padding:3px 9px;display:inline-block;margin-bottom:10px}
+  .scard .nm{font-size:23px;line-height:1.05;margin-bottom:12px}
+  .scard .row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);margin-bottom:13px}
+  .scard .cell{background:var(--bg);padding:11px 10px}
+  .scard .ck{font-family:"JetBrains Mono",monospace;font-size:8px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-mute);margin-bottom:5px;line-height:1.3}
+  .scard .cv{font-family:"Cormorant Garamond",serif;font-size:18px;line-height:1;color:var(--ink)}
+  .scard .cv.pos{color:#3FA34D}.scard .cv.neg{color:#C0392B}
+  :root.light .scard .cv.pos{color:#2E7D32}:root.light .scard .cv.neg{color:#A93226}
+  .scard .phil{font-size:13px;font-style:italic;color:var(--ink-soft);line-height:1.5;margin-bottom:10px}
+
+  .dd{border-top:1px solid var(--line);padding-top:11px;margin-bottom:14px}
+  .dd-tog{display:flex;align-items:center;justify-content:space-between;width:100%;background:none;border:none;cursor:pointer;font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);padding:0}
+  .dd-tog .arr{transition:transform .3s}
+  .dd.open .dd-tog .arr{transform:rotate(180deg)}
+  .dd-body{max-height:0;overflow:hidden;transition:max-height .4s ease}
+  .dd.open .dd-body{max-height:240px}
+  .periods{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+  .periods button{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.05em;color:var(--ink-mute);background:none;border:1px solid var(--line);border-radius:999px;padding:4px 9px;cursor:pointer}
+  .periods button.on{color:var(--accent);border-color:var(--accent)}
+
+  .startcta{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;background:var(--btn-bg);color:var(--btn-ink);font-family:"Source Serif 4",serif;font-size:14.5px;font-weight:500;padding:14px;text-decoration:none;border:none;cursor:pointer;transition:gap .35s,opacity .3s}
+  .startcta:hover{gap:14px;opacity:.93}
+
+  .backlink{display:block;text-align:center;margin-top:30px;font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-mute);text-decoration:none}
+  .backlink:hover{color:var(--accent)}
+</style>
+</head>
+<body>
+
+  <nav id="nav">
+    <div class="wrap navin">
+      <a class="wm" href="index.html">flameback<span class="p">.</span></a>
+      <div class="navr">
+        <a class="navlink" href="flameback-who-we-are.html">Who we are</a>
+        <a class="navlink" href="flameback-what-we-do.html">What we do</a>
+        <a class="navlink" href="flameback-our-work.html">Our work</a>
+        <a class="navlink" href="flameback-insights.html">Insights</a>
+        <button class="toggle" id="toggle">Light</button>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <div class="wrap">
+      <div class="screen">
+        <a href="flameback-app-path.html" class="back-link">&larr; Back</a>
+
+        <span class="eyebrow"><span class="l"></span>Browse · no commitment</span>
+        <h1 class="title">The <em>catalogue.</em></h1>
+        <p class="lede">A look at the strategies — slide across the bands, see what fits. Invest in any of them once you've looked.</p>
+
+        <!-- spectrum -->
+        <div class="spectrum">
+          <div class="lab">Risk spectrum</div>
+          <div class="specbar">
+            <div class="stops" id="stops">
+              <div class="stop on" data-b="0"></div>
+              <div class="stop" data-b="1"></div>
+              <div class="stop" data-b="2"></div>
+              <div class="stop" data-b="3"></div>
+            </div>
+          </div>
+          <div class="stoplabels" id="stoplabels">
+            <span class="on" data-b="0">Conservative</span>
+            <span data-b="1">Moderate</span>
+            <span data-b="2">Aggressive</span>
+            <span data-b="3">Very<br>aggressive</span>
+          </div>
+          <div class="anchors"><span>Less risk → stable</span><span>More risk → higher</span></div>
+        </div>
+
+        <a href="flameback-app-quick-profiler.html" class="quizcta">
+          <span class="qt"><b>Not sure where you sit?</b> Answer 5 quick questions and we'll set the spectrum for you.</span>
+          <span class="qa">Take the quiz &rarr;</span>
+        </a>
+
+        <div class="bandhead">Two strategies for the <b id="bandName">Conservative</b> band</div>
+
+        <div class="cards" id="cards"></div>
+
+        <a href="flameback-app-path.html" class="backlink">Back to start</a>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <div class="footin">
+        <a class="wm" href="index.html">flameback<span class="p">.</span></a>
+        <div class="footcols">
+          <div class="footcol"><h4>The firm</h4><a href="flameback-who-we-are.html">Who we are</a><a href="flameback-what-we-do.html">What we do</a><a href="flameback-our-work.html">Our work</a><a href="flameback-clients.html">Clients</a></div>
+          <div class="footcol"><h4>Open</h4><a href="flameback-insights.html">Insights</a><a href="flameback-tools.html">Tools</a><a href="flameback-offbook.html">Off-book</a></div>
+          <div class="footcol"><h4>Contact</h4><a href="flameback-app-splash.html">Start your journey</a><a href="#">hello@flameback.in</a><a href="#">Bangalore, India</a></div>
+        </div>
+      </div>
+      <div class="disc">
+        <span>&copy; 2026 Flameback Capital Pvt Ltd</span>
+        <span class="legal">SEBI registered &middot; SEC filed for US strategy. Investments are subject to market risk. Past performance is not indicative of future results.</span>
+        <span class="reg-links"><a href="flameback-pms-disclosure.html">PMS disclosure</a><a href="flameback-advisory-disclosure.html">IA disclosure</a></span>
+      </div>
+    </div>
+  </footer>
+
+<script>
+  // light/dark toggle
+  var t=document.getElementById('toggle');
+  t.onclick=function(){var l=document.documentElement.classList.toggle('light');t.textContent=l?'Dark':'Light';};
+  // nav border on scroll
+  var nv=document.getElementById('nav');
+  window.addEventListener('scroll',function(){nv.classList.toggle('scrolled',window.scrollY>8);});
+
+  var BANDS=['Conservative','Moderate','Aggressive','Very aggressive'];
+
+  // strategy data per band: [static, dynamic]
+  var DATA=[
+    { // Conservative
+      static:{name:'The Steady Anchor',cagr:'8.4%',dd:'−6.2%',since:'+96%',phil:'Capital first. A debt-heavy mix that barely flinches when markets wobble.'},
+      dynamic:{name:'The Careful Navigator',cagr:'9.1%',dd:'−7.8%',since:'+108%',phil:'Mostly steady, with a small sleeve that shifts toward equity when the wind is fair.'}
+    },
+    { // Moderate
+      static:{name:'The Balanced Keel',cagr:'11.6%',dd:'−14.1%',since:'+182%',phil:'A classic 60/40 spirit — growth you can hold through, cushioned by debt.'},
+      dynamic:{name:'The Balanced Compounder',cagr:'14.2%',dd:'−18.4%',since:'+241%',phil:'Leans into quality compounders while a debt sleeve softens the falls.'}
+    },
+    { // Aggressive
+      static:{name:'The Growth Engine',cagr:'16.8%',dd:'−28.5%',since:'+318%',phil:'Equity-led and unapologetic. Built for those who can stomach the swing.'},
+      dynamic:{name:'The Momentum Rider',cagr:'18.9%',dd:'−34.2%',since:'+402%',phil:'Tilts hard toward what is working, trims what is not. Active by design.'}
+    },
+    { // Very aggressive
+      static:{name:'The High Conviction',cagr:'20.4%',dd:'−42.0%',since:'+512%',phil:'Concentrated, high-octane equity. Big upside, big nerve required.'},
+      dynamic:{name:'The Full Throttle',cagr:'22.7%',dd:'−49.6%',since:'+640%',phil:'Maximum swing, maximum ambition. For the seasoned and the patient.'}
+    }
+  ];
+
+  var cur=0;
+  // default band from quick-profiler answers if present
+  try{var saved=sessionStorage.getItem('fb_quick_band');if(saved!==null){cur=Math.max(0,Math.min(3,parseInt(saved,10)));}}catch(e){}
+
+  var stops=document.querySelectorAll('#stops .stop');
+  var labels=document.querySelectorAll('#stoplabels span');
+  var cardsEl=document.getElementById('cards');
+  var bandName=document.getElementById('bandName');
+
+  function card(type,d){
+    return '<div class="scard">'+
+      '<span class="typetag">'+type+'</span>'+
+      '<div class="nm">'+d.name+'</div>'+
+      '<div class="row">'+
+        '<div class="cell"><div class="ck">Historic CAGR</div><div class="cv pos">'+d.cagr+'</div></div>'+
+        '<div class="cell"><div class="ck">Max drawdown</div><div class="cv neg">'+d.dd+'</div></div>'+
+        '<div class="cell"><div class="ck">Since inception</div><div class="cv">'+d.since+'</div></div>'+
+      '</div>'+
+      '<p class="phil">'+d.phil+'</p>'+
+      '<div class="dd">'+
+        '<button class="dd-tog">Performance vs Nifty 500 TRI <span class="arr">▾</span></button>'+
+        '<div class="dd-body">'+
+          '<svg viewBox="0 0 300 100" width="100%" preserveAspectRatio="none" style="display:block;margin-top:10px">'+
+            '<polyline points="0,84 38,76 76,80 114,60 152,66 190,46 228,52 266,32 300,26" fill="none" stroke="var(--accent)" stroke-width="2"/>'+
+            '<polyline points="0,88 38,85 76,86 114,78 152,80 190,72 228,74 266,66 300,62" fill="none" stroke="var(--ink-mute)" stroke-width="1.3" stroke-dasharray="4 3"/>'+
+          '</svg>'+
+          '<div class="periods"><button>1M</button><button>3M</button><button>6M</button><button class="on">1Y</button><button>3Y</button><button>All</button></div>'+
+        '</div>'+
+      '</div>'+
+      '<a href="flameback-app-profile-intro.html" class="startcta">Start your journey &rarr;</a>'+
+    '</div>';
+  }
+
+  function render(){
+    stops.forEach(function(s){s.classList.toggle('on',parseInt(s.dataset.b,10)===cur);});
+    labels.forEach(function(l){l.classList.toggle('on',parseInt(l.dataset.b,10)===cur);});
+    bandName.textContent=BANDS[cur];
+    var d=DATA[cur];
+    cardsEl.innerHTML=card('Static',d.static)+card('Dynamic',d.dynamic);
+    // wire dropdowns + periods on freshly-rendered cards
+    cardsEl.querySelectorAll('.dd').forEach(function(dd){
+      dd.querySelector('.dd-tog').onclick=function(){dd.classList.toggle('open');};
+      var grp=dd.querySelector('.periods');
+      if(grp){grp.querySelectorAll('button').forEach(function(b){
+        b.onclick=function(){grp.querySelectorAll('button').forEach(function(x){x.classList.remove('on');});b.classList.add('on');};
+      });}
+    });
+  }
+
+  function go(b){cur=b;render();}
+  stops.forEach(function(s){s.onclick=function(){go(parseInt(s.dataset.b,10));};});
+  labels.forEach(function(l){l.onclick=function(){go(parseInt(l.dataset.b,10));};});
+
+  render();
+</script>
+  <script src="reload.js"></script>
+</body>
+</html>

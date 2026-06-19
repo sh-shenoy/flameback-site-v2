@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>flameback. — Welcome</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#1A1714; --ink:#F2EDE3; --ink-soft:rgba(242,237,227,.64); --ink-mute:rgba(242,237,227,.42);
+    --line:rgba(242,237,227,.15); --accent:#FF6D0A; --btn-bg:#FF6D0A; --btn-ink:#1A1714;
+    --grain-blend:screen; --grain-op:.05;
+  }
+  :root.light{
+    --bg:#FCFAF6; --ink:#1A1714; --ink-soft:rgba(26,23,20,.66); --ink-mute:rgba(26,23,20,.46);
+    --line:rgba(26,23,20,.13); --accent:#FF6D0A; --btn-bg:#1A1714; --btn-ink:#FCFAF6;
+    --grain-blend:multiply; --grain-op:.03;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-font-smoothing:antialiased}
+  body{background:var(--bg);color:var(--ink);font-family:"Source Serif 4",serif;transition:background .5s,color .5s;font-variant-numeric:tabular-nums;min-height:100vh;display:flex;flex-direction:column}
+  body::after{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;mix-blend-mode:var(--grain-blend);opacity:var(--grain-op);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  section,nav,main{position:relative;z-index:2}
+  .wrap{max-width:920px;margin:0 auto;padding:0 clamp(22px,5vw,44px);width:100%}
+  .wm{font-family:"Source Serif 4",serif;font-weight:600;font-size:18px;color:var(--ink);text-decoration:none}
+  .wm .p{color:var(--accent)}
+  h1,h2,h3,h4{font-family:"Cormorant Garamond",serif;font-weight:500;letter-spacing:-.012em;color:var(--ink)}
+
+  nav{padding:18px 0;border-bottom:1px solid var(--line);flex-shrink:0}
+  .navin{display:flex;align-items:center;justify-content:space-between;max-width:1080px;margin:0 auto;padding:0 clamp(22px,5vw,44px)}
+  .navr{display:flex;align-items:center;gap:22px}
+  .navr a, .navr .nlink{color:var(--ink-soft);text-decoration:none;font-size:13.5px;font-style:italic;cursor:pointer}
+  .navr a:hover, .navr .nlink:hover{color:var(--ink)}
+  .toggle{background:none;border:1px solid var(--line);color:var(--ink-soft);cursor:pointer;font-family:"Source Serif 4",serif;font-size:13px;font-style:italic;padding:5px 13px;border-radius:999px}
+
+  main{padding:clamp(48px,8vh,96px) 0 clamp(36px,5vh,56px);flex:1;display:flex;align-items:center}
+
+  .greet{font-style:italic;font-size:13px;color:var(--ink-mute);letter-spacing:.05em;text-transform:uppercase;margin-bottom:18px;display:flex;align-items:center;gap:12px}
+  .greet .l{width:24px;height:1px;background:var(--accent)}
+
+  h1{font-size:clamp(38px,6vw,68px);line-height:1;letter-spacing:-.02em;margin-bottom:18px;max-width:20ch}
+  h1 .acc{color:var(--accent);font-style:italic}
+  .lede{font-size:16.5px;line-height:1.6;color:var(--ink-soft);margin-bottom:clamp(32px,5vw,52px);max-width:56ch}
+  .lede em{color:var(--ink);font-style:italic;font-weight:500}
+
+  /* Two posture cards */
+  .ask{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:clamp(22px,3vw,28px);color:var(--ink);margin-bottom:20px;display:flex;align-items:center;gap:10px}
+  .ask .num{color:var(--accent);font-size:18px}
+
+  .post-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:28px}
+  @media(max-width:680px){.post-grid{grid-template-columns:1fr}}
+
+  .post{padding:clamp(22px,3vw,30px);border:1px solid var(--line);background:color-mix(in srgb,var(--ink) 2%,transparent);text-decoration:none;color:var(--ink);transition:border-color .2s,background .2s;cursor:pointer;display:flex;flex-direction:column;gap:14px;position:relative}
+  .post:hover{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 4%,transparent)}
+  .post .pn{position:absolute;top:14px;right:16px;font-family:"Cormorant Garamond",serif;font-style:italic;font-size:14px;color:var(--ink-mute)}
+  .post:hover .pn{color:var(--accent)}
+
+  .post-icon{width:42px;height:42px;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--accent);font-family:"Cormorant Garamond",serif;font-style:italic;font-size:18px;background:var(--bg)}
+  .post:hover .post-icon{border-color:var(--accent)}
+
+  .post h3{font-size:22px;line-height:1.15;margin-bottom:4px}
+  .post .d{font-size:14px;line-height:1.55;color:var(--ink-soft)}
+  .post .meta{font-size:11.5px;font-style:italic;color:var(--ink-mute);letter-spacing:.04em;margin-top:10px;padding-top:14px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+  .post .meta .arrow{color:var(--accent);font-size:14px}
+
+  /* Note */
+  .note{padding:16px 20px;background:color-mix(in srgb,var(--ink) 2%,transparent);border-left:2px solid var(--accent);font-size:13.5px;color:var(--ink-soft);font-style:italic;line-height:1.6;max-width:64ch}
+  .note em{color:var(--ink);font-style:italic;font-weight:500}
+
+  /* Footer */
+  .fbar{flex-shrink:0;border-top:1px solid var(--line);padding:18px 0}
+  .fbar .wrap{max-width:1080px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px}
+  .fbar .copy{font-size:12px;color:var(--ink-mute);font-style:italic}
+  .fbar .links{display:flex;gap:18px}
+  .fbar .links a{color:var(--ink-mute);text-decoration:none;font-size:12px;font-style:italic}
+  .fbar .links a:hover{color:var(--ink-soft)}
+</style>
+</head>
+<body>
+
+  <nav>
+    <div class="navin">
+      <a class="wm" href="index.html">flameback<span class="p">.</span></a>
+      <div class="navr">
+        <span class="nlink">Save &amp; exit</span>
+        <span class="nlink">Need help?</span>
+        <button class="toggle" id="toggle">Light</button>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <div class="wrap">
+
+      <div class="greet"><span class="l"></span><span>Onboarding &middot; Chapter 0</span></div>
+      <h1>Let&rsquo;s get you <span class="acc">onboarded.</span></h1>
+      <p class="lede">This will take somewhere between fifteen minutes and a few sittings, depending on how much you&rsquo;d like to talk through. It works the same way whether you do it alone, with your relationship manager on a screen-share, or together in a meeting. <em>Either of you can take over at any point.</em></p>
+
+      <div class="ask"><span class="num">?</span><span>Who&rsquo;s at the keyboard right now?</span></div>
+
+      <div class="post-grid">
+
+        <a class="post" href="flameback-onboard-identity.html">
+          <span class="pn">i</span>
+          <div class="post-icon">&#8230;</div>
+          <h3>I&rsquo;m the new client.</h3>
+          <div class="d">A guided walkthrough &mdash; one question at a time, with explanations where helpful. You can pause anywhere and pick up later. If you get stuck, ping your RM from the corner of any screen.</div>
+          <div class="meta"><span>Begin Chapter 1 &middot; About 12&ndash;18 minutes</span><span class="arrow">&rarr;</span></div>
+        </a>
+
+        <a class="post" href="flameback-onboard-identity.html">
+          <span class="pn">ii</span>
+          <div class="post-icon">&middot;&middot;</div>
+          <h3>I&rsquo;m the RM.</h3>
+          <div class="d">Same flow, with an RM panel on the side &mdash; private notes, jump-around between chapters, send-link button to hand off mid-flow, take-over toggle when the client wants you to type for a bit.</div>
+          <div class="meta"><span>RM mode &middot; Notes &amp; controls visible</span><span class="arrow">&rarr;</span></div>
+        </a>
+
+      </div>
+
+      <div class="note">
+        <em>This is a working draft.</em> Nothing is binding until you reach Chapter 8 and sign. Until then, every screen saves automatically and you can change anything &mdash; including who&rsquo;s typing.
+      </div>
+
+    </div>
+  </main>
+
+  <div class="fbar">
+    <div class="wrap">
+      <span class="copy">&copy; 2026 Flameback Capital Pvt Ltd</span>
+      <div class="links">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Help</a>
+      </div>
+    </div>
+  </div>
+
+<script>
+  var root=document.documentElement, tg=document.getElementById('toggle');
+  tg.addEventListener('click',function(){root.classList.toggle('light');tg.textContent=root.classList.contains('light')?'Dark':'Light';});
+</script>
+  <script src="reload.js"></script>
+</body>
+</html>

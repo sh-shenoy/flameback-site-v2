@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flameback — Onboarding</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#FAF7F2;
+    --navy:#1B2A4A;
+    --orange:#FF6D0A;
+    --navy-soft:rgba(27,42,74,.6);
+    --navy-mute:rgba(27,42,74,.42);
+    --navy-faint:rgba(27,42,74,.12);
+    --navy-line:rgba(27,42,74,.2);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  body{font-family:"DM Sans",sans-serif;color:var(--navy);background:var(--cream);min-height:100vh}
+  body::before{content:"";position:fixed;inset:0;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.022'/%3E%3C/svg%3E");
+    mix-blend-mode:multiply;pointer-events:none;z-index:1}
+
+  /* top bar */
+  .topbar{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;
+    padding:22px clamp(24px,4vw,48px);border-bottom:1px solid var(--navy-faint)}
+  .mark{display:flex;align-items:center;gap:11px;text-decoration:none;color:var(--navy)}
+  .mark svg{width:21px;height:21px;display:block}
+  .wordmark{font-weight:500;letter-spacing:.34em;font-size:12.5px;text-transform:uppercase}
+  .topright{display:flex;align-items:center;gap:24px}
+  .stepcount{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--navy-mute)}
+  .saveexit{font-size:13px;color:var(--navy-soft);text-decoration:none;transition:color .3s}
+  .saveexit:hover{color:var(--navy)}
+
+  /* thin top progress */
+  .progress{position:relative;z-index:2;height:2px;background:var(--navy-faint)}
+  .progress .bar{height:100%;width:40%;background:var(--orange);transition:width .6s cubic-bezier(.16,1,.3,1)}
+
+  .shell{position:relative;z-index:2;max-width:1060px;margin:0 auto;display:grid;
+    grid-template-columns:260px 1fr;gap:clamp(36px,6vw,80px);
+    padding:clamp(36px,6vh,64px) clamp(24px,5vw,48px) 90px}
+  @media(max-width:840px){.shell{grid-template-columns:1fr;gap:34px}}
+
+  /* left step rail */
+  .rail{position:sticky;top:48px;opacity:0;animation:fade .9s ease .2s forwards}
+  @media(max-width:840px){.rail{position:static}.steps{display:flex;gap:0;overflow-x:auto}.step{flex:1;min-width:0}.step .line{display:none}}
+  .railtitle{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--navy-mute);margin-bottom:24px}
+  .step{display:flex;gap:15px;position:relative;padding-bottom:28px}
+  .step:last-child{padding-bottom:0}
+  .dotcol{display:flex;flex-direction:column;align-items:center;flex-shrink:0}
+  .dot{width:22px;height:22px;border-radius:50%;border:1px solid var(--navy-line);display:flex;align-items:center;justify-content:center;background:var(--cream);flex-shrink:0;transition:all .3s}
+  .step.done .dot{background:var(--navy);border-color:var(--navy)}
+  .step.current .dot{border-color:var(--orange);border-width:1.5px}
+  .step.current .dot::after{content:"";width:7px;height:7px;border-radius:50%;background:var(--orange)}
+  .line{width:1px;flex:1;background:var(--navy-faint);margin:6px 0;min-height:18px}
+  .step.done .line{background:var(--navy)}
+  .step .txt{padding-top:1px}
+  .step .num{font-size:11px;letter-spacing:.1em;color:var(--navy-mute);margin-bottom:3px}
+  .step .nm{font-size:14px;font-weight:500;color:var(--navy-soft);transition:color .3s}
+  .step.current .nm{color:var(--navy)}
+  .step.done .nm{color:var(--navy)}
+  @media(max-width:840px){.step .num,.step.done .nm,.step:not(.current) .nm{display:none}.step{flex-direction:column;align-items:center;text-align:center;padding:0 6px}}
+
+  /* main step content */
+  .main{max-width:560px;opacity:0;animation:up 1s cubic-bezier(.16,1,.3,1) .35s forwards}
+  .eyebrow{font-size:11.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--navy-soft);font-weight:500;margin-bottom:16px}
+  .eyebrow::before{content:"";display:inline-block;width:22px;height:1px;background:var(--orange);vertical-align:middle;margin-right:12px;margin-bottom:3px}
+  .main h1{font-family:"Cormorant Garamond",serif;font-weight:500;font-size:clamp(30px,4vw,44px);line-height:1.06;margin-bottom:14px}
+  .main .lede{font-family:"Source Serif 4",serif;font-size:16px;line-height:1.55;color:var(--navy-soft);margin-bottom:42px;max-width:42ch}
+
+  .q{margin-bottom:38px}
+  .q .label{display:block;font-size:14.5px;font-weight:500;margin-bottom:14px}
+  .q .label .n{color:var(--navy-mute);font-weight:400;margin-right:8px}
+  .pills{display:flex;flex-wrap:wrap;gap:10px}
+  .pill{border:1px solid var(--navy-line);background:transparent;color:var(--navy-soft);
+    padding:11px 18px;font-family:"DM Sans",sans-serif;font-size:13.5px;cursor:pointer;border-radius:2px;transition:all .3s}
+  .pill:hover{border-color:var(--navy-soft);color:var(--navy)}
+  .pill.on{background:var(--navy);border-color:var(--navy);color:var(--cream)}
+
+  .actions{display:flex;align-items:center;gap:20px;margin-top:48px;padding-top:30px;border-top:1px solid var(--navy-faint)}
+  .back{font-size:14px;color:var(--navy-soft);text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:color .3s,gap .3s}
+  .back:hover{color:var(--navy);gap:11px}
+  .cont{background:var(--navy);color:var(--cream);border:none;cursor:pointer;
+    padding:14px 30px;font-family:"DM Sans",sans-serif;font-size:14px;font-weight:500;letter-spacing:.04em;
+    display:inline-flex;align-items:center;gap:10px;transition:gap .35s,background .35s;margin-left:auto}
+  .cont:hover{gap:14px;background:#15233e}
+  .cont .arrow{transition:transform .35s cubic-bezier(.16,1,.3,1)}
+  .cont:hover .arrow{transform:translateX(3px)}
+
+  .footnote{display:flex;align-items:center;gap:9px;margin-top:26px;font-size:12.5px;color:var(--navy-mute);font-family:"Source Serif 4",serif}
+
+  @keyframes fade{to{opacity:1}}
+  @keyframes up{from{opacity:0;transform:translateY(13px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+
+  <div class="topbar">
+    <a class="mark" href="#">
+      <svg viewBox="0 0 32 32" fill="none">
+        <path d="M20 4c-3.5 0-6 2.2-6.8 5.3L6 12.5c-.8.3-1 1.4-.3 2l3.6 3-2.1 6.4c-.3.9.8 1.6 1.5 1l5-4.2c1 .4 2.1.6 3.3.6 4.4 0 7-2.8 7-7.5V11" stroke="#1B2A4A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="20.5" cy="9" r="1.1" fill="#1B2A4A"/>
+        <path d="M24 6c1.6-.6 3-.4 3.8.4" stroke="#FF6D0A" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <span class="wordmark">Flameback</span>
+    </a>
+    <div class="topright">
+      <span class="stepcount">Step 2 of 5</span>
+      <a class="saveexit" href="#">Save &amp; exit</a>
+    </div>
+  </div>
+  <div class="progress"><div class="bar"></div></div>
+
+  <div class="shell">
+
+    <!-- step rail -->
+    <aside class="rail">
+      <div class="railtitle">Your onboarding</div>
+      <div class="steps">
+        <div class="step done">
+          <div class="dotcol"><div class="dot"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1 5l2.5 2.5L9 2" stroke="#FAF7F2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="line"></div></div>
+          <div class="txt"><div class="num">01</div><div class="nm">Create your account</div></div>
+        </div>
+        <div class="step current">
+          <div class="dotcol"><div class="dot"></div><div class="line"></div></div>
+          <div class="txt"><div class="num">02</div><div class="nm">About you &amp; your goals</div></div>
+        </div>
+        <div class="step">
+          <div class="dotcol"><div class="dot"></div><div class="line"></div></div>
+          <div class="txt"><div class="num">03</div><div class="nm">Verify your identity</div></div>
+        </div>
+        <div class="step">
+          <div class="dotcol"><div class="dot"></div><div class="line"></div></div>
+          <div class="txt"><div class="num">04</div><div class="nm">Your proposal</div></div>
+        </div>
+        <div class="step">
+          <div class="dotcol"><div class="dot"></div></div>
+          <div class="txt"><div class="num">05</div><div class="nm">Review &amp; fund</div></div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- main -->
+    <main class="main">
+      <div class="eyebrow">About you &amp; your goals</div>
+      <h1>Let&rsquo;s understand what this money is for.</h1>
+      <p class="lede">A few questions so we can recommend a mix that fits your life &mdash; not just your risk score. There are no wrong answers.</p>
+
+      <div class="q">
+        <span class="label"><span class="n">01</span>What is this capital primarily for?</span>
+        <div class="pills" data-single>
+          <button class="pill" type="button">Long-term wealth</button>
+          <button class="pill" type="button">Retirement</button>
+          <button class="pill" type="button">The next generation</button>
+          <button class="pill" type="button">A future purchase</button>
+        </div>
+      </div>
+
+      <div class="q">
+        <span class="label"><span class="n">02</span>Over what horizon do you expect to leave it invested?</span>
+        <div class="pills" data-single>
+          <button class="pill" type="button">3&ndash;5 years</button>
+          <button class="pill" type="button">5&ndash;10 years</button>
+          <button class="pill" type="button">10 years or more</button>
+        </div>
+      </div>
+
+      <div class="q">
+        <span class="label"><span class="n">03</span>If your portfolio fell 15% in a difficult year, you would&hellip;</span>
+        <div class="pills" data-single>
+          <button class="pill" type="button">Feel uneasy &mdash; I value stability</button>
+          <button class="pill" type="button">Hold steady &mdash; it&rsquo;s expected</button>
+          <button class="pill" type="button">Add more &mdash; I see opportunity</button>
+        </div>
+      </div>
+
+      <div class="actions">
+        <a class="back" href="#"><svg width="13" height="9" viewBox="0 0 14 9" fill="none"><path d="M13 4.5H2M5 1L1.5 4.5 5 8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Back</a>
+        <button class="cont" type="button">Continue<span class="arrow"><svg width="17" height="10" viewBox="0 0 18 10" fill="none"><path d="M1 5h15M12 1l4 4-4 4" stroke="#FAF7F2" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+      </div>
+
+      <div class="footnote">
+        <svg width="13" height="14" viewBox="0 0 14 16" fill="none"><rect x="2" y="6.5" width="10" height="7.5" rx="1.5" stroke="#1B2A4A" stroke-opacity=".42" stroke-width="1.2"/><path d="M4.2 6.5V4.3a2.8 2.8 0 0 1 5.6 0v2.2" stroke="#1B2A4A" stroke-opacity=".42" stroke-width="1.2"/></svg>
+        Encrypted and confidential. You can pause and return any time.
+      </div>
+    </main>
+
+  </div>
+
+<script>
+  document.querySelectorAll('.pills[data-single]').forEach(function(group){
+    group.querySelectorAll('.pill').forEach(function(p){
+      p.addEventListener('click',function(){
+        group.querySelectorAll('.pill').forEach(function(x){x.classList.remove('on')});
+        p.classList.add('on');
+      });
+    });
+  });
+</script>
+  <script src="reload.js"></script>
+</body>
+</html>

@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>flameback. — QLab Notes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#1A1714; --ink:#F2EDE3; --ink-soft:rgba(242,237,227,.64); --ink-mute:rgba(242,237,227,.42);
+    --line:rgba(242,237,227,.15); --panel:#221E1A; --accent:#FF6D0A; --btn-bg:#FF6D0A; --btn-ink:#1A1714;
+    --grain-blend:screen; --grain-op:.05;
+  }
+  :root.light{
+    --bg:#FCFAF6; --ink:#1A1714; --ink-soft:rgba(26,23,20,.66); --ink-mute:rgba(26,23,20,.46);
+    --line:rgba(26,23,20,.13); --panel:#F4EFE7; --accent:#FF6D0A; --btn-bg:#1A1714; --btn-ink:#FCFAF6;
+    --grain-blend:multiply; --grain-op:.03;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:"Source Serif 4",serif;transition:background .5s,color .5s;font-variant-numeric:tabular-nums;font-feature-settings:"tnum"}
+  body::after{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;mix-blend-mode:var(--grain-blend);opacity:var(--grain-op);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 clamp(22px,5vw,44px)}
+  section{position:relative;z-index:2}
+
+  .wm{font-family:"Source Serif 4",serif;font-weight:600;font-size:18px;letter-spacing:-.01em;color:var(--ink);text-decoration:none}
+  .wm .p{color:var(--accent)}
+  .lab{font-family:"Source Serif 4",serif;font-style:italic;font-size:14px;color:var(--ink-mute)}
+  h1,h2,h3,h4{font-family:"Cormorant Garamond",serif;font-weight:500;letter-spacing:-.012em;color:var(--ink)}
+
+  nav{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 86%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid transparent;transition:border-color .4s}
+  nav.scrolled{border-color:var(--line)}
+  .navin{display:flex;align-items:center;justify-content:space-between;padding:15px 0}
+  .navr{display:flex;align-items:center;gap:21px}
+  .navr a{color:var(--ink-soft);text-decoration:none;font-size:14.5px;transition:color .3s}
+  .navr a:hover{color:var(--ink)}
+  .navr a.current{color:var(--ink)}
+  .toggle{background:none;border:1px solid var(--line);color:var(--ink-soft);cursor:pointer;font-family:"Source Serif 4",serif;font-size:13px;font-style:italic;padding:5px 13px;border-radius:999px;transition:border-color .3s,color .3s}
+  .toggle:hover{border-color:var(--ink-mute);color:var(--ink)}
+  .navr a.navbtn{background:var(--btn-bg);color:var(--btn-ink);padding:8px 17px;font-size:14.5px}
+  @media(max-width:880px){.navr .navlink{display:none}}
+  @media(max-width:520px){.navr{gap:14px}.navr .login{display:none}}
+
+  .subnav{border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--bg) 92%,transparent);position:sticky;top:58px;z-index:40;backdrop-filter:blur(8px)}
+  .subnav-in{display:flex;align-items:baseline;gap:clamp(18px,2.5vw,34px);padding:11px 0;flex-wrap:wrap}
+  .subnav .sn-lab{font-family:"Source Serif 4",serif;font-style:italic;font-size:13px;color:var(--ink-mute);margin-right:6px}
+  .subnav a{font-family:"Source Serif 4",serif;font-size:13.5px;color:var(--ink-mute);text-decoration:none;transition:color .3s;padding-bottom:3px;border-bottom:1px solid transparent}
+  .subnav a:hover{color:var(--ink)}
+  .subnav a.current{color:var(--ink);border-bottom-color:var(--accent)}
+
+  .hero{padding:clamp(44px,6vh,72px) 0 clamp(20px,3vh,32px)}
+  .dateline{display:flex;align-items:center;gap:13px;margin-bottom:22px}
+  .dateline .l{flex:0 0 26px;height:1px;background:var(--accent)}
+  .hero h1{font-family:"Cormorant Garamond",serif;font-weight:500;font-size:clamp(34px,5vw,56px);line-height:0.98;letter-spacing:-.018em;margin-bottom:20px}
+  .hero-sub{font-size:16.5px;line-height:1.6;color:var(--ink);max-width:64ch}
+
+  /* Status meta strip */
+  .stats-strip{padding:clamp(22px,3vw,32px) 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+  @media(max-width:680px){.stats-row{grid-template-columns:repeat(2,1fr)}}
+  .stat{background:var(--bg);padding:14px 18px}
+  .stat-l{display:block;font-family:"Source Serif 4",serif;font-style:italic;font-size:11px;color:var(--ink-mute);letter-spacing:.05em;text-transform:uppercase;line-height:1.2;margin-bottom:6px}
+  .stat-v{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:24px;color:var(--accent);line-height:1;font-variant-numeric:tabular-nums}
+  .stat-v.muted{color:var(--ink)}
+
+  /* Filter strip */
+  .filters{padding:18px 0;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--bg) 95%,transparent);position:sticky;top:58px;z-index:30;backdrop-filter:blur(8px)}
+  .filt-row{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .chips .lab{font-family:"Source Serif 4",serif;font-style:italic;font-size:11.5px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase;margin-right:6px}
+  .chip{background:transparent;border:1px solid var(--line);color:var(--ink-soft);font-family:"Source Serif 4",serif;font-size:13px;padding:6px 14px;cursor:pointer;transition:border-color .25s,color .25s,background .25s}
+  .chip:hover{border-color:var(--ink-mute);color:var(--ink)}
+  .chip.active{border-color:var(--accent);color:var(--accent);background:color-mix(in srgb,var(--accent) 5%,transparent)}
+
+  /* Notes list */
+  .notes{padding:clamp(20px,3vw,30px) 0 clamp(48px,7vw,80px)}
+  .note{border-top:1px solid var(--line);padding:clamp(22px,3vw,32px) 0;display:grid;grid-template-columns:120px 1fr auto;gap:clamp(20px,3vw,36px);align-items:start;text-decoration:none;color:inherit;transition:background .3s}
+  .note:hover{background:color-mix(in srgb,var(--accent) 2%,transparent)}
+  .note:last-child{border-bottom:1px solid var(--line)}
+  @media(max-width:760px){.note{grid-template-columns:1fr;gap:14px}}
+
+  .note-side{display:flex;flex-direction:column;gap:10px;font-size:12px}
+  .n-id{font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--accent);font-size:24px;line-height:1;letter-spacing:.02em}
+  .n-date{font-family:"Source Serif 4",serif;font-style:italic;color:var(--ink-mute);font-size:12px}
+  .n-status{display:inline-flex;align-items:center;gap:7px;padding:3px 9px;border:1px solid var(--line);font-family:"Source Serif 4",serif;font-style:italic;font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;width:fit-content}
+  .n-status .dot{width:6px;height:6px;border-radius:50%}
+  .n-status.active{color:var(--accent);border-color:color-mix(in srgb,var(--accent) 50%,transparent)}
+  .n-status.active .dot{background:var(--accent)}
+  .n-status.prod{color:var(--ink);border-color:var(--ink-mute)}
+  .n-status.prod .dot{background:var(--ink)}
+  .n-status.arch{color:var(--ink-mute);border-color:var(--line)}
+  .n-status.arch .dot{background:var(--ink-mute)}
+
+  .note-body{min-width:0}
+  .note-cat{font-family:"Source Serif 4",serif;font-style:italic;font-size:11px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px}
+  .note-title{font-family:"Cormorant Garamond",serif;font-size:26px;font-weight:500;line-height:1.1;color:var(--ink);margin-bottom:10px;letter-spacing:-.005em}
+  .note-abs{font-size:14.5px;line-height:1.6;color:var(--ink);max-width:60ch;margin-bottom:14px}
+  .note-meta{display:flex;flex-wrap:wrap;gap:18px;font-size:12.5px;padding-top:12px;border-top:1px solid var(--line)}
+  .nm-item{display:flex;align-items:baseline;gap:7px}
+  .nm-l{font-style:italic;color:var(--ink-mute);font-size:11.5px}
+  .nm-v{color:var(--ink);font-variant-numeric:tabular-nums}
+  .nm-v.acc{color:var(--accent);font-weight:500}
+
+  .note-viz{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+  .spark{width:140px;height:54px}
+  .spark text{font-family:"Source Serif 4",serif;font-style:italic;font-size:10px;fill:var(--ink-mute)}
+  .spark-cap{font-family:"Source Serif 4",serif;font-style:italic;font-size:10.5px;color:var(--ink-mute);letter-spacing:.04em;text-transform:uppercase;text-align:right}
+  @media(max-width:760px){.note-viz{align-items:flex-start}}
+
+  /* CTA banner */
+  .sub-banner{padding:clamp(40px,6vw,72px) 0;border-top:1px solid var(--line);text-align:center;background:color-mix(in srgb,var(--ink) 2%,transparent)}
+  .sub-banner h2{font-size:clamp(26px,3.6vw,38px);margin-bottom:12px;max-width:26ch;margin-left:auto;margin-right:auto}
+  .sub-banner p{font-size:14.5px;color:var(--ink-soft);max-width:48ch;margin:0 auto 22px;font-style:italic}
+  .sub-form{display:flex;gap:0;border:1px solid var(--line);background:var(--bg);max-width:420px;margin:0 auto}
+  .sub-form input{flex:1;background:transparent;border:none;color:var(--ink);font-family:"Source Serif 4",serif;font-size:14px;padding:11px 14px;outline:none}
+  .sub-form input::placeholder{color:var(--ink-mute);font-style:italic}
+  .sub-form button{background:var(--accent);color:var(--btn-ink);border:none;font-family:"Source Serif 4",serif;font-weight:500;font-size:14px;padding:11px 22px;cursor:pointer;transition:opacity .25s}
+  .sub-form button:hover{opacity:.92}
+
+  footer{border-top:1px solid var(--line);padding:48px 0 36px}
+  .footin{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;margin-bottom:36px}
+  .footcols{display:flex;gap:clamp(34px,6vw,68px);flex-wrap:wrap}
+  .footcol h4{font-style:italic;font-weight:400;font-size:14px;color:var(--ink-mute);margin-bottom:13px}
+  .footcol a{display:block;color:var(--ink-soft);text-decoration:none;font-size:15px;margin-bottom:9px;transition:color .3s}
+  .footcol a:hover{color:var(--accent)}
+  .disc{padding-top:22px;border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px}
+  .disc span{font-size:12.5px;color:var(--ink-mute);line-height:1.6}
+  .disc .legal{max-width:64ch;font-style:italic}
+</style>
+</head>
+<body>
+
+  <nav id="nav">
+    <div class="wrap navin">
+      <a class="wm" href="index.html">flameback<span class="p">.</span></a>
+      <div class="navr">
+        <a class="navlink" href="flameback-firm.html">Firm</a>
+        <a class="navlink" href="flameback-strategies.html">Strategies</a>
+        <a class="navlink" href="flameback-offerings.html">Offerings</a>
+        <a class="navlink current" href="flameback-insights.html">Insights</a>
+        <a class="navlink" href="#">Resources</a>
+        <a class="login" href="#">Login</a>
+        <a class="navbtn" href="flameback-app-splash.html">Start your journey</a>
+        <button class="toggle" id="toggle">Light</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="subnav">
+    <div class="wrap subnav-in">
+      <span class="sn-lab">Insights</span>
+      <a href="flameback-insights.html">Overview</a>
+      <a href="flameback-alpha-feed.html">Alpha Feed</a>
+      <a class="current" href="#">QLab Notes</a>
+      <a href="flameback-release-notes.html">Release Notes</a>
+      <a href="flameback-engagements.html">Engagements</a>
+    </div>
+  </div>
+
+  <section class="hero">
+    <div class="wrap">
+      <div class="dateline"><span class="l"></span><span class="lab">QLab Notes</span></div>
+      <h1>What we&rsquo;re testing.</h1>
+      <p class="hero-sub">The research lab&rsquo;s working notebook. Live experiments, paper trades, signals under evaluation, and what made it (or didn&rsquo;t) to production. Honest about what we don&rsquo;t yet know.</p>
+    </div>
+  </section>
+
+  <section class="stats-strip">
+    <div class="wrap">
+      <div class="stats-row">
+        <div class="stat"><span class="stat-l">Active experiments</span><span class="stat-v">6</span></div>
+        <div class="stat"><span class="stat-l">In production</span><span class="stat-v muted">11</span></div>
+        <div class="stat"><span class="stat-l">Archived</span><span class="stat-v muted">42</span></div>
+        <div class="stat"><span class="stat-l">Hit rate to prod</span><span class="stat-v">~18%</span></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="filters">
+    <div class="wrap filt-row">
+      <div class="chips">
+        <span class="lab">Filter</span>
+        <button class="chip active" data-value="all">All</button>
+        <button class="chip" data-value="active">Active</button>
+        <button class="chip" data-value="prod">In production</button>
+        <button class="chip" data-value="arch">Archived</button>
+      </div>
+      <span style="font-style:italic;font-size:13px;color:var(--ink-mute)"><span id="count" style="color:var(--accent);font-style:normal">8</span> notes</span>
+    </div>
+  </div>
+
+  <section class="notes">
+    <div class="wrap">
+
+      <a class="note" href="#" data-status="active">
+        <div class="note-side">
+          <span class="n-id">i</span>
+          <span class="n-date">26 Apr 2026</span>
+          <span class="n-status active"><span class="dot"></span>Active &middot; Phase 2</span>
+        </div>
+        <div class="note-body">
+          <div class="note-cat">Signal research &middot; Equity, India</div>
+          <h3 class="note-title">Multi-cap momentum with regime overlay</h3>
+          <p class="note-abs">Testing whether a simple volatility regime indicator improves drawdowns in the multi-cap momentum strategy. The overlay flags &lsquo;high-vol&rsquo; regimes and modestly reduces exposure. Paper trade is 6 months in. Early results show smoother equity curve through Mar 2026 sell-off, but the cost in flat markets is unclear yet.</p>
+          <div class="note-meta">
+            <span class="nm-item"><span class="nm-l">Universe</span><span class="nm-v">NSE 500</span></span>
+            <span class="nm-item"><span class="nm-l">Paper days</span><span class="nm-v">183</span></span>
+            <span class="nm-item"><span class="nm-l">DD improvement</span><span class="nm-v acc">&minus;42%</span></span>
+            <span class="nm-item"><span class="nm-l">Return drag</span><span class="nm-v">&minus;1.4% p.a.</span></span>
+          </div>
+        </div>
+        <div class="note-viz">
+          <svg class="spark" viewBox="0 0 140 54" xmlns="http://www.w3.org/2000/svg">
+            <line x1="0" y1="40" x2="140" y2="40" stroke="var(--line)" stroke-width="0.6"/>
+            <path d="M 0,38 L 18,32 L 36,36 L 54,26 L 72,30 L 90,18 L 108,22 L 126,14 L 140,10" fill="none" stroke="var(--accent)" stroke-width="1.6"/>
+          </svg>
+          <span class="spark-cap">Paper P&amp;L since Nov &rsquo;25</span>
+        </div>
+      </a>
+
+      <a class="note" href="#" data-status="active">
+        <div class="note-side">
+          <span class="n-id">ii</span>
+          <span class="n-date">19 Apr 2026</span>
+          <span class="n-status active"><span class="dot"></span>Active &middot; Phase 1</span>
+        </div>
+        <div class="note-body">
+          <div class="note-cat">Signal research &middot; Cross-sectional</div>
+          <h3 class="note-title">Cross-sectional volatility as a momentum modulator</h3>
+          <p class="note-abs">A signal that scales momentum exposure based on the cross-sectional vol of constituent returns. The hypothesis is that crowded momentum trades coincide with vol compression. Backtest is encouraging; small live allocation begins in Q3 2026.</p>
+          <div class="note-meta">
+            <span class="nm-item"><span class="nm-l">Stage</span><span class="nm-v">Backtest complete</span></span>
+            <span class="nm-item"><span class="nm-l">Sample</span><span class="nm-v">2010&ndash;2025</span></span>
+            <span class="nm-item"><span class="nm-l">Sharpe lift</span><span class="nm-v acc">+0.18</span></span>
+            <span class="nm-item"><span class="nm-l">t-stat</span><span class="nm-v">2.4</span></span>
+          </div>
+        </div>
+        <div class="note-viz">
+          <svg class="spark" viewBox="0 0 140 54" xmlns="http://www.w3.org/2000/svg">
+            <line x1="0" y1="44" x2="140" y2="44" stroke="var(--line)" stroke-width="0.6"/>
+            <path d="M 0,46 L 14,40 L 28,42 L 42,36 L 56,38 L 70,30 L 84,32 L 98,26 L 112,28 L 126,20 L 140,16" fill="none" stroke="var(--accent)" stroke-width="1.6"/>
+          </svg>
+          <span class="spark-cap">Cumulative excess (backtest)</span>
+        </div>
+      </a>
+
+      <a class="note" href="#" data-status="prod">
+        <div class="note-side">
+          <span class="n-id">iii</span>
+          <span class="n-date">15 Apr 2026</span>
+          <span class="n-status prod"><span class="dot"></span>In production</span>
+        </div>
+        <div class="note-body">
+          <div class="note-cat">Implementation &middot; Cost reduction</div>
+          <h3 class="note-title">Reducing turnover via lookback aggregation</h3>
+          <p class="note-abs">A signal-smoothing technique that combines 3-month, 6-month, and 12-month momentum windows with declining weights. Cut realised turnover from 95% annual to 78% across the Large-cap Momentum strategy without measurable performance drag. Now live since March rebalance.</p>
+          <div class="note-meta">
+            <span class="nm-item"><span class="nm-l">Strategy</span><span class="nm-v">Large-cap Momentum</span></span>
+            <span class="nm-item"><span class="nm-l">Turnover</span><span class="nm-v">95% &rarr; <span class="acc">78%</span></span></span>
+            <span class="nm-item"><span class="nm-l">Net return impact</span><span class="nm-v">+0.4% p.a.</span></span>
+            <span class="nm-item"><span class="nm-l">Live since</span><span class="nm-v">Mar 2026</span></span>
+          </div>
+        </div>
+        <div class="note-viz">
+          <svg class="spark" viewBox="0 0 140 54" xmlns="http://www.w3.org/2000/svg">
+            <line x1="0" y1="14" x2="140" y2="14" stroke="var(--line)" stroke-width="0.5" stroke-dasharray="3,3"/>
+            <line x1="0" y1="34" x2="140" y2="34" stroke="var(--line)" stroke-width="0.5" stroke-dasharray="3,3"/>
+            <rect x="2" y="14" width="14" height="30" fill="var(--ink-mute)" opacity="0.4"/>
+            <rect x="20" y="14" width="14" height="30" fill="var(--ink-mute)" opacity="0.4"/>
+            <rect x="38" y="14" width="14" height="30" fill="var(--ink-mute)" opacity="0.4"/>
+            <rect x="56" y="14" width="14" height="30" fill="var(--ink-mute)" opacity="0.4"/>
+            <rect x="74" y="34" width="14" height="10" fill="var(--accent)"/>
+            <rect x="92" y="34" width="14" height="10" fill="var(--accent)"/>
+            <rect x="110" y="34" width="14" height="10" fill="var(--accent)"/>
+            <rect x="128" y="34" width="10" height="10" fill="var(--accent)"/>
+          </svg>
+          <span class="spark-cap">Monthly turnover &middot; before / after</span>
+        </div>
+      </a>
+
+      <a class="note" href="#" data-status="prod">
+        <div class="note-side">
+          <span class="n-id">iv</span>
+          <span class="n-date">03 Apr 2026</span>
+          <span class="n-status prod"><span class="dot"></span>In production</span>
+        </div>
+        <div class="note-body">
+          <div class="note-cat">Execution &middot; Smart routing</div>
+          <h3 class="note-title">Multi-broker smart order routing in FIST</h3>
+          <p class="note-abs">FIST now routes orders across Zerodha, Kotak, and a third broker based on real-time spread and depth data. A/B testing across 6 weeks shows 12% reduction in aggregate execution costs versus single-broker baseline. Note: not a strategy change, but the strategy returns include this.</p>
+          <div class="note-meta">
+            <span class="nm-item"><span class="nm-l">A/B period</span><span class="nm-v">6 weeks</span></span>
+            <span class="nm-item"><span class="nm-l">Cost reduction</span><span class="nm-v acc">12%</span></span>
+            <span class="nm-item"><span class="nm-l">Slippage (bps)</span><span class="nm-v">8.4 &rarr; <span class="acc">7.4</span></span></span>
+          </div>
+        </div>
+        <div class="note-viz">
+          <svg class="spark" viewBox="0 0 140 54" xmlns="http://www.w3.org/2000/svg">
+            <line x1="0" y1="40" x2="140" y2="40" stroke="var(--line)" stroke-width="0.6"/>
+            <path d="M 0,28 L 23,30 L 47,26 L 70,24 L 93,22 L 117,18 L 140,14" fill="none" stroke="var(--accent)" stroke-width="1.6"/>
+          </svg>
+          <span class="spark-cap">Aggregate cost savings (cumulative)</span>
+        </div>
+      </a>
+
+      <a class="note" href="#" data-status="active">
+        <div class="note-side">
+          <span class="n-id">v</span>
+          <span class="n-date">28 Mar 2026</span>
+          <span class="n-status active"><span class="dot"></span>Active &middot; Backtest</span>
+        </div>
+        <div class="note-body">
+          <div class="note-cat">Risk management &middot; Stops</div>
+          <h3 class="note-title">When trailing stops actually help (and when they don&rsquo;t)</h3>
+          <p class="note-abs">A systematic study of trailing stop effectiveness across 14 strategies and 9 years of data. Findings are mixed: stops help in high-conviction concentrated portfolios, hurt in broad-universe momentum. Note documents the conditions under which each is true.</p>
+          <div class="note-meta">
+            <span class="nm-item"><span class="nm-l">Strategies tested</span><span class="nm-v">14</span></span>
+            <span class="nm-item"><span class="nm-l">Sample period</span><span class="nm-v">2017&ndash;2026</span></span>
+            <span class="nm-item"><span class="nm-l">Net contribution</span><span class="nm-v">Strategy-dependent</span></span>
+          </div>
+        </div>
+        <div class="note-viz">
+          <svg class="spark" viewBox="0 0 140 54" xmlns="http://www.w3.org/2000/svg">
+            <line x1="0" y1="27" x2="140" y2="27" stroke="var(--line)" stroke-width="0.5" stroke-dasharray="3,3"/>
+            <rect x="2" y="18" width="12" height="9" fill="var(--accent)" opacity="0.7"/>
+            <rect x="18" y="14" width="12" height="13" fill="var(--accent)" opacity="0.7"/>
+            <rect x="34" y="27" width="12" height="10" fill="var(--ink-mute)" opacity="0.5"/>
+            <rect x="50" y="22" width="12" height="5" fill="var(--accent)" opacity="0.7"/>
+            <rect x="66" y="27" width="12" height="14" fill="var(--ink-mute)" opacity="0.5"/>
+            <rect x="82" y="20" width="12" height="7" fill="var(--accent)" opacity="0.7"/>
+            <rect x="98" y="27" width="12" height="8" fill="var(--ink-mute)" opacity="0.5"/>
+            <rect x="114" y="16" width="12" height="11" fill="var(--accent)" opacity="0.7"/>
+          </svg>
+          <span class="spark-cap">Stop contribution by strategy</span>
+        </div>
+      </a>
+
+      <a class="note" href="#" data-status="active">
+        <div class="note-side">
+          <span class="n-id">vi</span>
+          <span class="n-date">21 Mar 2026</span>
+          <span class="n-status active"><span class="dot"></span>Active &middot; Phase 1</span>
+        </div>
+        <div class="note-body">
+          <div class="note-cat">Signal research &middot; Earnings revisions</div>
+          <h3 class="note-title">Sector rotation signals from earnings revisions</h3>
+          <p class="note-abs">Testing whether trailing analyst revision breadth at the sector level predicts subsequent relative performance. Early backtest results are promising for industrials and consumer; less clean for financials. Live paper trade beginning.</p>
+          <div class="note-meta">
+            <span class="nm-item"><span class="nm-l">Universe</span><span class="nm-v">11 sectors, India</span></span>
+            <span class="nm-item"><span class="nm-l">Period</span><span class="nm-v">2015&ndash;2025</span></span>
+            <span class="nm-item"><span class="nm-l">IC (avg)</span><span class="nm-v acc">0.08</span></span>
+          </div>
+        </div>
+        <div class="note-viz">
+          <svg class="spark" viewBox="0 0 140 54" xmlns="http://www.w3.org/2000/svg">
+            <line x1="0" y1="44" x2="140" y2="44" stroke="var(--line)" stroke-width="0.6"/>
+            <path d="M 0,42 L 18,38 L 36,40 L 54,34 L 72,32 L 90,28 L 108,30 L 126,24 L 140,22" fill="none" stroke="var(--accent)" stroke-width="1.6"/>
+          </svg>
+          <span class="spark-cap">Cumulative IC (backtest)</span>
+        </div>
+      </a>
+
+      <a class="note" href="#" data-status="arch">
+        <div class="note-side">
+          <span class="n-id">vii</span>
+          <span class="n-date">02 Apr 2026</span>
+          <span class="n-status arch"><span class="dot"></span>Archived</span>
+        </div>
+        <div class="note-body">
+          <div class="note-cat">Signal research &middot; Pairs trading</div>
+          <h3 class="note-title">Pairs trading in Indian financials: a six-month dry run</h3>
+          <p class="note-abs">The setup looked clean on paper &mdash; mean-reverting pairs in HDFC Bank / ICICI Bank, SBI / Axis, and the NBFC complex. Six months later, the cost of leg-in/leg-out plus widening bid-ask in stress periods was eating the alpha. Filed under &ldquo;works in theory&rdquo; with notes on what would need to change.</p>
+          <div class="note-meta">
+            <span class="nm-item"><span class="nm-l">Live test</span><span class="nm-v">6 months</span></span>
+            <span class="nm-item"><span class="nm-l">Gross alpha</span><span class="nm-v">+3.2%</span></span>
+            <span class="nm-item"><span class="nm-l">Net of costs</span><span class="nm-v">&minus;0.4%</span></span>
+            <span class="nm-item"><span class="nm-l">Outcome</span><span class="nm-v">Shelved</span></span>
+          </div>
+        </div>
+        <div class="note-viz">
+          <svg class="spark" viewBox="0 0 140 54" xmlns="http://www.w3.org/2000/svg">
+            <line x1="0" y1="34" x2="140" y2="34" stroke="var(--line)" stroke-width="0.6"/>
+            <path d="M 0,32 L 20,28 L 40,24 L 60,32 L 80,30 L 100,36 L 120,38 L 140,36" fill="none" stroke="var(--ink-mute)" stroke-width="1.4" opacity="0.7"/>
+          </svg>
+          <span class="spark-cap">Net P&amp;L &middot; gross vs after costs</span>
+        </div>
+      </a>
+
+      <a class="note" href="#" data-status="arch">
+        <div class="note-side">
+          <span class="n-id">viii</span>
+          <span class="n-date">14 Feb 2026</span>
+          <span class="n-status arch"><span class="dot"></span>Archived</span>
+        </div>
+        <div class="note-body">
+          <div class="note-cat">Signal research &middot; Alternative data</div>
+          <h3 class="note-title">Web-scraped hiring signals as a leading indicator</h3>
+          <p class="note-abs">Hypothesis: changes in hiring posts predict revenue growth at sector level. Tested with 18 months of scraped data across 12 sectors. Signal exists statistically but the lead time is too short and the data was too noisy for practical use. Documented for future revisit.</p>
+          <div class="note-meta">
+            <span class="nm-item"><span class="nm-l">Data window</span><span class="nm-v">18 months</span></span>
+            <span class="nm-item"><span class="nm-l">Sectors</span><span class="nm-v">12</span></span>
+            <span class="nm-item"><span class="nm-l">Outcome</span><span class="nm-v">Inconclusive</span></span>
+          </div>
+        </div>
+        <div class="note-viz">
+          <svg class="spark" viewBox="0 0 140 54" xmlns="http://www.w3.org/2000/svg">
+            <line x1="0" y1="27" x2="140" y2="27" stroke="var(--line)" stroke-width="0.5" stroke-dasharray="3,3"/>
+            <path d="M 0,26 L 12,30 L 24,24 L 36,28 L 48,22 L 60,32 L 72,24 L 84,26 L 96,30 L 108,22 L 120,28 L 132,26 L 140,28" fill="none" stroke="var(--ink-mute)" stroke-width="1.2" opacity="0.65"/>
+          </svg>
+          <span class="spark-cap">Signal noise &middot; week over week</span>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <section class="sub-banner">
+    <div class="wrap">
+      <h2>Get research notes when they&rsquo;re published.</h2>
+      <p>Roughly twice a month. New experiments, results from existing tests, and what we&rsquo;re shelving and why.</p>
+      <form class="sub-form" onsubmit="event.preventDefault();this.querySelector('button').textContent='Subscribed';">
+        <input type="email" placeholder="name@firm.com" required/>
+        <button type="submit">Subscribe</button>
+      </form>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <div class="footin">
+        <a class="wm" href="index.html">flameback<span class="p">.</span></a>
+        <div class="footcols">
+          <div class="footcol"><h4>Firm</h4><a href="flameback-firm.html">Team</a><a href="flameback-philosophy.html">Investment philosophy</a><a href="flameback-strategy-rd.html">Strategy R&amp;D</a><a href="flameback-technology.html">Technology</a></div>
+          <div class="footcol"><h4>Insights</h4><a href="flameback-alpha-feed.html">Alpha Feed</a><a href="flameback-qlab-notes.html">QLab Notes</a><a href="flameback-release-notes.html">Release Notes</a><a href="flameback-engagements.html">Engagements</a></div>
+          <div class="footcol"><h4>Contact</h4><a href="#">Bangalore, India</a><a href="#">hello@flameback.in</a></div>
+        </div>
+      </div>
+      <div class="disc">
+        <span>&copy; 2026 Flameback Capital Pvt Ltd</span>
+        <span class="legal">Research notes describe work in progress. Findings are subject to revision. Nothing here constitutes investment advice.</span>
+      </div>
+    </div>
+  </footer>
+
+<script>
+  var root=document.documentElement, tg=document.getElementById('toggle');
+  tg.addEventListener('click',function(){root.classList.toggle('light');tg.textContent=root.classList.contains('light')?'Dark':'Light';});
+  var nav=document.getElementById('nav');
+  window.addEventListener('scroll',function(){nav.classList.toggle('scrolled',window.scrollY>16)});
+
+  var notes = Array.prototype.slice.call(document.querySelectorAll('.note'));
+  var count = document.getElementById('count');
+  document.querySelectorAll('.filters .chip').forEach(function(chip){
+    chip.addEventListener('click', function(){
+      document.querySelectorAll('.filters .chip').forEach(function(c){c.classList.remove('active');});
+      chip.classList.add('active');
+      var v = chip.dataset.value;
+      var visible = 0;
+      notes.forEach(function(n){
+        if(v === 'all' || n.dataset.status === v){ n.style.display=''; visible++; }
+        else { n.style.display='none'; }
+      });
+      count.textContent = visible;
+    });
+  });
+</script>
+  <script src="reload.js"></script>
+</body>
+</html>

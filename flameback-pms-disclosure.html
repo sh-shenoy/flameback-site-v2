@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PMS Disclosure Document — flameback.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#FCFAF6;--ink:#1A1714;--ink-soft:rgba(26,23,20,.68);--ink-mute:rgba(26,23,20,.46);--line:rgba(26,23,20,.14);--panel:#F4EFE7;--accent:#B23E08;--btn-bg:#1A1714;--btn-ink:#FCFAF6;--grain-blend:multiply;--grain-op:.035}
+  :root.dark{--bg:#1A1714;--ink:#F2EDE3;--ink-soft:rgba(242,237,227,.66);--ink-mute:rgba(242,237,227,.44);--line:rgba(242,237,227,.16);--panel:#221E1A;--accent:#FF6D0A;--btn-bg:#FF6D0A;--btn-ink:#1A1714;--grain-blend:screen;--grain-op:.055}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:"Source Serif 4",serif;transition:background .5s,color .5s;font-variant-numeric:tabular-nums;line-height:1.62}
+  body::after{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;mix-blend-mode:var(--grain-blend);opacity:var(--grain-op);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  .wrap{max-width:920px;margin:0 auto;padding:0 clamp(22px,5vw,44px);position:relative;z-index:2}
+  .wm{font-family:"Source Serif 4",serif;font-weight:600;font-size:16px;color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+  .wm .p{color:var(--accent)}
+  a{color:var(--accent)}
+
+  /* Nav strip */
+  nav.top{padding:18px 0;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--bg) 92%,transparent)}
+  .navin{max-width:920px;margin:0 auto;padding:0 clamp(22px,5vw,44px);display:flex;align-items:center;justify-content:space-between;gap:18px}
+  .navin .back{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase;text-decoration:none}
+  .navin .back:hover{color:var(--accent)}
+  .toggle{background:none;border:1px solid var(--line);color:var(--ink-soft);cursor:pointer;font-family:"Source Serif 4",serif;font-size:12px;font-style:italic;padding:4px 11px;border-radius:999px}
+
+  /* Document masthead */
+  .mast{padding:clamp(40px,6vh,68px) 0 clamp(28px,4vh,40px);border-bottom:1px solid var(--ink);position:relative}
+  .mast .lbl{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px}
+  .mast h1{font-family:"Cormorant Garamond",serif;font-weight:500;font-size:clamp(36px,5.5vw,56px);letter-spacing:-.015em;line-height:1.04;max-width:24ch;margin-bottom:18px}
+  .mast h1 em{color:var(--accent);font-style:italic;font-weight:500}
+  .mast .sub{font-size:15px;line-height:1.6;color:var(--ink-soft);max-width:58ch;margin-bottom:24px;font-style:italic}
+  .mast .meta-tbl{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:18px}
+  @media(max-width:680px){.mast .meta-tbl{grid-template-columns:1fr}}
+  .mast .meta-tbl .kv{background:var(--bg);padding:14px 18px;display:flex;flex-direction:column;gap:4px}
+  .mast .meta-tbl .k{font-family:"JetBrains Mono",monospace;font-size:9.5px;color:var(--ink-mute);letter-spacing:.08em;text-transform:uppercase}
+  .mast .meta-tbl .v{font-family:"Source Serif 4",serif;font-size:14px;color:var(--ink);line-height:1.4}
+  .mast .meta-tbl .v.mono{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.04em}
+
+  /* Working-draft ribbon */
+  .draft{margin:24px 0 0;padding:14px 20px;border:1px dashed var(--accent);background:color-mix(in srgb,var(--accent) 4%,transparent);font-size:13px;line-height:1.6;color:var(--ink);font-style:italic}
+  .draft strong{font-family:"JetBrains Mono",monospace;font-style:normal;font-weight:500;font-size:10.5px;color:var(--accent);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:5px}
+
+  /* TOC */
+  .toc{padding:32px 0;border-bottom:1px solid var(--line)}
+  .toc h2{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--ink-mute);letter-spacing:.08em;text-transform:uppercase;margin-bottom:18px;font-weight:500}
+  .toc ol{list-style:none;display:grid;grid-template-columns:repeat(2,1fr);gap:6px 24px;counter-reset:t}
+  @media(max-width:680px){.toc ol{grid-template-columns:1fr}}
+  .toc li{counter-increment:t;font-size:14px;line-height:1.6;padding:5px 0;border-bottom:1px dotted var(--line);display:flex;align-items:baseline;gap:10px}
+  .toc li:before{content:counter(t,decimal-leading-zero);font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--accent);letter-spacing:.04em;min-width:24px}
+  .toc a{color:var(--ink);text-decoration:none}
+  .toc a:hover{color:var(--accent)}
+
+  /* Sections */
+  .sec{padding:clamp(48px,6vh,68px) 0;border-bottom:1px solid var(--line)}
+  .sec-num{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--accent);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px}
+  .sec h2{font-family:"Cormorant Garamond",serif;font-weight:500;font-size:clamp(24px,3.3vw,36px);letter-spacing:-.012em;line-height:1.08;margin-bottom:26px;max-width:30ch}
+  .sec h2 em{color:var(--accent);font-style:italic}
+  .sec h3{font-family:"Cormorant Garamond",serif;font-weight:500;font-style:italic;font-size:20px;letter-spacing:-.005em;line-height:1.15;margin-top:28px;margin-bottom:12px;color:var(--ink)}
+  .sec p{font-size:14.5px;line-height:1.72;color:var(--ink);max-width:64ch;margin-bottom:14px}
+  .sec p:last-child{margin-bottom:0}
+  .sec p em{color:var(--accent);font-style:italic}
+  .sec p strong{font-weight:500;font-style:italic}
+  .sec ul,.sec ol{margin:8px 0 18px 0;max-width:64ch}
+  .sec li{font-size:14.5px;line-height:1.7;color:var(--ink);margin-bottom:6px;padding-left:22px;position:relative}
+  .sec li:before{content:"\2014";color:var(--accent);position:absolute;left:0;top:0}
+  .sec ol{counter-reset:li}
+  .sec ol li{padding-left:32px}
+  .sec ol li:before{content:counter(li,lower-roman)".";font-family:"Cormorant Garamond",serif;font-style:italic;counter-increment:li}
+
+  /* Tables */
+  .tbl{margin:18px 0;border:1px solid var(--line);background:color-mix(in srgb,var(--ink) 1.5%,transparent);overflow-x:auto}
+  .tbl table{width:100%;border-collapse:collapse;min-width:520px}
+  .tbl th,.tbl td{padding:12px 16px;text-align:left;font-size:13px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.55}
+  .tbl th{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase;font-weight:500;background:color-mix(in srgb,var(--ink) 3%,transparent)}
+  .tbl td{color:var(--ink)}
+  .tbl td:first-child{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:15px;color:var(--ink);width:34%;letter-spacing:-.005em}
+  .tbl tr:last-child td{border-bottom:none}
+
+  /* Placeholder (legal-text-pending) marker */
+  .pend{padding:14px 18px;border:1px dashed var(--line);background:color-mix(in srgb,var(--accent) 2%,transparent);font-size:13px;line-height:1.55;color:var(--ink-soft);font-style:italic;margin:14px 0;max-width:64ch}
+  .pend strong{font-family:"JetBrains Mono",monospace;font-style:normal;font-weight:500;font-size:10px;color:var(--accent);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:4px}
+
+  /* Footer */
+  footer{padding:48px 0 36px}
+  .sig{display:grid;grid-template-columns:1fr 1fr;gap:36px;padding:32px 0;border-top:2px solid var(--ink);border-bottom:1px solid var(--line);margin-bottom:32px}
+  @media(max-width:680px){.sig{grid-template-columns:1fr;gap:24px}}
+  .sig .blk{padding:0}
+  .sig .blk .role{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink-mute);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px}
+  .sig .blk .line{height:1px;background:var(--ink);margin:30px 0 8px;max-width:240px}
+  .sig .blk .nm{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:18px;color:var(--ink)}
+  .sig .blk .post{font-family:"Source Serif 4",serif;font-size:12px;color:var(--ink-soft);font-style:italic;margin-top:2px}
+  .sig .blk .dt{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-mute);letter-spacing:.04em;margin-top:14px}
+  .disc{font-size:11.5px;color:var(--ink-mute);line-height:1.6;font-style:italic;max-width:72ch}
+</style>
+</head>
+<body>
+
+  <nav class="top">
+    <div class="navin">
+      <a class="wm" href="flameback-home.html">flameback<span class="p">.</span></a>
+      <a class="back" href="flameback-home.html">&larr; Return to home</a>
+      <button class="toggle" id="toggle">Dark</button>
+    </div>
+  </nav>
+
+  <div class="wrap">
+
+    <!-- Masthead -->
+    <section class="mast">
+      <div class="lbl">Regulatory document &middot; Form C</div>
+      <h1>Portfolio Management Services <em>Disclosure Document.</em></h1>
+      <p class="sub">Disclosure document filed under regulation 22 of the SEBI (Portfolio Managers) Regulations, 2020, as amended. This document is to be read in conjunction with the executed client agreement and any annexures.</p>
+
+      <div class="meta-tbl">
+        <div class="kv"><span class="k">Portfolio Manager</span><span class="v">Flameback Capital Private Limited</span></div>
+        <div class="kv"><span class="k">SEBI registration</span><span class="v mono">INP000007358</span></div>
+        <div class="kv"><span class="k">Registered office</span><span class="v">Bangalore, Karnataka, India</span></div>
+        <div class="kv"><span class="k">Date of registration</span><span class="v">[to be inserted by counsel]</span></div>
+        <div class="kv"><span class="k">Document version</span><span class="v mono">v1.0 &middot; 13 June 2026</span></div>
+        <div class="kv"><span class="k">Principal officer</span><span class="v">Kishan Murjani Nair</span></div>
+        <div class="kv"><span class="k">Compliance officer</span><span class="v">[name &middot; to be inserted]</span></div>
+        <div class="kv"><span class="k">Investor grievance email</span><span class="v">grievance@flameback.capital</span></div>
+      </div>
+
+      <div class="draft"><strong>Working draft</strong>The text below provides structure and substantive non-legal content. Sections marked &ldquo;text-pending&rdquo; require finalisation by counsel before the document is filed or relied upon. Last legal review: pending.</div>
+    </section>
+
+    <!-- Table of contents -->
+    <section class="toc">
+      <h2>Contents</h2>
+      <ol>
+        <li><a href="#s0">Disclaimer</a></li>
+        <li><a href="#s1">Definitions</a></li>
+        <li><a href="#s2">About the Portfolio Manager</a></li>
+        <li><a href="#s3">Penalties, pending litigation, regulatory actions</a></li>
+        <li><a href="#s4">Services offered</a></li>
+        <li><a href="#s5">Risk factors</a></li>
+        <li><a href="#s6">Client representation</a></li>
+        <li><a href="#s7">Performance of the Portfolio Manager</a></li>
+        <li><a href="#s8">Audit observations</a></li>
+        <li><a href="#s9">Nature of expenses</a></li>
+        <li><a href="#s10">Taxation</a></li>
+        <li><a href="#s11">Accounting policies</a></li>
+        <li><a href="#s12">Investor services and grievance redressal</a></li>
+        <li><a href="#s13">Mandatory undertakings</a></li>
+      </ol>
+    </section>
+
+    <section class="sec" id="s0">
+      <div class="sec-num">Section 01</div>
+      <h2><em>Disclaimer.</em></h2>
+      <p>This Disclosure Document has been prepared in accordance with the SEBI (Portfolio Managers) Regulations, 2020 and has been filed with the Securities and Exchange Board of India. The purpose of the document is to provide essential information about the portfolio management services offered by Flameback Capital Private Limited in a manner that assists investors in making an informed decision about engaging the Portfolio Manager.</p>
+      <p>This document has neither been approved nor disapproved by SEBI, nor has SEBI certified the accuracy or adequacy of the contents of this document. <em>The Portfolio Manager has, however, taken reasonable care to ensure that the information provided is true and not misleading.</em></p>
+      <p><strong>Investments in securities are subject to market risks.</strong> The value of the portfolio may rise or fall depending on factors and forces affecting the securities markets. There can be no assurance that the objectives of the Portfolio Manager will be achieved, and the Portfolio Manager makes no guarantee, express or implied, of any specific return on the investments managed.</p>
+    </section>
+
+    <section class="sec" id="s1">
+      <div class="sec-num">Section 02</div>
+      <h2><em>Definitions.</em></h2>
+      <p>For the purposes of this Disclosure Document, the following terms shall have the meanings ascribed to them:</p>
+      <div class="tbl">
+        <table>
+          <thead><tr><th>Term</th><th>Meaning</th></tr></thead>
+          <tbody>
+            <tr><td>Portfolio Manager</td><td>Flameback Capital Private Limited, holding SEBI registration number INP000007358.</td></tr>
+            <tr><td>Client</td><td>Any person or entity who enters into an agreement with the Portfolio Manager for availing the services described herein.</td></tr>
+            <tr><td>Discretionary services</td><td>Portfolio management services where the Portfolio Manager exercises discretion in deploying and managing the Client&rsquo;s funds and securities.</td></tr>
+            <tr><td>Non-discretionary services</td><td>Portfolio management services where the Portfolio Manager acts on the Client&rsquo;s instructions, with research and execution support.</td></tr>
+            <tr><td>Strategy</td><td>An investment approach offered by the Portfolio Manager, with a defined investment objective, universe, and risk profile.</td></tr>
+            <tr><td>Custodian</td><td>The SEBI-registered custodian appointed under the agreement to hold the Client&rsquo;s securities and funds.</td></tr>
+            <tr><td>Regulations</td><td>SEBI (Portfolio Managers) Regulations, 2020, and any amendments and circulars issued thereunder.</td></tr>
+            <tr><td>Agreement</td><td>The portfolio management services agreement entered into between the Portfolio Manager and the Client.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="sec" id="s2">
+      <div class="sec-num">Section 03</div>
+      <h2>About the <em>Portfolio Manager.</em></h2>
+
+      <h3>3.1 &middot; History and corporate profile</h3>
+      <p>Flameback Capital Private Limited was incorporated in 2017 and registered as a SEBI Portfolio Manager (registration number INP000007358) in 2020. The firm is a quantitative wealth manager based in Bangalore. Its principal business is the discretionary and non-discretionary management of portfolios for resident Indian and non-resident individuals, family offices, and qualifying institutions. The Portfolio Manager also operates an Investment Advisory function and an Alternative Investment Fund (Category III), under separate registrations.</p>
+
+      <h3>3.2 &middot; Group structure</h3>
+      <p>The Portfolio Manager is wholly owned by its founders and a small group of patient private investors. It has no holding-company relationships with banks, insurance providers, or product manufacturers. <em>The Portfolio Manager is not affiliated with any group whose business creates a conflict of interest with the Client&rsquo;s portfolio.</em></p>
+
+      <h3>3.3 &middot; Principal officer and key personnel</h3>
+      <p>The Principal Officer of the Portfolio Manager is Kishan Murjani Nair, Founder and Managing Director. The senior leadership additionally includes Devesh Sati (Chief Technology Officer) and Ashrith Rao (Fund Manager). Detailed bios and qualifications of each are available on the firm&rsquo;s website at the Team page.</p>
+
+      <h3>3.4 &middot; Other businesses</h3>
+      <p>The Portfolio Manager and its associated entities also operate (a) an Investment Advisory service under SEBI registration INA200013798; (b) a Category III AIF under registration [insert]; and (c) an Investment Adviser registration with the U.S. Securities and Exchange Commission (file number 801-129576) for the US-strategy business. Each is subject to its own regulatory oversight and disclosed in its own filings.</p>
+    </section>
+
+    <section class="sec" id="s3">
+      <div class="sec-num">Section 04</div>
+      <h2>Penalties, pending <em>litigation,</em> regulatory actions.</h2>
+      <div class="pend"><strong>Text pending</strong>This section must disclose all penalties, pending litigation, regulatory actions, and material observations against the Portfolio Manager, its directors, principal officer, employees and associated entities, in the format prescribed by SEBI. Final text to be inserted by counsel based on records current as of the filing date.</div>
+      <p>As of the date of this Disclosure Document, there are <strong>no</strong> material penalties, pending litigations, or adverse regulatory actions against the Portfolio Manager or its principal officer that would require disclosure under regulation 22 of the Regulations. This statement is to be verified and re-confirmed by counsel and the compliance officer at the time of filing.</p>
+    </section>
+
+    <section class="sec" id="s4">
+      <div class="sec-num">Section 05</div>
+      <h2>Services <em>offered.</em></h2>
+
+      <h3>5.1 &middot; Discretionary portfolio management</h3>
+      <p>Under discretionary portfolio management, the Portfolio Manager exercises full discretion in selecting, allocating, and managing investments on behalf of the Client, in accordance with the agreed Strategy and within the constraints stated in the Agreement. The Client&rsquo;s consent for individual transactions is not required.</p>
+
+      <h3>5.2 &middot; Non-discretionary portfolio management</h3>
+      <p>Under non-discretionary portfolio management, the Portfolio Manager provides recommendations, research, and execution support; investment decisions remain with the Client. The Portfolio Manager does not execute transactions without specific Client instruction.</p>
+
+      <h3>5.3 &middot; Advisory portfolio management</h3>
+      <p>Where requested, the Portfolio Manager provides standalone advisory services in respect of the Client&rsquo;s portfolio, without taking custody or executing transactions. Such advisory services are governed by a separate engagement letter and are subject to the regulations applicable to SEBI-registered Investment Advisers.</p>
+
+      <h3>5.4 &middot; Strategies offered</h3>
+      <p>The Portfolio Manager offers a range of equity, multi-asset, and overlay strategies, each with a defined investment objective, universe, and risk profile. A complete list of currently available strategies, along with their individual factsheets, is published at <a href="flameback-our-work.html">flameback.capital/our-work</a>. The list and details of strategies may be updated from time to time; the current Agreement and accompanying annexure will identify the strategies applicable to the Client.</p>
+
+      <h3>5.5 &middot; Investment objectives and policies</h3>
+      <p>The investment objective for each Strategy is to generate risk-adjusted returns consistent with the stated Strategy profile, net of fees and expenses, over a defined investment horizon. The Portfolio Manager follows a quantitative, rules-based approach to portfolio construction and risk management. <em>The Portfolio Manager does not guarantee any specific return.</em></p>
+
+      <h3>5.6 &middot; Minimum investment and lock-in</h3>
+      <p>The minimum investment for portfolio management services is the higher of (a) the regulatory minimum prescribed under the Regulations from time to time, or (b) the Strategy-specific minimum disclosed in the Agreement. Currently, the regulatory minimum is &#8377;50,00,000 (Indian Rupees Fifty Lakh) per Client. There is no contractual lock-in period unless specifically stated in the Agreement; however, the Portfolio Manager generally invests with a multi-year horizon, and early withdrawal may impair the Client&rsquo;s investment outcomes.</p>
+    </section>
+
+    <section class="sec" id="s5">
+      <div class="sec-num">Section 06</div>
+      <h2>Risk <em>factors.</em></h2>
+      <p>An investment in a portfolio managed by the Portfolio Manager involves several risks. The Client should consider, among others, the following:</p>
+      <ul>
+        <li><strong>Market risk.</strong> The value of investments may decline due to factors affecting securities markets generally or specific issuers.</li>
+        <li><strong>Strategy risk.</strong> A Strategy may underperform its benchmark or its historical performance; quantitative models may decay over time or behave unexpectedly in unobserved market regimes.</li>
+        <li><strong>Liquidity risk.</strong> Some securities may be illiquid, and disposal under stressed market conditions may incur losses.</li>
+        <li><strong>Concentration risk.</strong> Strategy-level concentration in particular securities, sectors, or factors may amplify losses in adverse conditions.</li>
+        <li><strong>Operational and technology risk.</strong> Failures in systems, data feeds, execution, custody, or counterparties may affect Client outcomes.</li>
+        <li><strong>Regulatory and tax risk.</strong> Changes in regulation or tax law may affect the operation, profitability, or after-tax return of a Strategy.</li>
+        <li><strong>Counterparty risk.</strong> Failure of a custodian, broker, exchange, or other counterparty may impact the Client&rsquo;s assets.</li>
+        <li><strong>Currency risk.</strong> For Strategies with cross-border exposure, currency movement may amplify or offset gains and losses.</li>
+        <li><strong>Modelling risk.</strong> Quantitative models rely on historical data and assumptions; their results may not be predictive of future outcomes.</li>
+      </ul>
+      <p>The above list is not exhaustive. Detailed risk factors specific to each Strategy are disclosed in the Strategy&rsquo;s factsheet and in the Agreement.</p>
+    </section>
+
+    <section class="sec" id="s6">
+      <div class="sec-num">Section 07</div>
+      <h2>Client <em>representation.</em></h2>
+      <p>The following table sets out the number and category of Clients as of the date of this Disclosure Document. The information is required to be updated at the time of filing.</p>
+      <div class="pend"><strong>Numbers pending</strong>Compliance officer to confirm Client numbers by category (Resident Individual, NRI, HUF, Corporate, Trust, etc.) and AUM ranges as of the filing date.</div>
+      <div class="tbl">
+        <table>
+          <thead><tr><th>Category</th><th>Number of Clients</th><th>Funds managed (&#8377; crore)</th></tr></thead>
+          <tbody>
+            <tr><td>Resident individuals</td><td>[insert]</td><td>[insert]</td></tr>
+            <tr><td>Non-resident Indians</td><td>[insert]</td><td>[insert]</td></tr>
+            <tr><td>HUFs</td><td>[insert]</td><td>[insert]</td></tr>
+            <tr><td>Corporates / Trusts / Partnerships</td><td>[insert]</td><td>[insert]</td></tr>
+            <tr><td><strong>Total</strong></td><td>[insert]</td><td>[insert]</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Of the above, related-party Clients (founders, directors, employees, immediate family members) account for [insert] number of Clients and &#8377;[insert] crore of assets. <em>Founders&rsquo; capital is invested in the same Strategies, on the same terms, and pays the same fees as third-party Client capital.</em></p>
+    </section>
+
+    <section class="sec" id="s7">
+      <div class="sec-num">Section 08</div>
+      <h2>Performance of the <em>Portfolio Manager.</em></h2>
+      <div class="pend"><strong>Text pending</strong>Strategy-wise performance for 1-year, 3-year, 5-year, and since-inception, calculated in accordance with SEBI&rsquo;s prescribed methodology (Time-Weighted Rate of Return, net of all fees and expenses) and compared against the relevant benchmark, to be inserted by the compliance officer and audited by the firm&rsquo;s appointed auditor before filing.</p>
+      <p>Performance data is shown on a Strategy-wise basis and is to be read with the methodological notes prescribed under the Regulations.</div>
+      <div class="tbl">
+        <table>
+          <thead><tr><th>Strategy</th><th>1-year</th><th>3-year</th><th>5-year</th><th>Since inception</th><th>Benchmark</th></tr></thead>
+          <tbody>
+            <tr><td>Momentum of Velocity</td><td>[insert]</td><td>[insert]</td><td>[insert]</td><td>[insert]</td><td>Nifty 500 TRI</td></tr>
+            <tr><td>Large-Cap Momentum</td><td>[insert]</td><td>[insert]</td><td>[insert]</td><td>[insert]</td><td>Nifty 50 TRI</td></tr>
+            <tr><td>&hellip; (all live Strategies)</td><td>&middot;</td><td>&middot;</td><td>&middot;</td><td>&middot;</td><td>&middot;</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><em>Past performance is not indicative of future returns.</em> The performance data shown is net of all fees, expenses, and taxes (other than as specified). The Portfolio Manager has not used any performance reporting methodology not prescribed under the Regulations.</p>
+    </section>
+
+    <section class="sec" id="s8">
+      <div class="sec-num">Section 09</div>
+      <h2>Audit <em>observations.</em></h2>
+      <div class="pend"><strong>Text pending</strong>Any qualifications or observations made by the statutory auditor in the audit of the Portfolio Manager&rsquo;s books, and any audit observations specific to the Portfolio Manager&rsquo;s portfolio management services, are to be inserted here by counsel based on the most recent audit report.</div>
+      <p>For the period covered by the most recent audit, the statutory auditor has not raised any material qualifications or observations relating to the conduct of the Portfolio Manager&rsquo;s portfolio management services that require disclosure under the Regulations. <strong>This statement is to be verified and re-confirmed at the time of filing.</strong></p>
+    </section>
+
+    <section class="sec" id="s9">
+      <div class="sec-num">Section 10</div>
+      <h2>Nature of <em>expenses.</em></h2>
+
+      <h3>10.1 &middot; Management fees</h3>
+      <p>The Portfolio Manager charges management fees in accordance with the Agreement. The fee model is fixed-fee, variable-fee with a high-water-mark performance component, or a combination of the two, as agreed with each Client. <em>The Portfolio Manager does not accept commissions, rebates, or other consideration from product manufacturers in respect of any investment made on behalf of any Client.</em></p>
+
+      <h3>10.2 &middot; Custodian, brokerage, and exchange charges</h3>
+      <p>The Client bears, at actuals, the charges levied by the custodian, brokers, exchanges, depositories, and other counterparties involved in the execution and settlement of transactions on the Client&rsquo;s account. These charges are not retained by the Portfolio Manager.</p>
+
+      <h3>10.3 &middot; Statutory and other charges</h3>
+      <p>Statutory levies including securities transaction tax (STT), goods and services tax (GST), stamp duty, and other applicable taxes are charged to the Client&rsquo;s account at actuals.</p>
+
+      <h3>10.4 &middot; Fee schedule (illustrative)</h3>
+      <div class="tbl">
+        <table>
+          <thead><tr><th>Fee head</th><th>Basis</th></tr></thead>
+          <tbody>
+            <tr><td>Fixed management fee</td><td>As agreed in the Agreement, charged on average daily NAV, computed and accrued daily, billed quarterly</td></tr>
+            <tr><td>Performance fee</td><td>If applicable, on profits above the agreed hurdle and high-water mark, computed annually</td></tr>
+            <tr><td>Custodian charges</td><td>At actuals, as levied by the SEBI-registered custodian</td></tr>
+            <tr><td>Brokerage</td><td>At actuals, on trades executed via empanelled brokers</td></tr>
+            <tr><td>Exit load</td><td>As agreed, applicable in specific Strategy mandates as disclosed in the Agreement</td></tr>
+            <tr><td>Other statutory charges</td><td>STT, GST, stamp duty, etc., at applicable rates and at actuals</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>The specific fee structure applicable to the Client is detailed in the Agreement.</p>
+    </section>
+
+    <section class="sec" id="s10">
+      <div class="sec-num">Section 11</div>
+      <h2><em>Taxation.</em></h2>
+      <p>The taxation of returns from portfolio management services is a function of the Client&rsquo;s status, the nature of the underlying investments, and the holding period. <strong>The Portfolio Manager does not provide tax advice.</strong> Clients are advised to consult their own tax advisors regarding the tax implications of investing through the portfolio management services.</p>
+      <p>A general summary of the tax implications applicable to a resident Indian individual investing in the Portfolio Manager&rsquo;s equity Strategies is provided below for information only. <em>This is not a substitute for tax advice.</em></p>
+      <div class="pend"><strong>Text pending</strong>Counsel and tax advisor to provide a current summary of the tax treatment of equity, debt, and multi-asset portfolio management arrangements for resident Indians, NRIs, HUFs, and corporate Clients, reflecting the law in force as of the filing date.</div>
+    </section>
+
+    <section class="sec" id="s11">
+      <div class="sec-num">Section 12</div>
+      <h2>Accounting <em>policies.</em></h2>
+      <p>The Portfolio Manager follows the accounting policies prescribed under the Regulations and, where not specifically prescribed, generally accepted Indian accounting principles. Key policies include:</p>
+      <ul>
+        <li><strong>Recognition of investments.</strong> Investments are recognised at cost on the trade date.</li>
+        <li><strong>Valuation.</strong> Listed securities are valued at the closing market price on the relevant stock exchange on each valuation date.</li>
+        <li><strong>NAV computation.</strong> The Net Asset Value of each Client&rsquo;s portfolio is computed on a daily basis (excluding non-business days), net of fees and expenses.</li>
+        <li><strong>Income recognition.</strong> Dividend income is recognised on the ex-dividend date; interest income is recognised on accrual.</li>
+        <li><strong>Realised gains and losses.</strong> Computed on a first-in-first-out basis unless otherwise specified.</li>
+        <li><strong>Corporate actions.</strong> Bonus, split, rights, and other corporate actions are accounted for on the ex-date.</li>
+      </ul>
+    </section>
+
+    <section class="sec" id="s12">
+      <div class="sec-num">Section 13</div>
+      <h2>Investor services and <em>grievance redressal.</em></h2>
+
+      <h3>13.1 &middot; Investor servicing</h3>
+      <p>The Portfolio Manager provides each Client with (a) a daily statement of holdings and valuation accessible through the Client portal; (b) a monthly performance letter; (c) a quarterly review meeting at the Client&rsquo;s option; and (d) an annual statement of accounts. The Portfolio Manager&rsquo;s service team responds to written Client queries within two business days.</p>
+
+      <h3>13.2 &middot; Grievance redressal mechanism</h3>
+      <p>Investor grievances may be addressed to the Portfolio Manager at the contact details below. Every grievance is acknowledged within one business day and addressed within twenty-one business days. The Portfolio Manager maintains a register of complaints, the disposition of each, and the time taken for resolution, which is available for SEBI inspection.</p>
+      <div class="tbl">
+        <table>
+          <thead><tr><th>Stage</th><th>Address grievance to</th></tr></thead>
+          <tbody>
+            <tr><td>First level (Compliance officer)</td><td>compliance@flameback.capital &middot; [phone] &middot; [postal address]</td></tr>
+            <tr><td>Second level (Principal officer)</td><td>principal.officer@flameback.capital &middot; [phone]</td></tr>
+            <tr><td>SCORES &middot; SEBI portal</td><td><a href="https://scores.sebi.gov.in" target="_blank">scores.sebi.gov.in</a></td></tr>
+            <tr><td>SMARTODR &middot; Online dispute resolution</td><td><a href="https://smartodr.in" target="_blank">smartodr.in</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Clients are entitled to escalate unresolved grievances to SEBI through the SCORES platform and, where applicable, to seek online dispute resolution through the SMARTODR portal.</p>
+    </section>
+
+    <section class="sec" id="s13">
+      <div class="sec-num">Section 14</div>
+      <h2>Mandatory <em>undertakings.</em></h2>
+      <p>The Portfolio Manager undertakes that:</p>
+      <ol>
+        <li>This Disclosure Document has been prepared in accordance with the SEBI (Portfolio Managers) Regulations, 2020 and contains the information required thereunder;</li>
+        <li>The disclosures made in this document are true, fair, and adequate to enable Clients to make an informed decision;</li>
+        <li>The Portfolio Manager has complied, and shall continue to comply, with the eligibility criteria, capital adequacy, and code of conduct prescribed under the Regulations;</li>
+        <li>The Portfolio Manager shall not deal with any associate or any group entity in a manner contrary to the interest of any Client;</li>
+        <li>The Portfolio Manager shall not assure any specific return on the investments managed and shall not enter into any side-agreement with any Client outside the terms of the Agreement;</li>
+        <li>The Portfolio Manager shall maintain books of account, records, and documents as prescribed under the Regulations and shall make them available for SEBI inspection.</li>
+      </ol>
+    </section>
+
+    <!-- Signature block -->
+    <footer>
+      <div class="sig">
+        <div class="blk">
+          <div class="role">For Flameback Capital Pvt Ltd</div>
+          <div class="line"></div>
+          <div class="nm">Kishan Murjani Nair</div>
+          <div class="post">Principal Officer &middot; Managing Director</div>
+          <div class="dt">Date: ____________________</div>
+        </div>
+        <div class="blk">
+          <div class="role">Counter-signed</div>
+          <div class="line"></div>
+          <div class="nm">[Compliance Officer]</div>
+          <div class="post">Compliance Officer</div>
+          <div class="dt">Date: ____________________</div>
+        </div>
+      </div>
+      <p class="disc">Flameback Capital Pvt Ltd is registered with SEBI as a Portfolio Manager (INP000007358), as an Investment Adviser (INA200013798), and with the U.S. Securities and Exchange Commission (file no. 801-129576). For the Investment Advisory disclosure document, see <a href="flameback-advisory-disclosure.html">Advisory Disclosure</a>. Working draft as of 13 June 2026. Final filing subject to legal and compliance review.</p>
+    </footer>
+
+  </div>
+
+<script>
+  var root=document.documentElement, tg=document.getElementById('toggle');
+  tg.addEventListener('click',function(){root.classList.toggle('dark');tg.textContent=root.classList.contains('dark')?'Light':'Dark';});
+</script>
+  <script src="reload.js"></script>
+</body>
+</html>

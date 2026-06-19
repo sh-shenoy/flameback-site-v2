@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Investment Advisory Disclosure Document — flameback.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#FCFAF6;--ink:#1A1714;--ink-soft:rgba(26,23,20,.68);--ink-mute:rgba(26,23,20,.46);--line:rgba(26,23,20,.14);--panel:#F4EFE7;--accent:#B23E08;--btn-bg:#1A1714;--btn-ink:#FCFAF6;--grain-blend:multiply;--grain-op:.035}
+  :root.dark{--bg:#1A1714;--ink:#F2EDE3;--ink-soft:rgba(242,237,227,.66);--ink-mute:rgba(242,237,227,.44);--line:rgba(242,237,227,.16);--panel:#221E1A;--accent:#FF6D0A;--btn-bg:#FF6D0A;--btn-ink:#1A1714;--grain-blend:screen;--grain-op:.055}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:"Source Serif 4",serif;transition:background .5s,color .5s;font-variant-numeric:tabular-nums;line-height:1.62}
+  body::after{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;mix-blend-mode:var(--grain-blend);opacity:var(--grain-op);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  .wrap{max-width:920px;margin:0 auto;padding:0 clamp(22px,5vw,44px);position:relative;z-index:2}
+  .wm{font-family:"Source Serif 4",serif;font-weight:600;font-size:16px;color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+  .wm .p{color:var(--accent)}
+  a{color:var(--accent)}
+  nav.top{padding:18px 0;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--bg) 92%,transparent)}
+  .navin{max-width:920px;margin:0 auto;padding:0 clamp(22px,5vw,44px);display:flex;align-items:center;justify-content:space-between;gap:18px}
+  .navin .back{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase;text-decoration:none}
+  .navin .back:hover{color:var(--accent)}
+  .toggle{background:none;border:1px solid var(--line);color:var(--ink-soft);cursor:pointer;font-family:"Source Serif 4",serif;font-size:12px;font-style:italic;padding:4px 11px;border-radius:999px}
+  .mast{padding:clamp(40px,6vh,68px) 0 clamp(28px,4vh,40px);border-bottom:1px solid var(--ink);position:relative}
+  .mast .lbl{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px}
+  .mast h1{font-family:"Cormorant Garamond",serif;font-weight:500;font-size:clamp(36px,5.5vw,56px);letter-spacing:-.015em;line-height:1.04;max-width:24ch;margin-bottom:18px}
+  .mast h1 em{color:var(--accent);font-style:italic;font-weight:500}
+  .mast .sub{font-size:15px;line-height:1.6;color:var(--ink-soft);max-width:58ch;margin-bottom:24px;font-style:italic}
+  .mast .meta-tbl{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:18px}
+  @media(max-width:680px){.mast .meta-tbl{grid-template-columns:1fr}}
+  .mast .meta-tbl .kv{background:var(--bg);padding:14px 18px;display:flex;flex-direction:column;gap:4px}
+  .mast .meta-tbl .k{font-family:"JetBrains Mono",monospace;font-size:9.5px;color:var(--ink-mute);letter-spacing:.08em;text-transform:uppercase}
+  .mast .meta-tbl .v{font-family:"Source Serif 4",serif;font-size:14px;color:var(--ink);line-height:1.4}
+  .mast .meta-tbl .v.mono{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.04em}
+  .draft{margin:24px 0 0;padding:14px 20px;border:1px dashed var(--accent);background:color-mix(in srgb,var(--accent) 4%,transparent);font-size:13px;line-height:1.6;color:var(--ink);font-style:italic}
+  .draft strong{font-family:"JetBrains Mono",monospace;font-style:normal;font-weight:500;font-size:10.5px;color:var(--accent);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:5px}
+  .toc{padding:32px 0;border-bottom:1px solid var(--line)}
+  .toc h2{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--ink-mute);letter-spacing:.08em;text-transform:uppercase;margin-bottom:18px;font-weight:500}
+  .toc ol{list-style:none;display:grid;grid-template-columns:repeat(2,1fr);gap:6px 24px;counter-reset:t}
+  @media(max-width:680px){.toc ol{grid-template-columns:1fr}}
+  .toc li{counter-increment:t;font-size:14px;line-height:1.6;padding:5px 0;border-bottom:1px dotted var(--line);display:flex;align-items:baseline;gap:10px}
+  .toc li:before{content:counter(t,decimal-leading-zero);font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--accent);letter-spacing:.04em;min-width:24px}
+  .toc a{color:var(--ink);text-decoration:none}
+  .toc a:hover{color:var(--accent)}
+  .sec{padding:clamp(48px,6vh,68px) 0;border-bottom:1px solid var(--line)}
+  .sec-num{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--accent);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px}
+  .sec h2{font-family:"Cormorant Garamond",serif;font-weight:500;font-size:clamp(24px,3.3vw,36px);letter-spacing:-.012em;line-height:1.08;margin-bottom:26px;max-width:30ch}
+  .sec h2 em{color:var(--accent);font-style:italic}
+  .sec h3{font-family:"Cormorant Garamond",serif;font-weight:500;font-style:italic;font-size:20px;letter-spacing:-.005em;line-height:1.15;margin-top:28px;margin-bottom:12px;color:var(--ink)}
+  .sec p{font-size:14.5px;line-height:1.72;color:var(--ink);max-width:64ch;margin-bottom:14px}
+  .sec p:last-child{margin-bottom:0}
+  .sec p em{color:var(--accent);font-style:italic}
+  .sec p strong{font-weight:500;font-style:italic}
+  .sec ul,.sec ol{margin:8px 0 18px 0;max-width:64ch}
+  .sec li{font-size:14.5px;line-height:1.7;color:var(--ink);margin-bottom:6px;padding-left:22px;position:relative}
+  .sec li:before{content:"\2014";color:var(--accent);position:absolute;left:0;top:0}
+  .sec ol{counter-reset:li}
+  .sec ol li{padding-left:32px}
+  .sec ol li:before{content:counter(li,lower-roman)".";font-family:"Cormorant Garamond",serif;font-style:italic;counter-increment:li}
+  .tbl{margin:18px 0;border:1px solid var(--line);background:color-mix(in srgb,var(--ink) 1.5%,transparent);overflow-x:auto}
+  .tbl table{width:100%;border-collapse:collapse;min-width:520px}
+  .tbl th,.tbl td{padding:12px 16px;text-align:left;font-size:13px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.55}
+  .tbl th{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase;font-weight:500;background:color-mix(in srgb,var(--ink) 3%,transparent)}
+  .tbl td{color:var(--ink)}
+  .tbl td:first-child{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:15px;color:var(--ink);width:34%;letter-spacing:-.005em}
+  .tbl tr:last-child td{border-bottom:none}
+  .pend{padding:14px 18px;border:1px dashed var(--line);background:color-mix(in srgb,var(--accent) 2%,transparent);font-size:13px;line-height:1.55;color:var(--ink-soft);font-style:italic;margin:14px 0;max-width:64ch}
+  .pend strong{font-family:"JetBrains Mono",monospace;font-style:normal;font-weight:500;font-size:10px;color:var(--accent);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:4px}
+
+  /* Charter card — distinct from generic sections, for the Investor Charter section */
+  .chart{margin:14px 0;border:2px solid var(--accent);background:color-mix(in srgb,var(--accent) 3%,transparent);padding:24px clamp(20px,3vw,32px)}
+  .chart .ch-lbl{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--accent);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
+  .chart h3{font-style:normal;margin-top:0;margin-bottom:12px;font-size:22px}
+  .chart .chrow{padding:12px 0;border-bottom:1px dashed var(--line);display:grid;grid-template-columns:100px 1fr;gap:20px;align-items:flex-start}
+  .chart .chrow:last-child{border-bottom:none}
+  @media(max-width:680px){.chart .chrow{grid-template-columns:1fr;gap:6px}}
+  .chart .chk{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--accent);letter-spacing:.06em;text-transform:uppercase;padding-top:3px}
+  .chart .chv{font-size:14px;line-height:1.65;color:var(--ink)}
+  .chart .chv em{color:var(--accent);font-style:italic;font-weight:500}
+
+  footer{padding:48px 0 36px}
+  .sig{display:grid;grid-template-columns:1fr 1fr;gap:36px;padding:32px 0;border-top:2px solid var(--ink);border-bottom:1px solid var(--line);margin-bottom:32px}
+  @media(max-width:680px){.sig{grid-template-columns:1fr;gap:24px}}
+  .sig .blk{padding:0}
+  .sig .blk .role{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink-mute);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px}
+  .sig .blk .line{height:1px;background:var(--ink);margin:30px 0 8px;max-width:240px}
+  .sig .blk .nm{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:18px;color:var(--ink)}
+  .sig .blk .post{font-family:"Source Serif 4",serif;font-size:12px;color:var(--ink-soft);font-style:italic;margin-top:2px}
+  .sig .blk .dt{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-mute);letter-spacing:.04em;margin-top:14px}
+  .disc{font-size:11.5px;color:var(--ink-mute);line-height:1.6;font-style:italic;max-width:72ch}
+</style>
+</head>
+<body>
+
+  <nav class="top">
+    <div class="navin">
+      <a class="wm" href="flameback-home.html">flameback<span class="p">.</span></a>
+      <a class="back" href="flameback-home.html">&larr; Return to home</a>
+      <button class="toggle" id="toggle">Dark</button>
+    </div>
+  </nav>
+
+  <div class="wrap">
+
+    <section class="mast">
+      <div class="lbl">Regulatory document &middot; IA Disclosure</div>
+      <h1>Investment Advisory <em>Disclosure Document.</em></h1>
+      <p class="sub">Disclosure document filed under the SEBI (Investment Advisers) Regulations, 2013, as amended, together with the Investor Charter for Investment Advisers and the Most Important Terms and Conditions (MITC) prescribed by SEBI.</p>
+
+      <div class="meta-tbl">
+        <div class="kv"><span class="k">Investment Adviser</span><span class="v">Flameback Capital Private Limited</span></div>
+        <div class="kv"><span class="k">SEBI registration (IA)</span><span class="v mono">INA200013798</span></div>
+        <div class="kv"><span class="k">Type</span><span class="v">Non-individual Investment Adviser</span></div>
+        <div class="kv"><span class="k">Date of registration</span><span class="v">[to be inserted by counsel]</span></div>
+        <div class="kv"><span class="k">Validity</span><span class="v">Perpetual, subject to compliance with the Regulations</span></div>
+        <div class="kv"><span class="k">BASL membership</span><span class="v mono">[Member ID &middot; to be inserted]</span></div>
+        <div class="kv"><span class="k">Principal officer</span><span class="v">Kishan Murjani Nair</span></div>
+        <div class="kv"><span class="k">Compliance officer</span><span class="v">[name &middot; to be inserted]</span></div>
+        <div class="kv"><span class="k">Registered office</span><span class="v">Bangalore, Karnataka, India</span></div>
+        <div class="kv"><span class="k">Grievance email</span><span class="v">grievance@flameback.capital</span></div>
+        <div class="kv"><span class="k">Document version</span><span class="v mono">v1.0 &middot; 13 June 2026</span></div>
+        <div class="kv"><span class="k">Companion</span><span class="v"><a href="flameback-pms-disclosure.html">PMS Disclosure Document</a></span></div>
+      </div>
+
+      <div class="draft"><strong>Working draft</strong>The text below provides structure and substantive non-legal content. Sections marked &ldquo;text-pending&rdquo; require finalisation by counsel before filing. Investor Charter content is reproduced as published by SEBI; the MITC section is to be confirmed against the latest SEBI circular at the time of filing.</div>
+    </section>
+
+    <section class="toc">
+      <h2>Contents</h2>
+      <ol>
+        <li><a href="#s0">Disclaimer</a></li>
+        <li><a href="#s1">Identity of the Investment Adviser</a></li>
+        <li><a href="#s2">Qualifications and experience</a></li>
+        <li><a href="#s3">Business activities</a></li>
+        <li><a href="#s4">Disciplinary history</a></li>
+        <li><a href="#s5">Affiliations and group structure</a></li>
+        <li><a href="#s6">Conflicts of interest and how managed</a></li>
+        <li><a href="#s7">Services offered</a></li>
+        <li><a href="#s8">Fees and payment terms</a></li>
+        <li><a href="#s9">Risk profiling and suitability</a></li>
+        <li><a href="#s10">Grievance redressal</a></li>
+        <li><a href="#s11">Investor Charter for Investment Advisers</a></li>
+        <li><a href="#s12">Most Important Terms and Conditions</a></li>
+        <li><a href="#s13">Mandatory undertakings</a></li>
+      </ol>
+    </section>
+
+    <section class="sec" id="s0">
+      <div class="sec-num">Section 01</div>
+      <h2><em>Disclaimer.</em></h2>
+      <p>This Disclosure Document has been prepared in accordance with the SEBI (Investment Advisers) Regulations, 2013, as amended, and the circulars issued thereunder. The purpose of the document is to provide essential information about the investment advisory services offered by Flameback Capital Private Limited in a manner that assists prospective and existing clients in making an informed decision about engaging the Investment Adviser.</p>
+      <p>This document has neither been approved nor disapproved by SEBI; SEBI has not certified the accuracy or adequacy of its contents. <em>The Investment Adviser has, however, taken reasonable care to ensure that the information provided is true, fair, and not misleading.</em></p>
+      <p><strong>Investments are subject to market risks.</strong> The Investment Adviser does not guarantee any specific return on the investments recommended, and the Client should read all scheme-related documents and product literature carefully before investing.</p>
+    </section>
+
+    <section class="sec" id="s1">
+      <div class="sec-num">Section 02</div>
+      <h2>Identity of the <em>Investment Adviser.</em></h2>
+
+      <h3>2.1 &middot; Legal name and structure</h3>
+      <p>The Investment Adviser is <strong>Flameback Capital Private Limited</strong>, a company incorporated in India under the Companies Act, 2013, having its registered office in Bangalore, Karnataka. It is registered with the Securities and Exchange Board of India as a Non-Individual Investment Adviser under registration number INA200013798.</p>
+
+      <h3>2.2 &middot; Contact details</h3>
+      <div class="tbl">
+        <table>
+          <thead><tr><th>Particular</th><th>Detail</th></tr></thead>
+          <tbody>
+            <tr><td>Registered office</td><td>[full postal address &middot; to be inserted]</td></tr>
+            <tr><td>Telephone</td><td>[to be inserted]</td></tr>
+            <tr><td>General enquiries</td><td>contact@flameback.capital</td></tr>
+            <tr><td>Compliance / grievance</td><td>grievance@flameback.capital</td></tr>
+            <tr><td>Website</td><td>flameback.capital</td></tr>
+            <tr><td>Principal officer</td><td>Kishan Murjani Nair &middot; principal.officer@flameback.capital</td></tr>
+            <tr><td>Compliance officer</td><td>[name and email &middot; to be inserted]</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>2.3 &middot; Regulators</h3>
+      <p>The Investment Adviser is regulated by SEBI in India, and is a member of the BSE Administration and Supervision Limited (BASL) as required of all SEBI-registered Investment Advisers. The firm and its affiliates additionally hold registrations under the SEBI (Portfolio Managers) Regulations, 2020 (INP000007358) and with the U.S. Securities and Exchange Commission as an Investment Adviser (file no. 801-129576). Each registration governs a distinct service, and the boundaries between them are disclosed in section 7 of this document.</p>
+    </section>
+
+    <section class="sec" id="s2">
+      <div class="sec-num">Section 03</div>
+      <h2>Qualifications and <em>experience.</em></h2>
+
+      <h3>3.1 &middot; Eligibility</h3>
+      <p>The Investment Adviser, its principal officer, and the persons associated with investment advice meet the educational and experience criteria prescribed under regulation 7 of the SEBI (Investment Advisers) Regulations, 2013. Specifically:</p>
+      <ul>
+        <li>Each person engaged in providing investment advice holds the qualifications required under regulation 7(1)(a) of the Regulations, including the relevant NISM certification(s) valid as of the date of advice;</li>
+        <li>The Principal Officer holds the qualifications and experience required for a non-individual Investment Adviser; details are filed with SEBI and available on request;</li>
+        <li>All persons providing investment advice undergo continuous professional education as prescribed by NISM, and their certifications are kept current.</li>
+      </ul>
+
+      <h3>3.2 &middot; Persons associated with investment advice</h3>
+      <div class="pend"><strong>Names pending</strong>The names, designations, qualifications, NISM registration numbers, and years of relevant experience of each person associated with investment advice are to be tabulated here by the compliance officer at the time of filing, with reference to the current NISM portal records.</div>
+      <div class="tbl">
+        <table>
+          <thead><tr><th>Name</th><th>Role</th><th>NISM cert. no.</th><th>Experience</th></tr></thead>
+          <tbody>
+            <tr><td>Kishan Murjani Nair</td><td>Principal Officer</td><td>[insert]</td><td>[insert]</td></tr>
+            <tr><td>[Persons associated with investment advice]</td><td>[role]</td><td>[insert]</td><td>[insert]</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="sec" id="s3">
+      <div class="sec-num">Section 04</div>
+      <h2>Business <em>activities.</em></h2>
+
+      <h3>4.1 &middot; Principal activity</h3>
+      <p>The Investment Adviser&rsquo;s principal activity is the provision of investment advice to clients in respect of investment products, including equity, debt, mutual funds, exchange-traded funds, alternative investment funds, and other securities permitted under the Regulations. The advice is provided on a non-discretionary basis, with implementation remaining with the Client.</p>
+
+      <h3>4.2 &middot; Other activities of the company</h3>
+      <p>The Investment Adviser&rsquo;s holding company and group entities are also engaged in (a) portfolio management services under SEBI registration INP000007358; (b) operation of a Category III Alternative Investment Fund under SEBI registration [insert]; and (c) advisory services to non-Indian clients via a separate U.S. SEC-registered entity (file no. 801-129576). The activities of the Investment Adviser business and the Portfolio Manager business are kept separate as required under the Regulations, including by way of separate client onboarding, separate fee structures, and separate record-keeping.</p>
+
+      <h3>4.3 &middot; Activities not undertaken</h3>
+      <p>The Investment Adviser does <em>not</em> engage in distribution of any third-party financial product, does <em>not</em> earn commissions, brokerage, or referral fees from any product manufacturer, and does <em>not</em> hold custody of Client funds or securities. <strong>The firm operates on a fee-only basis.</strong></p>
+    </section>
+
+    <section class="sec" id="s4">
+      <div class="sec-num">Section 05</div>
+      <h2>Disciplinary <em>history.</em></h2>
+      <div class="pend"><strong>Text pending</strong>This section must disclose any disciplinary action, penalty, prosecution, suspension, cancellation, or other adverse regulatory or legal action against the Investment Adviser, its directors, the principal officer, persons associated with investment advice, or any group entity, taken by SEBI, any other regulator, or any court or tribunal. Final text to be inserted by counsel based on records current as of the filing date.</div>
+      <p>As of the date of this Disclosure Document, there are <strong>no</strong> disciplinary proceedings, penalties, prosecutions, suspensions, or other adverse regulatory or legal actions against the Investment Adviser, its directors, the principal officer, or any person associated with investment advice that require disclosure under the Regulations. The Investment Adviser undertakes to update this disclosure promptly upon the occurrence of any such event.</p>
+    </section>
+
+    <section class="sec" id="s5">
+      <div class="sec-num">Section 06</div>
+      <h2>Affiliations and <em>group structure.</em></h2>
+      <p>The Investment Adviser is wholly owned by its founders and a small group of patient private investors. The firm has no holding-company relationships with banks, insurance providers, distributors, or product manufacturers, and is not part of any conglomerate whose business creates a conflict with the Client&rsquo;s interests.</p>
+      <p>The following table sets out the group entities and the regulatory regime applicable to each:</p>
+      <div class="tbl">
+        <table>
+          <thead><tr><th>Entity</th><th>Activity</th><th>Regulator &middot; registration</th></tr></thead>
+          <tbody>
+            <tr><td>Flameback Capital Pvt Ltd</td><td>Investment Adviser (this document)</td><td>SEBI &middot; INA200013798</td></tr>
+            <tr><td>Flameback Capital Pvt Ltd</td><td>Portfolio Manager</td><td>SEBI &middot; INP000007358</td></tr>
+            <tr><td>Flameback AIF (Cat-III)</td><td>Alternative Investment Fund</td><td>SEBI &middot; IN/AIF3/[insert]</td></tr>
+            <tr><td>Flameback Capital USA</td><td>Investment Adviser (US persons)</td><td>U.S. SEC &middot; 801-129576</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Each entity is operated under separate engagement terms, separate record-keeping, and the regulatory regime applicable to it. <em>A Client of the Investment Advisory business does not automatically become a client of any other entity, and vice versa.</em></p>
+    </section>
+
+    <section class="sec" id="s6">
+      <div class="sec-num">Section 07</div>
+      <h2>Conflicts of interest <em>and how managed.</em></h2>
+
+      <h3>7.1 &middot; The structural approach</h3>
+      <p>The Investment Adviser operates a fee-only business and earns no consideration from product manufacturers. There is therefore no direct commercial incentive to recommend one product over another. Nevertheless, certain conflicts can arise structurally, and the firm has adopted the following policies to identify, manage, and disclose them.</p>
+
+      <h3>7.2 &middot; Potential conflicts and mitigants</h3>
+      <div class="tbl">
+        <table>
+          <thead><tr><th>Potential conflict</th><th>How it is managed</th></tr></thead>
+          <tbody>
+            <tr><td>Cross-selling within group</td><td>Investment advice and portfolio management are operated as separate businesses with separate client agreements and separate fee structures. Where a Client engages with both, each engagement is documented, billed, and reported separately. <em>Cross-introduction never occurs without informed Client consent.</em></td></tr>
+            <tr><td>Advice on group products (AIF, PMS)</td><td>Where the Investment Adviser advises a Client on a product offered by a group entity, the relationship is disclosed in writing before the advice is rendered, and the Client&rsquo;s informed consent is recorded.</td></tr>
+            <tr><td>Personal account dealings by employees</td><td>All persons associated with investment advice are subject to a personal account dealing policy. Trades are pre-cleared, restricted to a published universe, and monitored quarterly.</td></tr>
+            <tr><td>Research and advice integrity</td><td>Research outputs and advice recommendations are reviewed by senior personnel independent of any sales or onboarding function. <strong>No part of an employee&rsquo;s compensation is contingent on the recommendation of a particular product or strategy.</strong></td></tr>
+            <tr><td>Receipt of any incentive from third parties</td><td>The Investment Adviser does not accept commissions, rebates, soft-dollar arrangements, or other consideration from product manufacturers. Any incidental receipt is to be disclosed to the Client and offset against the Client&rsquo;s fees.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>7.3 &middot; Disclosure to the Client</h3>
+      <p>Material conflicts of interest specific to a Client&rsquo;s engagement are disclosed in writing before the relevant advice is rendered. The Client is asked to record informed consent prior to acting on advice in any situation involving a disclosed conflict.</p>
+    </section>
+
+    <section class="sec" id="s7">
+      <div class="sec-num">Section 08</div>
+      <h2>Services <em>offered.</em></h2>
+
+      <h3>8.1 &middot; Nature of advice</h3>
+      <p>The Investment Adviser provides investment advice on a non-discretionary basis. The Client retains complete authority over investment decisions and their implementation; the Investment Adviser does not execute transactions or hold custody of Client assets.</p>
+
+      <h3>8.2 &middot; Scope</h3>
+      <ul>
+        <li>Asset allocation advice across equity, debt, gold, and alternative asset classes, tailored to the Client&rsquo;s liabilities, horizon, and risk profile;</li>
+        <li>Product selection advice within the Client&rsquo;s chosen asset classes &mdash; mutual funds, exchange-traded funds, listed equity, fixed-income, and securities permitted under the Regulations;</li>
+        <li>Portfolio construction advice incorporating tax efficiency, costs, and the Client&rsquo;s stated constraints;</li>
+        <li>Ongoing review of the advised portfolio, with periodic written reports;</li>
+        <li>Advice on financial planning matters incidental to investment decisions, including cash-flow planning, retirement projection, succession planning, and the structuring of trust arrangements;</li>
+        <li>Education-grade content, research notes, and writing made available to Clients to support their understanding of the recommended positions.</li>
+      </ul>
+
+      <h3>8.3 &middot; Out of scope</h3>
+      <p>The following are explicitly outside the scope of the Investment Adviser&rsquo;s services:</p>
+      <ul>
+        <li>Tax filing or legal opinion services. The Client must retain separate tax and legal advisers;</li>
+        <li>Brokerage, custody, or execution of any transaction;</li>
+        <li>Distribution of any third-party product;</li>
+        <li>Personalised security selection beyond the scope of the listed asset classes;</li>
+        <li>Discretionary portfolio management &mdash; provided only by the affiliated Portfolio Manager under a separate Agreement, with separate disclosures.</li>
+      </ul>
+    </section>
+
+    <section class="sec" id="s8">
+      <div class="sec-num">Section 09</div>
+      <h2>Fees and <em>payment terms.</em></h2>
+
+      <h3>9.1 &middot; Fee model</h3>
+      <p>The Investment Adviser charges fees in one of two modes prescribed under the Regulations:</p>
+      <ol>
+        <li><strong>Assets-under-advice (AUA) basis:</strong> a fee not exceeding 2.5% per annum (or the prevailing ceiling prescribed by SEBI) of the assets under advice, computed and billed in accordance with the Agreement;</li>
+        <li><strong>Fixed-fee basis:</strong> a fixed annual fee not exceeding the ceiling prescribed by SEBI for fixed-fee engagements, irrespective of the assets under advice.</li>
+      </ol>
+      <p>The exact fee, fee basis, computation, and frequency are set out in the engagement letter executed with each Client. <em>The Client may elect to switch between the two modes only after twelve months from the date of fee election or as otherwise permitted by SEBI.</em></p>
+
+      <h3>9.2 &middot; What is included and excluded</h3>
+      <p>The advisory fee covers the services described in section 8.2. Statutory levies (including GST), the costs of any third-party services the Client elects to use (such as custodians, brokers, or auditors), and the cost of any product the Client invests in (such as scheme expenses of a mutual fund) are not included in the advisory fee and are borne by the Client at actuals.</p>
+
+      <h3>9.3 &middot; Mode of payment</h3>
+      <p>Fees are paid by the Client directly to the Investment Adviser by bank transfer, cheque, UPI, or other electronic means agreed to in writing. <strong>The Investment Adviser does not accept fees in cash and does not accept fees via any product manufacturer.</strong></p>
+    </section>
+
+    <section class="sec" id="s9">
+      <div class="sec-num">Section 10</div>
+      <h2>Risk profiling and <em>suitability.</em></h2>
+
+      <h3>10.1 &middot; The process</h3>
+      <p>Before any advice is rendered, the Investment Adviser conducts a risk-profiling exercise covering the Client&rsquo;s financial circumstances, investment objectives, time horizon, income, existing investments, knowledge and experience, attitude to risk, and capacity to absorb loss. The risk profile is recorded in writing and reviewed at least once every twelve months and on the occurrence of any material change in the Client&rsquo;s circumstances.</p>
+
+      <h3>10.2 &middot; Suitability assessment</h3>
+      <p>Every recommendation is checked against the Client&rsquo;s recorded risk profile and stated objectives. The Investment Adviser documents the rationale for each recommendation and maintains the documentation for the period required under the Regulations. <em>Advice is given only where the Investment Adviser is satisfied that the recommended action is suitable for the Client.</em></p>
+
+      <h3>10.3 &middot; Client&rsquo;s obligations</h3>
+      <p>The Client undertakes to (a) provide accurate information at the time of risk profiling; (b) notify the Investment Adviser promptly of any material change in their circumstances; and (c) read the Disclosure Document, the engagement letter, and any product literature provided before acting on advice.</p>
+    </section>
+
+    <section class="sec" id="s10">
+      <div class="sec-num">Section 11</div>
+      <h2>Grievance <em>redressal.</em></h2>
+      <p>Investor grievances may be addressed to the Investment Adviser at the contact details below. Every grievance is acknowledged within one business day and addressed within twenty-one business days. The Investment Adviser maintains a register of complaints, the disposition of each, and the time taken for resolution, which is available for SEBI inspection.</p>
+      <div class="tbl">
+        <table>
+          <thead><tr><th>Stage</th><th>Address grievance to</th></tr></thead>
+          <tbody>
+            <tr><td>First level (Compliance officer)</td><td>compliance@flameback.capital &middot; [phone]</td></tr>
+            <tr><td>Second level (Principal officer)</td><td>principal.officer@flameback.capital</td></tr>
+            <tr><td>SCORES &middot; SEBI portal</td><td><a href="https://scores.sebi.gov.in" target="_blank">scores.sebi.gov.in</a></td></tr>
+            <tr><td>SMARTODR &middot; Online dispute resolution</td><td><a href="https://smartodr.in" target="_blank">smartodr.in</a></td></tr>
+            <tr><td>BASL &middot; Member supervision</td><td>BSE Administration &amp; Supervision Ltd, supervisor of SEBI-registered IAs</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Clients are entitled to escalate unresolved grievances to SEBI through the SCORES platform and to invoke online dispute resolution through the SMARTODR portal in accordance with applicable SEBI circulars.</p>
+    </section>
+
+    <section class="sec" id="s11">
+      <div class="sec-num">Section 12</div>
+      <h2>Investor Charter for <em>Investment Advisers.</em></h2>
+
+      <div class="chart">
+        <div class="ch-lbl">SEBI &middot; Investor Charter (published)</div>
+        <h3>The Investor Charter at a glance.</h3>
+
+        <div class="chrow"><span class="chk">Vision</span><span class="chv">To follow the highest standards of ethics and provide investment advice in the best interest of the Client.</span></div>
+        <div class="chrow"><span class="chk">Mission</span><span class="chv">To provide investment advice that is appropriate to the Client&rsquo;s situation, disclosed transparently in cost and conflict, and reviewed regularly.</span></div>
+        <div class="chrow"><span class="chk">Services</span><span class="chv">Onboarding, KYC, risk profiling, suitability assessment, ongoing advice, periodic review, disclosure of conflicts, grievance redressal.</span></div>
+        <div class="chrow"><span class="chk">Investor rights</span><span class="chv">To receive advice suitable to your profile; to be informed of fees and conflicts upfront; to access records of advice; to a written agreement; to be informed of any material change; to escalate grievances.</span></div>
+        <div class="chrow"><span class="chk">Do&rsquo;s for Clients</span><span class="chv">Always deal with SEBI-registered Investment Advisers. Read the agreement and disclosures fully. Provide accurate information. Ask questions before acting. Keep records of advice and transactions.</span></div>
+        <div class="chrow"><span class="chk">Don&rsquo;ts for Clients</span><span class="chv">Do not deal with unregistered advisers. Do not pay fees in cash. Do not pay fees through any third-party intermediary. Do not act on unsolicited tips. Do not share investment account credentials.</span></div>
+        <div class="chrow"><span class="chk">Service standards</span><span class="chv"><em>Onboarding &amp; KYC: within 7 business days. Grievance acknowledgement: within 1 business day. Grievance resolution: within 21 business days.</em></span></div>
+        <div class="chrow"><span class="chk">Escalation</span><span class="chv">Compliance officer &rarr; Principal officer &rarr; SEBI SCORES &rarr; SMARTODR.</span></div>
+      </div>
+
+      <div class="pend"><strong>Verify against current SEBI text</strong>The Investor Charter content is reproduced in summary above. The full and current text published by SEBI for Investment Advisers must be appended as Annexure A to this Disclosure Document at the time of filing.</div>
+    </section>
+
+    <section class="sec" id="s12">
+      <div class="sec-num">Section 13</div>
+      <h2>Most Important Terms <em>and Conditions.</em></h2>
+
+      <p>The following are the Most Important Terms and Conditions (MITC) of the engagement between the Investment Adviser and the Client. These are extracted from the engagement letter for the Client&rsquo;s ready reference and do not substitute the full engagement letter.</p>
+
+      <ol>
+        <li>The Investment Adviser is registered with SEBI as a Non-Individual Investment Adviser (INA200013798) and is bound by the SEBI (Investment Advisers) Regulations, 2013, as amended.</li>
+        <li>The Investment Adviser provides non-discretionary investment advice. <em>The Investment Adviser does not execute transactions or hold custody of Client funds or securities.</em></li>
+        <li>Fees are charged either on an assets-under-advice basis or on a fixed-fee basis, in accordance with the engagement letter, and within the ceilings prescribed by SEBI.</li>
+        <li>The Investment Adviser does not earn commissions or any consideration from product manufacturers. The Client&rsquo;s fee is the only revenue from the engagement.</li>
+        <li>The Investment Adviser conducts risk profiling and suitability assessment before rendering advice. Advice is suitable to the Client&rsquo;s recorded profile.</li>
+        <li>Material conflicts of interest are disclosed in writing before advice is rendered. The Client&rsquo;s informed consent is recorded.</li>
+        <li>The engagement may be terminated by either party in accordance with the engagement letter. Pro-rated fees are refunded for unutilised periods.</li>
+        <li>Grievances may be raised with the compliance officer and escalated through SEBI&rsquo;s SCORES platform and the SMARTODR portal.</li>
+        <li>Investment is subject to market risk; the Investment Adviser does not guarantee any return on the recommended investments.</li>
+        <li>The Investment Adviser maintains records of advice and transactions as required under the Regulations and makes them available to the Client and SEBI on request.</li>
+      </ol>
+
+      <div class="pend"><strong>MITC re-check</strong>The MITC content above is to be reconciled against the latest SEBI circular prescribing the format and content of MITC for Investment Advisers, as in force on the filing date.</div>
+    </section>
+
+    <section class="sec" id="s13">
+      <div class="sec-num">Section 14</div>
+      <h2>Mandatory <em>undertakings.</em></h2>
+      <p>The Investment Adviser undertakes that:</p>
+      <ol>
+        <li>This Disclosure Document has been prepared in accordance with the SEBI (Investment Advisers) Regulations, 2013 and contains the information required thereunder;</li>
+        <li>The disclosures made are true, fair, and adequate to enable a Client to make an informed decision;</li>
+        <li>The Investment Adviser has complied, and shall continue to comply, with the eligibility criteria, capital adequacy, code of conduct, and segregation requirements prescribed under the Regulations;</li>
+        <li>The Investment Adviser shall act in a fiduciary capacity at all times in relation to the Client and shall avoid any conflict between its interest and the Client&rsquo;s. Where a conflict is unavoidable, it shall be disclosed and the Client&rsquo;s informed consent shall be obtained before acting on advice;</li>
+        <li>The Investment Adviser shall not assure any specific return on the investments recommended and shall not enter into any side-agreement with any Client outside the terms of the engagement letter;</li>
+        <li>The Investment Adviser shall maintain books of account, records, and documents as prescribed under the Regulations and shall make them available for SEBI inspection;</li>
+        <li>The Investment Adviser shall update this Disclosure Document promptly upon the occurrence of any event requiring disclosure and shall ensure that the latest version is accessible to all Clients.</li>
+      </ol>
+    </section>
+
+    <footer>
+      <div class="sig">
+        <div class="blk">
+          <div class="role">For Flameback Capital Pvt Ltd</div>
+          <div class="line"></div>
+          <div class="nm">Kishan Murjani Nair</div>
+          <div class="post">Principal Officer &middot; Managing Director</div>
+          <div class="dt">Date: ____________________</div>
+        </div>
+        <div class="blk">
+          <div class="role">Counter-signed</div>
+          <div class="line"></div>
+          <div class="nm">[Compliance Officer]</div>
+          <div class="post">Compliance Officer</div>
+          <div class="dt">Date: ____________________</div>
+        </div>
+      </div>
+      <p class="disc">Flameback Capital Pvt Ltd is registered with SEBI as an Investment Adviser (INA200013798), as a Portfolio Manager (INP000007358), and with the U.S. Securities and Exchange Commission (file no. 801-129576). For the PMS Disclosure Document, see <a href="flameback-pms-disclosure.html">PMS Disclosure</a>. Working draft as of 13 June 2026. Final filing subject to legal and compliance review.</p>
+    </footer>
+
+  </div>
+
+<script>
+  var root=document.documentElement, tg=document.getElementById('toggle');
+  tg.addEventListener('click',function(){root.classList.toggle('dark');tg.textContent=root.classList.contains('dark')?'Light':'Dark';});
+</script>
+  <script src="reload.js"></script>
+</body>
+</html>

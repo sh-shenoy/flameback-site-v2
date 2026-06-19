@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>flameback. — Large-cap Momentum</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#1A1714; --ink:#F2EDE3; --ink-soft:rgba(242,237,227,.64); --ink-mute:rgba(242,237,227,.42);
+    --line:rgba(242,237,227,.15); --panel:#221E1A; --accent:#FF6D0A; --neg:rgba(242,237,227,.35); --btn-bg:#FF6D0A; --btn-ink:#1A1714;
+    --grain-blend:screen; --grain-op:.05;
+  }
+  :root.light{
+    --bg:#FCFAF6; --ink:#1A1714; --ink-soft:rgba(26,23,20,.66); --ink-mute:rgba(26,23,20,.46);
+    --line:rgba(26,23,20,.13); --panel:#F4EFE7; --accent:#FF6D0A; --neg:rgba(26,23,20,.40); --btn-bg:#1A1714; --btn-ink:#FCFAF6;
+    --grain-blend:multiply; --grain-op:.03;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:"Source Serif 4",serif;
+    transition:background .5s,color .5s;font-variant-numeric:tabular-nums;font-feature-settings:"tnum"}
+  body::after{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;mix-blend-mode:var(--grain-blend);opacity:var(--grain-op);
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 clamp(22px,5vw,44px)}
+  section{position:relative;z-index:2}
+
+  .wm{font-family:"Source Serif 4",serif;font-weight:600;font-size:18px;letter-spacing:-.01em;color:var(--ink);text-decoration:none}
+  .wm .p{color:var(--accent)}
+  .lab{font-family:"Source Serif 4",serif;font-style:italic;font-size:14px;color:var(--ink-mute)}
+  .lab .n{font-style:normal;color:var(--accent);margin-right:10px}
+  h1,h2,h3,h4{font-family:"Cormorant Garamond",serif;font-weight:500;letter-spacing:-.012em;color:var(--ink)}
+  h2{font-size:clamp(28px,4vw,42px);line-height:1.06}
+
+  .btn,.btn-out{display:inline-flex;align-items:center;justify-content:center;gap:11px;font-family:"Source Serif 4",serif;font-size:15px;font-weight:500;letter-spacing:.01em;padding:12px 24px;text-decoration:none;transition:gap .35s,opacity .3s,border-color .3s;line-height:1.2}
+  .btn{background:var(--btn-bg);color:var(--btn-ink)}
+  .btn:hover{gap:15px;opacity:.92}
+  .btn-out{background:transparent;color:var(--ink);border:1px solid var(--line)}
+  .btn-out:hover{gap:15px;border-color:var(--ink-mute)}
+  .btn .ar,.btn-out .ar{transition:transform .35s cubic-bezier(.16,1,.3,1)}
+  .btn:hover .ar,.btn-out:hover .ar{transform:translateX(3px)}
+  .btn .dl{transition:transform .35s}
+  .btn:hover .dl{transform:translateY(2px)}
+
+  nav{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 86%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid transparent;transition:border-color .4s}
+  nav.scrolled{border-color:var(--line)}
+  .navin{display:flex;align-items:center;justify-content:space-between;padding:15px 0}
+  .navr{display:flex;align-items:center;gap:21px}
+  .navr a{color:var(--ink-soft);text-decoration:none;font-size:14.5px;transition:color .3s}
+  .navr a:hover{color:var(--ink)}
+  .navr a.current{color:var(--ink)}
+  .toggle{background:none;border:1px solid var(--line);color:var(--ink-soft);cursor:pointer;font-family:"Source Serif 4",serif;font-size:13px;font-style:italic;padding:5px 13px;border-radius:999px;transition:border-color .3s,color .3s}
+  .toggle:hover{border-color:var(--ink-mute);color:var(--ink)}
+  .navr a.navbtn{background:var(--btn-bg);color:var(--btn-ink);padding:8px 17px;font-size:14.5px;text-decoration:none;transition:opacity .3s}
+  .navr a.navbtn:hover{color:var(--btn-ink);opacity:.92}
+  @media(max-width:880px){.navr .navlink{display:none}}
+  @media(max-width:520px){.navr{gap:14px}.navr .login{display:none}}
+
+  /* in-page nav */
+  .pnav{border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--bg) 92%,transparent);position:sticky;top:58px;z-index:40;backdrop-filter:blur(8px)}
+  .pnav-in{display:flex;align-items:center;gap:0;padding:0;overflow-x:auto;scrollbar-width:thin}
+  .pnav a{font-family:"Source Serif 4",serif;font-size:13.5px;color:var(--ink-mute);text-decoration:none;transition:color .3s,border-color .3s;padding:14px 0;margin-right:clamp(20px,3vw,38px);border-bottom:2px solid transparent;white-space:nowrap}
+  .pnav a:hover{color:var(--ink)}
+  .pnav a.active{color:var(--ink);border-bottom-color:var(--accent)}
+
+  /* breadcrumb */
+  .breadcrumb{padding:clamp(22px,3vh,36px) 0 0}
+  .bc-link{font-family:"Source Serif 4",serif;font-style:italic;font-size:13px;color:var(--ink-mute);text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:color .25s}
+  .bc-link:hover{color:var(--accent)}
+
+  /* hero */
+  .hero{padding:clamp(18px,2.4vh,28px) 0 clamp(30px,4vh,48px)}
+  .hero-grid{display:grid;grid-template-columns:1fr 320px;gap:clamp(28px,4vw,56px);align-items:start}
+  @media(max-width:840px){.hero-grid{grid-template-columns:1fr;gap:26px}}
+  .hero-meta{display:flex;align-items:center;gap:14px;margin-bottom:18px;flex-wrap:wrap}
+  .as-of{font-family:"Source Serif 4",serif;font-style:italic;font-size:12px;color:var(--ink-mute);letter-spacing:.04em}
+  .as-of .acc{color:var(--accent);font-style:normal}
+  .hero-badges{display:flex;gap:8px;margin-bottom:22px;flex-wrap:wrap}
+  .hb{font-family:"Source Serif 4",serif;font-style:italic;font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;line-height:1.3}
+  .hb.acc{color:var(--accent);border:1px solid color-mix(in srgb,var(--accent) 50%,transparent);background:color-mix(in srgb,var(--accent) 6%,transparent)}
+  .hb.mute{color:var(--ink-mute);border:1px solid var(--line)}
+  .hero h1{font-family:"Cormorant Garamond",serif;font-weight:500;font-size:clamp(34px,5.4vw,60px);line-height:0.98;letter-spacing:-.018em;margin-bottom:18px;color:var(--ink)}
+  .hero-sub{font-size:16.5px;line-height:1.6;color:var(--ink);max-width:54ch;margin-bottom:28px}
+  .hero-ctas{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .ctas-second{display:flex;gap:8px;align-items:center;font-size:13px;color:var(--ink-mute);font-style:italic;flex-wrap:wrap}
+  .ctas-second a{color:var(--ink-soft);text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--line);transition:color .25s,text-decoration-color .25s}
+  .ctas-second a:hover{color:var(--accent);text-decoration-color:var(--accent)}
+
+  /* glance card */
+  .glance{border:1px solid var(--line);background:color-mix(in srgb,var(--ink) 3%,transparent);padding:22px 24px}
+  .glance-lab{font-family:"Source Serif 4",serif;font-style:italic;font-size:11.5px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase;margin-bottom:16px;display:block}
+  .g-row{display:grid;grid-template-columns:auto 1fr;gap:18px;padding:9px 0;border-bottom:1px solid var(--line);align-items:baseline;font-size:13.5px}
+  .g-row:last-child{border-bottom:none;padding-bottom:0}
+  .g-l{font-style:italic;color:var(--ink-mute);font-size:12.5px}
+  .g-v{color:var(--ink);text-align:right;font-variant-numeric:tabular-nums}
+
+  /* Quick KPI strip */
+  .kpi-strip{padding:clamp(28px,4vw,44px) 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--line)}
+  @media(max-width:880px){.kpi-row{grid-template-columns:repeat(3,1fr)}}
+  @media(max-width:560px){.kpi-row{grid-template-columns:repeat(2,1fr)}}
+  .kpi{background:var(--bg);padding:18px 20px;display:flex;flex-direction:column;align-items:flex-start;gap:7px}
+  .kpi-lab{font-family:"Source Serif 4",serif;font-style:italic;font-size:11.5px;color:var(--ink-mute);letter-spacing:.05em;text-transform:uppercase;line-height:1.2}
+  .kpi-val{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:32px;color:var(--accent);font-weight:500;line-height:1;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+  .kpi-val.muted{color:var(--ink)}
+  .kpi-foot{font-family:"Source Serif 4",serif;font-style:italic;font-size:11.5px;color:var(--ink-mute);line-height:1.2}
+
+  /* sections */
+  .sec{padding:clamp(40px,5.6vw,68px) 0;border-top:1px solid var(--line)}
+  .sec .wrap{display:grid;grid-template-columns:minmax(220px,0.7fr) 1.85fr;gap:clamp(28px,4vw,56px);align-items:start}
+  @media(max-width:860px){.sec .wrap{grid-template-columns:1fr;gap:22px}}
+  .head{max-width:32ch}
+  .head .lab{display:block;margin-bottom:14px}
+  .head h2{margin-bottom:12px}
+  .head .intro{font-size:15px;line-height:1.55;color:var(--ink-soft)}
+
+  .sec-full{padding:clamp(36px,5vw,60px) 0;border-top:1px solid var(--line)}
+  .sec-full .head-banner{margin-bottom:26px;display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap}
+  .sec-full .head-banner .head{max-width:none}
+  .sec-full .head-banner .head h2{font-size:clamp(26px,3.6vw,34px);margin-bottom:8px}
+  .sec-full .head-banner .head .intro{font-size:14.5px;max-width:60ch}
+  .sec-full .head-banner .right{font-family:"Source Serif 4",serif;font-style:italic;font-size:12px;color:var(--ink-mute);text-align:right}
+
+  /* Returns table */
+  .rtable{width:100%;border:1px solid var(--line);background:color-mix(in srgb,var(--ink) 2%,transparent);border-collapse:collapse;margin:0 0 14px;font-size:13.5px}
+  .rtable th,.rtable td{padding:12px 14px;text-align:right;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
+  .rtable th:first-child,.rtable td:first-child{text-align:left;font-style:italic;color:var(--ink-mute);font-size:12.5px}
+  .rtable thead th{font-family:"Source Serif 4",serif;font-weight:500;font-style:italic;color:var(--ink-mute);font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;background:color-mix(in srgb,var(--ink) 4%,transparent)}
+  .rtable tbody tr:last-child td{border-bottom:none}
+  .rtable .strat td:not(:first-child){color:var(--accent);font-weight:500}
+  .rtable .bench td:not(:first-child){color:var(--ink)}
+  .rtable .excess td{background:color-mix(in srgb,var(--accent) 5%,transparent);color:var(--accent);font-style:italic}
+  .rtable .excess td:first-child{color:var(--ink-mute)}
+  @media(max-width:680px){.rtable th,.rtable td{padding:9px 8px;font-size:12px}}
+
+  /* Cumulative returns chart */
+  .crchart{border:1px solid var(--line);background:color-mix(in srgb,var(--ink) 2%,transparent);padding:0;margin:0 0 14px;overflow:hidden}
+  .crchart-head{display:flex;justify-content:space-between;align-items:center;padding:16px 22px;border-bottom:1px solid var(--line);flex-wrap:wrap;gap:14px}
+  .crchart-title{font-family:"Source Serif 4",serif;font-style:italic;font-size:13px;color:var(--ink-soft)}
+  .crchart-legend{display:flex;gap:18px;font-size:12.5px;color:var(--ink)}
+  .legend-item{display:inline-flex;align-items:center;gap:7px;font-style:italic}
+  .legend-dot{width:11px;height:2px;display:inline-block}
+  .legend-dot.acc{background:var(--accent)}
+  .legend-dot.muted{background:var(--ink-mute);opacity:0.5}
+  .crchart-body{padding:10px 12px}
+  .crchart-svg{display:block;width:100%;height:auto;max-height:340px}
+  .crchart-svg text{font-family:"Source Serif 4",serif;fill:var(--ink-mute);font-style:italic}
+
+  /* Annual returns chart */
+  .achart{border:1px solid var(--line);background:color-mix(in srgb,var(--ink) 2%,transparent);padding:18px 22px;margin:0 0 14px}
+  .achart-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:14px}
+  .achart-title{font-family:"Source Serif 4",serif;font-style:italic;font-size:13px;color:var(--ink-soft)}
+  .achart-svg{display:block;width:100%;height:auto;max-height:280px}
+  .achart-svg text{font-family:"Source Serif 4",serif;fill:var(--ink-mute)}
+
+  /* Monthly returns heatmap */
+  .heatmap-wrap{border:1px solid var(--line);background:color-mix(in srgb,var(--ink) 2%,transparent);padding:18px 22px;margin:0;overflow-x:auto}
+  .heatmap-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:14px}
+  .heatmap-title{font-family:"Source Serif 4",serif;font-style:italic;font-size:13px;color:var(--ink-soft)}
+  .heatmap-legend{display:flex;align-items:center;gap:14px;font-size:11px;font-style:italic;color:var(--ink-mute)}
+  .heat-grad{display:inline-flex;height:12px;width:140px;border:1px solid var(--line)}
+  .heat-grad span{flex:1}
+  .heatmap{width:100%;border-collapse:collapse;font-size:12px;font-variant-numeric:tabular-nums;min-width:680px}
+  .heatmap th,.heatmap td{padding:7px 6px;text-align:center;border:1px solid var(--line);color:var(--ink);font-weight:400}
+  .heatmap th{font-family:"Source Serif 4",serif;font-style:italic;font-size:10.5px;color:var(--ink-mute);letter-spacing:.04em;text-transform:uppercase;font-weight:500;background:color-mix(in srgb,var(--ink) 5%,transparent)}
+  .heatmap td.yr{font-style:italic;color:var(--ink-mute);font-size:11.5px;background:color-mix(in srgb,var(--ink) 4%,transparent);text-align:left;padding-left:10px}
+  .heatmap td.tot{font-weight:500;background:color-mix(in srgb,var(--ink) 4%,transparent);color:var(--accent);font-style:italic}
+  .heatmap td.empty{color:var(--ink-mute);opacity:0.3}
+  .heatmap td.pos-1{background:color-mix(in srgb,var(--accent) 6%,transparent)}
+  .heatmap td.pos-2{background:color-mix(in srgb,var(--accent) 14%,transparent)}
+  .heatmap td.pos-3{background:color-mix(in srgb,var(--accent) 24%,transparent)}
+  .heatmap td.pos-4{background:color-mix(in srgb,var(--accent) 36%,transparent)}
+  .heatmap td.pos-5{background:color-mix(in srgb,var(--accent) 50%,transparent)}
+  .heatmap td.neg-1{background:color-mix(in srgb,var(--ink) 6%,transparent);color:var(--ink-soft)}
+  .heatmap td.neg-2{background:color-mix(in srgb,var(--ink) 12%,transparent);color:var(--ink-soft)}
+  .heatmap td.neg-3{background:color-mix(in srgb,var(--ink) 22%,transparent);color:var(--ink-soft)}
+  .heatmap td.neg-4{background:color-mix(in srgb,var(--ink) 32%,transparent);color:var(--ink-mute)}
+
+  /* Risk metrics grid */
+  .risk-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin:0 0 22px}
+  @media(max-width:740px){.risk-grid{grid-template-columns:repeat(2,1fr)}}
+  .rm{background:var(--bg);padding:18px 22px;display:flex;flex-direction:column;align-items:flex-start;gap:6px}
+  .rm-lab{font-family:"Source Serif 4",serif;font-style:italic;font-size:11.5px;color:var(--ink-mute);letter-spacing:.05em;text-transform:uppercase;line-height:1.2}
+  .rm-val{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:26px;color:var(--accent);font-weight:500;line-height:1;font-variant-numeric:tabular-nums}
+  .rm-val.muted{color:var(--ink)}
+  .rm-val.neg{color:var(--ink-soft)}
+  .rm-foot{font-family:"Source Serif 4",serif;font-style:italic;font-size:11px;color:var(--ink-mute);line-height:1.3}
+
+  /* Drawdown chart */
+  .ddchart{border:1px solid var(--line);background:color-mix(in srgb,var(--ink) 2%,transparent);padding:0;margin:0 0 22px;overflow:hidden}
+  .ddchart-head{display:flex;justify-content:space-between;align-items:center;padding:16px 22px;border-bottom:1px solid var(--line);flex-wrap:wrap;gap:14px}
+  .ddchart-title{font-family:"Source Serif 4",serif;font-style:italic;font-size:13px;color:var(--ink-soft)}
+  .ddchart-body{padding:10px 12px}
+  .ddchart-svg{display:block;width:100%;height:auto;max-height:220px}
+  .ddchart-svg text{font-family:"Source Serif 4",serif;fill:var(--ink-mute);font-style:italic}
+
+  /* Worst drawdowns table */
+  .ddtable{width:100%;border:1px solid var(--line);background:color-mix(in srgb,var(--ink) 2%,transparent);border-collapse:collapse;font-size:13px}
+  .ddtable th,.ddtable td{padding:11px 14px;text-align:left;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
+  .ddtable th{font-family:"Source Serif 4",serif;font-weight:500;font-style:italic;color:var(--ink-mute);font-size:11px;letter-spacing:.05em;text-transform:uppercase;background:color-mix(in srgb,var(--ink) 4%,transparent)}
+  .ddtable tbody tr:last-child td{border-bottom:none}
+  .ddtable td.dd-val{color:var(--ink-soft);font-style:italic;text-align:right}
+  .ddtable td.dd-rank{color:var(--accent);font-style:italic;font-family:"Cormorant Garamond",serif;font-size:18px;width:40px;text-align:center}
+
+  /* Holdings table */
+  .htable{width:100%;border:1px solid var(--line);background:color-mix(in srgb,var(--ink) 2%,transparent);border-collapse:collapse;font-size:13.5px;margin:0 0 22px}
+  .htable th,.htable td{padding:11px 14px;text-align:left;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
+  .htable th{font-family:"Source Serif 4",serif;font-weight:500;font-style:italic;color:var(--ink-mute);font-size:11px;letter-spacing:.05em;text-transform:uppercase;background:color-mix(in srgb,var(--ink) 4%,transparent)}
+  .htable tbody tr:last-child td{border-bottom:none}
+  .htable td.h-rank{font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--accent);font-size:16px;width:42px;text-align:center}
+  .htable td.h-wt{text-align:right;color:var(--accent);font-weight:500}
+  .htable td.h-sec{color:var(--ink-soft);font-style:italic;font-size:12px}
+  .htable .h-bar{position:relative;display:block;height:3px;background:color-mix(in srgb,var(--accent) 12%,transparent);margin-top:5px;max-width:120px}
+  .htable .h-bar span{position:absolute;left:0;top:0;height:100%;background:var(--accent);opacity:0.55}
+
+  /* Sector breakdown */
+  .secbox{border:1px solid var(--line);background:color-mix(in srgb,var(--ink) 2%,transparent);padding:20px 22px;margin:0 0 22px}
+  .sbtitle{font-family:"Source Serif 4",serif;font-style:italic;font-size:13px;color:var(--ink-soft);margin-bottom:14px}
+  .sb-bar{display:flex;height:14px;border:1px solid var(--line);margin-bottom:14px}
+  .sb-bar div{height:100%}
+  .sb-leg{display:grid;grid-template-columns:repeat(2,1fr);gap:7px 22px;font-size:13px}
+  @media(max-width:600px){.sb-leg{grid-template-columns:1fr}}
+  .sb-leg .li{display:flex;align-items:center;gap:10px}
+  .sb-dot{width:10px;height:10px;flex-shrink:0}
+  .sb-nm{color:var(--ink)}
+  .sb-pc{margin-left:auto;color:var(--ink-mute);font-style:italic;font-variant-numeric:tabular-nums}
+
+  /* Market cap distribution */
+  .mcap-row{display:grid;grid-template-columns:1fr auto;padding:9px 0;border-bottom:1px solid var(--line);font-size:14px;align-items:baseline}
+  .mcap-row:last-child{border-bottom:none}
+  .mcap-l{font-style:italic;color:var(--ink-mute);font-size:13px}
+  .mcap-v{color:var(--accent);font-weight:500;font-variant-numeric:tabular-nums}
+
+  /* Fees mini */
+  .fees-mini{border:1.5px solid var(--accent);background:color-mix(in srgb,var(--accent) 4%,transparent);padding:20px 24px;margin:0 0 22px;max-width:520px}
+  .fm-row{display:flex;justify-content:space-between;align-items:baseline;padding:10px 0;border-top:1px solid var(--line);font-size:14px;gap:14px}
+  .fm-row:first-of-type{border-top:none}
+  .fm-l{font-style:italic;color:var(--ink-mute);font-size:13px}
+  .fm-v{font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--accent);font-size:16px;text-align:right;line-height:1.2}
+
+  .items{margin-top:18px;padding-top:14px;border-top:1px solid var(--line);font-size:14px;line-height:2;color:var(--ink);max-width:62ch}
+  .items .it{margin-right:6px}
+  .items .it::after{content:"\00B7";color:var(--accent);margin:0 12px}
+  .items .it:last-child::after{content:""}
+
+  .prose p{font-size:16px;line-height:1.7;color:var(--ink);max-width:62ch;margin-bottom:18px}
+  .prose p:last-child{margin-bottom:0}
+
+  /* Risks list */
+  .risk-list{margin:0}
+  .risk-item{padding:18px 0;border-bottom:1px solid var(--line);display:grid;grid-template-columns:34px 1fr;gap:16px;align-items:start}
+  .risk-item:first-child{padding-top:0}
+  .risk-item:last-child{border-bottom:none;padding-bottom:0}
+  .r-mark{font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--accent);font-size:20px;line-height:1.3;text-align:center;letter-spacing:.02em}
+  .risk-item h4{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:20px;font-weight:500;color:var(--ink);margin-bottom:6px;line-height:1.15;letter-spacing:-.005em}
+  .risk-item p{font-size:14.5px;line-height:1.62;color:var(--ink);max-width:64ch;margin:0}
+  .risk-foot{margin-top:22px;padding:16px 18px;border:1px solid var(--line);background:color-mix(in srgb,var(--ink) 2%,transparent);font-style:italic;font-size:13px;color:var(--ink-soft);line-height:1.6;max-width:64ch}
+  .risk-foot .acc{color:var(--accent);font-style:normal}
+
+  /* Factsheet CTA banner */
+  .fcta{padding:clamp(40px,6vw,72px) 0;border-top:1px solid var(--line);background:color-mix(in srgb,var(--ink) 2%,transparent)}
+  .fcta-grid{display:grid;grid-template-columns:1fr auto;gap:32px;align-items:center}
+  @media(max-width:720px){.fcta-grid{grid-template-columns:1fr;gap:22px}}
+  .fcta h2{font-size:clamp(26px,3.6vw,38px);margin-bottom:10px;line-height:1.05}
+  .fcta p{font-size:15px;line-height:1.55;color:var(--ink-soft);max-width:50ch}
+  .fcta-ctas{display:flex;gap:12px;flex-wrap:wrap}
+
+  footer{border-top:1px solid var(--line);padding:48px 0 36px}
+  .footin{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;margin-bottom:36px}
+  .footcols{display:flex;gap:clamp(34px,6vw,68px);flex-wrap:wrap}
+  .footcol h4{font-style:italic;font-weight:400;font-size:14px;color:var(--ink-mute);margin-bottom:13px}
+  .footcol a{display:block;color:var(--ink-soft);text-decoration:none;font-size:15px;margin-bottom:9px;transition:color .3s}
+  .footcol a:hover{color:var(--accent)}
+  .disc{padding-top:22px;border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px}
+  .disc span{font-size:12.5px;color:var(--ink-mute);line-height:1.6}
+  .disc .legal{max-width:64ch;font-style:italic}
+</style>
+</head>
+<body>
+
+  <nav id="nav">
+    <div class="wrap navin">
+      <a class="wm" href="index.html">flameback<span class="p">.</span></a>
+      <div class="navr">
+        <a class="navlink" href="flameback-firm.html">Firm</a>
+        <a class="navlink current" href="flameback-strategies.html">Strategies</a>
+        <a class="navlink" href="flameback-offerings.html">Offerings</a>
+        <a class="navlink" href="#">Insights</a>
+        <a class="navlink" href="#">Resources</a>
+        <a class="login" href="#">Login</a>
+        <a class="navbtn" href="flameback-app-splash.html">Start your journey</a>
+        <button class="toggle" id="toggle" aria-label="Switch theme">Light</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="pnav">
+    <div class="wrap pnav-in" id="pnav">
+      <a href="#overview" class="active">Overview</a>
+      <a href="#performance">Performance</a>
+      <a href="#returns">Returns history</a>
+      <a href="#risk">Risk &amp; drawdown</a>
+      <a href="#composition">Composition</a>
+      <a href="#methodology">Methodology</a>
+      <a href="#fees">Fees &amp; suitability</a>
+      <a href="#risks">Risks</a>
+    </div>
+  </div>
+
+  <div class="wrap breadcrumb">
+    <a class="bc-link" href="flameback-strategies.html"><span>&larr;</span> All strategies</a>
+  </div>
+
+  <section class="hero" id="overview">
+    <div class="wrap">
+      <div class="hero-grid">
+        <div>
+          <div class="hero-meta">
+            <span class="as-of"><span class="acc">●</span> Data as of 30 April 2026</span>
+          </div>
+          <div class="hero-badges">
+            <span class="hb acc">India</span>
+            <span class="hb mute">PMS</span>
+            <span class="hb mute">Long-only</span>
+            <span class="hb mute">Systematic momentum</span>
+          </div>
+          <h1>Large-cap<br/>Momentum</h1>
+          <p class="hero-sub">A systematic momentum strategy on India&rsquo;s largest large-caps. Monthly rebalance, disciplined turnover, and a long-only book that compounds steadily through cycles.</p>
+          <div class="hero-ctas">
+            <a class="btn" href="#" id="dl-factsheet">
+              <svg class="dl" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v14m-5-5l5 5 5-5M5 21h14"/></svg>
+              Download factsheet
+            </a>
+            <a class="btn-out" href="flameback-app-splash.html">Onboard <span class="ar">&rarr;</span></a>
+          </div>
+          <div class="ctas-second" style="margin-top:14px">
+            <span>or</span>
+            <a href="#">log in</a>
+            <span>&middot;</span>
+            <a href="flameback-app-splash.html">start your journey</a>
+            <span>&middot;</span>
+            <a href="#">view holdings (clients)</a>
+          </div>
+        </div>
+        <div class="glance">
+          <span class="glance-lab">Strategy details</span>
+          <div class="g-row"><span class="g-l">Live since</span><span class="g-v">March 2017</span></div>
+          <div class="g-row"><span class="g-l">Track record</span><span class="g-v">9.2 years</span></div>
+          <div class="g-row"><span class="g-l">Universe</span><span class="g-v">NSE 100</span></div>
+          <div class="g-row"><span class="g-l">Typical holdings</span><span class="g-v">15&ndash;20</span></div>
+          <div class="g-row"><span class="g-l">Rebalance</span><span class="g-v">Monthly</span></div>
+          <div class="g-row"><span class="g-l">Benchmark</span><span class="g-v">NIFTY 100 TRI</span></div>
+          <div class="g-row"><span class="g-l">Fund manager</span><span class="g-v">Ashrith Rao</span></div>
+          <div class="g-row"><span class="g-l">Minimum</span><span class="g-v">&#8377;50 lakh</span></div>
+          <div class="g-row"><span class="g-l">Wrapper</span><span class="g-v">SEBI PMS</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- KPI strip -->
+  <section class="kpi-strip">
+    <div class="wrap">
+      <div class="kpi-row">
+        <div class="kpi"><span class="kpi-lab">CAGR (Since Inception)</span><span class="kpi-val">18.4%</span><span class="kpi-foot">vs benchmark 12.6%</span></div>
+        <div class="kpi"><span class="kpi-lab">Sharpe Ratio</span><span class="kpi-val">0.78</span><span class="kpi-foot">since inception</span></div>
+        <div class="kpi"><span class="kpi-lab">Max Drawdown</span><span class="kpi-val muted">&minus;24.5%</span><span class="kpi-foot">Mar 2020 &middot; 7-month recovery</span></div>
+        <div class="kpi"><span class="kpi-lab">Volatility</span><span class="kpi-val muted">18.2%</span><span class="kpi-foot">annualised</span></div>
+        <div class="kpi"><span class="kpi-lab">Win Rate</span><span class="kpi-val muted">64%</span><span class="kpi-foot">positive months</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- i Performance -->
+  <section class="sec" id="performance">
+    <div class="wrap">
+      <div class="head">
+        <span class="lab"><span class="n">i</span>Performance</span>
+        <h2>Returns across periods.</h2>
+        <p class="intro">Trailing returns, annualised where the period exceeds one year. All numbers are net of fees and expenses. Benchmark is NIFTY 100 TRI.</p>
+      </div>
+      <div>
+        <table class="rtable">
+          <thead>
+            <tr>
+              <th>Period</th>
+              <th>1M</th>
+              <th>3M</th>
+              <th>6M</th>
+              <th>1Y</th>
+              <th>3Y *</th>
+              <th>5Y *</th>
+              <th>Since Inc. *</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="strat">
+              <td>Large-cap Momentum</td>
+              <td>+2.8%</td>
+              <td>+4.9%</td>
+              <td>+9.2%</td>
+              <td>+28.4%</td>
+              <td>+22.1%</td>
+              <td>+19.8%</td>
+              <td>+18.4%</td>
+            </tr>
+            <tr class="bench">
+              <td>NIFTY 100 TRI</td>
+              <td>+1.9%</td>
+              <td>+3.4%</td>
+              <td>+6.8%</td>
+              <td>+19.6%</td>
+              <td>+17.3%</td>
+              <td>+15.4%</td>
+              <td>+12.6%</td>
+            </tr>
+            <tr class="excess">
+              <td>Excess return</td>
+              <td>+0.9%</td>
+              <td>+1.5%</td>
+              <td>+2.4%</td>
+              <td>+8.8%</td>
+              <td>+4.8%</td>
+              <td>+4.4%</td>
+              <td>+5.8%</td>
+            </tr>
+          </tbody>
+        </table>
+        <p style="font-size:12px;color:var(--ink-mute);font-style:italic;margin-top:8px">* Annualised. Returns above 1 year are CAGR. Data as of 30 April 2026. Past performance does not indicate future results.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cumulative returns chart (full width) -->
+  <section class="sec-full">
+    <div class="wrap">
+      <div class="head-banner">
+        <div class="head">
+          <span class="lab"><span class="n">ii</span>Cumulative returns</span>
+          <h2>&#8377;1 invested at inception.</h2>
+          <p class="intro">Growth of &#8377;1 invested at the strategy&rsquo;s March 2017 inception, against the same investment in the NIFTY 100 TRI.</p>
+        </div>
+        <div class="right">Indexed to 100 at inception</div>
+      </div>
+
+      <div class="crchart">
+        <div class="crchart-head">
+          <span class="crchart-title">Strategy vs Benchmark &middot; Mar 2017 &ndash; Apr 2026</span>
+          <div class="crchart-legend">
+            <span class="legend-item"><span class="legend-dot acc"></span> Large-cap Momentum</span>
+            <span class="legend-item"><span class="legend-dot muted"></span> NIFTY 100 TRI</span>
+          </div>
+        </div>
+        <div class="crchart-body">
+          <svg class="crchart-svg" viewBox="0 0 1080 360" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <!-- Y axis gridlines -->
+            <g stroke="var(--line)" stroke-width="1" fill="none">
+              <line x1="60" y1="40" x2="1060" y2="40"/>
+              <line x1="60" y1="100" x2="1060" y2="100"/>
+              <line x1="60" y1="160" x2="1060" y2="160"/>
+              <line x1="60" y1="220" x2="1060" y2="220"/>
+              <line x1="60" y1="280" x2="1060" y2="280"/>
+              <line x1="60" y1="320" x2="1060" y2="320" stroke="var(--ink-mute)" stroke-opacity="0.4"/>
+            </g>
+            <!-- Y axis labels -->
+            <text x="50" y="44" font-size="11" text-anchor="end">500</text>
+            <text x="50" y="104" font-size="11" text-anchor="end">400</text>
+            <text x="50" y="164" font-size="11" text-anchor="end">300</text>
+            <text x="50" y="224" font-size="11" text-anchor="end">200</text>
+            <text x="50" y="284" font-size="11" text-anchor="end">100</text>
+
+            <!-- Benchmark line (drawn first, behind) -->
+            <path d="M 60,310 L 100,304 L 150,300 L 200,308 L 250,302 L 300,290 L 350,280 L 380,318 L 410,300 L 470,278 L 540,250 L 620,228 L 680,216 L 750,210 L 830,196 L 900,182 L 970,168 L 1030,148 L 1060,138"
+                  fill="none" stroke="var(--ink-mute)" stroke-width="1.8" opacity="0.55" stroke-dasharray="6,3"/>
+
+            <!-- Strategy line -->
+            <path d="M 60,310 L 100,300 L 150,294 L 200,302 L 250,288 L 300,276 L 350,254 L 380,302 L 410,256 L 470,224 L 540,194 L 620,176 L 680,176 L 750,162 L 830,142 L 900,114 L 970,80 L 1030,60 L 1060,46"
+                  fill="none" stroke="var(--accent)" stroke-width="2.2"/>
+
+            <!-- X axis labels -->
+            <text x="60" y="345" font-size="11">2017</text>
+            <text x="170" y="345" font-size="11">2018</text>
+            <text x="280" y="345" font-size="11">2019</text>
+            <text x="395" y="345" font-size="11">2020</text>
+            <text x="510" y="345" font-size="11">2021</text>
+            <text x="625" y="345" font-size="11">2022</text>
+            <text x="740" y="345" font-size="11">2023</text>
+            <text x="855" y="345" font-size="11">2024</text>
+            <text x="970" y="345" font-size="11">2025</text>
+            <text x="1055" y="345" font-size="11" text-anchor="end">'26</text>
+
+            <!-- COVID annotation -->
+            <line x1="390" y1="310" x2="390" y2="40" stroke="var(--ink-mute)" stroke-width="0.8" stroke-dasharray="2,3" opacity="0.5"/>
+            <text x="395" y="55" font-size="10" fill="var(--ink-mute)">Mar 2020</text>
+
+            <!-- End labels -->
+            <text x="1064" y="50" font-size="11.5" fill="var(--accent)" font-weight="500" font-style="normal">442</text>
+            <text x="1064" y="142" font-size="11.5" fill="var(--ink-mute)">296</text>
+          </svg>
+        </div>
+      </div>
+
+      <p style="font-size:12.5px;color:var(--ink-mute);font-style:italic;line-height:1.55;max-width:80ch">Indexed at 100 to inception (3 March 2017). Returns shown are time-weighted, net of fees and expenses. Benchmark is NIFTY 100 Total Return Index. Past performance is not indicative of future results.</p>
+    </div>
+  </section>
+
+  <!-- iii Returns history (annual bar + monthly heatmap) -->
+  <section class="sec-full" id="returns">
+    <div class="wrap">
+      <div class="head-banner">
+        <div class="head">
+          <span class="lab"><span class="n">iii</span>Returns history</span>
+          <h2>Year by year, month by month.</h2>
+          <p class="intro">Annual returns versus benchmark, with the full month-by-month track record below.</p>
+        </div>
+        <div class="right">9 calendar years &middot; 110 months</div>
+      </div>
+
+      <!-- Annual bar chart -->
+      <div class="achart">
+        <div class="achart-head">
+          <span class="achart-title">Calendar year returns &middot; Strategy vs Benchmark</span>
+          <div class="crchart-legend">
+            <span class="legend-item"><span class="legend-dot acc"></span> Strategy</span>
+            <span class="legend-item"><span class="legend-dot muted"></span> Benchmark</span>
+          </div>
+        </div>
+        <svg class="achart-svg" viewBox="0 0 1080 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <!-- Y gridlines -->
+          <g stroke="var(--line)" stroke-width="1">
+            <line x1="50" y1="30" x2="1060" y2="30"/>
+            <line x1="50" y1="90" x2="1060" y2="90"/>
+            <line x1="50" y1="150" x2="1060" y2="150" stroke="var(--ink-mute)" stroke-opacity="0.5"/>
+            <line x1="50" y1="210" x2="1060" y2="210"/>
+          </g>
+          <!-- Y labels -->
+          <text x="44" y="34" font-size="10.5" text-anchor="end">+30%</text>
+          <text x="44" y="94" font-size="10.5" text-anchor="end">+15%</text>
+          <text x="44" y="154" font-size="10.5" text-anchor="end">0%</text>
+          <text x="44" y="214" font-size="10.5" text-anchor="end">&minus;15%</text>
+
+          <!-- Bars: 10 years (2017-2026), each year has 2 bars (strat, bench), bar group width 90 -->
+          <!-- 2017: strat +14.7, bench +9.5 -->
+          <g transform="translate(60,0)">
+            <rect x="0" y="91.2" width="32" height="58.8" fill="var(--accent)"/>
+            <rect x="35" y="112.0" width="32" height="38.0" fill="var(--ink-mute)" opacity="0.5"/>
+            <text x="34" y="227" font-size="11" text-anchor="middle">2017</text>
+            <text x="16" y="86" font-size="10" text-anchor="middle" fill="var(--accent)" font-style="normal">+14.7</text>
+            <text x="51" y="107" font-size="10" text-anchor="middle" fill="var(--ink-mute)" font-style="normal">+9.5</text>
+          </g>
+          <!-- 2018: strat +11.1, bench -3.6 -->
+          <g transform="translate(160,0)">
+            <rect x="0" y="105.6" width="32" height="44.4" fill="var(--accent)"/>
+            <rect x="35" y="150" width="32" height="14.4" fill="var(--ink-mute)" opacity="0.5"/>
+            <text x="34" y="227" font-size="11" text-anchor="middle">2018</text>
+            <text x="16" y="100" font-size="10" text-anchor="middle" fill="var(--accent)" font-style="normal">+11.1</text>
+            <text x="51" y="178" font-size="10" text-anchor="middle" fill="var(--ink-mute)" font-style="normal">&minus;3.6</text>
+          </g>
+          <!-- 2019: strat +22.2, bench +13.8 -->
+          <g transform="translate(260,0)">
+            <rect x="0" y="61.2" width="32" height="88.8" fill="var(--accent)"/>
+            <rect x="35" y="94.8" width="32" height="55.2" fill="var(--ink-mute)" opacity="0.5"/>
+            <text x="34" y="227" font-size="11" text-anchor="middle">2019</text>
+            <text x="16" y="56" font-size="10" text-anchor="middle" fill="var(--accent)" font-style="normal">+22.2</text>
+            <text x="51" y="89" font-size="10" text-anchor="middle" fill="var(--ink-mute)" font-style="normal">+13.8</text>
+          </g>
+          <!-- 2020: strat +20.8, bench +14.6 -->
+          <g transform="translate(360,0)">
+            <rect x="0" y="66.8" width="32" height="83.2" fill="var(--accent)"/>
+            <rect x="35" y="91.6" width="32" height="58.4" fill="var(--ink-mute)" opacity="0.5"/>
+            <text x="34" y="227" font-size="11" text-anchor="middle">2020</text>
+            <text x="16" y="62" font-size="10" text-anchor="middle" fill="var(--accent)" font-style="normal">+20.8</text>
+            <text x="51" y="86" font-size="10" text-anchor="middle" fill="var(--ink-mute)" font-style="normal">+14.6</text>
+          </g>
+          <!-- 2021: strat +22.5, bench +24.6 -->
+          <g transform="translate(460,0)">
+            <rect x="0" y="60" width="32" height="90" fill="var(--accent)"/>
+            <rect x="35" y="51.6" width="32" height="98.4" fill="var(--ink-mute)" opacity="0.5"/>
+            <text x="34" y="227" font-size="11" text-anchor="middle">2021</text>
+            <text x="16" y="55" font-size="10" text-anchor="middle" fill="var(--accent)" font-style="normal">+22.5</text>
+            <text x="51" y="46" font-size="10" text-anchor="middle" fill="var(--ink-mute)" font-style="normal">+24.6</text>
+          </g>
+          <!-- 2022: strat +0.8, bench +4.3 -->
+          <g transform="translate(560,0)">
+            <rect x="0" y="146.8" width="32" height="3.2" fill="var(--accent)"/>
+            <rect x="35" y="132.8" width="32" height="17.2" fill="var(--ink-mute)" opacity="0.5"/>
+            <text x="34" y="227" font-size="11" text-anchor="middle">2022</text>
+            <text x="16" y="141" font-size="10" text-anchor="middle" fill="var(--accent)" font-style="normal">+0.8</text>
+            <text x="51" y="127" font-size="10" text-anchor="middle" fill="var(--ink-mute)" font-style="normal">+4.3</text>
+          </g>
+          <!-- 2023: strat +18.3, bench +21.0 -->
+          <g transform="translate(660,0)">
+            <rect x="0" y="76.8" width="32" height="73.2" fill="var(--accent)"/>
+            <rect x="35" y="66" width="32" height="84" fill="var(--ink-mute)" opacity="0.5"/>
+            <text x="34" y="227" font-size="11" text-anchor="middle">2023</text>
+            <text x="16" y="72" font-size="10" text-anchor="middle" fill="var(--accent)" font-style="normal">+18.3</text>
+            <text x="51" y="61" font-size="10" text-anchor="middle" fill="var(--ink-mute)" font-style="normal">+21.0</text>
+          </g>
+          <!-- 2024: strat +23.0, bench +14.8 -->
+          <g transform="translate(760,0)">
+            <rect x="0" y="58" width="32" height="92" fill="var(--accent)"/>
+            <rect x="35" y="90.8" width="32" height="59.2" fill="var(--ink-mute)" opacity="0.5"/>
+            <text x="34" y="227" font-size="11" text-anchor="middle">2024</text>
+            <text x="16" y="53" font-size="10" text-anchor="middle" fill="var(--accent)" font-style="normal">+23.0</text>
+            <text x="51" y="86" font-size="10" text-anchor="middle" fill="var(--ink-mute)" font-style="normal">+14.8</text>
+          </g>
+          <!-- 2025: strat +25.4, bench +16.2 -->
+          <g transform="translate(860,0)">
+            <rect x="0" y="48.4" width="32" height="101.6" fill="var(--accent)"/>
+            <rect x="35" y="85.2" width="32" height="64.8" fill="var(--ink-mute)" opacity="0.5"/>
+            <text x="34" y="227" font-size="11" text-anchor="middle">2025</text>
+            <text x="16" y="43" font-size="10" text-anchor="middle" fill="var(--accent)" font-style="normal">+25.4</text>
+            <text x="51" y="80" font-size="10" text-anchor="middle" fill="var(--ink-mute)" font-style="normal">+16.2</text>
+          </g>
+          <!-- 2026 YTD: strat +7.4, bench +5.1 -->
+          <g transform="translate(960,0)">
+            <rect x="0" y="120.4" width="32" height="29.6" fill="var(--accent)" opacity="0.85"/>
+            <rect x="35" y="129.6" width="32" height="20.4" fill="var(--ink-mute)" opacity="0.4"/>
+            <text x="34" y="227" font-size="11" text-anchor="middle">2026 YTD</text>
+            <text x="16" y="115" font-size="10" text-anchor="middle" fill="var(--accent)" font-style="normal">+7.4</text>
+            <text x="51" y="124" font-size="10" text-anchor="middle" fill="var(--ink-mute)" font-style="normal">+5.1</text>
+          </g>
+
+          <!-- Zero line label -->
+          <text x="44" y="248" font-size="9" text-anchor="end" font-style="italic">zero</text>
+        </svg>
+      </div>
+
+      <!-- Monthly heatmap -->
+      <div class="heatmap-wrap">
+        <div class="heatmap-head">
+          <span class="heatmap-title">Monthly returns &middot; %</span>
+          <div class="heatmap-legend">
+            <span>worst</span>
+            <span class="heat-grad">
+              <span style="background:color-mix(in srgb,var(--ink) 32%,transparent)"></span>
+              <span style="background:color-mix(in srgb,var(--ink) 12%,transparent)"></span>
+              <span style="background:color-mix(in srgb,var(--bg) 100%,transparent)"></span>
+              <span style="background:color-mix(in srgb,var(--accent) 14%,transparent)"></span>
+              <span style="background:color-mix(in srgb,var(--accent) 36%,transparent)"></span>
+              <span style="background:color-mix(in srgb,var(--accent) 50%,transparent)"></span>
+            </span>
+            <span>best</span>
+          </div>
+        </div>
+        <table class="heatmap" id="heatmap">
+          <thead>
+            <tr><th>Year</th><th>Jan</th><th>Feb</th><th>Mar</th><th>Apr</th><th>May</th><th>Jun</th><th>Jul</th><th>Aug</th><th>Sep</th><th>Oct</th><th>Nov</th><th>Dec</th><th>Year</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="yr">2017</td><td class="empty">&mdash;</td><td class="empty">&mdash;</td><td data-v="0.4">+0.4</td><td data-v="1.2">+1.2</td><td data-v="-0.8">&minus;0.8</td><td data-v="1.2">+1.2</td><td data-v="2.1">+2.1</td><td data-v="3.4">+3.4</td><td data-v="-1.2">&minus;1.2</td><td data-v="4.5">+4.5</td><td data-v="2.8">+2.8</td><td data-v="1.9">+1.9</td><td class="tot">+14.7</td></tr>
+            <tr><td class="yr">2018</td><td data-v="-2.1">&minus;2.1</td><td data-v="4.5">+4.5</td><td data-v="1.2">+1.2</td><td data-v="2.8">+2.8</td><td data-v="-3.2">&minus;3.2</td><td data-v="1.4">+1.4</td><td data-v="2.9">+2.9</td><td data-v="-4.1">&minus;4.1</td><td data-v="3.2">+3.2</td><td data-v="-1.8">&minus;1.8</td><td data-v="4.2">+4.2</td><td data-v="2.1">+2.1</td><td class="tot">+11.1</td></tr>
+            <tr><td class="yr">2019</td><td data-v="3.4">+3.4</td><td data-v="-1.2">&minus;1.2</td><td data-v="2.8">+2.8</td><td data-v="4.1">+4.1</td><td data-v="1.9">+1.9</td><td data-v="-2.5">&minus;2.5</td><td data-v="3.7">+3.7</td><td data-v="-1.8">&minus;1.8</td><td data-v="4.5">+4.5</td><td data-v="2.1">+2.1</td><td data-v="3.8">+3.8</td><td data-v="1.4">+1.4</td><td class="tot">+22.2</td></tr>
+            <tr><td class="yr">2020</td><td data-v="-1.8">&minus;1.8</td><td data-v="-3.4">&minus;3.4</td><td data-v="-18.2">&minus;18.2</td><td data-v="12.8">+12.8</td><td data-v="4.5">+4.5</td><td data-v="2.1">+2.1</td><td data-v="8.4">+8.4</td><td data-v="3.7">+3.7</td><td data-v="-1.2">&minus;1.2</td><td data-v="4.8">+4.8</td><td data-v="5.2">+5.2</td><td data-v="3.9">+3.9</td><td class="tot">+20.8</td></tr>
+            <tr><td class="yr">2021</td><td data-v="-0.8">&minus;0.8</td><td data-v="4.2">+4.2</td><td data-v="3.5">+3.5</td><td data-v="1.8">+1.8</td><td data-v="2.4">+2.4</td><td data-v="3.1">+3.1</td><td data-v="-1.9">&minus;1.9</td><td data-v="4.5">+4.5</td><td data-v="2.8">+2.8</td><td data-v="1.4">+1.4</td><td data-v="-2.1">&minus;2.1</td><td data-v="3.6">+3.6</td><td class="tot">+22.5</td></tr>
+            <tr><td class="yr">2022</td><td data-v="-3.4">&minus;3.4</td><td data-v="-2.1">&minus;2.1</td><td data-v="2.8">+2.8</td><td data-v="-1.2">&minus;1.2</td><td data-v="-4.5">&minus;4.5</td><td data-v="-2.8">&minus;2.8</td><td data-v="4.5">+4.5</td><td data-v="2.1">+2.1</td><td data-v="-1.8">&minus;1.8</td><td data-v="3.2">+3.2</td><td data-v="2.4">+2.4</td><td data-v="1.8">+1.8</td><td class="tot">+0.8</td></tr>
+            <tr><td class="yr">2023</td><td data-v="1.2">+1.2</td><td data-v="-1.4">&minus;1.4</td><td data-v="2.8">+2.8</td><td data-v="3.5">+3.5</td><td data-v="-0.8">&minus;0.8</td><td data-v="2.1">+2.1</td><td data-v="1.9">+1.9</td><td data-v="-2.5">&minus;2.5</td><td data-v="4.2">+4.2</td><td data-v="1.4">+1.4</td><td data-v="3.8">+3.8</td><td data-v="2.1">+2.1</td><td class="tot">+18.3</td></tr>
+            <tr><td class="yr">2024</td><td data-v="3.4">+3.4</td><td data-v="2.8">+2.8</td><td data-v="1.9">+1.9</td><td data-v="-0.8">&minus;0.8</td><td data-v="4.2">+4.2</td><td data-v="3.5">+3.5</td><td data-v="-1.4">&minus;1.4</td><td data-v="2.1">+2.1</td><td data-v="2.8">+2.8</td><td data-v="-1.2">&minus;1.2</td><td data-v="3.5">+3.5</td><td data-v="2.1">+2.1</td><td class="tot">+23.0</td></tr>
+            <tr><td class="yr">2025</td><td data-v="2.1">+2.1</td><td data-v="1.8">+1.8</td><td data-v="3.2">+3.2</td><td data-v="4.5">+4.5</td><td data-v="-1.2">&minus;1.2</td><td data-v="2.8">+2.8</td><td data-v="3.4">+3.4</td><td data-v="1.9">+1.9</td><td data-v="2.4">+2.4</td><td data-v="3.8">+3.8</td><td data-v="2.4">+2.4</td><td data-v="-1.4">&minus;1.4</td><td class="tot">+25.4</td></tr>
+            <tr><td class="yr">2026</td><td data-v="2.4">+2.4</td><td data-v="-1.2">&minus;1.2</td><td data-v="3.2">+3.2</td><td data-v="2.8">+2.8</td><td class="empty">&mdash;</td><td class="empty">&mdash;</td><td class="empty">&mdash;</td><td class="empty">&mdash;</td><td class="empty">&mdash;</td><td class="empty">&mdash;</td><td class="empty">&mdash;</td><td class="empty">&mdash;</td><td class="tot">+7.4 YTD</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size:12px;color:var(--ink-mute);font-style:italic;margin-top:10px">Monthly returns shown in % terms, time-weighted, net of fees. 2017 data begins from inception in March. 2026 reflects YTD through April.</p>
+    </div>
+  </section>
+
+  <!-- iv Risk & drawdown -->
+  <section class="sec-full" id="risk">
+    <div class="wrap">
+      <div class="head-banner">
+        <div class="head">
+          <span class="lab"><span class="n">iv</span>Risk &amp; drawdown</span>
+          <h2>What the ride looks like.</h2>
+          <p class="intro">Volatility, risk-adjusted return ratios, and the strategy&rsquo;s history of losing periods. All measured against the benchmark and the risk-free rate where applicable.</p>
+        </div>
+        <div class="right">Since inception &middot; 9.2 years</div>
+      </div>
+
+      <div class="risk-grid">
+        <div class="rm"><span class="rm-lab">Annualised Volatility</span><span class="rm-val muted">18.2%</span><span class="rm-foot">vs benchmark 16.4%</span></div>
+        <div class="rm"><span class="rm-lab">Sharpe Ratio</span><span class="rm-val">0.78</span><span class="rm-foot">risk-free 6.0%</span></div>
+        <div class="rm"><span class="rm-lab">Sortino Ratio</span><span class="rm-val">1.14</span><span class="rm-foot">downside deviation only</span></div>
+        <div class="rm"><span class="rm-lab">Beta</span><span class="rm-val muted">0.92</span><span class="rm-foot">vs NIFTY 100 TRI</span></div>
+        <div class="rm"><span class="rm-lab">Alpha (annualised)</span><span class="rm-val">+5.8%</span><span class="rm-foot">excess vs benchmark</span></div>
+        <div class="rm"><span class="rm-lab">Information Ratio</span><span class="rm-val">0.62</span><span class="rm-foot">excess return / tracking error</span></div>
+        <div class="rm"><span class="rm-lab">Tracking Error</span><span class="rm-val muted">9.2%</span><span class="rm-foot">annualised</span></div>
+        <div class="rm"><span class="rm-lab">R-Squared</span><span class="rm-val muted">0.81</span><span class="rm-foot">vs benchmark</span></div>
+        <div class="rm"><span class="rm-lab">Calmar Ratio</span><span class="rm-val">0.76</span><span class="rm-foot">CAGR / max drawdown</span></div>
+      </div>
+
+      <div class="risk-grid" style="grid-template-columns:repeat(4,1fr);margin-top:22px">
+        <div class="rm"><span class="rm-lab">Best Month</span><span class="rm-val">+12.8%</span><span class="rm-foot">April 2020</span></div>
+        <div class="rm"><span class="rm-lab">Worst Month</span><span class="rm-val neg">&minus;18.2%</span><span class="rm-foot">March 2020</span></div>
+        <div class="rm"><span class="rm-lab">Avg Winning Month</span><span class="rm-val">+3.0%</span><span class="rm-foot">across 70 months</span></div>
+        <div class="rm"><span class="rm-lab">Avg Losing Month</span><span class="rm-val neg">&minus;2.6%</span><span class="rm-foot">across 40 months</span></div>
+      </div>
+
+      <!-- Drawdown chart -->
+      <div class="ddchart" style="margin-top:22px">
+        <div class="ddchart-head">
+          <span class="ddchart-title">Drawdown &middot; from previous peak &middot; Mar 2017 &ndash; Apr 2026</span>
+          <span class="ddchart-title" style="color:var(--ink-mute)">Max: &minus;24.5% &middot; March 2020</span>
+        </div>
+        <div class="ddchart-body">
+          <svg class="ddchart-svg" viewBox="0 0 1080 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <!-- Y gridlines -->
+            <g stroke="var(--line)" stroke-width="1">
+              <line x1="60" y1="30" x2="1060" y2="30" stroke="var(--ink-mute)" stroke-opacity="0.4"/>
+              <line x1="60" y1="70" x2="1060" y2="70"/>
+              <line x1="60" y1="110" x2="1060" y2="110"/>
+              <line x1="60" y1="150" x2="1060" y2="150"/>
+              <line x1="60" y1="190" x2="1060" y2="190"/>
+            </g>
+            <!-- Y labels -->
+            <text x="50" y="34" font-size="10" text-anchor="end">0%</text>
+            <text x="50" y="74" font-size="10" text-anchor="end">&minus;6%</text>
+            <text x="50" y="114" font-size="10" text-anchor="end">&minus;12%</text>
+            <text x="50" y="154" font-size="10" text-anchor="end">&minus;18%</text>
+            <text x="50" y="194" font-size="10" text-anchor="end">&minus;24%</text>
+
+            <!-- Drawdown filled area (underwater) -->
+            <path d="M 60,30
+                     L 100,30 L 130,30 L 150,30 L 180,30 L 200,30 L 220,40 L 260,52 L 290,42 L 320,30
+                     L 380,30
+                     L 400,193 L 415,165 L 430,130 L 445,98 L 460,60 L 480,30
+                     L 540,30
+                     L 580,30 L 610,90 L 640,75 L 670,55 L 700,30
+                     L 740,30 L 780,30 L 810,30
+                     L 850,30 L 880,30 L 920,30
+                     L 970,30 L 1010,30 L 1040,55 L 1060,42
+                     L 1060,210 L 60,210 Z"
+                  fill="var(--accent)" opacity="0.25"/>
+
+            <!-- Drawdown line on top -->
+            <path d="M 60,30
+                     L 100,30 L 130,30 L 150,30 L 180,30 L 200,30 L 220,40 L 260,52 L 290,42 L 320,30
+                     L 380,30
+                     L 400,193 L 415,165 L 430,130 L 445,98 L 460,60 L 480,30
+                     L 540,30
+                     L 580,30 L 610,90 L 640,75 L 670,55 L 700,30
+                     L 740,30 L 780,30 L 810,30
+                     L 850,30 L 880,30 L 920,30
+                     L 970,30 L 1010,30 L 1040,55 L 1060,42"
+                  fill="none" stroke="var(--accent)" stroke-width="1.6" opacity="0.8"/>
+
+            <!-- X labels -->
+            <text x="60" y="228" font-size="10.5">2017</text>
+            <text x="170" y="228" font-size="10.5">2018</text>
+            <text x="280" y="228" font-size="10.5">2019</text>
+            <text x="395" y="228" font-size="10.5">2020</text>
+            <text x="510" y="228" font-size="10.5">2021</text>
+            <text x="625" y="228" font-size="10.5">2022</text>
+            <text x="740" y="228" font-size="10.5">2023</text>
+            <text x="855" y="228" font-size="10.5">2024</text>
+            <text x="970" y="228" font-size="10.5">2025</text>
+            <text x="1055" y="228" font-size="10.5" text-anchor="end">'26</text>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Worst drawdowns table -->
+      <table class="ddtable">
+        <thead>
+          <tr><th>#</th><th>Drawdown peak</th><th>Trough</th><th>Recovery</th><th>Duration</th><th style="text-align:right">Max DD</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="dd-rank">i</td><td>Feb 2020</td><td>Mar 2020</td><td>Oct 2020</td><td>7 months</td><td class="dd-val">&minus;24.5%</td></tr>
+          <tr><td class="dd-rank">ii</td><td>Mar 2022</td><td>Jun 2022</td><td>Apr 2023</td><td>13 months</td><td class="dd-val">&minus;11.3%</td></tr>
+          <tr><td class="dd-rank">iii</td><td>Sep 2018</td><td>Oct 2018</td><td>Feb 2019</td><td>5 months</td><td class="dd-val">&minus;7.2%</td></tr>
+          <tr><td class="dd-rank">iv</td><td>Aug 2021</td><td>Nov 2021</td><td>Mar 2022</td><td>7 months</td><td class="dd-val">&minus;6.4%</td></tr>
+          <tr><td class="dd-rank">v</td><td>Jan 2026</td><td>Feb 2026</td><td>in progress</td><td>2+ months</td><td class="dd-val">&minus;3.6%</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- v Composition -->
+  <section class="sec" id="composition">
+    <div class="wrap">
+      <div class="head">
+        <span class="lab"><span class="n">v</span>Composition</span>
+        <h2>What the portfolio holds.</h2>
+        <p class="intro">Current sector exposure, market-cap mix, and the top holdings as of the most recent rebalance. Holdings shift monthly.</p>
+      </div>
+      <div>
+
+        <div class="secbox">
+          <div class="sbtitle">Sector allocation &middot; as of 30 April 2026</div>
+          <div class="sb-bar">
+            <div style="width:28%;background:var(--accent);opacity:.9"></div>
+            <div style="width:18%;background:var(--accent);opacity:.72"></div>
+            <div style="width:12%;background:var(--accent);opacity:.58"></div>
+            <div style="width:10%;background:var(--accent);opacity:.46"></div>
+            <div style="width:8%;background:var(--accent);opacity:.36"></div>
+            <div style="width:8%;background:var(--accent);opacity:.28"></div>
+            <div style="width:6%;background:var(--accent);opacity:.20"></div>
+            <div style="width:10%;background:var(--ink-mute);opacity:.4"></div>
+          </div>
+          <div class="sb-leg">
+            <div class="li"><span class="sb-dot" style="background:var(--accent);opacity:.9"></span><span class="sb-nm">Financial Services</span><span class="sb-pc">28.4%</span></div>
+            <div class="li"><span class="sb-dot" style="background:var(--accent);opacity:.72"></span><span class="sb-nm">Information Technology</span><span class="sb-pc">18.1%</span></div>
+            <div class="li"><span class="sb-dot" style="background:var(--accent);opacity:.58"></span><span class="sb-nm">Energy</span><span class="sb-pc">12.2%</span></div>
+            <div class="li"><span class="sb-dot" style="background:var(--accent);opacity:.46"></span><span class="sb-nm">Consumer Discretionary</span><span class="sb-pc">10.1%</span></div>
+            <div class="li"><span class="sb-dot" style="background:var(--accent);opacity:.36"></span><span class="sb-nm">Healthcare</span><span class="sb-pc">8.2%</span></div>
+            <div class="li"><span class="sb-dot" style="background:var(--accent);opacity:.28"></span><span class="sb-nm">Industrials</span><span class="sb-pc">7.8%</span></div>
+            <div class="li"><span class="sb-dot" style="background:var(--accent);opacity:.20"></span><span class="sb-nm">Materials</span><span class="sb-pc">5.6%</span></div>
+            <div class="li"><span class="sb-dot" style="background:var(--ink-mute);opacity:.4"></span><span class="sb-nm">Cash &amp; other</span><span class="sb-pc">9.6%</span></div>
+          </div>
+        </div>
+
+        <!-- Top 10 holdings -->
+        <table class="htable">
+          <thead>
+            <tr><th style="width:42px">#</th><th>Holding</th><th>Sector</th><th style="text-align:right">Weight</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="h-rank">i</td><td>HDFC Bank</td><td class="h-sec">Financial Services</td><td class="h-wt">8.2%</td></tr>
+            <tr><td class="h-rank">ii</td><td>Reliance Industries</td><td class="h-sec">Energy</td><td class="h-wt">7.6%</td></tr>
+            <tr><td class="h-rank">iii</td><td>ICICI Bank</td><td class="h-sec">Financial Services</td><td class="h-wt">6.8%</td></tr>
+            <tr><td class="h-rank">iv</td><td>Infosys</td><td class="h-sec">Information Technology</td><td class="h-wt">6.2%</td></tr>
+            <tr><td class="h-rank">v</td><td>Bharti Airtel</td><td class="h-sec">Telecommunications</td><td class="h-wt">5.8%</td></tr>
+            <tr><td class="h-rank">vi</td><td>Tata Consultancy Services</td><td class="h-sec">Information Technology</td><td class="h-wt">5.4%</td></tr>
+            <tr><td class="h-rank">vii</td><td>Larsen &amp; Toubro</td><td class="h-sec">Industrials</td><td class="h-wt">4.9%</td></tr>
+            <tr><td class="h-rank">viii</td><td>Bajaj Finance</td><td class="h-sec">Financial Services</td><td class="h-wt">4.6%</td></tr>
+            <tr><td class="h-rank">ix</td><td>State Bank of India</td><td class="h-sec">Financial Services</td><td class="h-wt">4.2%</td></tr>
+            <tr><td class="h-rank">x</td><td>Mahindra &amp; Mahindra</td><td class="h-sec">Consumer Discretionary</td><td class="h-wt">4.0%</td></tr>
+          </tbody>
+        </table>
+        <p style="font-size:12.5px;color:var(--ink-mute);font-style:italic;margin-top:-12px;margin-bottom:22px">Top 10 holdings represent 57.7% of the portfolio. Total positions: 17. Full holdings disclosed monthly to onboarded clients.</p>
+
+        <!-- Portfolio characteristics -->
+        <div class="secbox">
+          <div class="sbtitle">Portfolio characteristics</div>
+          <div class="mcap-row"><span class="mcap-l">Number of holdings</span><span class="mcap-v">17</span></div>
+          <div class="mcap-row"><span class="mcap-l">Top 5 concentration</span><span class="mcap-v">34.6%</span></div>
+          <div class="mcap-row"><span class="mcap-l">Top 10 concentration</span><span class="mcap-v">57.7%</span></div>
+          <div class="mcap-row"><span class="mcap-l">Largest single position</span><span class="mcap-v">8.2%</span></div>
+          <div class="mcap-row"><span class="mcap-l">Weighted average market cap</span><span class="mcap-v">&#8377;3,42,000 Cr</span></div>
+          <div class="mcap-row"><span class="mcap-l">Median market cap</span><span class="mcap-v">&#8377;1,84,000 Cr</span></div>
+          <div class="mcap-row"><span class="mcap-l">Active share</span><span class="mcap-v">62%</span></div>
+          <div class="mcap-row"><span class="mcap-l">Portfolio turnover (annualised)</span><span class="mcap-v">82%</span></div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- vi Methodology -->
+  <section class="sec" id="methodology">
+    <div class="wrap">
+      <div class="head">
+        <span class="lab"><span class="n">vi</span>Methodology</span>
+        <h2>How it works.</h2>
+        <p class="intro">A rules-based momentum ranking, applied to a clean universe, rebalanced on a fixed cadence. No discretion at the trade level.</p>
+      </div>
+      <div class="prose">
+        <p>At every monthly rebalance, the strategy ranks the NSE 100 universe by a composite momentum signal &mdash; multi-period price momentum, adjusted for volatility, with a recent-month skip to dampen short-term mean reversion noise.</p>
+        <p>The top-ranked names are selected for the portfolio, typically 15 to 20 positions. Position weights are set by inverse volatility &mdash; smaller weights on more volatile names, larger weights on steadier ones &mdash; with a single-name cap to limit concentration. Turnover constraints prevent excessive churn between rebalances.</p>
+        <p>Between rebalances, the strategy is held as-is. Names that fall through pre-defined trigger levels exit through trailing stops; positions are not re-entered until they re-qualify at the next rebalance. The intent is to ride trends while they exist, and exit cleanly when they do not.</p>
+        <p>The strategy does not use leverage, short positions, or derivatives. Those approaches sit inside the QX Funds wrapper. For PMS clients who want explicit downside protection, the firm can pair the Large-cap Momentum allocation with an index-option overlay separately as part of a wider mandate.</p>
+        <div class="items">
+          <span class="it">Composite momentum signal</span><span class="it">Volatility-adjusted ranking</span><span class="it">Monthly rebalance</span><span class="it">Inverse-volatility weighting</span><span class="it">Single-name cap</span><span class="it">Trailing stops</span><span class="it">Turnover constraints</span><span class="it">No leverage</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- vii Fees & suitability -->
+  <section class="sec" id="fees">
+    <div class="wrap">
+      <div class="head">
+        <span class="lab"><span class="n">vii</span>Fees &amp; suitability</span>
+        <h2>Who it&rsquo;s for. What it costs.</h2>
+        <p class="intro">A PMS strategy for clients delegating day-to-day decisions, with capital that can stay invested through equity cycles.</p>
+      </div>
+      <div class="prose">
+
+        <div class="fees-mini">
+          <div class="fm-row"><span class="fm-l">Minimum investment</span><span class="fm-v">&#8377;50 lakh</span></div>
+          <div class="fm-row"><span class="fm-l">Wrapper</span><span class="fm-v">SEBI PMS</span></div>
+          <div class="fm-row"><span class="fm-l">Management fee</span><span class="fm-v">As per PMS Agreement</span></div>
+          <div class="fm-row"><span class="fm-l">Performance fee</span><span class="fm-v">Above hurdle, HWM</span></div>
+          <div class="fm-row"><span class="fm-l">Exit load</span><span class="fm-v">Per mandate</span></div>
+        </div>
+
+        <p>Large-cap Momentum sits inside the firm&rsquo;s Portfolio Management Service. The minimum is &#8377;50 lakh, the threshold set by SEBI for PMS. Fees are charged on AUM (management) and on returns above an agreed hurdle (performance), with high water mark. Specific rates are set in the PMS Agreement.</p>
+        <p>The strategy is best suited to clients with a five-year-plus horizon, equity-comfortable risk profile, and the patience to sit through monthly noise. It works as a standalone allocation, as part of a multi-strategy PMS portfolio, or alongside other roster strategies (Multi-cap Momentum, Buy on Dips) for broader diversification.</p>
+        <p>Read more about the <a style="color:var(--accent);text-decoration:none" href="flameback-pms.html">Portfolio Management service</a>, including statutory disclosures, the full PMS framework, and how strategies are combined for individual mandates.</p>
+        <div class="items">
+          <span class="it">&#8377;50 lakh minimum</span><span class="it">SEBI PMS</span><span class="it">5+ year horizon</span><span class="it">Equity-comfortable</span><span class="it">Standalone or blended</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- viii Risks (last content section before CTA) -->
+  <section class="sec" id="risks">
+    <div class="wrap">
+      <div class="head">
+        <span class="lab"><span class="n">viii</span>Risks</span>
+        <h2>What can go wrong.</h2>
+        <p class="intro">A long-only equity strategy carries clear risks. They are managed at the strategy level, not avoided. Clients should hold them in mind before, during, and after onboarding.</p>
+      </div>
+      <div>
+        <div class="risk-list">
+          <div class="risk-item">
+            <span class="r-mark">i</span>
+            <div>
+              <h4>Market risk</h4>
+              <p>Equities are volatile. Diversified large-caps have lost 20&ndash;30% within months in stress periods. The strategy participates fully in those declines &mdash; there are no hedges, no cash buffer, and no derivatives. The drawdown table is the documented record.</p>
+            </div>
+          </div>
+          <div class="risk-item">
+            <span class="r-mark">ii</span>
+            <div>
+              <h4>Momentum reversal</h4>
+              <p>Momentum strategies can experience abrupt reversals at sharp turning points &mdash; yesterday&rsquo;s winners become today&rsquo;s losers. Trailing stops and the next rebalance correct for this, but exit signals can lag a fast reversal by weeks. The cost shows up in transition months.</p>
+            </div>
+          </div>
+          <div class="risk-item">
+            <span class="r-mark">iii</span>
+            <div>
+              <h4>Mean-reverting markets</h4>
+              <p>When markets favour laggards over leaders, the strategy underperforms. 2022 is the most recent example: the strategy returned +0.8% while the benchmark returned +4.3%. Such periods can extend twelve to eighteen months and test client patience meaningfully.</p>
+            </div>
+          </div>
+          <div class="risk-item">
+            <span class="r-mark">iv</span>
+            <div>
+              <h4>Concentration</h4>
+              <p>The portfolio holds 15&ndash;20 names, with sector tilts driven by where momentum currently is &mdash; presently 28% in Financial Services. Single-name shocks (corporate action, accounting issue, regulatory event) or sector shocks (policy change, commodity move) can move the portfolio materially.</p>
+            </div>
+          </div>
+          <div class="risk-item">
+            <span class="r-mark">v</span>
+            <div>
+              <h4>Behavioural risk</h4>
+              <p>The strategy compounds only because investors stay invested through drawdowns. Selling at the bottom locks in losses. Clients without a five-year-plus horizon may struggle to hold through periods like March 2020 (&minus;24.5%) or the 2022 sideways year. Mandate fit matters more than strategy fit.</p>
+            </div>
+          </div>
+          <div class="risk-item">
+            <span class="r-mark">vi</span>
+            <div>
+              <h4>Factor crowding</h4>
+              <p>As momentum strategies have become more widely adopted globally, the factor itself can experience crowded-trade dynamics &mdash; sharp drawdowns when many participants exit similar positions simultaneously. This risk is most acute around macro inflection points and policy shifts.</p>
+            </div>
+          </div>
+          <div class="risk-item">
+            <span class="r-mark">vii</span>
+            <div>
+              <h4>Tax and turnover</h4>
+              <p>Annualised turnover near 80% means more taxable events than a buy-and-hold portfolio. Short-term capital gains tax can be a meaningful drag on net-of-tax returns for clients in higher tax brackets. All performance shown on this page is pre-tax.</p>
+            </div>
+          </div>
+          <div class="risk-item">
+            <span class="r-mark">viii</span>
+            <div>
+              <h4>Operational and structural</h4>
+              <p>The PMS structure relies on third-party custody, broker execution, and systems uptime. SEBI regulations on Portfolio Managers may change. None of these are unique to the strategy, but they are real and outside the strategy team&rsquo;s direct control.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="risk-foot">
+          The strategy is not designed to avoid losses &mdash; it is designed to compound through cycles by participating in equity markets with discipline. Clients who cannot accept the risks above should consider lower-volatility offerings, or speak with the firm about a <span class="acc">blended mandate</span> that includes hedges or fixed-income allocation.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Factsheet download banner -->
+  <section class="fcta" id="factsheet">
+    <div class="wrap">
+      <div class="fcta-grid">
+        <div>
+          <h2>The full factsheet.</h2>
+          <p>Strategy details, performance data, attribution, risk breakdown, holdings, and commentary &mdash; in a single PDF, updated monthly.</p>
+        </div>
+        <div class="fcta-ctas">
+          <a class="btn" href="#" id="dl-factsheet-2">
+            <svg class="dl" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v14m-5-5l5 5 5-5M5 21h14"/></svg>
+            Download factsheet PDF
+          </a>
+          <a class="btn-out" href="flameback-app-splash.html">Onboard <span class="ar">&rarr;</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <div class="footin">
+        <a class="wm" href="index.html">flameback<span class="p">.</span></a>
+        <div class="footcols">
+          <div class="footcol"><h4>Firm</h4><a href="flameback-firm.html">Team</a><a href="flameback-philosophy.html">Investment philosophy</a><a href="flameback-strategy-rd.html">Strategy R&amp;D</a><a href="flameback-technology.html">Technology</a></div>
+          <div class="footcol"><h4>Offerings</h4><a href="flameback-advisory.html">Advisory</a><a href="flameback-pms.html">Portfolio Management</a><a href="flameback-qx-funds.html">QX Funds</a><a href="flameback-international.html">International</a></div>
+          <div class="footcol"><h4>Contact</h4><a href="#">Bangalore, India</a><a href="#">hello@flameback.in</a></div>
+        </div>
+      </div>
+      <div class="disc">
+        <span>&copy; 2026 Flameback Capital Pvt Ltd &middot; SEBI PMS INP000007358</span>
+        <span class="legal">Investments are subject to market risks. Read all related documents including the PMS Disclosure Document carefully before investing. Past performance does not guarantee future results. Returns shown are time-weighted, net of fees and expenses, calculated per SEBI guidelines for Portfolio Managers.</span>
+      </div>
+    </div>
+  </footer>
+
+<script>
+  var root=document.documentElement, tg=document.getElementById('toggle');
+  tg.addEventListener('click',function(){root.classList.toggle('light');tg.textContent=root.classList.contains('light')?'Dark':'Light';});
+  var nav=document.getElementById('nav');
+  window.addEventListener('scroll',function(){nav.classList.toggle('scrolled',window.scrollY>16)});
+
+  // Heatmap colour coding based on data-v
+  document.querySelectorAll('#heatmap td[data-v]').forEach(function(td){
+    var v = parseFloat(td.getAttribute('data-v'));
+    if(isNaN(v)) return;
+    var cls = '';
+    if(v >= 8) cls = 'pos-5';
+    else if(v >= 4) cls = 'pos-4';
+    else if(v >= 2) cls = 'pos-3';
+    else if(v >= 1) cls = 'pos-2';
+    else if(v > 0) cls = 'pos-1';
+    else if(v >= -1) cls = 'neg-1';
+    else if(v >= -2) cls = 'neg-2';
+    else if(v >= -5) cls = 'neg-3';
+    else cls = 'neg-4';
+    td.classList.add(cls);
+  });
+
+  // In-page nav active state
+  var sections = ['overview','performance','returns','risk','composition','methodology','fees','risks'];
+  var pnavLinks = document.querySelectorAll('#pnav a');
+  function updateActive(){
+    var fromTop = window.scrollY + 180;
+    var current = sections[0];
+    sections.forEach(function(id){
+      var el = document.getElementById(id);
+      if(el && el.offsetTop <= fromTop){ current = id; }
+    });
+    pnavLinks.forEach(function(a){
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  }
+  window.addEventListener('scroll', updateActive);
+  updateActive();
+
+  // Factsheet download placeholder
+  ['dl-factsheet','dl-factsheet-2'].forEach(function(id){
+    var el = document.getElementById(id);
+    if(el) el.addEventListener('click', function(e){
+      e.preventDefault();
+      alert('Factsheet PDF (Apr 2026) would download here. Wire to your CDN/factsheet path.');
+    });
+  });
+</script>
+  <script src="reload.js"></script>
+</body>
+</html>

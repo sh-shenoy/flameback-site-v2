@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>flameback. — Which Flameback?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#1A1714;--ink:#F2EDE3;--ink-soft:rgba(242,237,227,.66);--ink-mute:rgba(242,237,227,.44);--line:rgba(242,237,227,.16);--accent:#FF6D0A;--btn-bg:#FF6D0A;--btn-ink:#1A1714;--grain-blend:screen;--grain-op:.055;--card:rgba(242,237,227,.03)}
+  :root.light{--bg:#FCFAF6;--ink:#1A1714;--ink-soft:rgba(26,23,20,.68);--ink-mute:rgba(26,23,20,.46);--line:rgba(26,23,20,.14);--accent:#B23E08;--btn-bg:#1A1714;--btn-ink:#FCFAF6;--grain-blend:multiply;--grain-op:.035;--card:rgba(26,23,20,.025)}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:"Source Serif 4",serif;transition:background .5s,color .5s;line-height:1.55;font-variant-numeric:tabular-nums;min-height:100vh;display:flex;flex-direction:column}
+  body::after{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;mix-blend-mode:var(--grain-blend);opacity:var(--grain-op);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  h1,h2,h3,h4{font-family:"Cormorant Garamond",serif;font-weight:500;letter-spacing:-.014em;line-height:1.04}
+  h1 em,h2 em,h3 em{color:var(--accent);font-style:italic;font-weight:500}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 clamp(22px,5vw,44px)}
+
+  /* ===== site chrome (matches marketing pages) ===== */
+  nav{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 84%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid transparent;transition:border-color .4s}
+  nav.scrolled{border-color:var(--line)}
+  .navin{display:flex;align-items:center;justify-content:space-between;padding:14px 0;gap:24px}
+  .wm{font-family:"Source Serif 4",serif;font-weight:600;font-size:18px;color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+  .wm .p{color:var(--accent)}
+  .navr{display:flex;align-items:center;gap:22px}
+  .navr a{color:var(--ink-soft);text-decoration:none;font-size:14px;transition:color .3s}
+  .navr a:hover{color:var(--ink)}
+  .navr a.cta{background:var(--btn-bg);color:var(--btn-ink);padding:8px 16px;font-weight:500}
+  .toggle{background:none;border:1px solid var(--line);color:var(--ink-soft);cursor:pointer;font-family:"Source Serif 4",serif;font-size:12.5px;font-style:italic;padding:5px 13px;border-radius:999px}
+  @media(max-width:1020px){.navr .navlink{display:none}}
+
+  footer{padding:60px 0 32px;position:relative;z-index:2;border-top:1px solid var(--line);margin-top:auto}
+  .footin{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;margin-bottom:36px}
+  .footcols{display:flex;gap:clamp(34px,5vw,64px);flex-wrap:wrap}
+  .footcol h4{font-style:italic;font-weight:400;font-size:12.5px;color:var(--ink-mute);margin-bottom:14px;letter-spacing:.04em;text-transform:uppercase;font-family:"JetBrains Mono",monospace}
+  .footcol a{display:block;color:var(--ink-soft);text-decoration:none;font-size:14px;margin-bottom:9px}
+  .footcol a:hover{color:var(--accent)}
+  .disc{padding-top:22px;border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px}
+  .disc span{font-size:11.5px;color:var(--ink-mute);line-height:1.6}
+  .disc .legal{max-width:72ch;font-style:italic}
+  .disc .reg-links a{color:var(--ink-mute);text-decoration:none;font-size:11.5px;font-style:italic;margin-left:14px}
+
+  /* ===== screen content — centred column on the wide page ===== */
+  main{position:relative;z-index:2;flex:1}
+  .screen{max-width:640px;margin:0 auto;padding:clamp(44px,7vh,84px) 0 clamp(56px,9vh,96px);display:flex;flex-direction:column}
+  .back-link{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-style:italic;color:var(--ink-mute);text-decoration:none;margin-bottom:30px;transition:color .3s}
+  .back-link:hover{color:var(--ink-soft)}
+
+  .head-wrap{text-align:center;margin-bottom:34px}
+  .eyebrow{display:inline-flex;align-items:center;gap:10px;font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink-mute);letter-spacing:.09em;text-transform:uppercase;margin-bottom:16px}
+  .eyebrow .l{width:20px;height:1px;background:var(--accent)}
+  h1.head{font-size:clamp(38px,5.4vw,56px);line-height:1.02;margin-bottom:11px}
+  .lede{font-size:16px;font-style:italic;color:var(--ink-soft);max-width:340px;margin:0 auto}
+
+  .prods{display:flex;flex-direction:column;gap:14px}
+  .prod{border:1px solid var(--line);background:var(--card);transition:border-color .3s}
+  .prod.live:hover{border-color:var(--ink-soft)}
+  .prod-btn{display:block;width:100%;text-align:left;background:none;border:none;color:var(--ink);font-family:"Source Serif 4",serif;padding:22px 24px;cursor:pointer}
+  .prod-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+  .prod-top .ti{font-size:19px;font-weight:500;line-height:1.2}
+  .prod .sub{font-size:13.5px;font-style:italic;color:var(--ink-soft);margin-top:6px}
+  .stats{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:13px;font-family:"JetBrains Mono",monospace;font-size:9.5px;color:var(--ink-mute);letter-spacing:.04em;text-transform:uppercase}
+  .stats span{position:relative}
+  .stats span+span::before{content:"·";position:absolute;left:-9px;color:var(--line)}
+
+  .badge{flex:none;font-family:"JetBrains Mono",monospace;font-size:8px;letter-spacing:.07em;text-transform:uppercase;border-radius:999px;padding:3px 8px}
+  .badge.soon{border:1px solid var(--line);color:var(--ink-mute)}
+  .badge.recc{background:var(--accent);color:var(--btn-ink)}
+
+  .know{display:flex;align-items:center;justify-content:space-between;width:100%;background:none;border:none;border-top:1px solid var(--line);color:var(--accent);font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.07em;text-transform:uppercase;padding:13px 24px;cursor:pointer}
+  .know .ch{transition:transform .3s}
+  .know.open .ch{transform:rotate(180deg)}
+  .panel{max-height:0;overflow:hidden;transition:max-height .35s ease}
+  .panel.open{max-height:340px}
+  .panel-in{padding:2px 24px 20px;font-size:13.5px;line-height:1.62;color:var(--ink-soft)}
+  .panel-in b{color:var(--ink);font-weight:500;font-style:normal}
+
+  .prod.locked .prod-top .ti,.prod.locked .sub{opacity:.74}
+
+  .backlink{padding-top:30px;text-align:center}
+  .backlink a{font-family:"Source Serif 4",serif;font-style:italic;font-size:14px;color:var(--ink-mute);text-decoration:none;border-bottom:1px solid var(--line);padding-bottom:2px}
+  .backlink a:hover{color:var(--ink-soft)}
+</style>
+</head>
+<body>
+
+  <nav id="nav">
+    <div class="wrap navin">
+      <a class="wm" href="index.html">flameback<span class="p">.</span></a>
+      <div class="navr">
+        <a class="navlink" href="flameback-who-we-are.html">Who we are</a>
+        <a class="navlink" href="flameback-what-we-do.html">What we do</a>
+        <a class="navlink" href="flameback-our-work.html">Our work</a>
+        <a class="navlink" href="flameback-insights.html">Insights</a>
+        <button class="toggle" id="toggle">Light</button>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <div class="wrap">
+      <div class="screen">
+        <a href="flameback-app-path.html" class="back-link">&larr; Back</a>
+
+        <div class="head-wrap">
+          <span class="eyebrow"><span class="l"></span>Start your journey</span>
+          <h1 class="head">Which <em>Flameback?</em></h1>
+          <p class="lede">Pick the product that fits how you want to invest.</p>
+        </div>
+
+        <div class="prods">
+
+          <!-- PMS Lite — LIVE -->
+          <div class="prod live">
+            <button class="prod-btn" onclick="location.href='flameback-app-profile-intro.html'">
+              <div class="prod-top">
+                <div>
+                  <div class="ti">PMS Lite — Advisory</div>
+                  <div class="sub">Get a portfolio matched to you, then approve each trade.</div>
+                </div>
+                <span class="badge recc">Live</span>
+              </div>
+              <div class="stats"><span>Minimum ₹5L</span><span>Self-authorized trades</span><span>SEBI RIA-registered</span></div>
+            </button>
+            <button class="know" data-p="p1">Know more <span class="ch">⌄</span></button>
+            <div class="panel" id="p1"><div class="panel-in">
+              PMS Lite is our RIA-advisory product. We build a portfolio matched to your risk profile, you approve every trade before it executes. Best for first-time investors and those who want to stay in the driver's seat. <b>Minimum ticket: ₹5 lakh. Fee: 0.9% p.a. of AUM. SEBI registration: INA000017xxx.</b>
+            </div></div>
+          </div>
+
+          <!-- PMS — COMING SOON -->
+          <div class="prod locked">
+            <button class="prod-btn" onclick="location.href='flameback-app-comingsoon.html?p=PMS'">
+              <div class="prod-top">
+                <div>
+                  <div class="ti">PMS — Discretionary</div>
+                  <div class="sub">Hand the keys over — our team trades on your behalf, no approval needed.</div>
+                </div>
+                <span class="badge soon">Coming soon</span>
+              </div>
+              <div class="stats"><span>Minimum ₹50L</span><span>Discretionary</span><span>SEBI PMS-registered</span></div>
+            </button>
+            <button class="know" data-p="p2">Know more <span class="ch">⌄</span></button>
+            <div class="panel" id="p2"><div class="panel-in">
+              PMS is our discretionary product. You commit capital, our team makes the calls. No per-trade approval — fast execution, less hand-holding. Best for investors with established conviction and a larger ticket who want professional management. <b>Minimum ticket: ₹50 lakh (SEBI floor). Fee: TBD — typical PMS is fixed + performance, exact terms to be confirmed. SEBI PMS registration: INP000xxxxx.</b>
+            </div></div>
+          </div>
+
+          <!-- International — COMING SOON -->
+          <div class="prod locked">
+            <button class="prod-btn" onclick="location.href='flameback-app-comingsoon.html?p=International%20Investing'">
+              <div class="prod-top">
+                <div>
+                  <div class="ti">International Investing</div>
+                  <div class="sub">Diversify into global markets — US equities and beyond.</div>
+                </div>
+                <span class="badge soon">Coming soon</span>
+              </div>
+              <div class="stats"><span>Minimum $5,000 USD</span><span>LRS-regulated</span><span>Currency-hedged</span></div>
+            </button>
+            <button class="know" data-p="p3">Know more <span class="ch">⌄</span></button>
+            <div class="panel" id="p3"><div class="panel-in">
+              International Investing lets you put a portion of your portfolio into US and other global markets. Operates under RBI's Liberalised Remittance Scheme (LRS) — annual USD limit applies. Best for investors who want geographic diversification beyond Indian equities. <b>Minimum ticket: $5,000 USD. Fee: TBD. Partner broker: TBD. Tax reporting: foreign-asset disclosure on your ITR (Schedule FA).</b>
+            </div></div>
+          </div>
+
+        </div>
+
+        <div class="backlink"><a href="flameback-app-path.html">Back to start</a></div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <div class="footin">
+        <a class="wm" href="index.html">flameback<span class="p">.</span></a>
+        <div class="footcols">
+          <div class="footcol"><h4>The firm</h4><a href="flameback-who-we-are.html">Who we are</a><a href="flameback-what-we-do.html">What we do</a><a href="flameback-our-work.html">Our work</a><a href="flameback-clients.html">Clients</a></div>
+          <div class="footcol"><h4>Open</h4><a href="flameback-insights.html">Insights</a><a href="flameback-tools.html">Tools</a><a href="flameback-offbook.html">Off-book</a></div>
+          <div class="footcol"><h4>Contact</h4><a href="flameback-app-splash.html">Start your journey</a><a href="#">hello@flameback.in</a><a href="#">Bangalore, India</a></div>
+        </div>
+      </div>
+      <div class="disc">
+        <span>&copy; 2026 Flameback Capital Pvt Ltd</span>
+        <span class="legal">SEBI registered &middot; SEC filed for US strategy. Investments are subject to market risk. Past performance is not indicative of future results.</span>
+        <span class="reg-links"><a href="flameback-pms-disclosure.html">PMS disclosure</a><a href="flameback-advisory-disclosure.html">IA disclosure</a></span>
+      </div>
+    </div>
+  </footer>
+
+<script>
+  // light/dark toggle
+  var t=document.getElementById('toggle');
+  t.onclick=function(){var l=document.documentElement.classList.toggle('light');t.textContent=l?'Dark':'Light';};
+  // nav border on scroll
+  var nv=document.getElementById('nav');
+  window.addEventListener('scroll',function(){nv.classList.toggle('scrolled',window.scrollY>8);});
+
+  // Know-more toggles (does not commit selection)
+  document.querySelectorAll('.know').forEach(function(btn){
+    btn.addEventListener('click',function(e){
+      e.stopPropagation();
+      var panel=document.getElementById(btn.getAttribute('data-p'));
+      var open=panel.classList.toggle('open');
+      btn.classList.toggle('open',open);
+    });
+  });
+</script>
+  <script src="reload.js"></script>
+</body>
+</html>

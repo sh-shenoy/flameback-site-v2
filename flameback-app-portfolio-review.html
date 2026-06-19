@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>flameback. — Your strategy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#1A1714;--ink:#F2EDE3;--ink-soft:rgba(242,237,227,.66);--ink-mute:rgba(242,237,227,.44);--line:rgba(242,237,227,.16);--accent:#FF6D0A;--btn-bg:#FF6D0A;--btn-ink:#1A1714;--grain-blend:screen;--grain-op:.055;--card:rgba(242,237,227,.03);--navy:#10131F;--navy-ink:#EDEFF7}
+  :root.light{--bg:#FCFAF6;--ink:#1A1714;--ink-soft:rgba(26,23,20,.68);--ink-mute:rgba(26,23,20,.46);--line:rgba(26,23,20,.14);--accent:#B23E08;--btn-bg:#1A1714;--btn-ink:#FCFAF6;--grain-blend:multiply;--grain-op:.035;--card:rgba(26,23,20,.025);--navy:#161A28;--navy-ink:#EDEFF7}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:"Source Serif 4",serif;transition:background .5s,color .5s;line-height:1.55;font-variant-numeric:tabular-nums;min-height:100vh;display:flex;flex-direction:column}
+  body::after{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;mix-blend-mode:var(--grain-blend);opacity:var(--grain-op);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  h1,h2,h3,h4{font-family:"Cormorant Garamond",serif;font-weight:500;letter-spacing:-.014em;line-height:1.04}
+  h1 em,h2 em,h3 em{color:var(--accent);font-style:italic;font-weight:500}
+  .mono{font-family:"JetBrains Mono",monospace;letter-spacing:.07em;text-transform:uppercase}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 clamp(22px,5vw,44px)}
+
+  /* ===== site chrome (matches marketing pages) ===== */
+  nav{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 84%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid transparent;transition:border-color .4s}
+  nav.scrolled{border-color:var(--line)}
+  .navin{display:flex;align-items:center;justify-content:space-between;padding:14px 0;gap:24px}
+  .wm{font-family:"Source Serif 4",serif;font-weight:600;font-size:18px;color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+  .wm .p{color:var(--accent)}
+  .navr{display:flex;align-items:center;gap:22px}
+  .navr a{color:var(--ink-soft);text-decoration:none;font-size:14px;transition:color .3s}
+  .navr a:hover{color:var(--ink)}
+  .navr a.cta{background:var(--btn-bg);color:var(--btn-ink);padding:8px 16px;font-weight:500}
+  .toggle{background:none;border:1px solid var(--line);color:var(--ink-soft);cursor:pointer;font-family:"Source Serif 4",serif;font-size:12.5px;font-style:italic;padding:5px 13px;border-radius:999px}
+  @media(max-width:1020px){.navr .navlink{display:none}}
+
+  footer{padding:60px 0 32px;position:relative;z-index:2;border-top:1px solid var(--line);margin-top:auto}
+  .footin{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;margin-bottom:36px}
+  .footcols{display:flex;gap:clamp(34px,5vw,64px);flex-wrap:wrap}
+  .footcol h4{font-style:italic;font-weight:400;font-size:12.5px;color:var(--ink-mute);margin-bottom:14px;letter-spacing:.04em;text-transform:uppercase;font-family:"JetBrains Mono",monospace}
+  .footcol a{display:block;color:var(--ink-soft);text-decoration:none;font-size:14px;margin-bottom:9px}
+  .footcol a:hover{color:var(--accent)}
+  .footdisc{padding-top:22px;border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px}
+  .footdisc span{font-size:11.5px;color:var(--ink-mute);line-height:1.6}
+  .footdisc .legal{max-width:72ch;font-style:italic}
+  .footdisc .reg-links a{color:var(--ink-mute);text-decoration:none;font-size:11.5px;font-style:italic;margin-left:14px}
+
+  /* ===== screen content — wider centred column for rich charts ===== */
+  main{position:relative;z-index:2;flex:1}
+  .screen{max-width:760px;margin:0 auto;padding:clamp(34px,5vh,56px) 0 clamp(56px,9vh,96px)}
+  .back-link{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-style:italic;color:var(--ink-mute);text-decoration:none;margin-bottom:24px;transition:color .3s}
+  .back-link:hover{color:var(--ink-soft)}
+
+  /* hero */
+  .hero{background:var(--navy);color:var(--navy-ink);padding:30px 28px 30px}
+  .hero .badge{display:inline-flex;align-items:center;gap:7px;font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);border:1px solid color-mix(in srgb,var(--accent) 50%,transparent);border-radius:999px;padding:4px 11px;margin-bottom:16px}
+  .hero .lab{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(237,239,247,.5);margin-bottom:6px}
+  .hero h1{font-size:clamp(32px,5vw,46px);color:var(--navy-ink);margin-bottom:8px}
+  .hero h1 em{color:var(--accent)}
+  .hero .strat{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+  .hero .tag{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:rgba(237,239,247,.7);border:1px solid rgba(237,239,247,.2);border-radius:999px;padding:3px 9px}
+  .hero .sub{font-size:13px;font-style:italic;color:rgba(237,239,247,.66);line-height:1.55;margin-top:4px}
+  .scorepill{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.04em;color:rgba(237,239,247,.85)}
+  .scorepill b{color:var(--accent)}
+
+  .sumstrip{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid rgba(237,239,247,.14);margin-top:22px;padding-top:18px}
+  .sumstrip .c{text-align:center;padding:0 2px}
+  .sumstrip .c+.c{border-left:1px solid rgba(237,239,247,.12)}
+  .sumstrip .k{font-family:"JetBrains Mono",monospace;font-size:8.5px;letter-spacing:.07em;text-transform:uppercase;color:rgba(237,239,247,.5);margin-bottom:5px}
+  .sumstrip .v{font-family:"Cormorant Garamond",serif;font-size:20px;color:var(--navy-ink);line-height:1.05}
+  .sumstrip .v small{font-size:12px;color:rgba(237,239,247,.55)}
+
+  .sec-lab{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink-mute);letter-spacing:.09em;text-transform:uppercase;margin:30px 0 14px}
+
+  /* composition bar */
+  .compbar{display:flex;height:34px;border-radius:6px;overflow:hidden;border:1px solid var(--line)}
+  .compbar .seg{display:flex;align-items:center;justify-content:center;font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.04em;color:#fff;white-space:nowrap}
+  .seg.eq{background:var(--accent)}
+  .seg.debt{background:var(--navy);color:var(--navy-ink)}
+  .seg.cash{background:var(--ink-mute)}
+  .complegend{display:flex;gap:16px;margin-top:10px;flex-wrap:wrap}
+  .complegend span{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--ink-soft)}
+  .complegend i{width:10px;height:10px;border-radius:2px;display:inline-block}
+
+  /* strategy card */
+  .strat-card{border:1px solid var(--line);background:var(--card);padding:20px}
+  .strat-card .nm{font-size:24px;line-height:1.05;margin-bottom:4px}
+  .strat-card .chips{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 14px}
+  .strat-card .chips .ch{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-soft);border:1px solid var(--line);border-radius:999px;padding:3px 9px}
+  .metrics{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);margin-bottom:14px}
+  .metrics .m{background:var(--bg);padding:13px 14px}
+  .metrics .mk{font-family:"JetBrains Mono",monospace;font-size:8.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-mute);margin-bottom:5px}
+  .metrics .mv{font-family:"Cormorant Garamond",serif;font-size:21px;color:var(--ink);line-height:1}
+  .metrics .mv.pos{color:#3FA34D}.metrics .mv.neg{color:#C0392B}
+  :root.light .metrics .mv.pos{color:#2E7D32}:root.light .metrics .mv.neg{color:#A93226}
+  .alloc{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-soft);letter-spacing:.03em;padding:10px 0;border-top:1px solid var(--line);display:flex;justify-content:space-between}
+  .alloc b{color:var(--accent)}
+  .phil{font-size:13px;font-style:italic;color:var(--ink-soft);line-height:1.55;margin-top:4px}
+  .dd{margin-top:14px;border-top:1px solid var(--line);padding-top:12px}
+  .dd-tog{display:flex;align-items:center;justify-content:space-between;width:100%;background:none;border:none;cursor:pointer;font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);padding:0}
+  .dd-tog .arr{transition:transform .3s}
+  .dd.open .dd-tog .arr{transform:rotate(180deg)}
+  .dd-body{max-height:0;overflow:hidden;transition:max-height .4s ease}
+  .dd.open .dd-body{max-height:360px}
+  .perfchart{margin-top:14px}
+  .periods{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+  .periods button{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.05em;color:var(--ink-mute);background:none;border:1px solid var(--line);border-radius:999px;padding:4px 9px;cursor:pointer}
+  .periods button.on{color:var(--accent);border-color:var(--accent)}
+
+  .changelink{display:inline-block;margin-top:14px;font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--accent);letter-spacing:.05em;text-transform:uppercase;text-decoration:none;border-bottom:1px solid color-mix(in srgb,var(--accent) 40%,transparent);padding-bottom:2px}
+
+  /* holdings */
+  .holdbox{background:color-mix(in srgb,#E8DFC9 50%,var(--bg));border:1px solid var(--line);padding:6px 18px 14px}
+  :root.light .holdbox{background:#F4EEE0}
+  .hold{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+  .hold:last-child{border-bottom:none}
+  .hold .info{flex:1;min-width:0}
+  .hold .hn{font-size:14.5px;color:var(--ink);line-height:1.2}
+  .hold .hm{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-mute);margin-top:3px}
+  .hold .wt{font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--ink);white-space:nowrap}
+  .hold .typedot{width:8px;height:8px;border-radius:50%;flex:none}
+  .td-eq{background:var(--accent)}.td-debt{background:var(--navy)}.td-cash{background:var(--ink-mute)}
+  :root.light .td-debt{background:#2A3147}
+  .viewall{margin-top:12px;width:100%;background:none;border:1px solid var(--line);color:var(--ink-soft);font-family:"Source Serif 4",serif;font-style:italic;font-size:13px;padding:10px;cursor:pointer}
+  .hidden-hold{display:none}
+  .hidden-hold.shown{display:flex}
+
+  /* projection chart (navy) */
+  .projbox{background:var(--navy);border-radius:8px;padding:20px 18px;color:var(--navy-ink)}
+  .projbox .ctrl{display:flex;justify-content:space-between;gap:14px;margin-bottom:16px;flex-wrap:wrap}
+  .projbox label{display:block;font-family:"JetBrains Mono",monospace;font-size:8.5px;letter-spacing:.06em;text-transform:uppercase;color:rgba(237,239,247,.55);margin-bottom:7px}
+  .projbox .seg-toggle{display:flex;gap:5px;flex-wrap:wrap}
+  .projbox .seg-toggle button{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.04em;color:rgba(237,239,247,.7);background:none;border:1px solid rgba(237,239,247,.22);border-radius:999px;padding:5px 10px;cursor:pointer}
+  .projbox .seg-toggle button.on{color:var(--accent);border-color:var(--accent)}
+  .projlegend{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px}
+  .projlegend span{display:inline-flex;align-items:center;gap:6px;font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.04em;color:rgba(237,239,247,.7)}
+  .projlegend i{width:14px;height:2px;display:inline-block}
+  .projdisc{font-size:11px;font-style:italic;color:rgba(237,239,247,.5);margin-top:14px;line-height:1.5}
+
+  .scen{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);margin-top:16px}
+  .scen .s{background:var(--bg);padding:14px 12px}
+  .scen .sk{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:7px}
+  .scen .sk.g{color:#3FA34D}.scen .sk.o{color:var(--accent)}.scen .sk.r{color:#C0392B}
+  :root.light .scen .sk.g{color:#2E7D32}:root.light .scen .sk.r{color:#A93226}
+  .scen .sv{font-family:"Cormorant Garamond",serif;font-size:20px;line-height:1;color:var(--ink)}
+  .scen .scg{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink-soft);margin-top:5px}
+  .scen .sa{font-size:11px;font-style:italic;color:var(--ink-mute);margin-top:7px;line-height:1.4}
+
+  .contrib{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px}
+  .contrib .col{border:1px solid var(--line);padding:16px}
+  .contrib .ck{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-mute);margin-bottom:8px;line-height:1.4}
+  .contrib .cv{font-family:"Cormorant Garamond",serif;font-size:24px;line-height:1;color:var(--ink)}
+  .contrib .cv.green{color:#3FA34D}
+  :root.light .contrib .cv.green{color:#2E7D32}
+  .contrib .cx{font-size:11px;font-style:italic;color:var(--ink-soft);margin-top:6px}
+
+  .whatnext{border:1px solid var(--line);border-left:2px solid var(--accent);background:color-mix(in srgb,#E8DFC9 40%,var(--bg));padding:18px}
+  :root.light .whatnext{background:#F4EEE0}
+  .whatnext h4{font-size:18px;margin-bottom:10px}
+  .whatnext ul{list-style:none}
+  .whatnext li{font-size:13px;color:var(--ink-soft);line-height:1.5;padding:6px 0 6px 18px;position:relative}
+  .whatnext li::before{content:"—";position:absolute;left:0;color:var(--accent)}
+
+  .cta{display:flex;align-items:center;justify-content:center;gap:11px;width:100%;background:var(--btn-bg);color:var(--btn-ink);font-family:"Source Serif 4",serif;font-size:15.5px;font-weight:500;padding:16px;text-decoration:none;transition:gap .35s,opacity .3s;border:none;cursor:pointer;margin-top:24px}
+  .cta:hover{gap:15px;opacity:.93}
+  .seclink{display:block;text-align:center;margin-top:16px;font-family:"Source Serif 4",serif;font-style:italic;font-size:14px;color:var(--ink-soft);text-decoration:none}
+  .seclink:hover{color:var(--accent)}
+  .terlink{display:block;text-align:center;margin-top:12px;font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-mute);text-decoration:none}
+  .terlink:hover{color:var(--accent)}
+</style>
+</head>
+<body>
+
+  <nav id="nav">
+    <div class="wrap navin">
+      <a class="wm" href="index.html">flameback<span class="p">.</span></a>
+      <div class="navr">
+        <a class="navlink" href="flameback-who-we-are.html">Who we are</a>
+        <a class="navlink" href="flameback-what-we-do.html">What we do</a>
+        <a class="navlink" href="flameback-our-work.html">Our work</a>
+        <a class="navlink" href="flameback-insights.html">Insights</a>
+        <button class="toggle" id="toggle">Light</button>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <div class="wrap">
+      <div class="screen">
+        <a href="flameback-app-portfolio-path.html" class="back-link">&larr; Back</a>
+
+        <!-- PART A — HERO -->
+        <section class="hero">
+          <span class="badge">● AI-Optimised</span>
+          <div class="lab">Your strategy</div>
+          <h1>The <em>Balanced</em> Compounder</h1>
+          <div class="strat">
+            <span class="tag">Dynamic</span>
+            <span class="tag">Moderate band</span>
+            <span class="scorepill">Score <b>62</b> / 100</span>
+          </div>
+          <p class="sub">Selected by Flameback's optimisation engine — matched to your risk profile.</p>
+
+          <div class="sumstrip">
+            <div class="c"><div class="k">Initial</div><div class="v">₹10<small>L</small></div></div>
+            <div class="c"><div class="k">Monthly SIP</div><div class="v">₹25<small>k</small></div></div>
+            <div class="c"><div class="k">Horizon</div><div class="v">10<small>+ yr</small></div></div>
+            <div class="c"><div class="k">Objective</div><div class="v" style="font-size:15px">Build wealth</div></div>
+          </div>
+        </section>
+
+        <!-- PART B — COMPOSITION -->
+        <div class="sec-lab">Debt / equity composition</div>
+        <div class="compbar">
+          <div class="seg eq" style="width:62%">Equity 62%</div>
+          <div class="seg debt" style="width:35%">Debt 35%</div>
+          <div class="seg cash" style="width:3%"></div>
+        </div>
+        <div class="complegend">
+          <span><i style="background:var(--accent)"></i>Equity 62%</span>
+          <span><i class="td-debt" style="display:inline-block;width:10px;height:10px;border-radius:2px"></i>Debt 35%</span>
+          <span><i style="background:var(--ink-mute)"></i>Cash 3%</span>
+        </div>
+
+        <!-- strategy summary card -->
+        <div class="sec-lab">The strategy</div>
+        <div class="strat-card">
+          <div class="nm">The Balanced Compounder</div>
+          <div class="chips">
+            <span class="ch">Dynamic</span>
+            <span class="ch">Moderate</span>
+          </div>
+          <div class="metrics">
+            <div class="m"><div class="mk">Historic CAGR</div><div class="mv pos">14.2%</div></div>
+            <div class="m"><div class="mk">Maximum drawdown</div><div class="mv neg">−18.4%</div></div>
+            <div class="m"><div class="mk">Since inception</div><div class="mv">+241%</div></div>
+            <div class="m"><div class="mk">Sharpe ratio</div><div class="mv">1.18</div></div>
+          </div>
+          <div class="alloc"><span>₹ allocated</span><b>₹10,00,000</b></div>
+          <p class="phil">A steady, all-weather mix that leans into quality compounders while a debt sleeve cushions the falls. Built to grow without keeping you up at night.</p>
+
+          <div class="dd" id="dd1">
+            <button class="dd-tog" onclick="toggleDD('dd1')">Performance vs Nifty 500 TRI <span class="arr">▾</span></button>
+            <div class="dd-body">
+              <div class="perfchart">
+                <svg viewBox="0 0 320 130" width="100%" preserveAspectRatio="none" style="display:block">
+                  <polyline points="0,108 40,98 80,104 120,82 160,88 200,64 240,70 280,46 320,38" fill="none" stroke="var(--accent)" stroke-width="2.2"/>
+                  <polyline points="0,112 40,109 80,110 120,100 160,103 200,92 240,95 280,84 320,80" fill="none" stroke="var(--ink-mute)" stroke-width="1.4" stroke-dasharray="4 3"/>
+                </svg>
+                <div class="periods">
+                  <button>1M</button><button>3M</button><button>6M</button>
+                  <button class="on">1Y</button><button>3Y</button><button>All</button>
+                </div>
+                <p class="phil" style="margin-top:8px">Strategy (orange) vs Nifty 500 TRI (grey).</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <a href="flameback-app-portfolio-path.html" class="changelink">Change strategy</a>
+
+        <!-- PART C — METRICS GRID -->
+        <div class="sec-lab">Strategy metrics</div>
+        <div class="metrics">
+          <div class="m"><div class="mk">Historic CAGR</div><div class="mv pos">14.2%</div></div>
+          <div class="m"><div class="mk">Sharpe ratio</div><div class="mv">1.18</div></div>
+          <div class="m"><div class="mk">Maximum drawdown</div><div class="mv neg">−18.4%</div></div>
+          <div class="m"><div class="mk">Correlation · Nifty 500</div><div class="mv">0.74</div></div>
+        </div>
+
+        <!-- holdings -->
+        <div class="sec-lab">Top holdings</div>
+        <div class="holdbox">
+          <div class="hold"><span class="typedot td-eq"></span><div class="info"><div class="hn">HDFC Bank</div><div class="hm">Equity · Financials</div></div><span class="wt">9.4%</span></div>
+          <div class="hold"><span class="typedot td-eq"></span><div class="info"><div class="hn">Reliance Industries</div><div class="hm">Equity · Energy</div></div><span class="wt">7.8%</span></div>
+          <div class="hold"><span class="typedot td-eq"></span><div class="info"><div class="hn">Infosys</div><div class="hm">Equity · Technology</div></div><span class="wt">6.5%</span></div>
+          <div class="hold"><span class="typedot td-debt"></span><div class="info"><div class="hn">GOI 7.18% 2033</div><div class="hm">Debt · G-Sec</div></div><span class="wt">6.0%</span></div>
+          <div class="hold"><span class="typedot td-eq"></span><div class="info"><div class="hn">Asian Paints</div><div class="hm">Equity · Consumer</div></div><span class="wt">5.1%</span></div>
+          <div class="hold hidden-hold" id="h6"><span class="typedot td-eq"></span><div class="info"><div class="hn">Titan Company</div><div class="hm">Equity · Consumer</div></div><span class="wt">4.6%</span></div>
+          <div class="hold hidden-hold" id="h7"><span class="typedot td-debt"></span><div class="info"><div class="hn">AAA PSU Bond 2029</div><div class="hm">Debt · Corporate</div></div><span class="wt">4.2%</span></div>
+          <div class="hold hidden-hold" id="h8"><span class="typedot td-cash"></span><div class="info"><div class="hn">Liquid cash sleeve</div><div class="hm">Cash · Treasury</div></div><span class="wt">3.0%</span></div>
+          <button class="viewall" id="viewAll" onclick="showAll()">View all holdings</button>
+        </div>
+
+        <!-- PART D — PROJECTION -->
+        <div class="sec-lab">10-year projection</div>
+        <div class="projbox">
+          <div class="ctrl">
+            <div>
+              <label>Horizon</label>
+              <div class="seg-toggle" id="horizonSeg">
+                <button data-h="5">5 yr</button>
+                <button data-h="8">8 yr</button>
+                <button class="on" data-h="10">10 yr</button>
+              </div>
+            </div>
+          </div>
+          <svg viewBox="0 0 320 170" width="100%" style="display:block">
+            <defs>
+              <linearGradient id="basefill" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="var(--accent)" stop-opacity="0.35"/>
+                <stop offset="100%" stop-color="var(--accent)" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <!-- base fill -->
+            <path id="baseFill" d="M0,150 L0,150 80,118 160,86 240,52 320,22 L320,170 L0,170 Z" fill="url(#basefill)"/>
+            <!-- bullish -->
+            <polyline id="lnBull" points="0,150 80,104 160,64 240,30 320,8" fill="none" stroke="#3FA34D" stroke-width="1.8" stroke-dasharray="5 3"/>
+            <!-- base -->
+            <polyline id="lnBase" points="0,150 80,118 160,86 240,52 320,22" fill="none" stroke="var(--accent)" stroke-width="2.4"/>
+            <!-- bearish -->
+            <polyline id="lnBear" points="0,150 80,136 160,124 240,114 320,104" fill="none" stroke="#C0392B" stroke-width="1.8" stroke-dasharray="5 3"/>
+            <!-- contributions -->
+            <polyline id="lnContrib" points="0,150 80,138 160,126 240,114 320,102" fill="none" stroke="#EDEFF7" stroke-width="1.2" stroke-dasharray="2 3" opacity="0.7"/>
+          </svg>
+          <div class="projlegend">
+            <span><i style="background:#3FA34D"></i>Bullish</span>
+            <span><i style="background:var(--accent)"></i>Base case</span>
+            <span><i style="background:#C0392B"></i>Bearish</span>
+            <span><i style="background:#EDEFF7"></i>Contributions</span>
+          </div>
+          <p class="projdisc">Projections based on backtested strategy returns. Not a guarantee of future performance.</p>
+        </div>
+
+        <!-- three scenario cards -->
+        <div class="scen">
+          <div class="s"><div class="sk g">Bullish</div><div class="sv" id="scBull">₹1.18Cr</div><div class="scg">18.2% CAGR</div><div class="sa">Markets compound near their best decade.</div></div>
+          <div class="s"><div class="sk o">Base case</div><div class="sv" id="scBase">₹82.4L</div><div class="scg">14.2% CAGR</div><div class="sa">In line with long-run history.</div></div>
+          <div class="s"><div class="sk r">Bearish</div><div class="sv" id="scBear">₹54.1L</div><div class="scg">8.9% CAGR</div><div class="sa">A lean, choppy decade.</div></div>
+        </div>
+
+        <!-- contributions vs system wealth -->
+        <div class="contrib">
+          <div class="col"><div class="ck">Your contributions<br>(10 yr)</div><div class="cv">₹40,00,000</div><div class="cx">₹10L + ₹25k × 120</div></div>
+          <div class="col"><div class="ck">System-generated<br>wealth (base)</div><div class="cv green">₹42,40,000</div><div class="cx">106% of what you put in</div></div>
+        </div>
+
+        <!-- PART F — ACTIONS -->
+        <div class="sec-lab">What happens next</div>
+        <div class="whatnext">
+          <h4>Before any money moves.</h4>
+          <ul>
+            <li>We create this strategy in your account.</li>
+            <li>Your initial lumpsum deploys within 3 business days.</li>
+            <li>Your SIP starts on the 5th of next month.</li>
+            <li>You approve every trade before it executes — that's the RIA model.</li>
+            <li>Switch strategy anytime, right from your Lobby.</li>
+          </ul>
+        </div>
+
+        <a href="flameback-app-portfolio-actions.html" class="cta">Make this mine &rarr;</a>
+        <a href="flameback-app-portfolio-path.html" class="seclink">Adjust allocation</a>
+        <a href="flameback-app-portfolio-path.html" class="terlink">Talk to advisor first</a>
+
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <div class="footin">
+        <a class="wm" href="index.html">flameback<span class="p">.</span></a>
+        <div class="footcols">
+          <div class="footcol"><h4>The firm</h4><a href="flameback-who-we-are.html">Who we are</a><a href="flameback-what-we-do.html">What we do</a><a href="flameback-our-work.html">Our work</a><a href="flameback-clients.html">Clients</a></div>
+          <div class="footcol"><h4>Open</h4><a href="flameback-insights.html">Insights</a><a href="flameback-tools.html">Tools</a><a href="flameback-offbook.html">Off-book</a></div>
+          <div class="footcol"><h4>Contact</h4><a href="flameback-app-splash.html">Start your journey</a><a href="#">hello@flameback.in</a><a href="#">Bangalore, India</a></div>
+        </div>
+      </div>
+      <div class="footdisc">
+        <span>&copy; 2026 Flameback Capital Pvt Ltd</span>
+        <span class="legal">SEBI registered &middot; SEC filed for US strategy. Investments are subject to market risk. Past performance is not indicative of future results.</span>
+        <span class="reg-links"><a href="flameback-pms-disclosure.html">PMS disclosure</a><a href="flameback-advisory-disclosure.html">IA disclosure</a></span>
+      </div>
+    </div>
+  </footer>
+
+<script>
+  // light/dark toggle
+  var t=document.getElementById('toggle');
+  t.onclick=function(){var l=document.documentElement.classList.toggle('light');t.textContent=l?'Dark':'Light';};
+  // nav border on scroll
+  var nv=document.getElementById('nav');
+  window.addEventListener('scroll',function(){nv.classList.toggle('scrolled',window.scrollY>8);});
+
+  // factsheet dropdown
+  function toggleDD(id){document.getElementById(id).classList.toggle('open');}
+
+  // period chips
+  document.querySelectorAll('.periods').forEach(function(grp){
+    grp.querySelectorAll('button').forEach(function(b){
+      b.onclick=function(){grp.querySelectorAll('button').forEach(function(x){x.classList.remove('on');});b.classList.add('on');};
+    });
+  });
+
+  // view all holdings
+  function showAll(){
+    ['h6','h7','h8'].forEach(function(id){document.getElementById(id).classList.add('shown');});
+    document.getElementById('viewAll').style.display='none';
+  }
+
+  // projection horizon — recompute corpus on a base ₹10L lump + ₹25k SIP
+  var lump=1000000, sip=25000;
+  function fmt(v){
+    if(v>=10000000){return '₹'+(v/10000000).toFixed(2)+'Cr';}
+    if(v>=100000){return '₹'+(v/100000).toFixed(1)+'L';}
+    return '₹'+Math.round(v).toLocaleString('en-IN');
+  }
+  function fv(rate,years){
+    var n=years*12, r=rate/12;
+    var lumpFV=lump*Math.pow(1+rate,years);
+    var sipFV=sip*((Math.pow(1+r,n)-1)/r);
+    return lumpFV+sipFV;
+  }
+  function recompute(years){
+    document.getElementById('scBull').textContent=fmt(fv(0.182,years));
+    document.getElementById('scBase').textContent=fmt(fv(0.142,years));
+    document.getElementById('scBear').textContent=fmt(fv(0.089,years));
+  }
+  document.querySelectorAll('#horizonSeg button').forEach(function(b){
+    b.onclick=function(){
+      document.querySelectorAll('#horizonSeg button').forEach(function(x){x.classList.remove('on');});
+      b.classList.add('on');
+      recompute(parseInt(b.dataset.h,10));
+    };
+  });
+  recompute(10);
+</script>
+  <script src="reload.js"></script>
+</body>
+</html>

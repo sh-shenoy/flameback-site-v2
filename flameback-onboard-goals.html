@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>flameback. — Chapter 2: What you want</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#1A1714; --ink:#F2EDE3; --ink-soft:rgba(242,237,227,.64); --ink-mute:rgba(242,237,227,.42);
+    --line:rgba(242,237,227,.15); --panel:#221E1A; --accent:#FF6D0A; --btn-bg:#FF6D0A; --btn-ink:#1A1714;
+    --grain-blend:screen; --grain-op:.05;
+    --cons:#A07B5A; --base:#FF6D0A; --aggr:#E94B26; --target:#8FB87A;
+  }
+  :root.light{
+    --bg:#FCFAF6; --ink:#1A1714; --ink-soft:rgba(26,23,20,.66); --ink-mute:rgba(26,23,20,.46);
+    --line:rgba(26,23,20,.13); --panel:#F4EFE7; --accent:#FF6D0A; --btn-bg:#1A1714; --btn-ink:#FCFAF6;
+    --grain-blend:multiply; --grain-op:.03;
+    --cons:#8C6444; --base:#FF6D0A; --aggr:#C03515; --target:#5F8048;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-font-smoothing:antialiased}
+  body{background:var(--bg);color:var(--ink);font-family:"Source Serif 4",serif;transition:background .5s,color .5s;font-variant-numeric:tabular-nums;min-height:100vh}
+  body::after{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;mix-blend-mode:var(--grain-blend);opacity:var(--grain-op);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  section,nav,main{position:relative;z-index:2}
+  .wm{font-family:"Source Serif 4",serif;font-weight:600;font-size:18px;color:var(--ink);text-decoration:none}
+  .wm .p{color:var(--accent)}
+  h1,h2,h3,h4{font-family:"Cormorant Garamond",serif;font-weight:500;letter-spacing:-.012em;color:var(--ink)}
+
+  nav{padding:14px 0;border-bottom:1px solid var(--line)}
+  .navin{display:flex;align-items:center;justify-content:space-between;padding:0 clamp(22px,3vw,32px)}
+  .navl{display:flex;align-items:center;gap:14px}
+  .mode-pill{display:inline-flex;align-items:center;gap:7px;padding:4px 11px;border:1px solid var(--ink-mute);color:var(--ink-mute);font-style:italic;font-size:11px;letter-spacing:.05em;text-transform:uppercase}
+  .navr{display:flex;align-items:center;gap:18px}
+  .navr .nlink{color:var(--ink-soft);text-decoration:none;font-size:13px;font-style:italic;cursor:pointer}
+  .navr .nlink:hover{color:var(--ink)}
+  .toggle{background:none;border:1px solid var(--line);color:var(--ink-soft);cursor:pointer;font-family:"Source Serif 4",serif;font-size:13px;font-style:italic;padding:5px 13px;border-radius:999px}
+
+  /* Chapter ribbon */
+  .ribbon{padding:14px clamp(22px,3vw,32px);border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--bg) 95%,transparent);display:flex;align-items:center;gap:clamp(10px,1.5vw,14px);overflow-x:auto;white-space:nowrap}
+  .ch{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-family:"Source Serif 4",serif;font-style:italic;color:var(--ink-mute);cursor:pointer;text-decoration:none}
+  .ch:hover{color:var(--ink-soft)}
+  .ch .ci{width:18px;height:18px;border-radius:50%;border:1px solid var(--ink-mute);display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-style:normal;flex-shrink:0;color:var(--ink-mute)}
+  .ch.done .ci{background:color-mix(in srgb,var(--accent) 25%,transparent);border-color:var(--accent);color:var(--accent)}
+  .ch.done{color:var(--ink-soft)}
+  .ch.curr .ci{background:var(--accent);border-color:var(--accent);color:var(--btn-ink)}
+  .ch.curr{color:var(--ink);font-weight:500;font-style:italic}
+  .ch-sep{width:14px;height:1px;background:var(--line);flex-shrink:0}
+
+  main{padding:clamp(28px,4vh,44px) clamp(22px,4vw,52px) clamp(36px,5vw,60px);max-width:1240px;margin:0 auto}
+
+  /* Chapter header */
+  .ch-lab{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+  .ch-lab .num{font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--accent);font-size:18px}
+  .ch-lab .lab{font-style:italic;font-size:13px;color:var(--ink-mute);letter-spacing:.04em}
+
+  h1{font-size:clamp(32px,4.6vw,48px);line-height:1.02;letter-spacing:-.018em;margin-bottom:12px;max-width:22ch}
+  h1 .acc{color:var(--accent);font-style:italic}
+  .lede{font-size:15.5px;line-height:1.6;color:var(--ink-soft);margin-bottom:clamp(24px,3vw,32px);max-width:62ch}
+  .lede em{color:var(--ink);font-style:italic;font-weight:500}
+
+  /* Purpose chips */
+  .purp-h{font-size:11px;color:var(--ink-mute);font-style:italic;letter-spacing:.05em;text-transform:uppercase;margin-bottom:10px}
+  .chip-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:clamp(28px,3vw,36px)}
+  .chip{padding:9px 16px;border:1px solid var(--line);background:transparent;color:var(--ink-soft);font-family:"Source Serif 4",serif;font-size:13.5px;cursor:pointer;font-style:italic;transition:border-color .15s,color .15s,background .15s}
+  .chip:hover{border-color:var(--ink-mute);color:var(--ink)}
+  .chip.sel{background:var(--accent);color:var(--btn-ink);border-color:var(--accent);font-style:normal;font-weight:500}
+
+  /* Mode toggle (solve for value vs solve for return) */
+  .modes{display:inline-flex;border:1px solid var(--line);margin-bottom:clamp(20px,2.5vw,28px)}
+  .modes button{padding:9px 18px;background:transparent;border:none;font-family:"Source Serif 4",serif;font-size:13px;color:var(--ink-soft);font-style:italic;cursor:pointer;border-right:1px solid var(--line)}
+  .modes button:last-child{border-right:none}
+  .modes button.active{background:var(--accent);color:var(--btn-ink);font-style:normal;font-weight:500}
+
+  /* Main two-column area */
+  .game{display:grid;grid-template-columns:380px 1fr;gap:clamp(20px,2.5vw,32px);margin-bottom:32px}
+  @media(max-width:920px){.game{grid-template-columns:1fr}}
+
+  /* Sliders panel */
+  .panel{padding:24px;border:1px solid var(--line);background:color-mix(in srgb,var(--ink) 2%,transparent);display:flex;flex-direction:column;gap:24px}
+  .ctrl label{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+  .ctrl .lab-l{font-size:11px;color:var(--ink-mute);font-style:italic;letter-spacing:.05em;text-transform:uppercase}
+  .ctrl .lab-v{font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--accent);font-size:20px;line-height:1}
+  .ctrl input[type=range]{width:100%;accent-color:var(--accent);height:2px;background:var(--line);margin-bottom:5px}
+  .ctrl .rng{display:flex;justify-content:space-between;font-size:10.5px;color:var(--ink-mute);font-style:italic;letter-spacing:.02em}
+
+  /* Chart panel */
+  .chart-wrap{border:1px solid var(--line);background:color-mix(in srgb,var(--ink) 2%,transparent);padding:24px;display:flex;flex-direction:column;gap:14px}
+  .chart-wrap .ch-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px;flex-wrap:wrap;gap:10px}
+  .ch-head .h-t{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:19px;color:var(--ink)}
+  .ch-head .h-d{font-size:11px;color:var(--ink-mute);font-style:italic;letter-spacing:.04em}
+  .chart-svg-wrap{width:100%;overflow-x:auto}
+  svg.chart{display:block;width:100%;min-width:560px;height:auto}
+  .chart-legend{display:flex;gap:18px;flex-wrap:wrap;font-size:12px;color:var(--ink-soft);font-style:italic;padding-top:6px;border-top:1px solid var(--line)}
+  .ll{display:flex;align-items:center;gap:7px}
+  .ll .lc{width:16px;height:2.2px;flex-shrink:0}
+  .ll .lc.dash{background:repeating-linear-gradient(to right,var(--target) 0,var(--target) 3px,transparent 3px,transparent 6px)}
+
+  /* Result summary */
+  .result-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin:clamp(20px,2.5vw,28px) 0}
+  @media(max-width:680px){.result-row{grid-template-columns:1fr}}
+  .res{background:var(--bg);padding:18px 22px;position:relative}
+  .res::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px}
+  .res.cons::before{background:var(--cons)}
+  .res.base::before{background:var(--base)}
+  .res.aggr::before{background:var(--aggr)}
+  .res-h{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:10px}
+  .res-h .l{font-style:italic;font-size:11px;color:var(--ink-mute);letter-spacing:.05em;text-transform:uppercase}
+  .res-h .r{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-mute)}
+  .res-v{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:28px;color:var(--ink);line-height:1;letter-spacing:-.01em}
+  .res-v.acc{color:var(--accent)}
+  .res-d{font-size:11.5px;color:var(--ink-soft);font-style:italic;margin-top:6px;line-height:1.5}
+  .res-tag{display:inline-block;font-size:9.5px;color:var(--accent);font-style:italic;text-transform:uppercase;letter-spacing:.08em;margin-top:8px;padding:2px 6px;border:1px solid color-mix(in srgb,var(--accent) 50%,transparent)}
+
+  /* Strategy mix section */
+  .mix-section{margin-top:clamp(28px,4vw,40px);padding-top:clamp(24px,3vw,32px);border-top:1px solid var(--line)}
+  .mix-section h2{font-size:clamp(22px,3vw,28px);line-height:1.1;margin-bottom:6px}
+  .mix-section h2 .acc{color:var(--accent);font-style:italic}
+  .mix-section .sub{font-size:13.5px;color:var(--ink-mute);font-style:italic;margin-bottom:20px;max-width:60ch}
+
+  .mix-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  @media(max-width:860px){.mix-grid{grid-template-columns:1fr}}
+  .mix-card{padding:22px;border:1px solid var(--line);background:color-mix(in srgb,var(--ink) 1.5%,transparent);position:relative}
+  .mix-card.rec{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 4%,transparent)}
+  .mix-card.rec::before{content:"Recommended";position:absolute;top:-9px;left:18px;background:var(--accent);color:var(--btn-ink);padding:2px 9px;font-size:10px;letter-spacing:.05em;text-transform:uppercase;font-style:italic;font-family:"Source Serif 4",serif}
+  .mc-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:14px}
+  .mc-head .name{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:20px;color:var(--ink)}
+  .mc-head .rate{font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--accent)}
+  .mc-d{font-size:13px;line-height:1.5;color:var(--ink-soft);margin-bottom:16px;min-height:60px}
+  .mc-alloc{display:flex;flex-direction:column;gap:7px;margin-bottom:14px}
+  .mc-row{display:flex;justify-content:space-between;font-size:12.5px;align-items:center;gap:8px}
+  .mc-row .nm{color:var(--ink);flex:1}
+  .mc-row .bar{width:80px;height:4px;background:var(--line);border-radius:2px;overflow:hidden;flex-shrink:0}
+  .mc-row .bar i{display:block;height:100%;background:var(--accent)}
+  .mc-row .pct{font-family:"JetBrains Mono",monospace;color:var(--ink-mute);font-size:11.5px;width:32px;text-align:right}
+  .mc-foot{padding-top:12px;border-top:1px dashed var(--line);font-size:11.5px;color:var(--ink-mute);font-style:italic;line-height:1.5}
+  .mc-foot strong{color:var(--ink);font-weight:500;font-style:normal}
+
+  /* Action bar */
+  .actions{margin-top:clamp(36px,5vw,52px);padding-top:24px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px}
+  .actions .back{font-size:14px;color:var(--ink-mute);text-decoration:none;font-style:italic;cursor:pointer}
+  .actions .back:hover{color:var(--ink-soft)}
+  .actions-r{display:flex;align-items:center;gap:14px}
+  .actions .skip{font-size:13px;color:var(--ink-mute);text-decoration:none;font-style:italic;cursor:pointer}
+  .actions .skip:hover{color:var(--ink-soft)}
+  .btn{background:var(--btn-bg);color:var(--btn-ink);border:none;font-family:"Source Serif 4",serif;font-size:15px;font-weight:500;padding:12px 24px;cursor:pointer;display:inline-flex;align-items:center;gap:11px;transition:gap .3s,opacity .3s;text-decoration:none}
+  .btn:hover{gap:15px;opacity:.92}
+
+  /* RM ping (client view) */
+  .ping{position:fixed;bottom:24px;right:24px;display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--accent);color:var(--btn-ink);font-family:"Source Serif 4",serif;font-size:13px;font-weight:500;text-decoration:none;cursor:pointer;box-shadow:0 8px 24px -8px rgba(0,0,0,.5);z-index:30}
+  .ping:hover{opacity:.92}
+  .ping .ic{font-size:14px}
+
+</style>
+</head>
+<body>
+
+  <nav>
+    <div class="navin">
+      <div class="navl">
+        <a class="wm" href="index.html">flameback<span class="p">.</span></a>
+        <span class="mode-pill">Onboarding</span>
+      </div>
+      <div class="navr">
+        <span class="nlink">Save &amp; exit</span>
+        <span class="nlink">Help</span>
+        <button class="toggle" id="toggle">Light</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Chapter ribbon -->
+  <div class="ribbon">
+    <a class="ch done" href="flameback-onboard-identity.html"><span class="ci">&#10003;</span>Who you are</a>
+    <span class="ch-sep"></span>
+    <a class="ch curr" href="#"><span class="ci">ii</span>What you want</a>
+    <span class="ch-sep"></span>
+    <a class="ch" href="#"><span class="ci">iii</span>What you have</a>
+    <span class="ch-sep"></span>
+    <a class="ch" href="#"><span class="ci">iv</span>Risk</a>
+    <span class="ch-sep"></span>
+    <a class="ch" href="#"><span class="ci">v</span>Preferences</a>
+    <span class="ch-sep"></span>
+    <a class="ch" href="#"><span class="ci">vi</span>Paperwork</a>
+    <span class="ch-sep"></span>
+    <a class="ch" href="#"><span class="ci">vii</span>Recommendation</a>
+    <span class="ch-sep"></span>
+    <a class="ch" href="#"><span class="ci">viii</span>Sign &amp; connect</a>
+    <span class="ch-sep"></span>
+    <a class="ch" href="#"><span class="ci">ix</span>Done</a>
+  </div>
+
+  <main>
+
+    <div class="ch-lab">
+      <span class="num">ii.</span>
+      <span class="lab">Chapter 2 of 9 &middot; The most important one</span>
+    </div>
+
+    <h1>What are you investing <span class="acc">for?</span></h1>
+    <p class="lede">Move the sliders. The chart updates as you do. We&rsquo;ll work out together what kind of trajectory makes your target real, and which strategies on the firm&rsquo;s shelf can plausibly get you there. <em>This isn&rsquo;t a forecast &mdash; it&rsquo;s a planning conversation, in shapes.</em></p>
+
+    <!-- Purpose -->
+    <div class="purp-h">What kind of goal</div>
+    <div class="chip-row">
+      <button class="chip">Retirement</button>
+      <button class="chip sel">Building wealth</button>
+      <button class="chip">Children&rsquo;s education</button>
+      <button class="chip">Income generation</button>
+      <button class="chip">Multi-generational</button>
+      <button class="chip">A specific purchase</button>
+    </div>
+
+    <!-- Mode toggle -->
+    <div class="modes">
+      <button class="active">Solve for value</button>
+      <button>Solve for return</button>
+    </div>
+
+    <!-- Sliders + Chart -->
+    <div class="game">
+
+      <!-- Sliders -->
+      <div class="panel">
+        <div class="ctrl">
+          <label>
+            <span class="lab-l">Initial amount</span>
+            <span class="lab-v" id="vInit">&#8377;25 L</span>
+          </label>
+          <input type="range" id="sInit" min="0" max="500" step="5" value="25"/>
+          <div class="rng"><span>&#8377;0</span><span>&#8377;5 Cr</span></div>
+        </div>
+
+        <div class="ctrl">
+          <label>
+            <span class="lab-l">Monthly contribution</span>
+            <span class="lab-v" id="vMon">&#8377;50,000</span>
+          </label>
+          <input type="range" id="sMon" min="0" max="500" step="5" value="50"/>
+          <div class="rng"><span>&#8377;0</span><span>&#8377;5 L / mo</span></div>
+        </div>
+
+        <div class="ctrl">
+          <label>
+            <span class="lab-l">Horizon</span>
+            <span class="lab-v" id="vYrs">20 years</span>
+          </label>
+          <input type="range" id="sYrs" min="3" max="40" step="1" value="20"/>
+          <div class="rng"><span>3 yrs</span><span>40 yrs</span></div>
+        </div>
+
+        <div class="ctrl">
+          <label>
+            <span class="lab-l">Target value</span>
+            <span class="lab-v" id="vTgt">&#8377;5 Cr</span>
+          </label>
+          <input type="range" id="sTgt" min="50" max="10000" step="50" value="500"/>
+          <div class="rng"><span>&#8377;50 L</span><span>&#8377;100 Cr</span></div>
+        </div>
+
+        <div style="padding-top:14px;border-top:1px dashed var(--line);font-size:12px;color:var(--ink-mute);font-style:italic;line-height:1.55">
+          Pre-tax, before fees. Returns shown are long-run nominal annualised &mdash; actual sequence varies. We&rsquo;ll discuss tax and fee impact in the recommendation chapter.
+        </div>
+      </div>
+
+      <!-- Chart -->
+      <div class="chart-wrap">
+        <div class="ch-head">
+          <span class="h-t">Projected trajectory</span>
+          <span class="h-d" id="chReadout">to year 2046 &middot; in 2026 rupees</span>
+        </div>
+        <div class="chart-svg-wrap">
+          <svg class="chart" viewBox="0 0 1000 380" id="chart" xmlns="http://www.w3.org/2000/svg">
+            <g id="grid"></g>
+            <g id="axes"></g>
+            <line id="targetLine" stroke="var(--target)" stroke-width="1.4" stroke-dasharray="6,4" opacity="0.85"/>
+            <text id="targetLabel" font-size="10" font-family="Source Serif 4" font-style="italic" fill="var(--target)" letter-spacing="0.04em" text-anchor="end"></text>
+            <path id="pathCons" fill="none" stroke="var(--cons)" stroke-width="1.6" opacity="0.85"/>
+            <path id="pathBase" fill="none" stroke="var(--base)" stroke-width="2.6"/>
+            <path id="pathAggr" fill="none" stroke="var(--aggr)" stroke-width="1.6" opacity="0.85"/>
+            <g id="endMarkers"></g>
+            <g id="xLabels"></g>
+            <g id="yLabels"></g>
+          </svg>
+        </div>
+        <div class="chart-legend">
+          <span class="ll"><span class="lc" style="background:var(--cons)"></span>Conservative &middot; ~10%</span>
+          <span class="ll"><span class="lc" style="background:var(--base);height:2.6px"></span>Base &middot; ~12%</span>
+          <span class="ll"><span class="lc" style="background:var(--aggr)"></span>Aggressive &middot; ~14%</span>
+          <span class="ll"><span class="lc dash"></span>Your target</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Result row -->
+    <div class="result-row">
+      <div class="res cons">
+        <div class="res-h"><span class="l">At ~10% &middot; conservative</span><span class="r">10.0%</span></div>
+        <span class="res-v" id="rCons">&#8377;0</span>
+        <span class="res-d" id="rConsD">end of horizon</span>
+      </div>
+      <div class="res base">
+        <div class="res-h"><span class="l">At ~12% &middot; base</span><span class="r">12.0%</span></div>
+        <span class="res-v acc" id="rBase">&#8377;0</span>
+        <span class="res-d" id="rBaseD">end of horizon</span>
+        <span class="res-tag">Recommended</span>
+      </div>
+      <div class="res aggr">
+        <div class="res-h"><span class="l">At ~14% &middot; aggressive</span><span class="r">14.0%</span></div>
+        <span class="res-v" id="rAggr">&#8377;0</span>
+        <span class="res-d" id="rAggrD">end of horizon</span>
+      </div>
+    </div>
+
+    <!-- Strategy mix -->
+    <div class="mix-section">
+      <h2>To reach this trajectory, here&rsquo;s the <span class="acc">strategy mix</span> we&rsquo;d suggest.</h2>
+      <p class="sub">Three working configurations from the firm&rsquo;s shelf. The base case is what we&rsquo;d ordinarily start from; the other two are bands you could move toward if your risk profile or preferences warrant. We&rsquo;ll revisit this in the Recommendation chapter once we know how you actually feel about risk.</p>
+
+      <div class="mix-grid">
+        <div class="mix-card">
+          <div class="mc-head"><span class="name">Conservative</span><span class="rate">~10% target</span></div>
+          <div class="mc-d">More smoothness, less variance. Tilted toward quality and yield, with debt and gold as ballast.</div>
+          <div class="mc-alloc">
+            <div class="mc-row"><span class="nm">Multi-cap Quality (PMS)</span><span class="bar"><i style="width:55%"></i></span><span class="pct">55%</span></div>
+            <div class="mc-row"><span class="nm">Defensive Equity (advisory)</span><span class="bar"><i style="width:25%"></i></span><span class="pct">25%</span></div>
+            <div class="mc-row"><span class="nm">Debt &amp; gold sleeve</span><span class="bar"><i style="width:20%"></i></span><span class="pct">20%</span></div>
+          </div>
+          <div class="mc-foot">Worst-year drawdown: <strong>~&minus;18%</strong> &middot; Vol: <strong>~12%</strong></div>
+        </div>
+
+        <div class="mix-card rec">
+          <div class="mc-head"><span class="name">Base</span><span class="rate">~12% target</span></div>
+          <div class="mc-d">The firm&rsquo;s default starting point for wealth-building mandates. Quality and momentum in balance.</div>
+          <div class="mc-alloc">
+            <div class="mc-row"><span class="nm">Multi-cap Quality (PMS)</span><span class="bar"><i style="width:50%"></i></span><span class="pct">50%</span></div>
+            <div class="mc-row"><span class="nm">Large-cap Momentum (PMS)</span><span class="bar"><i style="width:30%"></i></span><span class="pct">30%</span></div>
+            <div class="mc-row"><span class="nm">QX Equanimity (AIF)</span><span class="bar"><i style="width:20%"></i></span><span class="pct">20%</span></div>
+          </div>
+          <div class="mc-foot">Worst-year drawdown: <strong>~&minus;26%</strong> &middot; Vol: <strong>~16%</strong></div>
+        </div>
+
+        <div class="mix-card">
+          <div class="mc-head"><span class="name">Aggressive</span><span class="rate">~14% target</span></div>
+          <div class="mc-d">Higher variance for higher long-run return. Skewed to momentum and smaller-cap exposure.</div>
+          <div class="mc-alloc">
+            <div class="mc-row"><span class="nm">Large-cap Momentum (PMS)</span><span class="bar"><i style="width:45%"></i></span><span class="pct">45%</span></div>
+            <div class="mc-row"><span class="nm">Mid-cap Momentum (PMS)</span><span class="bar"><i style="width:30%"></i></span><span class="pct">30%</span></div>
+            <div class="mc-row"><span class="nm">QX Equanimity (AIF)</span><span class="bar"><i style="width:25%"></i></span><span class="pct">25%</span></div>
+          </div>
+          <div class="mc-foot">Worst-year drawdown: <strong>~&minus;34%</strong> &middot; Vol: <strong>~22%</strong></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="actions">
+      <a class="back" href="flameback-onboard-identity.html">&larr; Back to identity</a>
+      <div class="actions-r">
+        <a class="skip" href="#">Save &amp; finish later</a>
+        <a class="btn" href="#">Continue to existing portfolio &rarr;</a>
+      </div>
+    </div>
+
+  </main>
+
+  <a class="ping" href="#"><span class="ic">?</span>Ask Ashrith</a>
+
+<script>
+  var root=document.documentElement, tg=document.getElementById('toggle');
+  tg.addEventListener('click',function(){root.classList.toggle('light');tg.textContent=root.classList.contains('light')?'Dark':'Light';});
+
+  // Chip selection
+  document.querySelectorAll('.chip-row, .modes').forEach(function(row){
+    row.querySelectorAll('button.chip, .modes button').forEach(function(c){
+      if(!c.classList.contains('chip') && !row.classList.contains('modes')) return;
+    });
+  });
+  document.querySelectorAll('.chip-row').forEach(function(row){
+    row.querySelectorAll('.chip').forEach(function(c){
+      c.addEventListener('click',function(){
+        row.querySelectorAll('.chip').forEach(function(x){x.classList.remove('sel')});
+        c.classList.add('sel');
+      });
+    });
+  });
+  document.querySelectorAll('.modes').forEach(function(row){
+    row.querySelectorAll('button').forEach(function(c){
+      c.addEventListener('click',function(){
+        row.querySelectorAll('button').forEach(function(x){x.classList.remove('active')});
+        c.classList.add('active');
+      });
+    });
+  });
+
+  // ============ CHART ============
+  // Inputs in slider units:
+  // sInit: 0-500 => 0-500 lakh (0 to 5 Cr in 5L steps)
+  // sMon: 0-500 => 0-500 thousand (0 to 5 L in 5K steps)
+  // sYrs: 3-40
+  // sTgt: 50-10000 => 50L to 100Cr in 5L steps
+
+  function fmt(rs){
+    // rs in rupees
+    if(rs>=10000000){
+      var cr=rs/10000000;
+      return "₹"+cr.toFixed(cr>=10?0:cr>=1?1:2)+" Cr";
+    }
+    if(rs>=100000){return "₹"+(rs/100000).toFixed(0)+" L"}
+    if(rs>=1000){return "₹"+(rs/1000).toFixed(0)+"k"}
+    return "₹"+rs.toFixed(0);
+  }
+  function fmtShort(rs){
+    if(rs>=10000000) return "₹"+(rs/10000000).toFixed(rs/10000000>=10?0:1)+"Cr";
+    if(rs>=100000) return "₹"+(rs/100000).toFixed(0)+"L";
+    return "₹"+rs.toFixed(0);
+  }
+
+  function project(initial, monthly, years, annualRate){
+    var out=[initial];
+    var annual=monthly*12;
+    for(var y=1;y<=years;y++){
+      var fv = initial*Math.pow(1+annualRate,y) + annual*(Math.pow(1+annualRate,y)-1)/annualRate;
+      out.push(fv);
+    }
+    return out;
+  }
+
+  // Chart dimensions
+  var CW=1000, CH=380, ML=64, MR=24, MT=30, MB=46;
+  var PW=CW-ML-MR, PH=CH-MT-MB;
+
+  function pathFromValues(vals, years, maxY){
+    var d="";
+    for(var i=0;i<vals.length;i++){
+      var x=ML + (i/years)*PW;
+      var y=MT + PH - (vals[i]/maxY)*PH;
+      d += (i===0?"M ":"L ") + x.toFixed(1) + "," + y.toFixed(1) + " ";
+    }
+    return d.trim();
+  }
+
+  function render(){
+    var initial = parseFloat(document.getElementById('sInit').value) * 100000; // L → Rs
+    var monthly = parseFloat(document.getElementById('sMon').value) * 1000;     // K → Rs
+    var years   = parseInt(document.getElementById('sYrs').value);
+    var target  = parseFloat(document.getElementById('sTgt').value) * 100000;   // L → Rs
+
+    document.getElementById('vInit').textContent = fmt(initial);
+    document.getElementById('vMon').textContent = monthly>=100000 ? "₹"+(monthly/100000).toFixed(1)+" L" : "₹"+(monthly/1000).toFixed(0)+"k";
+    document.getElementById('vYrs').textContent = years+" years";
+    document.getElementById('vTgt').textContent = fmt(target);
+
+    var vCons = project(initial, monthly, years, 0.10);
+    var vBase = project(initial, monthly, years, 0.12);
+    var vAggr = project(initial, monthly, years, 0.14);
+
+    var dataMax = Math.max(vCons[vCons.length-1], vBase[vBase.length-1], vAggr[vAggr.length-1], target);
+    var maxY = dataMax * 1.10;
+
+    // Paths
+    document.getElementById('pathCons').setAttribute('d', pathFromValues(vCons, years, maxY));
+    document.getElementById('pathBase').setAttribute('d', pathFromValues(vBase, years, maxY));
+    document.getElementById('pathAggr').setAttribute('d', pathFromValues(vAggr, years, maxY));
+
+    // Target line
+    var tgtY = MT + PH - (target/maxY)*PH;
+    var tl = document.getElementById('targetLine');
+    tl.setAttribute('x1', ML); tl.setAttribute('x2', CW-MR);
+    tl.setAttribute('y1', tgtY); tl.setAttribute('y2', tgtY);
+    var tlab = document.getElementById('targetLabel');
+    tlab.setAttribute('x', CW-MR-4);
+    tlab.setAttribute('y', tgtY-5);
+    tlab.textContent = "TARGET: "+fmtShort(target);
+
+    // Axes (gridlines + labels)
+    var grid = document.getElementById('grid');
+    grid.innerHTML="";
+    var yLabels = document.getElementById('yLabels');
+    yLabels.innerHTML="";
+    var yTicks=4;
+    for(var i=0;i<=yTicks;i++){
+      var yv = (i/yTicks)*maxY;
+      var yPos = MT + PH - (i/yTicks)*PH;
+      var line = document.createElementNS('http://www.w3.org/2000/svg','line');
+      line.setAttribute('x1',ML); line.setAttribute('x2',CW-MR);
+      line.setAttribute('y1',yPos); line.setAttribute('y2',yPos);
+      line.setAttribute('stroke','var(--line)');
+      line.setAttribute('stroke-width','0.5');
+      grid.appendChild(line);
+
+      var lab = document.createElementNS('http://www.w3.org/2000/svg','text');
+      lab.setAttribute('x', ML-8);
+      lab.setAttribute('y', yPos+3);
+      lab.setAttribute('font-size','10');
+      lab.setAttribute('font-family','Source Serif 4');
+      lab.setAttribute('font-style','italic');
+      lab.setAttribute('fill','var(--ink-mute)');
+      lab.setAttribute('text-anchor','end');
+      lab.setAttribute('letter-spacing','0.03em');
+      lab.textContent = fmtShort(yv);
+      yLabels.appendChild(lab);
+    }
+
+    // X labels
+    var xLabels = document.getElementById('xLabels');
+    xLabels.innerHTML="";
+    var xTicks = years <= 10 ? Math.min(years,5) : Math.min(8, Math.ceil(years/5));
+    var startYr = 2026;
+    for(var i=0;i<=xTicks;i++){
+      var yrOff = Math.round((i/xTicks)*years);
+      var xPos = ML + (yrOff/years)*PW;
+      var lab = document.createElementNS('http://www.w3.org/2000/svg','text');
+      lab.setAttribute('x', xPos);
+      lab.setAttribute('y', CH-MB+22);
+      lab.setAttribute('font-size','10');
+      lab.setAttribute('font-family','Source Serif 4');
+      lab.setAttribute('font-style','italic');
+      lab.setAttribute('fill','var(--ink-mute)');
+      lab.setAttribute('text-anchor','middle');
+      lab.setAttribute('letter-spacing','0.03em');
+      lab.textContent = startYr + yrOff;
+      xLabels.appendChild(lab);
+    }
+
+    // Axis lines
+    var axes = document.getElementById('axes');
+    axes.innerHTML="";
+    var xax = document.createElementNS('http://www.w3.org/2000/svg','line');
+    xax.setAttribute('x1', ML); xax.setAttribute('x2', CW-MR);
+    xax.setAttribute('y1', MT+PH); xax.setAttribute('y2', MT+PH);
+    xax.setAttribute('stroke','var(--line)');
+    xax.setAttribute('stroke-width','1');
+    axes.appendChild(xax);
+    var yax = document.createElementNS('http://www.w3.org/2000/svg','line');
+    yax.setAttribute('x1', ML); yax.setAttribute('x2', ML);
+    yax.setAttribute('y1', MT); yax.setAttribute('y2', MT+PH);
+    yax.setAttribute('stroke','var(--line)');
+    yax.setAttribute('stroke-width','1');
+    axes.appendChild(yax);
+
+    // End markers + values
+    var em = document.getElementById('endMarkers');
+    em.innerHTML="";
+    function endMarker(val, color, label){
+      var x = ML + PW;
+      var y = MT + PH - (val/maxY)*PH;
+      var c = document.createElementNS('http://www.w3.org/2000/svg','circle');
+      c.setAttribute('cx',x); c.setAttribute('cy',y); c.setAttribute('r',3.5);
+      c.setAttribute('fill',color);
+      em.appendChild(c);
+    }
+    endMarker(vCons[vCons.length-1],'var(--cons)');
+    endMarker(vBase[vBase.length-1],'var(--base)');
+    endMarker(vAggr[vAggr.length-1],'var(--aggr)');
+
+    // Result tiles
+    document.getElementById('rCons').textContent = fmt(vCons[vCons.length-1]);
+    document.getElementById('rBase').textContent = fmt(vBase[vBase.length-1]);
+    document.getElementById('rAggr').textContent = fmt(vAggr[vAggr.length-1]);
+
+    // Find year target is hit at base rate
+    function yearTargetHit(vals){
+      for(var i=0;i<vals.length;i++){ if(vals[i]>=target) return i; }
+      return -1;
+    }
+    var yhCons = yearTargetHit(vCons), yhBase = yearTargetHit(vBase), yhAggr = yearTargetHit(vAggr);
+    function msg(yh, vals){
+      if(yh===-1){
+        var gap = target - vals[vals.length-1];
+        var pct = ((1 - vals[vals.length-1]/target)*100).toFixed(0);
+        return "Short of target by "+fmt(gap)+" ("+pct+"%)";
+      }
+      if(yh===0) return "Target already met at start";
+      return "Target met in year "+yh+" of "+years;
+    }
+    document.getElementById('rConsD').textContent = msg(yhCons, vCons);
+    document.getElementById('rBaseD').textContent = msg(yhBase, vBase);
+    document.getElementById('rAggrD').textContent = msg(yhAggr, vAggr);
+
+    document.getElementById('chReadout').textContent = "to year "+(startYr+years)+" · "+years+" years from today";
+  }
+
+  ['sInit','sMon','sYrs','sTgt'].forEach(function(id){
+    document.getElementById(id).addEventListener('input', render);
+  });
+  render();
+</script>
+  <script src="reload.js"></script>
+</body>
+</html>

@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>flameback. — What we do</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#1A1714;--ink:#F2EDE3;--ink-soft:rgba(242,237,227,.66);--ink-mute:rgba(242,237,227,.44);--line:rgba(242,237,227,.16);--accent:#FF6D0A;--btn-bg:#FF6D0A;--btn-ink:#1A1714;--grain-blend:screen;--grain-op:.055}
+  :root.light{--bg:#FCFAF6;--ink:#1A1714;--ink-soft:rgba(26,23,20,.68);--ink-mute:rgba(26,23,20,.46);--line:rgba(26,23,20,.14);--accent:#B23E08;--btn-bg:#1A1714;--btn-ink:#FCFAF6;--grain-blend:multiply;--grain-op:.035}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:"Source Serif 4",serif;transition:background .5s,color .5s;font-variant-numeric:tabular-nums;line-height:1.55}
+  body::after{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;mix-blend-mode:var(--grain-blend);opacity:var(--grain-op);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 clamp(22px,5vw,44px)}
+  section{position:relative;z-index:2}
+  section[id]{scroll-margin-top:118px}
+  .wm{font-family:"Source Serif 4",serif;font-weight:600;font-size:18px;color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+  .wm .p{color:var(--accent)}
+  .lab{font-family:"Source Serif 4",serif;font-style:italic;font-size:13px;color:var(--ink-mute);letter-spacing:.03em;display:inline-flex;align-items:center;gap:11px}
+  .lab .l{width:24px;height:1px;background:var(--accent)}
+  .lab .n{font-style:normal;color:var(--accent);font-family:"Cormorant Garamond",serif;margin-right:4px}
+  h1,h2,h3,h4{font-family:"Cormorant Garamond",serif;font-weight:500;letter-spacing:-.014em;color:var(--ink);line-height:1.04}
+  h1 em,h2 em,h3 em,h4 em{color:var(--accent);font-style:italic;font-weight:500}
+  p{line-height:1.62}
+  .btn,.btn-out{display:inline-flex;align-items:center;gap:11px;font-family:"Source Serif 4",serif;font-size:14.5px;font-weight:500;padding:12px 22px;text-decoration:none;transition:gap .35s,opacity .3s,border-color .3s;cursor:pointer;border:none}
+  .btn{background:var(--btn-bg);color:var(--btn-ink)}.btn:hover{gap:15px;opacity:.92}
+  .btn-out{background:transparent;color:var(--ink);border:1px solid var(--line)}.btn-out:hover{gap:15px;border-color:var(--ink-mute)}
+
+  nav.top{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 84%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid transparent;transition:border-color .4s}
+  nav.top.scrolled{border-color:var(--line)}
+  .navin{display:flex;align-items:center;justify-content:space-between;padding:14px 0;gap:24px}
+  .navr{display:flex;align-items:center;gap:22px}
+  .navr a{color:var(--ink-soft);text-decoration:none;font-size:14px;transition:color .3s}
+  .navr a:hover{color:var(--ink)} .navr a.current{color:var(--ink)}
+  .toggle{background:none;border:1px solid var(--line);color:var(--ink-soft);cursor:pointer;font-family:"Source Serif 4",serif;font-size:12.5px;font-style:italic;padding:5px 13px;border-radius:999px}
+  .navr a.cta{background:var(--btn-bg);color:var(--btn-ink);padding:8px 16px;font-weight:500}
+  @media(max-width:1020px){.navr .navlink{display:none}}
+
+  .subnav{position:sticky;top:58px;z-index:40;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .subnav-in{display:flex;align-items:baseline;gap:clamp(14px,2vw,30px);padding:12px 0;flex-wrap:wrap}
+  .subnav .sn-lab{font-style:italic;font-size:12.5px;color:var(--ink-mute);margin-right:6px;letter-spacing:.03em}
+  .subnav a{font-size:13.5px;color:var(--ink-mute);text-decoration:none;padding-bottom:3px;border-bottom:1px solid transparent;white-space:nowrap;transition:color .2s,border-color .2s}
+  .subnav a:hover{color:var(--ink)}
+  .subnav a.active{color:var(--ink);border-bottom-color:var(--accent)}
+
+  .hero{padding:clamp(70px,8vh,110px) 0 clamp(50px,6vh,80px);border-bottom:1px solid var(--line);position:relative}
+  .hero-meta{display:flex;align-items:center;gap:11px;font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--ink-mute);letter-spacing:.07em;text-transform:uppercase;margin-bottom:30px}
+  .hero-meta .d{width:5px;height:5px;border-radius:50%;background:var(--accent)}
+  h1.hero-h{font-size:clamp(40px,6vw,76px);line-height:.98;letter-spacing:-.02em;margin-bottom:24px;max-width:22ch}
+  .hero-sub{font-size:clamp(16px,1.5vw,18px);line-height:1.6;color:var(--ink-soft);max-width:62ch;font-style:italic}
+  .hero-wmark{position:absolute;right:-20px;bottom:30px;font-family:"Cormorant Garamond",serif;font-style:italic;font-size:clamp(140px,22vw,260px);color:var(--ink);opacity:.018;line-height:.8;pointer-events:none;letter-spacing:-.04em;white-space:nowrap}
+
+  .sec{padding:clamp(80px,9vh,130px) 0;border-bottom:1px solid var(--line)}
+  .sec.alt{background:color-mix(in srgb,var(--ink) 2.2%,transparent)}
+  .sec-head{margin-bottom:clamp(36px,4vw,52px)}
+  .sec-head .lab{margin-bottom:14px}
+  .sec-head h2{font-size:clamp(36px,5.4vw,68px);line-height:1;letter-spacing:-.018em;margin-bottom:18px;max-width:18ch}
+  .sec-head .sub{font-size:17px;color:var(--ink-soft);font-style:italic;max-width:62ch;line-height:1.62}
+
+  /* PWM story arc */
+  .arc{display:grid;grid-template-columns:1fr;gap:0}
+  .arc-beat{display:grid;grid-template-columns:100px 1fr;gap:clamp(20px,3vw,40px);padding:clamp(36px,4vw,52px) 0;border-top:1px solid var(--line);align-items:flex-start}
+  .arc-beat:first-child{border-top:1px dashed var(--line)}
+  @media(max-width:760px){.arc-beat{grid-template-columns:1fr;gap:12px}}
+  .arc-n{font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--accent);font-size:clamp(32px,4vw,46px);line-height:1;letter-spacing:-.01em}
+  .arc-body h3{font-size:clamp(26px,3vw,34px);line-height:1.08;margin-bottom:14px;max-width:22ch}
+  .arc-body h3 em{color:var(--accent);font-style:italic}
+  .arc-body p{font-size:15.5px;line-height:1.7;color:var(--ink);margin-bottom:14px;max-width:62ch}
+  .arc-body p em{color:var(--accent);font-style:italic;font-weight:500}
+  .arc-body p strong{font-weight:500;color:var(--ink);font-style:italic}
+  .arc-quote{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:clamp(18px,2vw,22px);line-height:1.4;color:var(--ink);border-left:2px solid var(--accent);padding-left:18px;margin:18px 0 4px;max-width:54ch}
+  .arc-quote em{color:var(--accent)}
+  .arc-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+  .arc-tag{padding:5px 11px;border:1px solid var(--line);font-family:"Source Serif 4",serif;font-style:italic;font-size:11.5px;color:var(--ink-soft)}
+
+  /* The whole picture inline panel */
+  .whole-pic{margin-top:24px;padding:24px 28px;border:1px solid var(--line);background:color-mix(in srgb,var(--ink) 2%,transparent)}
+  .whole-pic .l{font-family:"Source Serif 4",serif;font-style:italic;font-size:11px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;display:block}
+  .whole-pic ul{list-style:none;display:grid;grid-template-columns:repeat(2,1fr);gap:8px 18px}
+  @media(max-width:540px){.whole-pic ul{grid-template-columns:1fr}}
+  .whole-pic ul li{font-size:13.5px;color:var(--ink-soft);font-style:italic;line-height:1.5;display:flex;gap:10px}
+  .whole-pic ul li::before{content:"•";color:var(--accent);font-style:normal}
+  .whole-pic .ftr{font-size:12.5px;color:var(--ink-mute);font-style:italic;margin-top:14px;padding-top:12px;border-top:1px dashed var(--line);line-height:1.6}
+
+  /* Advisory */
+  .adv-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:760px){.adv-grid{grid-template-columns:1fr}}
+  .adv-card{padding:22px 24px;border:1px solid var(--line);background:var(--bg);display:flex;flex-direction:column;gap:8px}
+  .adv-card .cn{font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--accent);font-size:14px}
+  .adv-card h4{font-size:18px;line-height:1.2;margin-bottom:4px}
+  .adv-card h4 em{color:var(--accent);font-style:italic}
+  .adv-card p{font-size:13.5px;color:var(--ink-soft);line-height:1.6;font-style:italic}
+  .adv-card p em{color:var(--ink);font-style:italic;font-weight:500}
+  .adv-prose p{font-size:15.5px;line-height:1.7;color:var(--ink);margin-bottom:16px;max-width:62ch}
+  .adv-prose p em{color:var(--accent);font-style:italic;font-weight:500}
+
+  /* QX */
+  .qx-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:clamp(36px,4vw,56px);align-items:flex-start}
+  @media(max-width:760px){.qx-grid{grid-template-columns:1fr;gap:24px}}
+  .qx-body p{font-size:15.5px;line-height:1.7;color:var(--ink);margin-bottom:14px;max-width:60ch}
+  .qx-body p em{color:var(--accent);font-style:italic;font-weight:500}
+  .qx-card{padding:28px;border:1px solid var(--line);background:color-mix(in srgb,var(--ink) 2%,transparent)}
+  .qx-card .label{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--ink-mute);letter-spacing:.07em;text-transform:uppercase;margin-bottom:14px}
+  .qx-card h4{font-size:20px;line-height:1.18;margin-bottom:10px}
+  .qx-card .compare{display:flex;flex-direction:column;gap:12px;margin-top:14px}
+  .qx-card .compare-row{display:grid;grid-template-columns:96px 1fr;gap:14px;font-size:12.5px;padding-bottom:10px;border-bottom:1px dashed var(--line)}
+  .qx-card .compare-row:last-child{border-bottom:none}
+  .qx-card .compare-row .k{color:var(--ink-mute);font-style:italic;letter-spacing:.04em}
+  .qx-card .compare-row .v{color:var(--ink);font-style:italic;line-height:1.5}
+  .qx-card .compare-row .v em{color:var(--accent)}
+
+  /* Read-more */
+  .read-more{display:inline-flex;align-items:center;gap:8px;font-family:"Source Serif 4",serif;font-style:italic;color:var(--accent);text-decoration:none;font-size:14px;margin-top:24px;transition:gap .25s}
+  .read-more:hover{gap:12px}
+
+  /* Footer */
+  footer{padding:60px 0 32px}
+  .footin{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;margin-bottom:36px}
+  .footcols{display:flex;gap:clamp(34px,5vw,64px);flex-wrap:wrap}
+  .footcol h4{font-style:italic;font-weight:400;font-size:12.5px;color:var(--ink-mute);margin-bottom:14px;letter-spacing:.04em;text-transform:uppercase;font-family:"JetBrains Mono",monospace}
+  .footcol a{display:block;color:var(--ink-soft);text-decoration:none;font-size:14px;margin-bottom:9px}
+  .footcol a:hover{color:var(--accent)}
+  .disc{padding-top:22px;border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px}
+  .disc span{font-size:11.5px;color:var(--ink-mute);line-height:1.6}
+  .disc .legal{max-width:72ch;font-style:italic}
+  .disc .reg-links a{color:var(--ink-mute);text-decoration:none;font-size:11.5px;font-style:italic;margin-left:14px}
+  .disc .reg-links a:hover{color:var(--ink-soft)}
+</style>
+</head>
+<body>
+
+  <nav class="top" id="nav">
+    <div class="wrap navin">
+      <a class="wm" href="flameback-home.html">flameback<span class="p">.</span></a>
+      <div class="navr">
+        <a class="navlink" href="flameback-who-we-are.html">Who we are</a>
+        <a class="navlink current" href="flameback-what-we-do.html">What we do</a>
+        <a class="navlink" href="flameback-our-work.html">Our work</a>
+        <a class="navlink" href="flameback-insights.html">Insights</a>
+        <a class="navlink" href="flameback-tools.html">Tools</a>
+        <a class="navlink" href="flameback-offbook.html">Off-book</a>
+        <a class="cta" href="flameback-app-splash.html">Start your journey</a>
+        <button class="toggle" id="toggle">Light</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="subnav">
+    <div class="wrap subnav-in">
+      <span class="sn-lab">What we do</span>
+      <a href="#pwm" class="anchor-link">i. Private wealth management</a>
+      <a href="#advisory" class="anchor-link">ii. Advisory</a>
+      <a href="#qx" class="anchor-link">iii. QX Funds</a>
+    </div>
+  </div>
+
+  <section class="hero" id="top">
+    <div class="wrap">
+      <div class="hero-meta"><span class="d"></span>What we do &middot; the work in three forms</div>
+      <h1 class="hero-h">One way of thinking, expressed in three <em>different forms.</em></h1>
+      <p class="hero-sub">The firm exists, fundamentally, to do one thing: help patient capital compound through engineered systems. The three sections below are different shapes that work takes, depending on what a family actually needs.</p>
+    </div>
+    <div class="hero-wmark">what.</div>
+  </section>
+
+  <!-- ============ PRIVATE WEALTH MANAGEMENT ============ -->
+  <section class="sec" id="pwm">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="lab"><span class="n">i.</span>Private wealth management</span>
+        <h2>The <em>heart</em> of the firm.</h2>
+        <p class="sub">A long-term partnership in which the firm manages a family&rsquo;s capital across global markets, using its own quantitative strategies, against a portfolio designed specifically for that family. Below: how it actually unfolds, in four beats.</p>
+      </div>
+
+      <div class="arc">
+
+        <div class="arc-beat">
+          <span class="arc-n">i.</span>
+          <div class="arc-body">
+            <h3>We start by <em>listening.</em></h3>
+            <p>Before any number is exchanged, before any product is mentioned, before any strategy is named &mdash; we spend time understanding the family. What you&rsquo;ve built, what you&rsquo;re building, where the capital came from, what you want it to do. Not as a sales discovery, but as the actual work.</p>
+            <p>Most wealth firms reverse this order &mdash; they lead with a product and fit the client to it. <strong>We find the result is worse for everyone.</strong> A portfolio that doesn&rsquo;t know who it&rsquo;s for tends to be sold rather than built.</p>
+            <p class="arc-quote">&ldquo;The thirty minutes we spent on what my parents went through &mdash; that&rsquo;s when I knew this firm was different.&rdquo; <em>&mdash; a client, after a first conversation</em></p>
+          </div>
+        </div>
+
+        <div class="arc-beat">
+          <span class="arc-n">ii.</span>
+          <div class="arc-body">
+            <h3>We look at the <em>whole picture.</em></h3>
+            <p>An investment portfolio doesn&rsquo;t sit by itself. It sits inside a life that includes real estate, businesses, family commitments, insurance cover, tax considerations, ESOPs or RSUs in play, lending facilities, sometimes property abroad, sometimes inheritance still in motion. <em>None of these are separable from the portfolio.</em></p>
+            <p>The firm engages with all of them &mdash; not by selling adjacent products, but by understanding the picture clearly enough that the portfolio we build is the right one for the picture you&rsquo;re actually in. If a fifth of your net worth is tied up in unvested ESOPs, the equity portion of the portfolio should not behave as if it isn&rsquo;t.</p>
+            <div class="whole-pic">
+              <span class="l">Things we look at, alongside the portfolio</span>
+              <ul>
+                <li>Real estate holdings &amp; rental income</li>
+                <li>Business interests &amp; concentration risk</li>
+                <li>Insurance cover &amp; liability exposure</li>
+                <li>ESOPs, RSUs, founder equity</li>
+                <li>Existing debt &amp; lending lines</li>
+                <li>Family commitments &amp; lifecycle events</li>
+                <li>Tax position &amp; carry-forward losses</li>
+                <li>Estate planning &amp; succession</li>
+              </ul>
+              <div class="ftr">Each of these informs the portfolio design. None of them are separately invoiced.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="arc-beat">
+          <span class="arc-n">iii.</span>
+          <div class="arc-body">
+            <h3>We <em>design</em> for you, not for a model portfolio.</h3>
+            <p>The firm runs eighteen live strategies. The portfolio we build for a family is a customised blend drawn from those strategies, weighted to that family&rsquo;s specific picture &mdash; horizon, liquidity needs, existing exposures, geographic balance, tax position, drawdown tolerance.</p>
+            <p>Two clients with similar net worth often end up with materially different portfolios, because their lives are different. <em>The strategies are standardised; the allocations are not.</em></p>
+            <p>The mandate is global. Indian equities, US equities, multi-asset where appropriate. The default posture is heavy Indian exposure, because the firm&rsquo;s clients are Indian families with most of their wealth in India &mdash; but the global piece is always there, sized to the client.</p>
+            <div class="arc-tags">
+              <span class="arc-tag">Customised allocations</span>
+              <span class="arc-tag">Global mandate</span>
+              <span class="arc-tag">Multi-strategy blend</span>
+              <span class="arc-tag">Risk-budgeted</span>
+              <span class="arc-tag">Tax-aware</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="arc-beat">
+          <span class="arc-n">iv.</span>
+          <div class="arc-body">
+            <h3>We <em>manage</em> the account, not just the trades.</h3>
+            <p>After the portfolio is live, the work becomes ongoing. Strategies rebalance on their own cadence. The firm watches the household-level picture continuously. A new business sale, a property transaction, a change in tax residency, a planned liquidity event &mdash; each is a signal to re-examine the design.</p>
+            <p>The rhythm of contact varies by client. Some families want a quarterly review and otherwise prefer to be left alone. Others speak with us monthly. <em>The default isn&rsquo;t a calendar; it&rsquo;s whatever matches how engaged the family wants to be.</em></p>
+            <p>Underneath the conversation, the systems do their work continuously. <strong>We do not call you to talk about market moves.</strong> If a strategy is behaving as designed, however uncomfortable that may feel, the right thing is to let it behave as designed.</p>
+            <a class="read-more" href="flameback-app-splash.html">Talk to us about your picture &rarr;</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ADVISORY ============ -->
+  <section class="sec alt" id="advisory">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="lab"><span class="n">ii.</span>Advisory</span>
+        <h2>The work that <em>surrounds</em> wealth management.</h2>
+        <p class="sub">Many of the firm&rsquo;s clients first engage on a discrete piece of work &mdash; an ESOP plan, a business exit, a property transaction &mdash; and only later move into ongoing wealth management. Others use the firm only for these discrete engagements. Either is welcome.</p>
+      </div>
+
+      <div class="adv-prose">
+        <p>Advisory is how the firm engages with capital and financial decisions <em>outside the day-to-day management of an investment portfolio</em>. The same engineering-first posture applies &mdash; rigorous analysis, transparent assumptions, defensible recommendations &mdash; but the engagement is project-based rather than ongoing.</p>
+        <p>For families that eventually become wealth-management clients, advisory work often serves as the meaningful first interaction with the firm. For those who don&rsquo;t, it stands on its own.</p>
+      </div>
+
+      <div class="adv-grid" style="margin-top:32px">
+        <div class="adv-card">
+          <span class="cn">i.</span>
+          <h4>Financial <em>planning.</em></h4>
+          <p>Retirement modelling, education funding, lifecycle event planning, cash-flow projections. <em>Quantitative where it matters, qualitative where it should be.</em></p>
+        </div>
+        <div class="adv-card">
+          <span class="cn">ii.</span>
+          <h4>Business restructuring <em>&amp; exits.</em></h4>
+          <p>Helping founders and promoters structure exits, secondary sales, and ownership transitions. Hedging the concentrated-position risk that precedes most material exits.</p>
+        </div>
+        <div class="adv-card">
+          <span class="cn">iii.</span>
+          <h4>ESOP &amp; <em>RSU planning.</em></h4>
+          <p>Tax-aware exercise scheduling, currency exposure for global plans, hedging strategies against unvested equity risk, and integration with the rest of the household balance sheet.</p>
+        </div>
+        <div class="adv-card">
+          <span class="cn">iv.</span>
+          <h4>Real estate <em>&amp; lending.</em></h4>
+          <p>Property purchase analysis, financing-vs-cash trade-offs, structuring of LAS facilities and loans against shares. Closing assistance on material transactions.</p>
+        </div>
+        <div class="adv-card">
+          <span class="cn">v.</span>
+          <h4>Asset <em>administration.</em></h4>
+          <p>De-mat conversions, share consolidation across folios, dormant-account reactivation, physical-to-electronic transitions. The unglamorous but essential housekeeping of a complex balance sheet.</p>
+        </div>
+        <div class="adv-card">
+          <span class="cn">vi.</span>
+          <h4>Estate <em>&amp; succession.</em></h4>
+          <p>Wills, trusts, intergenerational wealth structuring, family-office set-up considerations. Working with the family&rsquo;s lawyers and accountants rather than replacing them.</p>
+        </div>
+      </div>
+
+      <a class="read-more" href="flameback-app-splash.html">Discuss a specific project &rarr;</a>
+    </div>
+  </section>
+
+  <!-- ============ QX FUNDS ============ -->
+  <section class="sec" id="qx">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="lab"><span class="n">iii.</span>QX Funds</span>
+        <h2>A <em>pooled</em> expression of the same engine.</h2>
+        <p class="sub">For investors who want exposure to the firm&rsquo;s strategies in a pooled vehicle rather than a managed account &mdash; typically because they don&rsquo;t want a customised mandate, or because pooled structure is more efficient for them.</p>
+      </div>
+
+      <div class="qx-grid">
+        <div class="qx-body">
+          <p>QX Equanimity is the firm&rsquo;s headline pooled vehicle &mdash; a Category III AIF running a systematic, quality-momentum blend across Indian large-caps. The same engine, the same R&amp;D process, the same eight-year heritage. <em>What&rsquo;s different is the structure.</em></p>
+          <p>In private wealth management, the firm designs a portfolio for the client. In QX Funds, the client subscribes to a portfolio that already exists. The strategy is fixed. The allocation is uniform across investors. The flexibility is in the structure, not in the construction.</p>
+          <p>QX exists for two reasons. First, some investors prefer the pooled structure &mdash; the regulatory framework, the audit treatment, the standardisation of terms. Second, some allocations are too small or too administratively complex for a separate mandate, and the pooled vehicle is the right home for them.</p>
+          <p>The firm runs additional QX vehicles for specific strategies, but Equanimity is the flagship.</p>
+        </div>
+
+        <div class="qx-card">
+          <span class="label">PWM vs QX &middot; a quick contrast</span>
+          <h4>How they <em>differ</em>.</h4>
+          <div class="compare">
+            <div class="compare-row"><span class="k">Structure</span><span class="v">PWM: separate mandate.<br/>QX: <em>pooled fund</em>.</span></div>
+            <div class="compare-row"><span class="k">Portfolio</span><span class="v">PWM: <em>customised</em>.<br/>QX: standard for all investors.</span></div>
+            <div class="compare-row"><span class="k">Strategies</span><span class="v">PWM: blend of multiple.<br/>QX: <em>single strategy</em> per vehicle.</span></div>
+            <div class="compare-row"><span class="k">Relationship</span><span class="v">PWM: ongoing partnership.<br/>QX: investor in a vehicle.</span></div>
+            <div class="compare-row"><span class="k">Reporting</span><span class="v">Same engine. Same firm. Same posture.</span></div>
+          </div>
+        </div>
+      </div>
+
+      <a class="read-more" href="flameback-our-work.html" style="margin-top:32px">See the firm&rsquo;s strategies &rarr;</a>
+    </div>
+  </section>
+
+  <!-- Closing -->
+  <section class="sec">
+    <div class="wrap" style="text-align:center;padding:clamp(20px,3vw,40px) 0">
+      <h2 style="font-size:clamp(32px,4.8vw,56px);max-width:24ch;margin:0 auto 18px;line-height:1.02">Not sure which fits? <em>Talk to us.</em></h2>
+      <p style="font-size:15px;color:var(--ink-soft);font-style:italic;max-width:50ch;margin:0 auto 28px;line-height:1.65">Most first conversations end with us suggesting which form makes sense for the family in front of us &mdash; not selling all three.</p>
+      <a class="btn" href="flameback-app-splash.html">Start your journey &rarr;</a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <div class="footin">
+        <a class="wm" href="flameback-home.html">flameback<span class="p">.</span></a>
+        <div class="footcols">
+          <div class="footcol"><h4>The firm</h4><a href="flameback-who-we-are.html">Who we are</a><a href="flameback-what-we-do.html">What we do</a><a href="flameback-our-work.html">Our work</a><a href="flameback-clients.html">Clients</a></div>
+          <div class="footcol"><h4>Open</h4><a href="flameback-insights.html">Insights</a><a href="flameback-tools.html">Tools</a><a href="flameback-offbook.html">Off-book</a></div>
+          <div class="footcol"><h4>Contact</h4><a href="flameback-app-splash.html">Start your journey</a><a href="#">hello@flameback.in</a><a href="#">Bangalore, India</a></div>
+        </div>
+      </div>
+      <div class="disc">
+        <span>&copy; 2026 Flameback Capital Pvt Ltd</span>
+        <span class="legal">SEBI registered &middot; SEC filed for US strategy. Investments are subject to market risk. Past performance is not indicative of future results.</span>
+        <span class="reg-links"><a href="flameback-pms-disclosure.html">PMS disclosure</a><a href="flameback-advisory-disclosure.html">IA disclosure</a></span>
+      </div>
+    </div>
+  </footer>
+
+<script>
+  var root=document.documentElement, tg=document.getElementById('toggle');
+  tg.addEventListener('click',function(){root.classList.toggle('light');tg.textContent=root.classList.contains('light')?'Dark':'Light';});
+  var nav=document.getElementById('nav');
+  window.addEventListener('scroll',function(){nav.classList.toggle('scrolled',window.scrollY>16)});
+  var anchors=document.querySelectorAll('.subnav a.anchor-link');
+  var sections=document.querySelectorAll('section[id]');
+  function updateActive(){
+    var y=window.scrollY+150;var current='';
+    sections.forEach(function(s){if(s.offsetTop<=y)current=s.id});
+    anchors.forEach(function(a){a.classList.toggle('active',a.getAttribute('href')==='#'+current)});
+  }
+  window.addEventListener('scroll',updateActive);updateActive();
+</script>
+  <script src="reload.js"></script>
+</body>
+</html>

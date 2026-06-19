@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>flameback. — Family wealth</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#1A1714;--ink:#F2EDE3;--ink-soft:rgba(242,237,227,.66);--ink-mute:rgba(242,237,227,.44);--line:rgba(242,237,227,.16);--accent:#FF6D0A;--btn-bg:#FF6D0A;--btn-ink:#1A1714;--grain-blend:screen;--grain-op:.055;--card:rgba(242,237,227,.03)}
+  :root.light{--bg:#FCFAF6;--ink:#1A1714;--ink-soft:rgba(26,23,20,.68);--ink-mute:rgba(26,23,20,.46);--line:rgba(26,23,20,.14);--accent:#B23E08;--btn-bg:#1A1714;--btn-ink:#FCFAF6;--grain-blend:multiply;--grain-op:.035;--card:rgba(26,23,20,.025)}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:"Source Serif 4",serif;transition:background .5s,color .5s;line-height:1.55;font-variant-numeric:tabular-nums;min-height:100vh;display:flex;flex-direction:column}
+  body::after{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;mix-blend-mode:var(--grain-blend);opacity:var(--grain-op);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  h1,h2,h3,h4{font-family:"Cormorant Garamond",serif;font-weight:500;letter-spacing:-.014em;line-height:1.04}
+  h1 em,h2 em,h3 em{color:var(--accent);font-style:italic;font-weight:500}
+  .mono{font-family:"JetBrains Mono",monospace;letter-spacing:.07em;text-transform:uppercase}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 clamp(22px,5vw,44px)}
+
+  /* ===== site chrome (matches marketing pages) ===== */
+  nav{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 84%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid transparent;transition:border-color .4s}
+  nav.scrolled{border-color:var(--line)}
+  .navin{display:flex;align-items:center;justify-content:space-between;padding:14px 0;gap:24px}
+  .wm{font-family:"Source Serif 4",serif;font-weight:600;font-size:18px;color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+  .wm .p{color:var(--accent)}
+  .navr{display:flex;align-items:center;gap:22px}
+  .navr a{color:var(--ink-soft);text-decoration:none;font-size:14px;transition:color .3s}
+  .navr a:hover{color:var(--ink)}
+  .navr a.cta{background:var(--btn-bg);color:var(--btn-ink);padding:8px 16px;font-weight:500}
+  .toggle{background:none;border:1px solid var(--line);color:var(--ink-soft);cursor:pointer;font-family:"Source Serif 4",serif;font-size:12.5px;font-style:italic;padding:5px 13px;border-radius:999px}
+  @media(max-width:1020px){.navr .navlink{display:none}}
+
+  footer{padding:60px 0 32px;position:relative;z-index:2;border-top:1px solid var(--line);margin-top:auto}
+  .footin{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;margin-bottom:36px}
+  .footcols{display:flex;gap:clamp(34px,5vw,64px);flex-wrap:wrap}
+  .footcol h4{font-style:italic;font-weight:400;font-size:12.5px;color:var(--ink-mute);margin-bottom:14px;letter-spacing:.04em;text-transform:uppercase;font-family:"JetBrains Mono",monospace}
+  .footcol a{display:block;color:var(--ink-soft);text-decoration:none;font-size:14px;margin-bottom:9px}
+  .footcol a:hover{color:var(--accent)}
+  .disc{padding-top:22px;border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px}
+  .disc span{font-size:11.5px;color:var(--ink-mute);line-height:1.6}
+  .disc .legal{max-width:72ch;font-style:italic}
+  .disc .reg-links a{color:var(--ink-mute);text-decoration:none;font-size:11.5px;font-style:italic;margin-left:14px}
+
+  /* ===== screen content — centred column on the wide page ===== */
+  main{position:relative;z-index:2;flex:1}
+  .screen{max-width:600px;margin:0 auto;padding:clamp(44px,7vh,84px) 0 clamp(56px,9vh,96px)}
+  .back-link{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-style:italic;color:var(--ink-mute);text-decoration:none;margin-bottom:30px;transition:color .3s}
+  .back-link:hover{color:var(--ink-soft)}
+
+  /* progress indicator */
+  .prog{margin-bottom:34px}
+  .prog-h{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:9px}
+  .prog-step{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink-mute);letter-spacing:.09em;text-transform:uppercase}
+  .prog-q{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--accent);letter-spacing:.06em}
+  .prog-track{height:3px;border-radius:999px;background:var(--line);overflow:hidden}
+  .prog-fill{height:100%;background:var(--accent);border-radius:999px;transition:width .6s cubic-bezier(.2,.8,.2,1)}
+
+  .eyebrow{display:inline-flex;align-items:center;gap:10px;font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink-mute);letter-spacing:.09em;text-transform:uppercase;margin-bottom:16px}
+  .eyebrow .l{width:20px;height:1px;background:var(--accent)}
+  h1.q{font-size:clamp(38px,5.4vw,60px);line-height:1.02;margin-bottom:18px}
+  .why{font-size:16px;font-style:italic;line-height:1.6;color:var(--ink-soft);margin-bottom:26px}
+
+  /* chip-style single-select options */
+  .opts{display:flex;flex-direction:column;gap:11px}
+  .opt{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:var(--card);border:1px solid var(--line);color:var(--ink);font-family:"Source Serif 4",serif;font-size:16px;padding:17px 18px;cursor:pointer;transition:border-color .25s,background .25s,transform .15s}
+  .opt:hover{border-color:color-mix(in srgb,var(--accent) 45%,var(--line))}
+  .opt .mark{flex:none;width:20px;height:20px;border-radius:50%;border:1.5px solid var(--ink-mute);display:grid;place-items:center;transition:border-color .25s}
+  .opt .mark::after{content:"";width:9px;height:9px;border-radius:50%;background:var(--accent);transform:scale(0);transition:transform .2s}
+  .opt.on{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 9%,var(--card))}
+  .opt.on .mark{border-color:var(--accent)}
+  .opt.on .mark::after{transform:scale(1)}
+  .opt .lab{flex:1}
+
+  .cta{display:inline-flex;align-items:center;justify-content:center;gap:11px;background:var(--btn-bg);color:var(--btn-ink);font-family:"Source Serif 4",serif;font-size:15.5px;font-weight:500;padding:15px 30px;text-decoration:none;border:none;cursor:pointer;transition:gap .35s,opacity .3s;margin-top:36px}
+  .cta:hover{gap:15px;opacity:.93}
+  .cta[disabled]{opacity:.34;cursor:not-allowed;pointer-events:none}
+</style>
+</head>
+<body>
+
+  <nav id="nav">
+    <div class="wrap navin">
+      <a class="wm" href="index.html">flameback<span class="p">.</span></a>
+      <div class="navr">
+        <a class="navlink" href="flameback-who-we-are.html">Who we are</a>
+        <a class="navlink" href="flameback-what-we-do.html">What we do</a>
+        <a class="navlink" href="flameback-our-work.html">Our work</a>
+        <a class="navlink" href="flameback-insights.html">Insights</a>
+        <button class="toggle" id="toggle">Light</button>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <div class="wrap">
+      <div class="screen">
+        <a href="flameback-app-income-outlook.html" class="back-link">&larr; Back</a>
+
+        <div class="prog">
+          <div class="prog-h">
+            <span class="prog-step">Step 1 of 3 · Your finances</span>
+            <span class="prog-q">Q11 / 13</span>
+          </div>
+          <div class="prog-track"><div class="prog-fill" style="width:0%"></div></div>
+        </div>
+
+        <span class="eyebrow"><span class="l"></span>Generational context</span>
+        <h1 class="q">Where do you sit, next to your parents' <em>generation?</em></h1>
+        <p class="why">Generational starting point matters. If you're ahead of where your parents were, you have margin for risk. If you're rebuilding, capital protection comes first.</p>
+
+        <div class="opts" id="opts">
+          <button class="opt" data-v="100"><span class="mark"></span><span class="lab">Way beyond my needs</span></button>
+          <button class="opt" data-v="88"><span class="mark"></span><span class="lab">Significantly above</span></button>
+          <button class="opt" data-v="70"><span class="mark"></span><span class="lab">Somewhat above</span></button>
+          <button class="opt" data-v="45"><span class="mark"></span><span class="lab">About the same</span></button>
+          <button class="opt" data-v="0"><span class="mark"></span><span class="lab">N/A</span></button>
+        </div>
+
+        <a href="flameback-app-drop-reaction.html" class="cta" id="cta" disabled>Continue &rarr;</a>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <div class="footin">
+        <a class="wm" href="index.html">flameback<span class="p">.</span></a>
+        <div class="footcols">
+          <div class="footcol"><h4>The firm</h4><a href="flameback-who-we-are.html">Who we are</a><a href="flameback-what-we-do.html">What we do</a><a href="flameback-our-work.html">Our work</a><a href="flameback-clients.html">Clients</a></div>
+          <div class="footcol"><h4>Open</h4><a href="flameback-insights.html">Insights</a><a href="flameback-tools.html">Tools</a><a href="flameback-offbook.html">Off-book</a></div>
+          <div class="footcol"><h4>Contact</h4><a href="flameback-app-splash.html">Start your journey</a><a href="#">hello@flameback.in</a><a href="#">Bangalore, India</a></div>
+        </div>
+      </div>
+      <div class="disc">
+        <span>&copy; 2026 Flameback Capital Pvt Ltd</span>
+        <span class="legal">SEBI registered &middot; SEC filed for US strategy. Investments are subject to market risk. Past performance is not indicative of future results.</span>
+        <span class="reg-links"><a href="flameback-pms-disclosure.html">PMS disclosure</a><a href="flameback-advisory-disclosure.html">IA disclosure</a></span>
+      </div>
+    </div>
+  </footer>
+
+<script>
+  // light/dark toggle
+  var t=document.getElementById('toggle');
+  t.onclick=function(){var l=document.documentElement.classList.toggle('light');t.textContent=l?'Dark':'Light';};
+  // nav border on scroll
+  var nv=document.getElementById('nav');
+  window.addEventListener('scroll',function(){nv.classList.toggle('scrolled',window.scrollY>8);});
+
+  // animate progress on load
+  window.addEventListener('load',function(){setTimeout(function(){document.querySelector('.prog-fill').style.width='77%';},250);});
+
+  // single-select
+  var opts=document.getElementById('opts').querySelectorAll('.opt');
+  var cta=document.getElementById('cta');
+  opts.forEach(function(o){
+    o.onclick=function(){
+      opts.forEach(function(x){x.classList.remove('on');});
+      o.classList.add('on');
+      cta.removeAttribute('disabled');
+    };
+  });
+</script>
+  <script src="reload.js"></script>
+</body>
+</html>

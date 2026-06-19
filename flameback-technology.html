@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Technology — flameback.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#1A1714;--ink:#F2EDE3;--ink-soft:rgba(242,237,227,.66);--ink-mute:rgba(242,237,227,.44);--line:rgba(242,237,227,.16);--panel:#221E1A;--accent:#FF6D0A;--btn-bg:#FF6D0A;--btn-ink:#1A1714;--grain-blend:screen;--grain-op:.055}
+  :root.light{--bg:#FCFAF6;--ink:#1A1714;--ink-soft:rgba(26,23,20,.68);--ink-mute:rgba(26,23,20,.46);--line:rgba(26,23,20,.14);--panel:#F4EFE7;--accent:#B23E08;--btn-bg:#1A1714;--btn-ink:#FCFAF6;--grain-blend:multiply;--grain-op:.035}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:"Source Serif 4",serif;transition:background .5s,color .5s;font-variant-numeric:tabular-nums;line-height:1.55}
+  body::after{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;mix-blend-mode:var(--grain-blend);opacity:var(--grain-op);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  .wrap{max-width:1200px;margin:0 auto;padding:0 clamp(22px,5vw,44px)}
+  section{position:relative;z-index:2}
+  .wm{font-family:"Source Serif 4",serif;font-weight:600;font-size:18px;color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+  .wm .p{color:var(--accent)}
+  h1,h2,h3,h4{font-family:"Cormorant Garamond",serif;font-weight:500;letter-spacing:-.014em;color:var(--ink);line-height:1.04}
+  h1 em,h2 em,h3 em,h4 em{color:var(--accent);font-style:italic;font-weight:500}
+  p{line-height:1.62}
+  .btn,.btn-out{display:inline-flex;align-items:center;gap:11px;font-family:"Source Serif 4",serif;font-size:15px;font-weight:500;padding:13px 24px;text-decoration:none;transition:gap .35s,opacity .3s,border-color .3s;cursor:pointer;border:none}
+  .btn{background:var(--btn-bg);color:var(--btn-ink)} .btn:hover{gap:15px;opacity:.92}
+  .btn-out{background:transparent;color:var(--ink);border:1px solid var(--line)} .btn-out:hover{gap:15px;border-color:var(--ink-mute)}
+  nav.top{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 84%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid transparent;transition:border-color .4s}
+  nav.top.scrolled{border-color:var(--line)}
+  .navin{display:flex;align-items:center;justify-content:space-between;padding:16px 0}
+  .navr{display:flex;align-items:center;gap:22px}
+  .navr a{color:var(--ink-soft);text-decoration:none;font-size:14.5px;transition:color .3s}
+  .navr a:hover{color:var(--ink)}
+  .navr a.active{color:var(--ink)}
+  .toggle{background:none;border:1px solid var(--line);color:var(--ink-soft);cursor:pointer;font-family:"Source Serif 4",serif;font-size:13px;font-style:italic;padding:5px 13px;border-radius:999px}
+  .navr a.cta{background:var(--btn-bg);color:var(--btn-ink);padding:9px 18px}
+  @media(max-width:1000px){.navr .navlink{display:none}}
+  .crumb{padding:14px 0;border-bottom:1px solid var(--line);font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-mute);letter-spacing:.05em;text-transform:uppercase}
+  .crumb a{color:var(--ink-mute);text-decoration:none}
+  .crumb a:hover{color:var(--accent)}
+  .crumb .sep{margin:0 10px;opacity:.55}
+  .crumb .cur{color:var(--accent)}
+  .hero{padding:clamp(70px,11vh,130px) 0 clamp(54px,7vh,90px);border-bottom:1px solid var(--line);position:relative}
+  .hero-eb{display:flex;align-items:center;gap:14px;margin-bottom:32px;font-style:italic;font-size:13px;color:var(--ink-mute);letter-spacing:.04em}
+  .hero-eb .l{width:32px;height:1px;background:var(--accent)}
+  .hero-eb .dateline{font-family:"JetBrains Mono",monospace;font-style:normal;font-size:11.5px;margin-left:auto;letter-spacing:.05em}
+  @media(max-width:760px){.hero-eb .dateline{display:none}}
+  h1.h-h{font-size:clamp(58px,9vw,128px);line-height:.92;letter-spacing:-.025em;margin-bottom:32px;max-width:14ch;font-weight:500}
+  .h-sub{font-size:clamp(17px,1.7vw,21px);line-height:1.55;color:var(--ink-soft);max-width:54ch;font-style:italic;margin-bottom:38px}
+  .h-cta{display:flex;gap:12px;flex-wrap:wrap}
+  .wmark{position:absolute;right:0;bottom:0;font-family:"Cormorant Garamond",serif;font-style:italic;font-size:clamp(180px,30vw,360px);color:var(--ink);opacity:.02;line-height:.8;pointer-events:none;letter-spacing:-.04em;white-space:nowrap;overflow:hidden}
+  .sec{padding:clamp(70px,10vh,120px) 0;border-bottom:1px solid var(--line);position:relative}
+  .sec.tint{background:color-mix(in srgb,var(--ink) 2.2%,transparent)}
+  .sec-h{display:grid;grid-template-columns:160px 1fr;gap:48px;align-items:flex-start;margin-bottom:clamp(36px,4vw,52px)}
+  @media(max-width:760px){.sec-h{grid-template-columns:1fr;gap:14px}}
+  .sec-h .meta{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase;padding-top:14px;border-top:1px solid var(--line);line-height:1.7}
+  .sec-h h2{font-size:clamp(36px,5vw,62px);line-height:1.02;letter-spacing:-.015em;max-width:18ch}
+  .prose{max-width:62ch;font-size:17px;line-height:1.7;color:var(--ink)}
+  .prose p{margin-bottom:22px}
+  .prose p:last-child{margin-bottom:0}
+  .prose em{color:var(--accent);font-style:italic;font-weight:500}
+  .prose strong{font-weight:500;color:var(--ink);font-style:italic}
+  .prose-grid{display:grid;grid-template-columns:160px 1fr;gap:48px;align-items:flex-start}
+  @media(max-width:760px){.prose-grid{grid-template-columns:1fr;gap:14px}}
+  .meta.lab{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase;padding-top:14px;border-top:1px solid var(--line);line-height:1.7}
+  .meta.lab .n{color:var(--accent);margin-right:8px}
+
+  /* Architecture diagram */
+  .arch{margin-top:8px;border:1px solid var(--line);background:var(--bg);padding:36px clamp(20px,3vw,40px);position:relative}
+  .arch svg{display:block;width:100%;height:auto;max-width:920px;margin:0 auto}
+  .arch .cap{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase;text-align:center;margin-top:18px}
+  .arch .cap em{color:var(--accent);font-style:normal}
+
+  /* Layer blocks — FIST, Data lake, QX, Jarvis */
+  .layer{margin-top:42px;border:1px solid var(--line);background:var(--bg);padding:32px 36px}
+  .layer:first-of-type{margin-top:8px}
+  @media(max-width:680px){.layer{padding:26px 24px}}
+  .layer .meta-row{display:flex;align-items:flex-start;gap:18px;margin-bottom:22px;padding-bottom:18px;border-bottom:1px solid var(--line)}
+  .layer .rn{font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--accent);font-size:42px;line-height:1}
+  .layer .meta-row .info{display:flex;flex-direction:column;gap:4px;flex:1}
+  .layer .lbl{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--ink-mute);letter-spacing:.08em;text-transform:uppercase}
+  .layer h3{font-size:28px;line-height:1.1;letter-spacing:-.01em;margin-top:2px}
+  .layer h3 em{color:var(--accent);font-style:italic}
+  .layer .stats{display:flex;gap:18px;font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--ink-mute);text-align:right;letter-spacing:.04em;line-height:1.55}
+  @media(max-width:680px){.layer .stats{display:none}}
+  .layer .stats em{color:var(--accent);font-style:normal;display:block;font-family:"Cormorant Garamond",serif;font-size:24px;line-height:1;margin-bottom:3px;letter-spacing:-.005em}
+  .layer .body p{font-size:15px;line-height:1.7;color:var(--ink-soft);max-width:64ch;margin-bottom:16px}
+  .layer .body p:last-child{margin-bottom:0}
+  .layer .body p em{color:var(--ink);font-style:italic;font-weight:500}
+  .layer .body p strong{font-weight:500;font-style:italic;color:var(--accent)}
+  .layer .specs{margin-top:18px;display:flex;flex-direction:column;gap:8px;border-top:1px dashed var(--line);padding-top:18px}
+  .layer .specs .sp{display:flex;align-items:flex-start;gap:14px;font-size:13.5px;color:var(--ink-soft);line-height:1.55}
+  .layer .specs .sp .lh{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--accent);letter-spacing:.06em;text-transform:uppercase;min-width:110px;padding-top:2px}
+  .layer .specs .sp .rh em{color:var(--ink);font-style:italic;font-weight:500}
+
+  /* Build vs Buy table */
+  .bvb{margin-top:8px;border:1px solid var(--line);background:var(--bg)}
+  .bvb-head{display:grid;grid-template-columns:1fr 1fr;background:color-mix(in srgb,var(--ink) 3%,transparent);border-bottom:1px solid var(--line)}
+  .bvb-head div{padding:20px 28px;font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-mute);letter-spacing:.08em;text-transform:uppercase}
+  .bvb-head div:first-child{border-right:1px solid var(--line);color:var(--accent)}
+  .bvb-head .pre{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:24px;text-transform:none;letter-spacing:-.005em;color:var(--ink);margin-top:6px;line-height:1}
+  .bvb-head .pre em{color:var(--accent);font-style:italic}
+  .bvb-row{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--line)}
+  .bvb-row:last-child{border-bottom:none}
+  .bvb-row .cell{padding:18px 28px;border-right:1px solid var(--line);font-size:14.5px;line-height:1.5;color:var(--ink)}
+  .bvb-row .cell:last-child{border-right:none;color:var(--ink-soft)}
+  .bvb-row .cell em{color:var(--accent);font-style:italic;font-weight:500}
+  .bvb-row .cell .note{display:block;font-size:12.5px;color:var(--ink-mute);font-style:italic;margin-top:4px;line-height:1.5}
+  @media(max-width:680px){
+    .bvb-head,.bvb-row{grid-template-columns:1fr}
+    .bvb-head div:first-child,.bvb-row .cell{border-right:none;border-bottom:1px solid var(--line)}
+    .bvb-row .cell:last-child{border-bottom:none}
+  }
+
+  /* Saturday reliability panel */
+  .satur{margin-top:8px;border:1px solid var(--line);background:var(--bg);padding:36px clamp(28px,4vw,44px)}
+  .satur .hdr{display:flex;align-items:baseline;gap:18px;margin-bottom:24px;padding-bottom:18px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+  .satur .hdr .tm{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--accent);letter-spacing:.08em;text-transform:uppercase}
+  .satur .hdr .ti{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:24px;color:var(--ink);letter-spacing:-.005em}
+  .satur .hdr .ti em{color:var(--accent);font-style:italic}
+  .satur .runs{display:flex;flex-direction:column;gap:0}
+  .satur .run{display:grid;grid-template-columns:110px 1fr;gap:24px;padding:16px 0;border-bottom:1px dashed var(--line);align-items:flex-start}
+  .satur .run:last-child{border-bottom:none}
+  @media(max-width:680px){.satur .run{grid-template-columns:1fr;gap:6px}}
+  .satur .run .t{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--accent);letter-spacing:.04em;padding-top:3px}
+  .satur .run .w{font-size:14.5px;line-height:1.55;color:var(--ink)}
+  .satur .run .w em{color:var(--ink-soft);font-style:italic;font-weight:400;display:block;font-size:13px;margin-top:3px}
+
+  /* Open source */
+  .opens{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:8px}
+  @media(max-width:760px){.opens{grid-template-columns:1fr}}
+  .open-c{background:var(--bg);padding:30px 28px;display:flex;flex-direction:column;gap:12px;text-decoration:none;color:var(--ink);transition:background .25s}
+  .open-c:hover{background:color-mix(in srgb,var(--accent) 5%,transparent)}
+  .open-c .lbl{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink-mute);letter-spacing:.08em;text-transform:uppercase}
+  .open-c h4{font-size:22px;line-height:1.15;letter-spacing:-.005em}
+  .open-c h4 em{color:var(--accent);font-style:italic}
+  .open-c p{font-size:13.5px;line-height:1.6;color:var(--ink-soft);flex:1}
+  .open-c p em{color:var(--ink);font-style:italic;font-weight:500}
+  .open-c .repo{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--accent);letter-spacing:.04em}
+
+  /* Pull quote */
+  .pq{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:clamp(28px,3.6vw,40px);line-height:1.25;color:var(--ink);max-width:30ch;padding-left:24px;border-left:2px solid var(--accent);margin:32px 0}
+  .pq em{color:var(--accent);font-style:italic}
+  .pq .at{display:block;font-family:"Source Serif 4",serif;font-size:13px;font-style:italic;color:var(--ink-mute);letter-spacing:.02em;margin-top:18px;line-height:1.5}
+
+  /* Cross links */
+  .xlinks{padding:clamp(70px,10vh,110px) 0;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--ink) 2.2%,transparent)}
+  .xl-h{margin-bottom:36px}
+  .xl-h h2{font-size:clamp(28px,3.4vw,40px);line-height:1.05;margin-bottom:10px}
+  .xl-h p{font-size:14.5px;color:var(--ink-soft);font-style:italic;max-width:48ch}
+  .xl-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+  @media(max-width:900px){.xl-grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:540px){.xl-grid{grid-template-columns:1fr}}
+  .xl-card{background:var(--bg);padding:28px 26px;display:flex;flex-direction:column;gap:10px;text-decoration:none;color:var(--ink);transition:background .25s}
+  .xl-card:hover{background:color-mix(in srgb,var(--accent) 5%,transparent)}
+  .xl-card .n{font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--accent);font-size:20px;line-height:1}
+  .xl-card .t{font-family:"Cormorant Garamond",serif;font-size:24px;line-height:1.1;color:var(--ink);margin-top:2px}
+  .xl-card .t em{color:var(--accent);font-style:italic}
+  .xl-card .d{font-size:13.5px;line-height:1.55;color:var(--ink-soft);font-style:italic;flex:1}
+  .xl-card .arr{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-mute);letter-spacing:.04em;margin-top:6px}
+  .xl-card:hover .arr{color:var(--accent)}
+
+  .close{padding:clamp(80px,10vh,120px) 0;text-align:center;border-bottom:1px solid var(--line)}
+  .close h2{font-size:clamp(34px,5vw,56px);line-height:1.0;margin-bottom:22px;max-width:22ch;margin-left:auto;margin-right:auto}
+  .close .sub{font-size:15.5px;color:var(--ink-soft);font-style:italic;max-width:48ch;margin:0 auto 32px;line-height:1.65}
+  .close .ct-row{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+
+  footer{padding:60px 0 36px}
+  .footin{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;margin-bottom:42px}
+  .footcols{display:flex;gap:clamp(38px,6vw,72px);flex-wrap:wrap}
+  .footcol h4{font-style:italic;font-weight:400;font-size:13px;color:var(--ink-mute);margin-bottom:14px;letter-spacing:.03em}
+  .footcol a{display:block;color:var(--ink-soft);text-decoration:none;font-size:14.5px;margin-bottom:9px}
+  .footcol a:hover{color:var(--accent)}
+  .disc{padding-top:24px;border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px}
+  .disc span{font-size:12px;color:var(--ink-mute);line-height:1.6}
+  .disc .legal{max-width:72ch;font-style:italic}
+</style>
+</head>
+<body>
+
+  <nav class="top" id="nav">
+    <div class="wrap navin">
+      <a class="wm" href="flameback-home.html">flameback<span class="p">.</span></a>
+      <div class="navr">
+        <a class="navlink active" href="flameback-who-we-are.html">Who we are</a>
+        <a class="navlink" href="flameback-what-we-do.html">What we do</a>
+        <a class="navlink" href="flameback-our-work.html">Our work</a>
+        <a class="navlink" href="flameback-insights.html">Insights</a>
+        <a class="navlink" href="flameback-tools.html">Tools</a>
+        <a class="navlink" href="flameback-offbook.html">Off-book</a>
+        <a class="cta" href="flameback-app-splash.html">Start your journey</a>
+        <button class="toggle" id="toggle">Light</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="crumb wrap"><a href="flameback-who-we-are.html">Who we are</a><span class="sep">&#8250;</span><span class="cur">Technology</span></div>
+
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-eb"><span class="l"></span><span>Who we are &middot; section v</span><span class="dateline">FOUR LAYERS &middot; FIST LIVE SINCE 2017</span></div>
+      <h1 class="h-h"><em>Technology.</em></h1>
+      <p class="h-sub">A trade engine, a data lake, a research environment, and an agent layer &mdash; four pieces of software that the firm has built and maintains itself. They are the reason a quantitative strategy here can move from idea to live capital without a vendor in the loop.</p>
+      <div class="h-cta">
+        <a class="btn" href="flameback-app-splash.html">Start your journey &rarr;</a>
+        <a class="btn-out" href="flameback-our-work.html">See what the system produces</a>
+      </div>
+    </div>
+    <div class="wmark">technology.</div>
+  </section>
+
+  <!-- i. The frame -->
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-h">
+        <div class="meta">i. THE FRAME<br/>Why this firm<br/>writes its own software</div>
+        <h2>Most investment firms buy their stack. <em>This one didn&rsquo;t.</em></h2>
+      </div>
+
+      <div class="prose-grid">
+        <div class="meta lab"><span class="n">a.</span>The decision in 2017</div>
+        <div class="prose">
+          <p>When the firm was founded in 2017, the standard practice was to buy. Order management from one vendor, portfolio accounting from another, a research toolkit from a third, a back-test framework from a fourth. The components rarely spoke to each other. The cost of stitching them together &mdash; in engineering time, in reconciliation overhead, in latency, in opacity &mdash; was paid forever.</p>
+          <p>The founders made a different decision. The firm would <em>write its own</em> across the parts that determined edge: the trade engine, the research environment, the data layer, and eventually the agent layer that sits on top of them. The parts that did not determine edge &mdash; the broker, the custodian, the exchange, the cloud &mdash; would be bought, like everyone else does.</p>
+          <p>That decision compounds. Eight years later, the firm runs on software it understands at every line. <strong>If something breaks, the person who can fix it works in the same office.</strong> If a research hypothesis requires a new data field, it is added to the data lake the same week. If an execution algorithm needs to change, the engineer changes it.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ii. The architecture -->
+  <section class="sec tint">
+    <div class="wrap">
+      <div class="sec-h">
+        <div class="meta">ii. THE ARCHITECTURE<br/>Four layers, one stack,<br/>no vendor lock</div>
+        <h2>The system, at <em>one glance.</em></h2>
+      </div>
+
+      <div class="prose-grid" style="margin-bottom:34px">
+        <div class="meta lab"><span class="n">a.</span>How to read the diagram</div>
+        <div class="prose">
+          <p>The data lake sits at the bottom. Everything the firm trades on, monitors, or back-tests is in it &mdash; tick data, fundamentals, filings, news, corporate actions. Two systems read from it: <em>FIST</em>, which trades, and <em>QX</em>, which researches. Above them sits <em>Jarvis</em>, the agent layer &mdash; the LLM-backed workflows the team uses to operate the firm without drowning in keystrokes.</p>
+          <p>The bought components &mdash; brokers, exchanges, custodians, cloud &mdash; sit at the perimeter. They have replacements. The four written components in the middle do not.</p>
+        </div>
+      </div>
+
+      <div class="arch">
+        <svg viewBox="0 0 920 520" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Flameback architecture: data lake at the foundation, FIST and QX in the middle, Jarvis at the top, external systems at the perimeter">
+          <style>
+            .l-stroke{stroke:var(--line);stroke-width:1;fill:none}
+            .l-stroke-acc{stroke:var(--accent);stroke-width:1;fill:none}
+            .l-fill{fill:var(--bg)}
+            .l-fill-tint{fill:color-mix(in srgb,var(--ink) 3%,transparent)}
+            .l-ink{fill:var(--ink)}
+            .l-accent{fill:var(--accent)}
+            .l-mute{fill:var(--ink-mute)}
+            .l-soft{fill:var(--ink-soft)}
+            .lbl-name{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:22px;letter-spacing:-.01em}
+            .lbl-name-sm{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:17px;letter-spacing:-.005em}
+            .lbl-mono{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.06em;text-transform:uppercase}
+            .lbl-mono-sm{font-family:"JetBrains Mono",monospace;font-size:8.5px;letter-spacing:.06em;text-transform:uppercase}
+          </style>
+
+          <!-- External perimeter: top labels -->
+          <text x="460" y="22" class="lbl-mono l-mute" text-anchor="middle">EXTERNAL &middot; markets &middot; brokers &middot; regulators &middot; clients</text>
+
+          <!-- Jarvis (top, agent layer) -->
+          <rect x="200" y="50" width="520" height="74" class="l-fill l-stroke-acc"/>
+          <text x="220" y="78" class="lbl-mono l-accent">v.</text>
+          <text x="240" y="80" class="lbl-name l-ink">Jarvis</text>
+          <text x="240" y="104" class="lbl-mono l-mute">AGENT LAYER &middot; llm-backed workflows</text>
+
+          <!-- Arrow Jarvis to FIST -->
+          <line x1="330" y1="124" x2="240" y2="180" class="l-stroke"/>
+          <polygon points="240,180 248,170 234,168" class="l-mute"/>
+          <!-- Arrow Jarvis to QX -->
+          <line x1="590" y1="124" x2="680" y2="180" class="l-stroke"/>
+          <polygon points="680,180 672,168 686,170" class="l-mute"/>
+
+          <!-- FIST (middle left) -->
+          <rect x="80" y="180" width="320" height="120" class="l-fill l-stroke-acc"/>
+          <text x="100" y="210" class="lbl-mono l-accent">i.</text>
+          <text x="120" y="212" class="lbl-name l-ink">FIST</text>
+          <text x="120" y="234" class="lbl-mono l-mute">TRADE ENGINE &middot; live since 2017</text>
+          <line x1="100" y1="250" x2="380" y2="250" class="l-stroke"/>
+          <text x="100" y="270" class="lbl-mono-sm l-soft">order routing &middot; risk gates</text>
+          <text x="100" y="286" class="lbl-mono-sm l-soft">execution algos &middot; reconciliation</text>
+
+          <!-- QX (middle right) -->
+          <rect x="520" y="180" width="320" height="120" class="l-fill l-stroke-acc"/>
+          <text x="540" y="210" class="lbl-mono l-accent">iii.</text>
+          <text x="560" y="212" class="lbl-name l-ink">QX</text>
+          <text x="560" y="234" class="lbl-mono l-mute">RESEARCH ENV &middot; notebooks &amp; backtest</text>
+          <line x1="540" y1="250" x2="820" y2="250" class="l-stroke"/>
+          <text x="540" y="270" class="lbl-mono-sm l-soft">factor library &middot; walk-forward</text>
+          <text x="540" y="286" class="lbl-mono-sm l-soft">regime tests &middot; paper trading</text>
+
+          <!-- Arrows FIST to Data lake -->
+          <line x1="240" y1="300" x2="380" y2="360" class="l-stroke"/>
+          <polygon points="380,360 372,350 366,362" class="l-mute"/>
+          <!-- Arrow QX to Data lake -->
+          <line x1="680" y1="300" x2="540" y2="360" class="l-stroke"/>
+          <polygon points="540,360 548,350 554,362" class="l-mute"/>
+
+          <!-- Data lake (bottom) -->
+          <rect x="80" y="360" width="760" height="100" class="l-fill-tint l-stroke-acc"/>
+          <text x="100" y="390" class="lbl-mono l-accent">ii.</text>
+          <text x="120" y="392" class="lbl-name l-ink">Data lake</text>
+          <text x="120" y="414" class="lbl-mono l-mute">TICK &middot; FUNDAMENTALS &middot; FILINGS &middot; NEWS &middot; CORPORATE ACTIONS</text>
+          <line x1="100" y1="428" x2="820" y2="428" class="l-stroke"/>
+          <text x="100" y="446" class="lbl-mono-sm l-soft">point-in-time integrity &middot; survivorship-clean &middot; tick-level since 2018</text>
+
+          <!-- External feed in -->
+          <line x1="40" y1="410" x2="80" y2="410" class="l-stroke"/>
+          <polygon points="80,410 72,406 72,414" class="l-mute"/>
+          <text x="40" y="402" class="lbl-mono-sm l-mute" text-anchor="start">FEEDS &rarr;</text>
+
+          <!-- External feed out -->
+          <line x1="840" y1="240" x2="880" y2="240" class="l-stroke"/>
+          <polygon points="880,240 872,236 872,244" class="l-mute"/>
+          <text x="880" y="232" class="lbl-mono-sm l-mute" text-anchor="end">&rarr; CLIENT REPORTS</text>
+
+          <!-- Bottom perimeter -->
+          <text x="460" y="498" class="lbl-mono l-mute" text-anchor="middle">CLOUD &middot; aws &amp; gcp &middot; vendor surface only</text>
+        </svg>
+        <div class="cap">Written: <em>Jarvis &middot; FIST &middot; QX &middot; Data lake</em> &nbsp;&middot;&nbsp; Bought: cloud, brokers, exchanges, custodians, KYC</div>
+      </div>
+
+      <div class="pq" style="margin-top:54px">
+        Programs must be written for <em>people to read,</em> and only incidentally for machines to execute.
+        <span class="at">&mdash; Harold Abelson &amp; Gerald Sussman, <i>Structure and Interpretation of Computer Programs</i></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- iii. The four layers in detail -->
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-h">
+        <div class="meta">iii. THE LAYERS<br/>Each component,<br/>described</div>
+        <h2>The four pieces of software, <em>one at a time.</em></h2>
+      </div>
+
+      <!-- Layer 1: FIST -->
+      <div class="layer">
+        <div class="meta-row">
+          <span class="rn">i.</span>
+          <div class="info">
+            <span class="lbl">TRADE ENGINE &middot; LIVE SINCE OCTOBER 2017</span>
+            <h3>FIST &mdash; <em>the trade engine.</em></h3>
+          </div>
+          <div class="stats"><div><em>~8 yrs</em>live production</div><div><em>0</em>missed open / close</div></div>
+        </div>
+        <div class="body">
+          <p>FIST &mdash; the firm&rsquo;s order management and execution kernel &mdash; is the oldest piece of software at the firm. It went live on a single strategy in October 2017 and has not had an unplanned outage during market hours since. <em>It is the part of the stack that touches client capital.</em></p>
+          <p>What it does, end to end: receives signals from the research environment, applies pre-trade risk gates (concentration, leverage, sector caps, drawdown limits), routes orders to brokers via FIX, manages execution algorithms (VWAP, TWAP, implementation-shortfall variants), reconciles fills against intended positions in real time, and writes every action to an audit log that is unalterable.</p>
+          <p>It is deliberately conservative. <strong>It does not get rewritten because someone read a new paper.</strong> Changes go through code review, paper-trading validation, and a staged rollout. The cost of bugs is paid in client capital, not in engineering time.</p>
+        </div>
+        <div class="specs">
+          <div class="sp"><span class="lh">LANGUAGE</span><span class="rh">Core in <em>Python</em> with C++ extensions for the order book and risk-gate hot path. FIX 4.4 to brokers.</span></div>
+          <div class="sp"><span class="lh">UPTIME</span><span class="rh">Two redundant production instances. <em>Failover under thirty seconds.</em> No missed market opens or closes since launch.</span></div>
+          <div class="sp"><span class="lh">DEPLOY CADENCE</span><span class="rh">Weekly small-change windows on Saturdays. <em>Major releases only outside trading hours and only after paper-trade validation.</em></span></div>
+          <div class="sp"><span class="lh">AUDIT</span><span class="rh">Every order, fill, and risk-gate decision logged in an append-only store. <em>Used in monthly reconciliation, quarterly compliance reviews, annual audit.</em></span></div>
+        </div>
+      </div>
+
+      <!-- Layer 2: Data lake -->
+      <div class="layer">
+        <div class="meta-row">
+          <span class="rn">ii.</span>
+          <div class="info">
+            <span class="lbl">DATA LAKE &middot; THE SUBSTRATE</span>
+            <h3>The <em>data lake</em> &mdash; everything the firm trades on, in one place.</h3>
+          </div>
+          <div class="stats"><div><em>~14 TB</em>tick &amp; reference</div><div><em>2018</em>tick-level since</div></div>
+        </div>
+        <div class="body">
+          <p>Quantitative work is bottlenecked by data quality long before it is bottlenecked by ideas. The firm&rsquo;s data lake is the answer to that bottleneck. It holds tick-level price data for the Indian universe since 2018, point-in-time fundamentals back further, corporate actions, filings, regulatory disclosures, and news. <em>Everything is survivorship-clean.</em> Everything is point-in-time.</p>
+          <p>The discipline of point-in-time matters more than the size. A back-test that uses today&rsquo;s knowledge of which companies still exist is a back-test that lies. The lake is structured so that every query, on every date, returns only what was knowable on that date.</p>
+          <p>Ingestion runs daily after market close. Reconciliation against multiple feeds catches discrepancies before they reach research. <strong>The firm has rejected back-tests in the past because a single field couldn&rsquo;t be sourced cleanly.</strong> The data is the substrate. Compromising on the substrate compromises everything above it.</p>
+        </div>
+        <div class="specs">
+          <div class="sp"><span class="lh">STORAGE</span><span class="rh">Postgres for reference and corporate-action data. <em>ClickHouse</em> for tick and high-cardinality time-series.</span></div>
+          <div class="sp"><span class="lh">FEEDS</span><span class="rh">Multiple primary providers per asset class. <em>Cross-checked daily.</em> Discrepancies investigated before research consumers read.</span></div>
+          <div class="sp"><span class="lh">COVERAGE</span><span class="rh">Indian equity, ETF, F&amp;O universe since 2018 tick-level. <em>US universe</em> at minute resolution for the SEC-filed strategy.</span></div>
+          <div class="sp"><span class="lh">INTEGRITY</span><span class="rh">Survivorship-clean. Point-in-time. <em>Restated fundamentals tagged with as-reported and as-restated</em> versions, both queryable.</span></div>
+        </div>
+      </div>
+
+      <!-- Layer 3: QX -->
+      <div class="layer">
+        <div class="meta-row">
+          <span class="rn">iii.</span>
+          <div class="info">
+            <span class="lbl">RESEARCH ENVIRONMENT &middot; QX</span>
+            <h3>QX &mdash; <em>where ideas become strategies.</em></h3>
+          </div>
+          <div class="stats"><div><em>~100</em>ideas per year</div><div><em>~2</em>survive to live</div></div>
+        </div>
+        <div class="body">
+          <p>QX is the research stack: notebooks, a factor library, a back-test framework, walk-forward and regime-test tooling, paper-trading scaffolding, and the connective tissue that ties them to the data lake on one side and to FIST on the other.</p>
+          <p>The point of QX is not to enable cleverness &mdash; the standard tools allow that fine. <em>The point is to enforce honesty.</em> Back-tests in QX cannot quietly use look-ahead data; the framework prevents it. Walk-forward windows are pre-registered before code runs. Paper-trade results are recorded for every candidate strategy, whether it survives or not. The history of every dead idea is preserved alongside the history of every live one.</p>
+          <p>QX is what makes the funnel in <a href="flameback-strategy-rd.html" style="color:var(--accent);text-decoration:underline">Strategy R&amp;D</a> possible. Without it, the funnel would be a slogan.</p>
+        </div>
+        <div class="specs">
+          <div class="sp"><span class="lh">LANGUAGE</span><span class="rh">Python end-to-end. <em>Pandas, NumPy, custom factor and regime libraries.</em> Reproducible Jupyter for write-ups.</span></div>
+          <div class="sp"><span class="lh">BACKTEST</span><span class="rh">Event-driven simulator with <em>point-in-time data binding,</em> realistic transaction costs and slippage, capacity-aware sizing.</span></div>
+          <div class="sp"><span class="lh">VALIDATION</span><span class="rh">Walk-forward windows pre-registered. <em>Regime tests across at least 2008, 2013, 2018, 2020, 2022.</em> Paper-trade dwell time before live.</span></div>
+          <div class="sp"><span class="lh">PROVENANCE</span><span class="rh">Every back-test run is versioned with its data snapshot, code commit, and parameter set. <em>Re-runnable years later, exactly.</em></span></div>
+        </div>
+      </div>
+
+      <!-- Layer 4: Jarvis -->
+      <div class="layer">
+        <div class="meta-row">
+          <span class="rn">iv.</span>
+          <div class="info">
+            <span class="lbl">AGENT LAYER &middot; JARVIS</span>
+            <h3>Jarvis &mdash; <em>the layer above the layers.</em></h3>
+          </div>
+          <div class="stats"><div><em>2024</em>built</div><div><em>~40%</em>routine-ops time saved</div></div>
+        </div>
+        <div class="body">
+          <p>Jarvis is the newest component. It is the LLM-backed agent layer that sits above FIST, QX, and the data lake &mdash; the surface the team uses to operate the firm without drowning in keystrokes. Client onboarding documents, KYC follow-ups, draft research notes, monthly client commentary, compliance log summaries, regulatory filings, internal meeting minutes, response drafts &mdash; all the work that is necessary but not differentiating.</p>
+          <p>The principle is narrow: <em>Jarvis does not make investment decisions.</em> It does not trade. It does not recommend. It writes drafts, summarises, formats, and routes. Every artefact it produces is reviewed by a human before it leaves the firm. The leverage is in the keystrokes saved, not in the judgments outsourced.</p>
+          <p>This sounds modest. It compounds. <strong>The team has roughly forty percent more attention available for the work that actually matters &mdash; research, client relationships, risk &mdash; than it did before Jarvis existed.</strong></p>
+        </div>
+        <div class="specs">
+          <div class="sp"><span class="lh">MODEL</span><span class="rh">Best-available frontier model via API. <em>Provider-agnostic abstraction</em> so the firm can swap as models improve.</span></div>
+          <div class="sp"><span class="lh">SCOPE</span><span class="rh">Drafting, summarising, formatting, routing. <em>No autonomous trading. No autonomous advice.</em> Every output reviewed by a named person.</span></div>
+          <div class="sp"><span class="lh">DATA</span><span class="rh">Firm-internal context only. <em>Client PII never leaves the firm&rsquo;s environment;</em> processed under enterprise data-residency terms.</span></div>
+          <div class="sp"><span class="lh">AUDIT</span><span class="rh">Every Jarvis-touched document carries a provenance trail. <em>The reviewing human is named.</em> Logs retained per SEBI record-keeping norms.</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- iv. Build vs Buy -->
+  <section class="sec tint">
+    <div class="wrap">
+      <div class="sec-h">
+        <div class="meta">iv. BUILD &amp; BUY<br/>What the firm writes<br/>vs what it pays for</div>
+        <h2>The line between <em>edge and overhead.</em></h2>
+      </div>
+
+      <div class="prose-grid" style="margin-bottom:34px">
+        <div class="meta lab"><span class="n">a.</span>How to read the table</div>
+        <div class="prose">
+          <p>The left column is the four written layers plus the smaller pieces of software the firm has built around them. The right column is everything the firm buys, rents, or partners for. The rule the founders set in 2017 was simple: <em>build the parts where edge lives, buy the parts where it doesn&rsquo;t.</em> The table below is the eight-year-old answer to that question.</p>
+        </div>
+      </div>
+
+      <div class="bvb">
+        <div class="bvb-head">
+          <div>BUILT &mdash; in-house<span class="pre">What we <em>write.</em></span></div>
+          <div>BOUGHT &mdash; vendor<span class="pre">What we <em>pay for.</em></span></div>
+        </div>
+        <div class="bvb-row">
+          <div class="cell"><em>FIST</em> &mdash; trade engine, order management, execution algos<span class="note">Where edge becomes capital.</span></div>
+          <div class="cell">Brokers &mdash; ICICI Direct, Zerodha, IBKR (US)<span class="note">Connectivity layer; substitutable.</span></div>
+        </div>
+        <div class="bvb-row">
+          <div class="cell"><em>Data lake</em> &mdash; ingestion, point-in-time storage, integrity checks<span class="note">Quality of inputs determines quality of everything.</span></div>
+          <div class="cell">Data feeds &mdash; multi-vendor, cross-checked<span class="note">Raw data only. The structure is ours.</span></div>
+        </div>
+        <div class="bvb-row">
+          <div class="cell"><em>QX</em> &mdash; research env, back-test framework, factor &amp; regime libraries<span class="note">Where ideas live or die.</span></div>
+          <div class="cell">Cloud &mdash; AWS for compute, GCP for some analytics<span class="note">Hosting only. No managed-service lock-in.</span></div>
+        </div>
+        <div class="bvb-row">
+          <div class="cell"><em>Jarvis</em> &mdash; agent layer for operations<span class="note">Keystroke leverage across the firm.</span></div>
+          <div class="cell">Frontier LLM via API, provider-agnostic<span class="note">Model is a vendor; agent layer is ours.</span></div>
+        </div>
+        <div class="bvb-row">
+          <div class="cell"><em>Client portal</em> &mdash; reporting, statements, document vault<span class="note">The client&rsquo;s primary view of the firm.</span></div>
+          <div class="cell">KYC, e-signature, document vault infra<span class="note">Compliance-grade utilities. Standardised.</span></div>
+        </div>
+        <div class="bvb-row">
+          <div class="cell"><em>Internal CRM</em> &mdash; relationship history, intake, RM console<span class="note">Built around the conversation, not the form.</span></div>
+          <div class="cell">Custodians, depository participants, registrar<span class="note">Statutory infrastructure. Not a choice.</span></div>
+        </div>
+        <div class="bvb-row">
+          <div class="cell"><em>Compliance log surface</em> &mdash; PMS &amp; advisory record-keeping<span class="note">SEBI requires the records; the surface is ours.</span></div>
+          <div class="cell">Audit, secretarial, legal, tax<span class="note">External firms. Independence by design.</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- v. Reliability -->
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-h">
+        <div class="meta">v. RELIABILITY<br/>What runs<br/>when nobody&rsquo;s watching</div>
+        <h2>A firm that trades capital <em>does not get to sleep.</em></h2>
+      </div>
+
+      <div class="prose-grid" style="margin-bottom:34px">
+        <div class="meta lab"><span class="n">a.</span>Weekly operations</div>
+        <div class="prose">
+          <p>The most fragile thing about a quantitative system is not the algorithm. It is the part of the operation that runs at three in the morning on a Saturday, without supervision, and that must work. The list below is a representative Saturday at the firm. <em>It is what happens whether or not anyone shows up.</em></p>
+          <p>None of this is glamorous. All of it is mandatory. <strong>Software that does not run reliably on Saturday at 3am is software that cannot be trusted with client capital on Tuesday at 10am.</strong></p>
+        </div>
+      </div>
+
+      <div class="satur">
+        <div class="hdr">
+          <span class="tm">SATURDAY</span>
+          <span class="ti">A <em>representative</em> weekend at the firm.</span>
+        </div>
+        <div class="runs">
+          <div class="run"><span class="t">00:30 IST</span><span class="w">End-of-week data lake reconciliation across all feeds.<em>If a discrepancy is found, an alert reaches the on-call engineer before sunrise.</em></span></div>
+          <div class="run"><span class="t">02:15 IST</span><span class="w">Weekly back-test sweep &mdash; every live strategy re-tested against the past five years.<em>If a re-test materially diverges from the production track, it is investigated Monday morning.</em></span></div>
+          <div class="run"><span class="t">03:45 IST</span><span class="w">Position-and-NAV snapshot pushed to client portal for the closed week.<em>Clients can see end-of-week state by Saturday morning.</em></span></div>
+          <div class="run"><span class="t">05:20 IST</span><span class="w">Compliance log generation: orders, risk-gate decisions, exceptions, breach checks for the closed week.<em>Retention satisfies SEBI PMS &amp; IA record-keeping norms.</em></span></div>
+          <div class="run"><span class="t">07:00 IST</span><span class="w">Signal recalibration window opens; weekly-cadence strategies update parameters within their pre-registered bounds.<em>Out-of-bound parameter shifts are blocked &mdash; they require code review, not automation.</em></span></div>
+          <div class="run"><span class="t">10:00 IST</span><span class="w">Routine deploy window opens for low-risk FIST changes.<em>Risky changes are deferred to the next outside-trading-hours slot, never rushed in.</em></span></div>
+          <div class="run"><span class="t">All day</span><span class="w">Monitoring alerts active. On-call rotation among three engineers.<em>The firm has not missed a market open since 2017.</em></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- vi. Open source -->
+  <section class="sec tint">
+    <div class="wrap">
+      <div class="sec-h">
+        <div class="meta">vi. OPEN SOURCE<br/>What the firm publishes<br/>from its own stack</div>
+        <h2>The infrastructure, <em>given back.</em></h2>
+      </div>
+
+      <div class="prose-grid" style="margin-bottom:34px">
+        <div class="meta lab"><span class="n">a.</span>What is &mdash; and isn&rsquo;t &mdash; open</div>
+        <div class="prose">
+          <p>The live strategies are not open. They are the firm&rsquo;s edge. The infrastructure around them &mdash; data utilities, a backtest kernel, factor toolkits &mdash; is gradually being published. <em>The work the firm did once, so that the next person doesn&rsquo;t have to.</em></p>
+          <p>None of these projects is a marketing artefact. They are libraries the firm uses internally, refactored carefully enough to be readable by someone outside the firm. Pull requests are reviewed by the same engineers who use them in production.</p>
+        </div>
+      </div>
+
+      <div class="opens">
+        <a class="open-c" href="flameback-opensource.html"><span class="lbl">Open i</span><h4><em>fb-data</em> &mdash; point-in-time utilities.</h4><p>Survivorship-clean data manipulations, restated-vs-as-reported tooling, corporate-action handling. <em>Used inside the firm&rsquo;s data lake; published for outside use.</em></p><span class="repo">github.com/flameback/fb-data</span></a>
+        <a class="open-c" href="flameback-opensource.html"><span class="lbl">Open ii</span><h4><em>fb-backtest</em> &mdash; event-driven kernel.</h4><p>A minimal back-test framework with realistic transaction costs, slippage, and capacity-aware sizing. <em>The educational version of what QX uses internally.</em></p><span class="repo">github.com/flameback/fb-backtest</span></a>
+        <a class="open-c" href="flameback-opensource.html"><span class="lbl">Open iii</span><h4><em>qlab-templates</em> &mdash; research notebooks.</h4><p>Reference Jupyter notebooks for common quant research patterns &mdash; signal construction, regime detection, walk-forward analysis. <em>Companion to the QLab Notes write-ups.</em></p><span class="repo">github.com/flameback/qlab-templates</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cross links -->
+  <section class="xlinks">
+    <div class="wrap">
+      <div class="xl-h"><h2>Read into the <em>other sections.</em></h2><p>Technology is one of five Who-we-are sub-pages. Each goes one layer deeper than the overview.</p></div>
+      <div class="xl-grid">
+        <a class="xl-card" href="flameback-firm.html"><span class="n">i.</span><span class="t">The <em>firm.</em></span><span class="d">Origin, raison d&rsquo;&ecirc;tre, capital, mise en place, finite vs infinite games.</span><span class="arr">Read &rarr;</span></a>
+        <a class="xl-card" href="flameback-team.html"><span class="n">ii.</span><span class="t">The <em>team.</em></span><span class="d">Fifteen people in Bangalore. Leadership, structure, hiring funnel, values.</span><span class="arr">Read &rarr;</span></a>
+        <a class="xl-card" href="flameback-philosophy.html"><span class="n">iii.</span><span class="t"><em>Philosophy.</em></span><span class="d">Five tenets, four schools, the reading list, the disciplined refusals.</span><span class="arr">Read &rarr;</span></a>
+        <a class="xl-card" href="flameback-strategy-rd.html"><span class="n">iv.</span><span class="t">Strategy <em>R&amp;D.</em></span><span class="d">The five-stage funnel from a hundred ideas to two live strategies.</span><span class="arr">Read &rarr;</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="close">
+    <div class="wrap">
+      <h2>If you&rsquo;d like to see <em>what the system produces.</em></h2>
+      <p class="sub">The Our Work page lists the live strategies running on this stack, their methodology, and their track records &mdash; drawdowns included. None of them is a marketed product. All of them are running with founders&rsquo; capital alongside client capital.</p>
+      <div class="ct-row">
+        <a class="btn" href="flameback-our-work.html">See Our Work &rarr;</a>
+        <a class="btn-out" href="flameback-app-splash.html">Start your journey</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <div class="footin">
+        <a class="wm" href="flameback-home.html">flameback<span class="p">.</span></a>
+        <div class="footcols">
+          <div class="footcol"><h4>Who we are</h4><a href="flameback-firm.html">The firm</a><a href="flameback-team.html">Team</a><a href="flameback-philosophy.html">Philosophy</a><a href="flameback-strategy-rd.html">Strategy R&amp;D</a><a href="flameback-technology.html">Technology</a></div>
+          <div class="footcol"><h4>What we do</h4><a href="flameback-what-we-do.html#pwm">Private Wealth Management</a><a href="flameback-what-we-do.html#advisory">Advisory</a><a href="flameback-what-we-do.html#qx">QX Funds</a></div>
+          <div class="footcol"><h4>Open</h4><a href="flameback-our-work.html">Our work</a><a href="flameback-insights.html">Insights</a><a href="flameback-tools.html">Tools</a><a href="flameback-offbook.html">Off-book</a></div>
+          <div class="footcol"><h4>Regulatory</h4><a href="flameback-pms-disclosure.html">PMS disclosure</a><a href="flameback-advisory-disclosure.html">Advisory disclosure</a><a href="flameback-app-splash.html">Start your journey</a></div>
+        </div>
+      </div>
+      <div class="disc"><span>&copy; 2026 Flameback Capital Pvt Ltd</span><span class="legal">SEBI registered &middot; SEC filed for US strategy. Investments are subject to market risk. Past performance is not indicative of future results.</span></div>
+    </div>
+  </footer>
+
+<script>
+  var root=document.documentElement, tg=document.getElementById('toggle');
+  tg.addEventListener('click',function(){root.classList.toggle('light');tg.textContent=root.classList.contains('light')?'Dark':'Light';});
+  var nav=document.getElementById('nav');
+  window.addEventListener('scroll',function(){nav.classList.toggle('scrolled',window.scrollY>16)});
+</script>
+  <script src="reload.js"></script>
+</body>
+</html>

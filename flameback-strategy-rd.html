@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Strategy R&amp;D — flameback.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#1A1714;--ink:#F2EDE3;--ink-soft:rgba(242,237,227,.66);--ink-mute:rgba(242,237,227,.44);--line:rgba(242,237,227,.16);--panel:#221E1A;--accent:#FF6D0A;--btn-bg:#FF6D0A;--btn-ink:#1A1714;--grain-blend:screen;--grain-op:.055}
+  :root.light{--bg:#FCFAF6;--ink:#1A1714;--ink-soft:rgba(26,23,20,.68);--ink-mute:rgba(26,23,20,.46);--line:rgba(26,23,20,.14);--panel:#F4EFE7;--accent:#B23E08;--btn-bg:#1A1714;--btn-ink:#FCFAF6;--grain-blend:multiply;--grain-op:.035}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:"Source Serif 4",serif;transition:background .5s,color .5s;font-variant-numeric:tabular-nums;line-height:1.55}
+  body::after{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;mix-blend-mode:var(--grain-blend);opacity:var(--grain-op);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  .wrap{max-width:1200px;margin:0 auto;padding:0 clamp(22px,5vw,44px)}
+  section{position:relative;z-index:2}
+  .wm{font-family:"Source Serif 4",serif;font-weight:600;font-size:18px;color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+  .wm .p{color:var(--accent)}
+  h1,h2,h3,h4{font-family:"Cormorant Garamond",serif;font-weight:500;letter-spacing:-.014em;color:var(--ink);line-height:1.04}
+  h1 em,h2 em,h3 em,h4 em{color:var(--accent);font-style:italic;font-weight:500}
+  p{line-height:1.62}
+  .btn,.btn-out{display:inline-flex;align-items:center;gap:11px;font-family:"Source Serif 4",serif;font-size:15px;font-weight:500;padding:13px 24px;text-decoration:none;transition:gap .35s,opacity .3s,border-color .3s;cursor:pointer;border:none}
+  .btn{background:var(--btn-bg);color:var(--btn-ink)} .btn:hover{gap:15px;opacity:.92}
+  .btn-out{background:transparent;color:var(--ink);border:1px solid var(--line)} .btn-out:hover{gap:15px;border-color:var(--ink-mute)}
+  nav.top{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 84%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid transparent;transition:border-color .4s}
+  nav.top.scrolled{border-color:var(--line)}
+  .navin{display:flex;align-items:center;justify-content:space-between;padding:16px 0}
+  .navr{display:flex;align-items:center;gap:22px}
+  .navr a{color:var(--ink-soft);text-decoration:none;font-size:14.5px;transition:color .3s}
+  .navr a:hover{color:var(--ink)}
+  .navr a.active{color:var(--ink)}
+  .toggle{background:none;border:1px solid var(--line);color:var(--ink-soft);cursor:pointer;font-family:"Source Serif 4",serif;font-size:13px;font-style:italic;padding:5px 13px;border-radius:999px}
+  .navr a.cta{background:var(--btn-bg);color:var(--btn-ink);padding:9px 18px}
+  @media(max-width:1000px){.navr .navlink{display:none}}
+  .crumb{padding:14px 0;border-bottom:1px solid var(--line);font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-mute);letter-spacing:.05em;text-transform:uppercase}
+  .crumb a{color:var(--ink-mute);text-decoration:none}
+  .crumb a:hover{color:var(--accent)}
+  .crumb .sep{margin:0 10px;opacity:.55}
+  .crumb .cur{color:var(--accent)}
+  .hero{padding:clamp(70px,11vh,130px) 0 clamp(54px,7vh,90px);border-bottom:1px solid var(--line);position:relative}
+  .hero-eb{display:flex;align-items:center;gap:14px;margin-bottom:32px;font-style:italic;font-size:13px;color:var(--ink-mute);letter-spacing:.04em}
+  .hero-eb .l{width:32px;height:1px;background:var(--accent)}
+  .hero-eb .dateline{font-family:"JetBrains Mono",monospace;font-style:normal;font-size:11.5px;margin-left:auto;letter-spacing:.05em}
+  @media(max-width:760px){.hero-eb .dateline{display:none}}
+  h1.h-h{font-size:clamp(58px,9vw,128px);line-height:.92;letter-spacing:-.025em;margin-bottom:32px;max-width:14ch;font-weight:500}
+  .h-sub{font-size:clamp(17px,1.7vw,21px);line-height:1.55;color:var(--ink-soft);max-width:54ch;font-style:italic;margin-bottom:38px}
+  .h-cta{display:flex;gap:12px;flex-wrap:wrap}
+  .wmark{position:absolute;right:0;bottom:0;font-family:"Cormorant Garamond",serif;font-style:italic;font-size:clamp(180px,30vw,360px);color:var(--ink);opacity:.02;line-height:.8;pointer-events:none;letter-spacing:-.04em;white-space:nowrap;overflow:hidden}
+  .sec{padding:clamp(70px,10vh,120px) 0;border-bottom:1px solid var(--line);position:relative}
+  .sec.tint{background:color-mix(in srgb,var(--ink) 2.2%,transparent)}
+  .sec-h{display:grid;grid-template-columns:160px 1fr;gap:48px;align-items:flex-start;margin-bottom:clamp(36px,4vw,52px)}
+  @media(max-width:760px){.sec-h{grid-template-columns:1fr;gap:14px}}
+  .sec-h .meta{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase;padding-top:14px;border-top:1px solid var(--line);line-height:1.7}
+  .sec-h h2{font-size:clamp(36px,5vw,62px);line-height:1.02;letter-spacing:-.015em;max-width:18ch}
+  .prose{max-width:62ch;font-size:17px;line-height:1.7;color:var(--ink)}
+  .prose p{margin-bottom:22px}
+  .prose p:last-child{margin-bottom:0}
+  .prose em{color:var(--accent);font-style:italic;font-weight:500}
+  .prose strong{font-weight:500;color:var(--ink);font-style:italic}
+  .prose-grid{display:grid;grid-template-columns:160px 1fr;gap:48px;align-items:flex-start}
+  @media(max-width:760px){.prose-grid{grid-template-columns:1fr;gap:14px}}
+  .meta.lab{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase;padding-top:14px;border-top:1px solid var(--line);line-height:1.7}
+  .meta.lab .n{color:var(--accent);margin-right:8px}
+
+  /* Funnel — the 5-stage attrition diagram */
+  .funnel{display:grid;grid-template-columns:1fr;gap:0;border:1px solid var(--line);background:var(--bg);max-width:1000px;margin-top:8px}
+  .fn-row{display:grid;grid-template-columns:64px 1fr 280px;gap:24px;padding:28px 32px;border-bottom:1px solid var(--line);align-items:center;position:relative}
+  .fn-row:last-child{border-bottom:none}
+  @media(max-width:860px){.fn-row{grid-template-columns:48px 1fr;gap:18px;padding:24px}}
+  .fn-row .rn{font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--accent);font-size:36px;line-height:1;letter-spacing:-.01em}
+  .fn-row .meta-c{display:flex;flex-direction:column;gap:6px}
+  .fn-row .lbl{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--ink-mute);letter-spacing:.08em;text-transform:uppercase}
+  .fn-row .name{font-family:"Cormorant Garamond",serif;font-size:24px;line-height:1.15;color:var(--ink);letter-spacing:-.005em}
+  .fn-row .name em{color:var(--accent);font-style:italic}
+  .fn-row .desc{font-size:13.5px;line-height:1.55;color:var(--ink-soft);font-style:italic;margin-top:2px;max-width:46ch}
+  .fn-row .bar{display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+  @media(max-width:860px){.fn-row .bar{grid-column:1/-1;margin-top:8px}}
+  .fn-row .bar .ct{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-mute);letter-spacing:.04em}
+  .fn-row .bar .b{height:8px;background:color-mix(in srgb,var(--accent) 16%,transparent);border:1px solid var(--accent);position:relative;width:100%;max-width:240px}
+  .fn-row .bar .b .f{position:absolute;inset:0;background:var(--accent);width:var(--w,100%)}
+  .fn-row .bar .pct{font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--accent);font-size:16px;line-height:1}
+
+  /* Stage detail blocks — each of the 5 stages gets its own subsection */
+  .stage{margin-top:42px;border:1px solid var(--line);background:var(--bg);padding:32px 36px}
+  .stage:first-of-type{margin-top:8px}
+  @media(max-width:680px){.stage{padding:26px 24px}}
+  .stage .meta-row{display:flex;align-items:flex-start;gap:18px;margin-bottom:22px;padding-bottom:18px;border-bottom:1px solid var(--line)}
+  .stage .rn{font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--accent);font-size:42px;line-height:1}
+  .stage .meta-row .info{display:flex;flex-direction:column;gap:4px;flex:1}
+  .stage .lbl{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--ink-mute);letter-spacing:.08em;text-transform:uppercase}
+  .stage h3{font-size:28px;line-height:1.1;letter-spacing:-.01em;margin-top:2px}
+  .stage h3 em{color:var(--accent);font-style:italic}
+  .stage .stats{display:flex;gap:18px;font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--ink-mute);text-align:right;letter-spacing:.04em;line-height:1.55}
+  @media(max-width:680px){.stage .stats{display:none}}
+  .stage .stats em{color:var(--accent);font-style:normal;display:block;font-family:"Cormorant Garamond",serif;font-size:24px;line-height:1;margin-bottom:3px;letter-spacing:-.005em}
+  .stage .body p{font-size:15px;line-height:1.7;color:var(--ink-soft);max-width:64ch;margin-bottom:16px}
+  .stage .body p:last-child{margin-bottom:0}
+  .stage .body p em{color:var(--ink);font-style:italic;font-weight:500}
+  .stage .body p strong{font-weight:500;font-style:italic;color:var(--accent)}
+  .stage .checks{margin-top:18px;display:flex;flex-direction:column;gap:8px;border-top:1px dashed var(--line);padding-top:18px}
+  .stage .checks .ch{display:flex;align-items:flex-start;gap:14px;font-size:13.5px;color:var(--ink-soft);line-height:1.55}
+  .stage .checks .ch .lh{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--accent);letter-spacing:.06em;text-transform:uppercase;min-width:90px;padding-top:2px}
+  .stage .checks .ch .rh em{color:var(--ink);font-style:italic;font-weight:500}
+
+  /* Failure modes — what kills a strategy */
+  .fails{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:8px}
+  @media(max-width:760px){.fails{grid-template-columns:1fr}}
+  .fail{background:var(--bg);padding:30px 30px;display:flex;flex-direction:column;gap:10px}
+  .fail .rn{font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--accent);font-size:30px;line-height:1}
+  .fail h4{font-size:20px;line-height:1.18;letter-spacing:-.005em}
+  .fail h4 em{color:var(--accent);font-style:italic}
+  .fail p{font-size:13.5px;line-height:1.65;color:var(--ink-soft)}
+  .fail p em{color:var(--ink);font-style:italic;font-weight:500}
+
+  /* Pull quote */
+  .pq{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:clamp(28px,3.6vw,40px);line-height:1.25;color:var(--ink);max-width:24ch;padding-left:24px;border-left:2px solid var(--accent);margin:32px 0}
+  .pq em{color:var(--accent);font-style:italic}
+  .pq .at{display:block;font-family:"Source Serif 4",serif;font-size:13px;font-style:italic;color:var(--ink-mute);letter-spacing:.02em;margin-top:18px;line-height:1.5}
+
+  /* Calendar — research time allocation */
+  .cal{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:8px}
+  @media(max-width:760px){.cal{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:480px){.cal{grid-template-columns:1fr}}
+  .cal-c{background:var(--bg);padding:26px 24px;display:flex;flex-direction:column;gap:10px}
+  .cal-c .pct{font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--accent);font-size:48px;line-height:1;letter-spacing:-.02em}
+  .cal-c .what{font-family:"Cormorant Garamond",serif;font-size:18px;line-height:1.2;color:var(--ink)}
+  .cal-c .what em{color:var(--accent);font-style:italic}
+  .cal-c .why{font-size:13px;line-height:1.6;color:var(--ink-soft);font-style:italic}
+
+  /* Open R&D notebooks panel */
+  .opens{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:8px}
+  @media(max-width:760px){.opens{grid-template-columns:1fr}}
+  .open-c{background:var(--bg);padding:30px 28px;display:flex;flex-direction:column;gap:12px;text-decoration:none;color:var(--ink);transition:background .25s}
+  .open-c:hover{background:color-mix(in srgb,var(--accent) 5%,transparent)}
+  .open-c .lbl{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink-mute);letter-spacing:.08em;text-transform:uppercase}
+  .open-c h4{font-size:22px;line-height:1.15;letter-spacing:-.005em}
+  .open-c h4 em{color:var(--accent);font-style:italic}
+  .open-c p{font-size:13.5px;line-height:1.6;color:var(--ink-soft);flex:1}
+  .open-c p em{color:var(--ink);font-style:italic;font-weight:500}
+  .open-c .arr{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-mute);letter-spacing:.04em}
+  .open-c:hover .arr{color:var(--accent)}
+
+  .xlinks{padding:clamp(70px,10vh,110px) 0;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--ink) 2.2%,transparent)}
+  .xl-h{margin-bottom:36px}
+  .xl-h h2{font-size:clamp(28px,3.4vw,40px);line-height:1.05;margin-bottom:10px}
+  .xl-h p{font-size:14.5px;color:var(--ink-soft);font-style:italic;max-width:48ch}
+  .xl-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+  @media(max-width:900px){.xl-grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:540px){.xl-grid{grid-template-columns:1fr}}
+  .xl-card{background:var(--bg);padding:28px 26px;display:flex;flex-direction:column;gap:10px;text-decoration:none;color:var(--ink);transition:background .25s}
+  .xl-card:hover{background:color-mix(in srgb,var(--accent) 5%,transparent)}
+  .xl-card .n{font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--accent);font-size:20px;line-height:1}
+  .xl-card .t{font-family:"Cormorant Garamond",serif;font-size:24px;line-height:1.1;color:var(--ink);margin-top:2px}
+  .xl-card .t em{color:var(--accent);font-style:italic}
+  .xl-card .d{font-size:13.5px;line-height:1.55;color:var(--ink-soft);font-style:italic;flex:1}
+  .xl-card .arr{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-mute);letter-spacing:.04em;margin-top:6px}
+  .xl-card:hover .arr{color:var(--accent)}
+
+  .close{padding:clamp(80px,10vh,120px) 0;text-align:center;border-bottom:1px solid var(--line)}
+  .close h2{font-size:clamp(34px,5vw,56px);line-height:1.0;margin-bottom:22px;max-width:22ch;margin-left:auto;margin-right:auto}
+  .close .sub{font-size:15.5px;color:var(--ink-soft);font-style:italic;max-width:48ch;margin:0 auto 32px;line-height:1.65}
+  .close .ct-row{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+
+  footer{padding:60px 0 36px}
+  .footin{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;margin-bottom:42px}
+  .footcols{display:flex;gap:clamp(38px,6vw,72px);flex-wrap:wrap}
+  .footcol h4{font-style:italic;font-weight:400;font-size:13px;color:var(--ink-mute);margin-bottom:14px;letter-spacing:.03em}
+  .footcol a{display:block;color:var(--ink-soft);text-decoration:none;font-size:14.5px;margin-bottom:9px}
+  .footcol a:hover{color:var(--accent)}
+  .disc{padding-top:24px;border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px}
+  .disc span{font-size:12px;color:var(--ink-mute);line-height:1.6}
+  .disc .legal{max-width:72ch;font-style:italic}
+</style>
+</head>
+<body>
+
+  <nav class="top" id="nav">
+    <div class="wrap navin">
+      <a class="wm" href="flameback-home.html">flameback<span class="p">.</span></a>
+      <div class="navr">
+        <a class="navlink active" href="flameback-who-we-are.html">Who we are</a>
+        <a class="navlink" href="flameback-what-we-do.html">What we do</a>
+        <a class="navlink" href="flameback-our-work.html">Our work</a>
+        <a class="navlink" href="flameback-insights.html">Insights</a>
+        <a class="navlink" href="flameback-tools.html">Tools</a>
+        <a class="navlink" href="flameback-offbook.html">Off-book</a>
+        <a class="cta" href="flameback-app-splash.html">Start your journey</a>
+        <button class="toggle" id="toggle">Light</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="crumb wrap"><a href="flameback-who-we-are.html">Who we are</a><span class="sep">&#8250;</span><span class="cur">Strategy R&amp;D</span></div>
+
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-eb"><span class="l"></span><span>Who we are &middot; section iv</span><span class="dateline">FIVE STAGES &middot; ~2% SURVIVAL</span></div>
+      <h1 class="h-h">Strategy <em>R&amp;D.</em></h1>
+      <p class="h-sub">How an idea becomes a tested signal becomes a paper-traded prototype becomes live client capital. The funnel is slow. The attrition is deliberate. Approximately two out of every hundred ideas reach a live book.</p>
+      <div class="h-cta">
+        <a class="btn" href="flameback-app-splash.html">Start your journey &rarr;</a>
+        <a class="btn-out" href="flameback-our-work.html">See the strategies that survived</a>
+      </div>
+    </div>
+    <div class="wmark">strategy.</div>
+  </section>
+
+  <!-- i. The opening frame -->
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-h">
+        <div class="meta">i. THE FRAME<br/>What &lsquo;R&amp;D&rsquo; means<br/>at this firm</div>
+        <h2>At a discretionary firm, R&amp;D is a meeting. <em>At a quantitative firm, R&amp;D is a process.</em></h2>
+      </div>
+
+      <div class="prose-grid">
+        <div class="meta lab"><span class="n">a.</span>Process, not opinion</div>
+        <div class="prose">
+          <p>In a discretionary investment firm, the question &ldquo;why do we hold this position?&rdquo; eventually reaches an individual. A portfolio manager, a head of research, a CIO. The answer is some combination of fundamentals, narrative, and conviction. The position exists because someone, somewhere, decided.</p>
+          <p>At a quantitative firm, the question reaches a <em>process</em>. The position exists because a signal, tested through a defined pipeline, met a set of pre-committed criteria. The signal exists because an idea was specified, back-tested, walk-forward-validated, regime-tested, and paper-traded. Each of those stages had pre-defined hurdles. The strategy crossed them. That is why the position exists.</p>
+          <p>The process below is the firm&rsquo;s research pipeline. It is what stands between an idea and a client&rsquo;s capital. <strong>It exists to protect clients from the firm&rsquo;s own enthusiasm.</strong></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ii. The funnel -->
+  <section class="sec tint">
+    <div class="wrap">
+      <div class="sec-h">
+        <div class="meta">ii. THE FUNNEL<br/>From one hundred ideas<br/>to two live strategies</div>
+        <h2>Five stages. Most ideas <em>die at stage two.</em></h2>
+      </div>
+
+      <div class="prose-grid" style="margin-bottom:36px">
+        <div class="meta lab"><span class="n">a.</span>Read the bars</div>
+        <div class="prose">
+          <p>The numbers below are approximate &mdash; smoothed averages across the firm&rsquo;s nine-year history. The bars show how many ideas, of an original hundred, survive each stage. The percentage on the right is the share of the original cohort still alive at that stage.</p>
+        </div>
+      </div>
+
+      <div class="funnel">
+        <div class="fn-row">
+          <span class="rn">i.</span>
+          <div class="meta-c"><span class="lbl">Stage one</span><span class="name"><em>Hypothesis.</em></span><span class="desc">An idea is specified in writing: what the signal is, why it should work, what regime it would survive, what its expected return profile looks like.</span></div>
+          <div class="bar"><span class="ct">100 ideas in</span><div class="b"><span class="f" style="--w:100%"></span></div><span class="pct">100% pass</span></div>
+        </div>
+        <div class="fn-row">
+          <span class="rn">ii.</span>
+          <div class="meta-c"><span class="lbl">Stage two</span><span class="name"><em>Back-test.</em></span><span class="desc">The signal is computed against twenty years of clean historical data. Performance, drawdown, turnover, transaction costs, and capacity are all measured. Most ideas die here.</span></div>
+          <div class="bar"><span class="ct">~30 survive</span><div class="b"><span class="f" style="--w:30%"></span></div><span class="pct">~30%</span></div>
+        </div>
+        <div class="fn-row">
+          <span class="rn">iii.</span>
+          <div class="meta-c"><span class="lbl">Stage three</span><span class="name">Walk-forward &amp; <em>regime testing.</em></span><span class="desc">The signal is re-tested using only data that would have been available at each historical point. It must hold up across explicitly defined regimes: 2008, 2013 taper tantrum, 2018, COVID, 2022.</span></div>
+          <div class="bar"><span class="ct">~12 survive</span><div class="b"><span class="f" style="--w:12%"></span></div><span class="pct">~12%</span></div>
+        </div>
+        <div class="fn-row">
+          <span class="rn">iv.</span>
+          <div class="meta-c"><span class="lbl">Stage four</span><span class="name"><em>Paper trading.</em></span><span class="desc">The signal runs on live data, with simulated execution and realistic transaction costs, for a minimum of six months. Slippage, signal latency, and capacity assumptions all get tested against reality, not history.</span></div>
+          <div class="bar"><span class="ct">~5 survive</span><div class="b"><span class="f" style="--w:5%"></span></div><span class="pct">~5%</span></div>
+        </div>
+        <div class="fn-row">
+          <span class="rn">v.</span>
+          <div class="meta-c"><span class="lbl">Stage five</span><span class="name"><em>Live capital.</em></span><span class="desc">Founders&rsquo; capital first. Six to twelve months of live performance against forecast. Only then does the strategy become available to client portfolios &mdash; and only at a position size the live track record justifies.</span></div>
+          <div class="bar"><span class="ct">~2 reach live</span><div class="b"><span class="f" style="--w:2%"></span></div><span class="pct">~2%</span></div>
+        </div>
+      </div>
+
+      <div class="pq" style="margin-top:48px">
+        &ldquo;The first principle is that you must <em>not fool yourself</em> &mdash; and you are the easiest person to fool.&rdquo;
+        <span class="at">Richard Feynman, Caltech commencement address, 1974. Pinned above the R&amp;D team&rsquo;s desks in the Bangalore office.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- iii. Stage detail -->
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-h">
+        <div class="meta">iii. THE STAGES IN DETAIL<br/>What actually happens<br/>at each stage</div>
+        <h2>What it takes for an idea to <em>survive each step.</em></h2>
+      </div>
+
+      <div class="prose-grid" style="margin-bottom:32px">
+        <div class="meta lab"><span class="n">a.</span>The discipline at each stage</div>
+        <div class="prose">
+          <p>Each of the five stages has its own pre-defined criteria, its own typical failure modes, and its own gatekeepers. Below, in order, is what each stage actually entails.</p>
+        </div>
+      </div>
+
+      <div class="stage">
+        <div class="meta-row">
+          <span class="rn">i.</span>
+          <div class="info"><span class="lbl">Stage one</span><h3><em>Hypothesis.</em> The idea is specified in writing.</h3></div>
+          <div class="stats"><span><em>~100/yr</em>Ideas specified</span></div>
+        </div>
+        <div class="body">
+          <p>Before a single line of back-test code is written, the idea is documented in a hypothesis memo. The memo answers seven specific questions: <em>what is the signal? why should it work economically? what is the expected horizon? what regime should kill it? what is the expected return profile? what is its capacity? what is the cleanest test of it?</em></p>
+          <p>The memo is reviewed by the research team. Ideas that can&rsquo;t survive the memo &mdash; either because the economic logic is too thin, or because the expected performance is implausible, or because a faster failure mode is already known &mdash; are rejected here, before any data is touched. <strong>This stage costs almost nothing. Skipping it is one of the most expensive mistakes in quantitative research.</strong></p>
+          <div class="checks">
+            <div class="ch"><span class="lh">Owns it</span><span class="rh"><em>Research analyst</em> who specifies the hypothesis</span></div>
+            <div class="ch"><span class="lh">Reviews it</span><span class="rh">Weekly research meeting; two senior reviewers</span></div>
+            <div class="ch"><span class="lh">Kill criteria</span><span class="rh">Thin economic logic, implausible expected return, untestable specification</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stage">
+        <div class="meta-row">
+          <span class="rn">ii.</span>
+          <div class="info"><span class="lbl">Stage two</span><h3><em>Back-test.</em> The signal meets clean history.</h3></div>
+          <div class="stats"><span><em>20 yrs</em>Of clean data</span></div>
+        </div>
+        <div class="body">
+          <p>The signal is computed against twenty years of point-in-time-corrected market data. Performance, volatility, drawdown, turnover, and gross/net Sharpe are all measured. Transaction costs are modelled with realistic assumptions: bid-ask spread, impact, brokerage, taxes. <em>Most ideas die here</em> &mdash; the signal that looked promising in concept turns out to be too noisy, too expensive to trade, or too dependent on a specific regime.</p>
+          <p>The back-test report is standardised. It includes the full equity curve, monthly returns, the regime decomposition, the factor attribution, and a side-by-side comparison against a stated benchmark. Any back-test that can&rsquo;t be reproduced from scratch by another analyst using only the hypothesis memo gets rejected on procedural grounds.</p>
+          <div class="checks">
+            <div class="ch"><span class="lh">Owns it</span><span class="rh"><em>Research analyst</em> who runs the back-test in the QX environment</span></div>
+            <div class="ch"><span class="lh">Reviews it</span><span class="rh">Independent reproduction by a second analyst</span></div>
+            <div class="ch"><span class="lh">Kill criteria</span><span class="rh">Net Sharpe below threshold, drawdown exceeds tolerance, capacity too small, behaviour too regime-dependent</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stage">
+        <div class="meta-row">
+          <span class="rn">iii.</span>
+          <div class="info"><span class="lbl">Stage three</span><h3>Walk-forward and <em>regime testing.</em></h3></div>
+          <div class="stats"><span><em>5+</em>Regimes tested</span></div>
+        </div>
+        <div class="body">
+          <p>Walk-forward testing simulates the strategy as it would have been run in the past, using only information available at each historical point. Parameter estimation, signal computation, position sizing &mdash; all of it happens with no look-ahead. <em>If a strategy looks good in a static back-test but degrades in walk-forward, the original result was probably an in-sample artefact.</em></p>
+          <p>Regime testing isolates how the strategy behaves in specific historical periods: the 2008 financial crisis, the 2013 taper tantrum, the 2018 small-cap drawdown in India, the COVID shock of 2020, the 2022 rate-driven equity drawdown. A strategy that performs well in three out of five regimes is not yet a viable candidate. <strong>The firm wants strategies that survive regimes, not strategies that exploit them.</strong></p>
+          <div class="checks">
+            <div class="ch"><span class="lh">Owns it</span><span class="rh"><em>Research analyst</em> in collaboration with risk team</span></div>
+            <div class="ch"><span class="lh">Reviews it</span><span class="rh">CTO and fund manager review walk-forward results jointly</span></div>
+            <div class="ch"><span class="lh">Kill criteria</span><span class="rh">Walk-forward Sharpe falls below 60% of static, fails any one defined regime, behaves discontinuously across regimes</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stage">
+        <div class="meta-row">
+          <span class="rn">iv.</span>
+          <div class="info"><span class="lbl">Stage four</span><h3><em>Paper trading.</em> Live data, simulated execution.</h3></div>
+          <div class="stats"><span><em>6+ mo</em>Minimum runway</span></div>
+        </div>
+        <div class="body">
+          <p>The strategy now runs on live market data through the FIST trade engine, generating positions and tracking returns &mdash; but no actual orders are sent to the market. This stage tests assumptions that <em>history cannot</em>: signal latency, real-time data quality, execution slippage against realistic limit-order behaviour, and the operational discipline required to run the strategy day after day.</p>
+          <p>Six months is the firm&rsquo;s minimum paper-trading runway, with twelve months preferred. The longer window catches strategies whose live behaviour diverges from the back-test in ways that take time to surface &mdash; capacity constraints in thinly traded names, microstructure issues at the open, signal degradation that only shows up in specific microstates.</p>
+          <div class="checks">
+            <div class="ch"><span class="lh">Owns it</span><span class="rh"><em>FIST engineering team</em> in collaboration with the originating analyst</span></div>
+            <div class="ch"><span class="lh">Reviews it</span><span class="rh">Monthly review of paper-traded performance against back-test forecast</span></div>
+            <div class="ch"><span class="lh">Kill criteria</span><span class="rh">Live performance diverges from back-test, slippage exceeds assumption, capacity reveals as lower than modelled, operational fragility</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stage">
+        <div class="meta-row">
+          <span class="rn">v.</span>
+          <div class="info"><span class="lbl">Stage five</span><h3><em>Live capital.</em> Founders&rsquo; money goes in first.</h3></div>
+          <div class="stats"><span><em>6&ndash;12 mo</em>Founders&rsquo; only</span></div>
+        </div>
+        <div class="body">
+          <p>The strategy moves to live capital &mdash; but the first capital is the firm&rsquo;s own. Founders&rsquo; capital, partners&rsquo; capital, and the firm&rsquo;s strategic balance sheet. For six to twelve months, the strategy runs only on internal money. Performance is tracked against the paper-trading forecast. Operational discipline is observed under conditions of actual P&amp;L.</p>
+          <p><em>Only after this period</em> &mdash; and only if the live performance is consistent with the paper-traded forecast &mdash; does the strategy become available to client portfolios. Even then, it starts at a small allocation. The strategy earns its weight in the portfolio by its live track record, not by its back-test. <strong>This is the longest, most expensive stage of the funnel. It is also the only one that actually verifies anything.</strong></p>
+          <div class="checks">
+            <div class="ch"><span class="lh">Owns it</span><span class="rh"><em>Fund manager</em> in coordination with the firm&rsquo;s investment committee</span></div>
+            <div class="ch"><span class="lh">Reviews it</span><span class="rh">Monthly investment committee, quarterly partner review</span></div>
+            <div class="ch"><span class="lh">Kill criteria</span><span class="rh">Live performance diverges from paper-trade by more than tolerance, drawdown exceeds projection, operational issues recur</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- iv. What kills a strategy -->
+  <section class="sec tint">
+    <div class="wrap">
+      <div class="sec-h">
+        <div class="meta">iv. FAILURE MODES<br/>The recurring ways<br/>strategies fail in the pipeline</div>
+        <h2>Six things that kill strategies. <em>All six are familiar.</em></h2>
+      </div>
+
+      <div class="prose-grid" style="margin-bottom:32px">
+        <div class="meta lab"><span class="n">a.</span>The known failure modes</div>
+        <div class="prose">
+          <p>After nine years of running this pipeline, the failure modes have begun to repeat. Almost every strategy that dies dies for one of the six reasons below. Recognising them earlier is one of the things that has made the firm&rsquo;s R&amp;D faster over time, without making it any less disciplined.</p>
+        </div>
+      </div>
+
+      <div class="fails">
+        <div class="fail"><span class="rn">i.</span><h4><em>Overfitting.</em></h4><p>The strategy looks brilliant in-sample because its parameters were optimised against the same data used to test it. In walk-forward, the performance collapses. <em>The cardinal sin of quantitative research. It is also the most preventable.</em></p></div>
+        <div class="fail"><span class="rn">ii.</span><h4><em>Transaction costs</em> were under-modelled.</h4><p>The back-test assumed clean execution at mid-prices. Real-world bid-ask spread, market impact, and brokerage eat most of the gross return. <em>This is the most common reason a promising back-test fails at paper-trading.</em></p></div>
+        <div class="fail"><span class="rn">iii.</span><h4>Capacity is <em>smaller than modelled.</em></h4><p>The strategy works on a small book but cannot be scaled without moving the prices it depends on. Useful at &#8377;5 crore; useless at &#8377;50 crore. <em>Capacity analysis happens at stage two; many ideas die there for this reason alone.</em></p></div>
+        <div class="fail"><span class="rn">iv.</span><h4><em>Regime dependence.</em></h4><p>The strategy works beautifully in one type of market and breaks in another. A strategy that needs trending markets fails in mean-reverting ones. <em>The firm prefers strategies that are slightly worse on average but consistent across regimes.</em></p></div>
+        <div class="fail"><span class="rn">v.</span><h4><em>Data quality</em> issues.</h4><p>The back-test result depended on a feature that wasn&rsquo;t cleanly available in the data &mdash; survivorship bias, look-ahead bias, restated fundamentals, point-in-time inaccuracy. <em>Often invisible until the back-test is reproduced from a different data source.</em></p></div>
+        <div class="fail"><span class="rn">vi.</span><h4><em>Signal decay.</em></h4><p>The signal worked in the past but has been arbitraged away. Or it depends on a market structure that no longer exists. <em>This is why live tracking matters &mdash; some signals quietly stop working, and only careful monitoring catches them.</em></p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- v. The R&D calendar -->
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-h">
+        <div class="meta">v. THE CALENDAR<br/>How research time<br/>is allocated</div>
+        <h2>Research time, <em>budgeted.</em></h2>
+      </div>
+
+      <div class="prose-grid" style="margin-bottom:32px">
+        <div class="meta lab"><span class="n">a.</span>Time is the scarce resource</div>
+        <div class="prose">
+          <p>The firm&rsquo;s research time is the most valuable resource it has. It is also the easiest to waste. Without an explicit budget, research time tends to drift toward whatever is most interesting or most recent. The discipline below is how the firm allocates time deliberately.</p>
+        </div>
+      </div>
+
+      <div class="cal">
+        <div class="cal-c"><span class="pct">40%</span><span class="what">Stage one &amp; two: <em>new ideas.</em></span><span class="why">Specifying hypotheses and running first-pass back-tests. The highest-volume, lowest-yield part of the funnel.</span></div>
+        <div class="cal-c"><span class="pct">25%</span><span class="what">Stage three &amp; four: <em>validation.</em></span><span class="why">Walk-forward, regime testing, and paper-trading supervision. The most patient, most disciplined part of the work.</span></div>
+        <div class="cal-c"><span class="pct">20%</span><span class="what"><em>Live monitoring</em> of in-production strategies.</span><span class="why">Performance attribution, regime checks, signal-decay monitoring, capacity reviews. A live strategy is never finished.</span></div>
+        <div class="cal-c"><span class="pct">15%</span><span class="what"><em>Infrastructure</em> &amp; data work.</span><span class="why">Data lake improvements, FIST upgrades, research-tool maintenance. The substrate everything else runs on.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- vi. Open R&D -->
+  <section class="sec tint">
+    <div class="wrap">
+      <div class="sec-h">
+        <div class="meta">vi. OPEN R&amp;D<br/>What the firm publishes<br/>from the research pipeline</div>
+        <h2>Some of the work doesn&rsquo;t become a strategy. <em>It becomes a published note.</em></h2>
+      </div>
+
+      <div class="prose-grid" style="margin-bottom:32px">
+        <div class="meta lab"><span class="n">a.</span>Publishing the work</div>
+        <div class="prose">
+          <p>Plenty of research is conducted, validated, and ultimately not turned into a live strategy &mdash; because the capacity is too small, the signal is too well-known, or the practical edge is marginal. Where the work itself is interesting, the firm publishes it. The three destinations below are open to the public.</p>
+        </div>
+      </div>
+
+      <div class="opens">
+        <a class="open-c" href="flameback-qlab-notes.html"><span class="lbl">Open i</span><h4>QLab <em>Notes.</em></h4><p>Working-paper-style write-ups of research the firm has done. Methodology, results, and failures. <em>The discipline of writing it down is part of the discipline of doing it.</em></p><span class="arr">Read &rarr;</span></a>
+        <a class="open-c" href="flameback-alpha-feed.html"><span class="lbl">Open ii</span><h4>Alpha <em>Feed.</em></h4><p>Shorter posts &mdash; observations from the research pipeline, market microstructure notes, occasional commentary. <em>Faster cadence, less formal than QLab Notes.</em></p><span class="arr">Read &rarr;</span></a>
+        <a class="open-c" href="flameback-opensource.html"><span class="lbl">Open iii</span><h4>Open <em>source.</em></h4><p>The firm publishes selected research code &mdash; data utilities, analysis libraries, factor toolkits. <em>Not the live strategies. The infrastructure around them.</em></p><span class="arr">Read &rarr;</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cross links -->
+  <section class="xlinks">
+    <div class="wrap">
+      <div class="xl-h"><h2>Read into the <em>other sections.</em></h2><p>Each sub-page goes one layer deeper than the Who-we-are overview.</p></div>
+      <div class="xl-grid">
+        <a class="xl-card" href="flameback-firm.html"><span class="n">i.</span><span class="t">The <em>firm.</em></span><span class="d">Origin, raison d&rsquo;&ecirc;tre, capital, mise en place, finite vs infinite games.</span><span class="arr">Read &rarr;</span></a>
+        <a class="xl-card" href="flameback-team.html"><span class="n">ii.</span><span class="t">The <em>team.</em></span><span class="d">Fifteen people in Bangalore. Leadership, structure, hiring funnel, values.</span><span class="arr">Read &rarr;</span></a>
+        <a class="xl-card" href="flameback-philosophy.html"><span class="n">iii.</span><span class="t"><em>Philosophy.</em></span><span class="d">Five tenets, four schools of thought, the firm&rsquo;s reading list, the disciplined refusals.</span><span class="arr">Read &rarr;</span></a>
+        <a class="xl-card" href="flameback-technology.html"><span class="n">v.</span><span class="t"><em>Technology.</em></span><span class="d">FIST, the data lake, the QX research environment, Jarvis. What we built. What we don&rsquo;t.</span><span class="arr">Read &rarr;</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="close">
+    <div class="wrap">
+      <h2>If you&rsquo;d like to see <em>which strategies survived.</em></h2>
+      <p class="sub">The Our Work page lists the live strategies, the methodology behind each, and their track records &mdash; including the drawdowns. None of them is a marketed product. All of them are running with founders&rsquo; capital alongside client capital.</p>
+      <div class="ct-row">
+        <a class="btn" href="flameback-our-work.html">See Our Work &rarr;</a>
+        <a class="btn-out" href="flameback-app-splash.html">Start your journey</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <div class="footin">
+        <a class="wm" href="flameback-home.html">flameback<span class="p">.</span></a>
+        <div class="footcols">
+          <div class="footcol"><h4>Who we are</h4><a href="flameback-firm.html">The firm</a><a href="flameback-team.html">Team</a><a href="flameback-philosophy.html">Philosophy</a><a href="flameback-strategy-rd.html">Strategy R&amp;D</a><a href="flameback-technology.html">Technology</a></div>
+          <div class="footcol"><h4>What we do</h4><a href="flameback-what-we-do.html#pwm">Private Wealth Management</a><a href="flameback-what-we-do.html#advisory">Advisory</a><a href="flameback-what-we-do.html#qx">QX Funds</a></div>
+          <div class="footcol"><h4>Open</h4><a href="flameback-our-work.html">Our work</a><a href="flameback-insights.html">Insights</a><a href="flameback-tools.html">Tools</a><a href="flameback-offbook.html">Off-book</a></div>
+          <div class="footcol"><h4>Regulatory</h4><a href="flameback-pms-disclosure.html">PMS disclosure</a><a href="flameback-advisory-disclosure.html">Advisory disclosure</a><a href="flameback-app-splash.html">Start your journey</a></div>
+        </div>
+      </div>
+      <div class="disc"><span>&copy; 2026 Flameback Capital Pvt Ltd</span><span class="legal">SEBI registered &middot; SEC filed for US strategy. Investments are subject to market risk. Past performance is not indicative of future results.</span></div>
+    </div>
+  </footer>
+
+<script>
+  var root=document.documentElement, tg=document.getElementById('toggle');
+  tg.addEventListener('click',function(){root.classList.toggle('light');tg.textContent=root.classList.contains('light')?'Dark':'Light';});
+  var nav=document.getElementById('nav');
+  window.addEventListener('scroll',function(){nav.classList.toggle('scrolled',window.scrollY>16)});
+</script>
+  <script src="reload.js"></script>
+</body>
+</html>

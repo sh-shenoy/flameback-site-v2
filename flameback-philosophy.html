@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Philosophy — flameback.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#1A1714;--ink:#F2EDE3;--ink-soft:rgba(242,237,227,.66);--ink-mute:rgba(242,237,227,.44);--line:rgba(242,237,227,.16);--panel:#221E1A;--accent:#FF6D0A;--btn-bg:#FF6D0A;--btn-ink:#1A1714;--grain-blend:screen;--grain-op:.055}
+  :root.light{--bg:#FCFAF6;--ink:#1A1714;--ink-soft:rgba(26,23,20,.68);--ink-mute:rgba(26,23,20,.46);--line:rgba(26,23,20,.14);--panel:#F4EFE7;--accent:#B23E08;--btn-bg:#1A1714;--btn-ink:#FCFAF6;--grain-blend:multiply;--grain-op:.035}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:"Source Serif 4",serif;transition:background .5s,color .5s;font-variant-numeric:tabular-nums;line-height:1.55}
+  body::after{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;mix-blend-mode:var(--grain-blend);opacity:var(--grain-op);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  .wrap{max-width:1200px;margin:0 auto;padding:0 clamp(22px,5vw,44px)}
+  section{position:relative;z-index:2}
+  .wm{font-family:"Source Serif 4",serif;font-weight:600;font-size:18px;color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+  .wm .p{color:var(--accent)}
+  h1,h2,h3,h4{font-family:"Cormorant Garamond",serif;font-weight:500;letter-spacing:-.014em;color:var(--ink);line-height:1.04}
+  h1 em,h2 em,h3 em,h4 em{color:var(--accent);font-style:italic;font-weight:500}
+  p{line-height:1.62}
+  .btn,.btn-out{display:inline-flex;align-items:center;gap:11px;font-family:"Source Serif 4",serif;font-size:15px;font-weight:500;padding:13px 24px;text-decoration:none;transition:gap .35s,opacity .3s,border-color .3s;cursor:pointer;border:none}
+  .btn{background:var(--btn-bg);color:var(--btn-ink)} .btn:hover{gap:15px;opacity:.92}
+  .btn-out{background:transparent;color:var(--ink);border:1px solid var(--line)} .btn-out:hover{gap:15px;border-color:var(--ink-mute)}
+  nav.top{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 84%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid transparent;transition:border-color .4s}
+  nav.top.scrolled{border-color:var(--line)}
+  .navin{display:flex;align-items:center;justify-content:space-between;padding:16px 0}
+  .navr{display:flex;align-items:center;gap:22px}
+  .navr a{color:var(--ink-soft);text-decoration:none;font-size:14.5px;transition:color .3s}
+  .navr a:hover{color:var(--ink)}
+  .navr a.active{color:var(--ink)}
+  .toggle{background:none;border:1px solid var(--line);color:var(--ink-soft);cursor:pointer;font-family:"Source Serif 4",serif;font-size:13px;font-style:italic;padding:5px 13px;border-radius:999px}
+  .navr a.cta{background:var(--btn-bg);color:var(--btn-ink);padding:9px 18px}
+  @media(max-width:1000px){.navr .navlink{display:none}}
+  .crumb{padding:14px 0;border-bottom:1px solid var(--line);font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-mute);letter-spacing:.05em;text-transform:uppercase}
+  .crumb a{color:var(--ink-mute);text-decoration:none}
+  .crumb a:hover{color:var(--accent)}
+  .crumb .sep{margin:0 10px;opacity:.55}
+  .crumb .cur{color:var(--accent)}
+  .hero{padding:clamp(70px,11vh,130px) 0 clamp(54px,7vh,90px);border-bottom:1px solid var(--line);position:relative}
+  .hero-eb{display:flex;align-items:center;gap:14px;margin-bottom:32px;font-style:italic;font-size:13px;color:var(--ink-mute);letter-spacing:.04em}
+  .hero-eb .l{width:32px;height:1px;background:var(--accent)}
+  .hero-eb .dateline{font-family:"JetBrains Mono",monospace;font-style:normal;font-size:11.5px;margin-left:auto;letter-spacing:.05em}
+  @media(max-width:760px){.hero-eb .dateline{display:none}}
+  h1.h-h{font-size:clamp(58px,9vw,128px);line-height:.92;letter-spacing:-.025em;margin-bottom:32px;max-width:14ch;font-weight:500}
+  .h-sub{font-size:clamp(17px,1.7vw,21px);line-height:1.55;color:var(--ink-soft);max-width:54ch;font-style:italic;margin-bottom:38px}
+  .h-cta{display:flex;gap:12px;flex-wrap:wrap}
+  .wmark{position:absolute;right:0;bottom:0;font-family:"Cormorant Garamond",serif;font-style:italic;font-size:clamp(180px,30vw,360px);color:var(--ink);opacity:.02;line-height:.8;pointer-events:none;letter-spacing:-.04em;white-space:nowrap;overflow:hidden}
+  .sec{padding:clamp(70px,10vh,120px) 0;border-bottom:1px solid var(--line);position:relative}
+  .sec.tint{background:color-mix(in srgb,var(--ink) 2.2%,transparent)}
+  .sec-h{display:grid;grid-template-columns:160px 1fr;gap:48px;align-items:flex-start;margin-bottom:clamp(36px,4vw,52px)}
+  @media(max-width:760px){.sec-h{grid-template-columns:1fr;gap:14px}}
+  .sec-h .meta{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase;padding-top:14px;border-top:1px solid var(--line);line-height:1.7}
+  .sec-h h2{font-size:clamp(36px,5vw,62px);line-height:1.02;letter-spacing:-.015em;max-width:18ch}
+  .prose{max-width:62ch;font-size:17px;line-height:1.7;color:var(--ink)}
+  .prose p{margin-bottom:22px}
+  .prose p:last-child{margin-bottom:0}
+  .prose em{color:var(--accent);font-style:italic;font-weight:500}
+  .prose strong{font-weight:500;color:var(--ink);font-style:italic}
+  .prose-grid{display:grid;grid-template-columns:160px 1fr;gap:48px;align-items:flex-start}
+  @media(max-width:760px){.prose-grid{grid-template-columns:1fr;gap:14px}}
+  .meta.lab{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase;padding-top:14px;border-top:1px solid var(--line);line-height:1.7}
+  .meta.lab .n{color:var(--accent);margin-right:8px}
+  .tenets{display:grid;grid-template-columns:1fr;gap:0;border:1px solid var(--line);background:var(--bg);max-width:920px;margin-top:8px}
+  .tenet{display:grid;grid-template-columns:90px 1fr;gap:36px;padding:36px 36px;border-bottom:1px solid var(--line);align-items:flex-start}
+  .tenet:last-child{border-bottom:none}
+  @media(max-width:680px){.tenet{grid-template-columns:1fr;gap:14px;padding:28px}}
+  .tenet .rn{font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--accent);font-size:42px;line-height:1;letter-spacing:-.01em}
+  .tenet .body h4{font-size:24px;line-height:1.15;margin-bottom:14px;letter-spacing:-.01em}
+  .tenet .body p{font-size:15.5px;line-height:1.7;color:var(--ink-soft);max-width:60ch}
+  .tenet .body p em{color:var(--ink);font-style:italic;font-weight:500}
+  .tenet .body p strong{font-weight:500;font-style:italic;color:var(--accent)}
+  .beliefs{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);margin-top:20px}
+  @media(max-width:680px){.beliefs{grid-template-columns:1fr}}
+  .belief{background:var(--bg);padding:34px 32px}
+  .belief.us{background:color-mix(in srgb,var(--accent) 4%,transparent)}
+  .belief .kind{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--ink-mute);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+  .belief.us .kind{color:var(--accent)}
+  .belief h3{font-size:22px;line-height:1.18;margin-bottom:14px}
+  .belief h3 em{color:var(--accent);font-style:italic}
+  .belief.us h3 em{color:var(--accent)}
+  .belief p{font-size:14.5px;line-height:1.65;color:var(--ink-soft)}
+  .belief p em{color:var(--ink);font-style:italic;font-weight:500}
+  .pq{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:clamp(28px,3.6vw,40px);line-height:1.25;color:var(--ink);max-width:24ch;padding-left:24px;border-left:2px solid var(--accent);margin:32px 0}
+  .pq em{color:var(--accent);font-style:italic}
+  .pq .at{display:block;font-family:"Source Serif 4",serif;font-size:13px;font-style:italic;color:var(--ink-mute);letter-spacing:.02em;margin-top:18px;line-height:1.5}
+  .reading{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:8px}
+  @media(max-width:880px){.reading{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:560px){.reading{grid-template-columns:1fr}}
+  .book{background:var(--bg);padding:28px 26px;display:flex;flex-direction:column;gap:8px;min-height:200px}
+  .book .ref{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase}
+  .book .title{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:22px;line-height:1.15;color:var(--ink);margin-top:2px}
+  .book .title em{color:var(--accent);font-style:italic}
+  .book .author{font-family:"Source Serif 4",serif;font-size:12.5px;color:var(--ink-mute);font-style:italic;letter-spacing:.02em}
+  .book .why{font-size:13.5px;line-height:1.6;color:var(--ink-soft);margin-top:8px;flex:1}
+  .book .why em{color:var(--ink);font-style:italic;font-weight:500}
+  .schools{display:grid;grid-template-columns:repeat(2,1fr);gap:32px;margin-top:6px}
+  @media(max-width:760px){.schools{grid-template-columns:1fr;gap:22px}}
+  .school{padding:26px 0;border-top:1px solid var(--line)}
+  .school .lbl{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--accent);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px}
+  .school h4{font-size:22px;line-height:1.18;margin-bottom:12px;letter-spacing:-.005em}
+  .school h4 em{color:var(--accent);font-style:italic}
+  .school p{font-size:14.5px;line-height:1.65;color:var(--ink-soft);max-width:42ch}
+  .school p em{color:var(--ink);font-style:italic;font-weight:500}
+  .nopes{border:1px solid var(--line);background:var(--bg);max-width:980px}
+  .nopes .nhd{padding:24px 32px;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--accent) 3%,transparent);display:flex;align-items:center;gap:14px}
+  .nopes .nhd .l{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--accent);letter-spacing:.08em;text-transform:uppercase}
+  .nopes .nhd .ttl{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:24px;color:var(--ink);line-height:1}
+  .nope{display:grid;grid-template-columns:70px 1fr;gap:24px;padding:22px 32px;border-bottom:1px solid var(--line);align-items:flex-start}
+  .nope:last-child{border-bottom:none}
+  @media(max-width:680px){.nope{grid-template-columns:1fr;gap:8px;padding:22px 24px}}
+  .nope .rn{font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--accent);font-size:24px;line-height:1}
+  .nope .ln{font-size:15px;line-height:1.65;color:var(--ink)}
+  .nope .ln em{color:var(--accent);font-style:italic;font-weight:500}
+  .nope .ln strong{font-weight:500;font-style:italic}
+  .obsv{display:grid;grid-template-columns:1fr;gap:0;border:1px solid var(--line);background:var(--bg);max-width:920px}
+  .obs-r{display:grid;grid-template-columns:200px 1fr;gap:32px;padding:28px 32px;border-bottom:1px solid var(--line);align-items:flex-start}
+  .obs-r:last-child{border-bottom:none}
+  @media(max-width:680px){.obs-r{grid-template-columns:1fr;gap:10px;padding:24px}}
+  .obs-r .what{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:18px;color:var(--accent);line-height:1.25}
+  .obs-r .why{font-size:14.5px;line-height:1.7;color:var(--ink-soft)}
+  .obs-r .why em{color:var(--ink);font-style:italic;font-weight:500}
+  .xlinks{padding:clamp(70px,10vh,110px) 0;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--ink) 2.2%,transparent)}
+  .xl-h{margin-bottom:36px}
+  .xl-h h2{font-size:clamp(28px,3.4vw,40px);line-height:1.05;margin-bottom:10px}
+  .xl-h p{font-size:14.5px;color:var(--ink-soft);font-style:italic;max-width:48ch}
+  .xl-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+  @media(max-width:900px){.xl-grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:540px){.xl-grid{grid-template-columns:1fr}}
+  .xl-card{background:var(--bg);padding:28px 26px;display:flex;flex-direction:column;gap:10px;text-decoration:none;color:var(--ink);transition:background .25s}
+  .xl-card:hover{background:color-mix(in srgb,var(--accent) 5%,transparent)}
+  .xl-card .n{font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--accent);font-size:20px;line-height:1}
+  .xl-card .t{font-family:"Cormorant Garamond",serif;font-size:24px;line-height:1.1;color:var(--ink);margin-top:2px}
+  .xl-card .t em{color:var(--accent);font-style:italic}
+  .xl-card .d{font-size:13.5px;line-height:1.55;color:var(--ink-soft);font-style:italic;flex:1}
+  .xl-card .arr{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-mute);letter-spacing:.04em;margin-top:6px}
+  .xl-card:hover .arr{color:var(--accent)}
+  .close{padding:clamp(80px,10vh,120px) 0;text-align:center;border-bottom:1px solid var(--line)}
+  .close h2{font-size:clamp(34px,5vw,56px);line-height:1.0;margin-bottom:22px;max-width:22ch;margin-left:auto;margin-right:auto}
+  .close .sub{font-size:15.5px;color:var(--ink-soft);font-style:italic;max-width:48ch;margin:0 auto 32px;line-height:1.65}
+  .close .ct-row{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+  footer{padding:60px 0 36px}
+  .footin{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;margin-bottom:42px}
+  .footcols{display:flex;gap:clamp(38px,6vw,72px);flex-wrap:wrap}
+  .footcol h4{font-style:italic;font-weight:400;font-size:13px;color:var(--ink-mute);margin-bottom:14px;letter-spacing:.03em}
+  .footcol a{display:block;color:var(--ink-soft);text-decoration:none;font-size:14.5px;margin-bottom:9px}
+  .footcol a:hover{color:var(--accent)}
+  .disc{padding-top:24px;border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px}
+  .disc span{font-size:12px;color:var(--ink-mute);line-height:1.6}
+  .disc .legal{max-width:72ch;font-style:italic}
+</style>
+</head>
+<body>
+
+  <nav class="top" id="nav">
+    <div class="wrap navin">
+      <a class="wm" href="flameback-home.html">flameback<span class="p">.</span></a>
+      <div class="navr">
+        <a class="navlink active" href="flameback-who-we-are.html">Who we are</a>
+        <a class="navlink" href="flameback-what-we-do.html">What we do</a>
+        <a class="navlink" href="flameback-our-work.html">Our work</a>
+        <a class="navlink" href="flameback-insights.html">Insights</a>
+        <a class="navlink" href="flameback-tools.html">Tools</a>
+        <a class="navlink" href="flameback-offbook.html">Off-book</a>
+        <a class="cta" href="flameback-app-splash.html">Start your journey</a>
+        <button class="toggle" id="toggle">Light</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="crumb wrap"><a href="flameback-who-we-are.html">Who we are</a><span class="sep">&#8250;</span><span class="cur">Philosophy</span></div>
+
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-eb"><span class="l"></span><span>Who we are &middot; section iii</span><span class="dateline">FIVE TENETS &middot; ESTABLISHED 2017</span></div>
+      <h1 class="h-h"><em>Philosophy.</em></h1>
+      <p class="h-sub">What the firm believes about markets, about risk, about the human side of compounding wealth &mdash; written down so that decisions, when they get hard, can be traced back to first principles rather than to mood.</p>
+      <div class="h-cta">
+        <a class="btn" href="flameback-app-splash.html">Start your journey &rarr;</a>
+        <a class="btn-out" href="flameback-who-we-are.html">Back to overview</a>
+      </div>
+    </div>
+    <div class="wmark">philosophy.</div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-h">
+        <div class="meta">i. THE FRAME<br/>Why philosophy<br/>matters here</div>
+        <h2>Every investment firm has a philosophy. <em>Most of them are unwritten.</em></h2>
+      </div>
+
+      <div class="prose-grid">
+        <div class="meta lab"><span class="n">a.</span>Why we wrote it down</div>
+        <div class="prose">
+          <p>A wealth manager makes thousands of small decisions on a client&rsquo;s behalf each year. Which signals to weight, when to rebalance, what to hold through a drawdown, what to sell, what to leave alone. In most firms, these decisions are made by individuals applying judgement formed by experience, by recent market memory, and by whatever the firm&rsquo;s culture happens to reward at that moment. The philosophy is the residue of all of that. It exists. It just isn&rsquo;t written down.</p>
+          <p>We chose to write ours down for two reasons. The first is that <em>a quantitative firm cannot operate without explicit decision rules.</em> The second is that <em>a relationship-driven firm cannot operate without explicit values.</em> A philosophy document is the place where those two meet. When a strategy is being designed, the philosophy is the constraint. When a client conversation gets difficult, the philosophy is the reference.</p>
+          <p>What follows is the firm&rsquo;s position, written in five tenets, four influences, eight books, six observations, and one list of disciplined refusals.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec tint">
+    <div class="wrap">
+      <div class="sec-h">
+        <div class="meta">ii. THE FIVE TENETS<br/>What we believe<br/>about markets &amp; capital</div>
+        <h2>Five things the firm believes &mdash; <em>and won&rsquo;t un-believe</em> just because it&rsquo;s convenient.</h2>
+      </div>
+
+      <div class="tenets">
+        <div class="tenet">
+          <span class="rn">i.</span>
+          <div class="body">
+            <h4>Markets are efficient enough to make prediction unreliable, and inefficient enough to <em>reward discipline.</em></h4>
+            <p>This is the firm&rsquo;s central wager. We don&rsquo;t believe in <em>perfect</em> efficiency &mdash; the academic literature and the live track records of disciplined quantitative firms over fifty years rule that out. We also don&rsquo;t believe in <em>exploitable mispricing</em> at the level of individual security selection &mdash; the evidence against discretionary stock picking, net of fees, is overwhelming. What we believe is that <strong>persistent factor premia</strong> exist (momentum, quality, low-volatility, value at the right horizons), that they are noisy, and that they are available to firms with the patience and the engineering to capture them at low cost.</p>
+          </div>
+        </div>
+        <div class="tenet">
+          <span class="rn">ii.</span>
+          <div class="body">
+            <h4>The constraint on long-term returns is <em>not return.</em> It is behaviour during drawdowns.</h4>
+            <p>If you back-test any reasonable strategy on Indian equities over twenty years, the compounding rate is double-digit. Almost no client experiences double-digit compounding, because almost no client stays invested through the drawdowns. The behavioural gap &mdash; the difference between strategy returns and client returns &mdash; is consistently measured at <strong>three to four percentage points per year</strong> across global studies. That gap, compounded, is the difference between merely good wealth and generational wealth. Closing it is the firm&rsquo;s most important non-quantitative job.</p>
+          </div>
+        </div>
+        <div class="tenet">
+          <span class="rn">iii.</span>
+          <div class="body">
+            <h4>Time is the active ingredient. <em>Everything else is in service of staying invested through it.</em></h4>
+            <p>The mathematics of compounding is non-linear. Twenty years at 12% is not twice as much wealth as ten years at 12%; it is more than four times as much. This is the single most powerful fact in finance, and the single most-ignored. The firm&rsquo;s engagement model, its diversification approach, its drawdown-control architecture, its client-communication discipline &mdash; all of it is engineered around one objective: <em>keep the client invested for the time it takes for compounding to do its work.</em></p>
+          </div>
+        </div>
+        <div class="tenet">
+          <span class="rn">iv.</span>
+          <div class="body">
+            <h4>Diversification of <em>sources of return</em> matters more than diversification of holdings.</h4>
+            <p>Holding fifty stocks does not diversify a portfolio if all fifty are driven by the same factor exposure to the same regime. Real diversification is across <strong>uncorrelated drivers</strong>: momentum versus value, quality versus carry, India versus the US, equity versus credit, long versus short. The firm&rsquo;s strategies are constructed so that each one earns its place in a portfolio by adding a return stream that is genuinely different from the others &mdash; not just a different label on the same exposure.</p>
+          </div>
+        </div>
+        <div class="tenet">
+          <span class="rn">v.</span>
+          <div class="body">
+            <h4>A wealth manager&rsquo;s most important product is <em>candour.</em></h4>
+            <p>Most of the wealth-management industry runs on selling clients products they don&rsquo;t need at fees they don&rsquo;t see. The firm&rsquo;s opposite stance is not a marketing position; it is a structural one. We charge transparent fees, we disclose conflicts where they exist, we publish our research and our drawdowns, we say no to product launches that would be lucrative but wrong, and we tell clients things they don&rsquo;t want to hear when telling them what they want to hear would harm their long-term outcome. <strong>Candour is a discipline. It costs the firm money in the short run. It is the only way we know to compound trust in the long run.</strong></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-h">
+        <div class="meta">iii. CONTRAST<br/>Where the firm parts<br/>from the consensus</div>
+        <h2>Five places we&rsquo;ve looked at the consensus and quietly <em>walked the other way.</em></h2>
+      </div>
+
+      <div class="prose-grid" style="margin-bottom:32px">
+        <div class="meta lab"><span class="n">a.</span>Read across</div>
+        <div class="prose">
+          <p>On each row, the left column is what the industry typically tells clients. The right column is what the firm believes &mdash; and what the firm&rsquo;s strategies, fee structure, and conversations actually reflect.</p>
+        </div>
+      </div>
+
+      <div class="beliefs">
+        <div class="belief"><span class="kind">Industry consensus</span><h3>A good portfolio manager <em>beats the market</em> by picking the right stocks.</h3><p>The pitch is alpha through skill. The fee is justified by outperformance. The track record is presented through favourable windows.</p></div>
+        <div class="belief us"><span class="kind">Our position</span><h3>A good manager <em>compounds reliably</em> across regimes by harvesting persistent premia at low cost.</h3><p>The job is not to predict. It is to capture, repeatedly and cheaply, what the academic and empirical literature has identified as durable sources of return.</p></div>
+
+        <div class="belief"><span class="kind">Industry consensus</span><h3>Asset allocation should be <em>adjusted to the market view.</em></h3><p>Risk on, risk off. Tilt to the asset class with the better setup. Move in and out of equities based on the macro call.</p></div>
+        <div class="belief us"><span class="kind">Our position</span><h3>Asset allocation should reflect <em>client circumstances,</em> not market conviction.</h3><p>Adjusting allocation to short-term market views is closet market-timing, and it loses on average. Allocation is set against the client&rsquo;s liabilities, horizon, and behaviour, not the manager&rsquo;s outlook.</p></div>
+
+        <div class="belief"><span class="kind">Industry consensus</span><h3>Diversification means <em>holding more things.</em></h3><p>Spread the portfolio across sectors, geographies, asset classes &mdash; the wider, the safer.</p></div>
+        <div class="belief us"><span class="kind">Our position</span><h3>Diversification means <em>holding things that fail at different times.</em></h3><p>Correlation, not count, is what matters. Twelve equity funds with similar factor exposures are one position with twelve labels.</p></div>
+
+        <div class="belief"><span class="kind">Industry consensus</span><h3>The relationship manager&rsquo;s job is to <em>maintain the client.</em></h3><p>Make them feel reassured. Don&rsquo;t bring up bad news. Stay positive about the markets and the portfolio.</p></div>
+        <div class="belief us"><span class="kind">Our position</span><h3>The relationship manager&rsquo;s job is to <em>tell the truth about the portfolio.</em></h3><p>Clients are owed an honest account, especially during drawdowns. The discomfort of a candid conversation is part of what we&rsquo;re paid for.</p></div>
+
+        <div class="belief"><span class="kind">Industry consensus</span><h3>Growth is the firm&rsquo;s primary objective. <em>More AUM is always better.</em></h3><p>Scale the AUM. Hire more relationship managers. Open more offices. The economics demand it.</p></div>
+        <div class="belief us"><span class="kind">Our position</span><h3>Capacity is the firm&rsquo;s primary constraint. <em>The right size is the size that lets us do the work properly.</em></h3><p>Some of our strategies have capacity limits. Some of our relationships require depth. We turn business away when the alternative would be to do worse work.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec tint">
+    <div class="wrap">
+      <div class="sec-h">
+        <div class="meta">iv. INFLUENCES<br/>The intellectual lineage<br/>the firm draws from</div>
+        <h2>Four schools of thought, eight books, one pull-quote &mdash; <em>the firm&rsquo;s reading list.</em></h2>
+      </div>
+
+      <div class="prose-grid" style="margin-bottom:40px">
+        <div class="meta lab"><span class="n">a.</span>Four schools</div>
+        <div class="prose">
+          <p>The firm&rsquo;s approach didn&rsquo;t emerge in isolation. It draws &mdash; honestly and deliberately &mdash; from four intellectual traditions, each of which has shaped specific elements of how we build strategies and how we work with clients.</p>
+        </div>
+      </div>
+
+      <div class="schools">
+        <div class="school">
+          <div class="lbl">School i</div>
+          <h4>The <em>quantitative</em> tradition.</h4>
+          <p>Renaissance, AQR, Two Sigma, Citadel. The conviction that markets are systems, that signals are noisy but persistent, and that disciplined statistical work over long horizons is the most reliable path to alpha. From this tradition we take the empirical method, the suspicion of conviction without evidence, and the idea that a strategy is only as good as its out-of-sample behaviour.</p>
+        </div>
+        <div class="school">
+          <div class="lbl">School ii</div>
+          <h4>The <em>value-investing</em> tradition.</h4>
+          <p>Graham, Buffett, Munger. The insistence that ownership of a business at the right price is a real economic activity, not a trade. The discipline of patience, of independence from market sentiment, of saying no to the vast majority of opportunities. We don&rsquo;t pick stocks the way Buffett does. But the temperament &mdash; long horizons, low turnover, contempt for marketing &mdash; is the same.</p>
+        </div>
+        <div class="school">
+          <div class="lbl">School iii</div>
+          <h4>The <em>risk-and-uncertainty</em> tradition.</h4>
+          <p>Taleb, Mandelbrot, Soros on reflexivity, Kahneman. The acknowledgement that markets are not normal, that tail risk is the risk that matters, that human cognition systematically misjudges probability, and that any system without explicit drawdown control will eventually be destroyed by an event it didn&rsquo;t plan for. From this tradition comes the firm&rsquo;s obsession with regime testing, drawdown architecture, and behavioural-finance literacy.</p>
+        </div>
+        <div class="school">
+          <div class="lbl">School iv</div>
+          <h4>The <em>infinite-game</em> tradition.</h4>
+          <p>James Carse, Simon Sinek as a populariser, and the long-cycle thinking of Berkshire Hathaway. The framing that wealth management is an <em>infinite game</em> &mdash; played not to win but to keep playing &mdash; reorganises everything. It changes what counts as a good year, what counts as a good client, what counts as a good fee structure. The firm operates as if it intends to be here in 2046, because it does.</p>
+        </div>
+      </div>
+
+      <div class="pq" style="margin-top:48px">
+        &ldquo;The investor&rsquo;s chief problem &mdash; and even his worst enemy &mdash; is likely to be <em>himself.</em>&rdquo;
+        <span class="at">Benjamin Graham, <em>The Intelligent Investor</em>, 1949. Quoted in the firm&rsquo;s first principles document, and in most client conversations during drawdowns.</span>
+      </div>
+
+      <div class="prose-grid" style="margin-top:48px;margin-bottom:24px">
+        <div class="meta lab"><span class="n">b.</span>Eight books</div>
+        <div class="prose">
+          <p>The books below are the ones the firm hands to new analysts, references in client letters, and returns to when a hard call has to be made. They&rsquo;re not a comprehensive list of important investing books. They&rsquo;re the eight that shaped this firm&rsquo;s working assumptions.</p>
+        </div>
+      </div>
+
+      <div class="reading">
+        <div class="book"><span class="ref">Read i</span><span class="title">The <em>Intelligent</em> Investor</span><span class="author">Benjamin Graham, 1949</span><span class="why">The temperamental foundation. Margin of safety, Mr. Market, and the idea that <em>behaviour</em> is the moat.</span></div>
+        <div class="book"><span class="ref">Read ii</span><span class="title">Poor Charlie&rsquo;s <em>Almanack</em></span><span class="author">Charles T. Munger, 2005</span><span class="why">On mental models, the latticework of disciplines, and the discipline of <em>inversion.</em> The firm&rsquo;s favourite chapter is the psychology of human misjudgement.</span></div>
+        <div class="book"><span class="ref">Read iii</span><span class="title">Expected <em>Returns</em></span><span class="author">Antti Ilmanen, 2011</span><span class="why">The most rigorous single-volume treatment of factor premia, risk premia, and how to reason about returns across asset classes. Required reading for the research team.</span></div>
+        <div class="book"><span class="ref">Read iv</span><span class="title">The <em>Black Swan</em></span><span class="author">Nassim Nicholas Taleb, 2007</span><span class="why">On the failure of normal-distribution thinking and the centrality of tail risk. The firm&rsquo;s drawdown-control architecture is downstream of this argument.</span></div>
+        <div class="book"><span class="ref">Read v</span><span class="title"><em>Thinking,</em> Fast and Slow</span><span class="author">Daniel Kahneman, 2011</span><span class="why">The behavioural-finance canon in one volume. Loss aversion, anchoring, narrative bias &mdash; the cognitive errors that destroy long-term returns.</span></div>
+        <div class="book"><span class="ref">Read vi</span><span class="title">Finite and <em>Infinite Games</em></span><span class="author">James P. Carse, 1986</span><span class="why">The book that gave the firm its operating frame. We&rsquo;re playing an infinite game. Every strategic choice flows from that.</span></div>
+        <div class="book"><span class="ref">Read vii</span><span class="title">The <em>Man</em> Who Solved the Market</span><span class="author">Gregory Zuckerman, 2019</span><span class="why">An account of Renaissance Technologies. Not for the model details &mdash; for the culture. The discipline, the suspicion of intuition, the engineering-first instinct.</span></div>
+        <div class="book"><span class="ref">Read viii</span><span class="title">The <em>Alchemy</em> of Finance</span><span class="author">George Soros, 1987</span><span class="why">On reflexivity &mdash; the idea that markets are not just measuring an underlying reality but actively changing it. The deepest available critique of efficient-markets thinking.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-h">
+        <div class="meta">v. THE OBSERVATIONS<br/>Where the industry,<br/>quietly, has it wrong</div>
+        <h2>Six things wealth management does <em>that don&rsquo;t survive scrutiny.</em></h2>
+      </div>
+
+      <div class="prose-grid" style="margin-bottom:32px">
+        <div class="meta lab"><span class="n">a.</span>Not a critique. An accounting.</div>
+        <div class="prose">
+          <p>This is not a polemic. The industry is staffed by intelligent, generally well-intentioned people working inside structures that don&rsquo;t reward candour. The list below is the firm&rsquo;s read of where those structural incentives lead the work in a wrong direction &mdash; not a moral judgement of the people inside them.</p>
+        </div>
+      </div>
+
+      <div class="obsv">
+        <div class="obs-r"><div class="what">Performance is reported through favourable windows.</div><div class="why">Firms quote the period in which their numbers look best &mdash; 3-year if 1-year is poor, since-inception if 5-year is poor, after-tax if pre-tax is poor. <em>Honest reporting is a calendar-fixed comparison to a stated benchmark over a horizon long enough to be meaningful.</em> The firm publishes 1-, 3-, 5-, and since-inception, all of them, on every factsheet.</div></div>
+        <div class="obs-r"><div class="what">Fees are described in basis points to make them feel small.</div><div class="why">&ldquo;Just 1.5 per cent&rdquo; sounds modest. <em>Over twenty years, a 1.5% recurring fee consumes roughly a third of the gross return.</em> The honest framing is the cumulative drag on terminal wealth, which is what the firm shows clients during the engagement-terms conversation.</div></div>
+        <div class="obs-r"><div class="what">Asset allocation is presented as personalised when it&rsquo;s formulaic.</div><div class="why">Most &ldquo;personalised&rdquo; allocations are one of six standard buckets based on a five-question risk-tolerance quiz. <em>Real personalisation requires understanding the client&rsquo;s liabilities, business interests, behavioural history, and family structure &mdash; not a sliding scale of &lsquo;conservative to aggressive.&rsquo;</em></div></div>
+        <div class="obs-r"><div class="what">Diversification is sold as protection when it&rsquo;s frequently just label-spreading.</div><div class="why">A client with twelve mutual funds across four AMCs is rarely diversified in any meaningful sense. The underlying factor exposures overlap heavily. <em>Real diversification requires understanding what each holding earns its return from &mdash; which most allocators have never been taught to do.</em></div></div>
+        <div class="obs-r"><div class="what">Drawdowns are presented as anomalies when they&rsquo;re features.</div><div class="why">Every honest long-horizon strategy will see drawdowns. The firm tells clients up front that a <em>20% drawdown is a normal feature, not an emergency.</em> Most firms wait until the drawdown happens and then explain it &mdash; which is exactly when the client is least able to hear it.</div></div>
+        <div class="obs-r"><div class="what">Marketing is dressed up as research.</div><div class="why">Most &ldquo;market outlook&rdquo; documents are sales material with a research disclaimer at the bottom. They tell a story consistent with whatever the firm is currently selling. <em>The firm&rsquo;s position is that genuine research is published with its methodology and its failures alongside its findings &mdash; or it isn&rsquo;t research.</em> See the open-source page for what we publish.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec tint">
+    <div class="wrap">
+      <div class="sec-h">
+        <div class="meta">vi. WHAT WE WILL NOT<br/>The disciplined refusals<br/>that define the firm</div>
+        <h2>The line items that show up <em>nowhere</em> at this firm &mdash; on purpose.</h2>
+      </div>
+
+      <div class="prose-grid" style="margin-bottom:24px">
+        <div class="meta lab"><span class="n">a.</span>A philosophy is what you refuse</div>
+        <div class="prose">
+          <p>Some of the most important sentences in a firm&rsquo;s philosophy are the ones that begin with &ldquo;we will not.&rdquo; They are harder to enforce than the ones that begin with &ldquo;we will,&rdquo; because every refusal eventually meets a moment when it would be lucrative to break. The list below has been broken zero times in nine years. It will not be broken in the years ahead either.</p>
+        </div>
+      </div>
+
+      <div class="nopes">
+        <div class="nhd"><span class="l">Manifesto</span><span class="ttl">The firm will not.</span></div>
+        <div class="nope"><span class="rn">i.</span><span class="ln"><em>Predict markets</em> in public. We will not write a year-end &ldquo;outlook,&rdquo; we will not appear on television calling tops and bottoms, and we will not publish forecasts that the firm&rsquo;s own strategies don&rsquo;t depend on. <strong>Forecasting is entertainment. It corrodes a quantitative practice.</strong></span></div>
+        <div class="nope"><span class="rn">ii.</span><span class="ln"><em>Sell products</em> we wouldn&rsquo;t buy ourselves. Every strategy the firm offers has founders&rsquo; capital invested alongside client capital. If we wouldn&rsquo;t put our own money in it, it doesn&rsquo;t go in the catalogue.</span></div>
+        <div class="nope"><span class="rn">iii.</span><span class="ln"><em>Take commissions</em> from product manufacturers. The firm is fee-only. No revenue from selling third-party insurance products, third-party mutual funds, structured notes, or any other arrangement that creates a conflict between the client&rsquo;s interest and the firm&rsquo;s.</span></div>
+        <div class="nope"><span class="rn">iv.</span><span class="ln"><em>Time the market</em> at the portfolio level. Strategies have internal risk controls that may de-gross under specific quantitative conditions. <strong>That is not market-timing. Market-timing is a discretionary call by a human looking at headlines.</strong> The firm does not do that.</span></div>
+        <div class="nope"><span class="rn">v.</span><span class="ln"><em>Grow beyond capacity.</em> Some strategies have capacity limits. Some relationships require depth. When growth would dilute either, the firm declines the additional business. This has happened. It will happen again.</span></div>
+        <div class="nope"><span class="rn">vi.</span><span class="ln"><em>Hide the drawdowns.</em> All performance reporting includes drawdown statistics. Worst calendar year, worst rolling 12-month period, peak-to-trough, time-to-recovery. <strong>The drawdowns are part of the track record. They are not optional.</strong></span></div>
+        <div class="nope"><span class="rn">vii.</span><span class="ln"><em>Run a separate investment policy</em> for the partners than for the clients. The same strategies, the same risk controls, the same fee structure. The partners get no edge from being inside the firm. This is not a marketing claim; it is auditable.</span></div>
+        <div class="nope"><span class="rn">viii.</span><span class="ln"><em>Trade on the firm&rsquo;s own account</em> against the strategies&rsquo; positions. Personal trading by all members of the investment team is pre-cleared, restricted to a published universe, and monitored quarterly. <strong>The investment team eats from the same pot as the clients.</strong></span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="xlinks">
+    <div class="wrap">
+      <div class="xl-h"><h2>Read into the <em>other sections.</em></h2><p>Philosophy alone is a statement of intent. The four other sub-pages are what the intent looks like in practice.</p></div>
+      <div class="xl-grid">
+        <a class="xl-card" href="flameback-firm.html"><span class="n">i.</span><span class="t">The <em>firm.</em></span><span class="d">Origin, raison d&rsquo;&ecirc;tre, capital, mise en place, finite vs infinite games, regulatory standing.</span><span class="arr">Read &rarr;</span></a>
+        <a class="xl-card" href="flameback-team.html"><span class="n">ii.</span><span class="t">The <em>team.</em></span><span class="d">Fifteen people in Bangalore, engineering-first principle, leadership, team structure, hiring funnel, values.</span><span class="arr">Read &rarr;</span></a>
+        <a class="xl-card" href="flameback-strategy-rd.html"><span class="n">iv.</span><span class="t">Strategy <em>R&amp;D.</em></span><span class="d">The pipeline from idea to live capital. Walk-forward, regime testing, paper trading, the 2% survival rate.</span><span class="arr">Read &rarr;</span></a>
+        <a class="xl-card" href="flameback-technology.html"><span class="n">v.</span><span class="t"><em>Technology.</em></span><span class="d">FIST, the data lake, the QX research environment, Jarvis. What we built. What we don&rsquo;t.</span><span class="arr">Read &rarr;</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="close">
+    <div class="wrap">
+      <h2>If the philosophy reads like <em>the way you already think.</em></h2>
+      <p class="sub">There&rsquo;s a self-selection at work in this kind of document. People who find it sensible tend to make good clients of the firm. People who find it tedious or contrarian usually don&rsquo;t. Either is fine. Both are useful information.</p>
+      <div class="ct-row">
+        <a class="btn" href="flameback-app-splash.html">Start your journey &rarr;</a>
+        <a class="btn-out" href="flameback-who-we-are.html">Back to the overview</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <div class="footin">
+        <a class="wm" href="flameback-home.html">flameback<span class="p">.</span></a>
+        <div class="footcols">
+          <div class="footcol"><h4>Who we are</h4><a href="flameback-firm.html">The firm</a><a href="flameback-team.html">Team</a><a href="flameback-philosophy.html">Philosophy</a><a href="flameback-strategy-rd.html">Strategy R&amp;D</a><a href="flameback-technology.html">Technology</a></div>
+          <div class="footcol"><h4>What we do</h4><a href="flameback-what-we-do.html#pwm">Private Wealth Management</a><a href="flameback-what-we-do.html#advisory">Advisory</a><a href="flameback-what-we-do.html#qx">QX Funds</a></div>
+          <div class="footcol"><h4>Open</h4><a href="flameback-our-work.html">Our work</a><a href="flameback-insights.html">Insights</a><a href="flameback-tools.html">Tools</a><a href="flameback-offbook.html">Off-book</a></div>
+          <div class="footcol"><h4>Regulatory</h4><a href="flameback-pms-disclosure.html">PMS disclosure</a><a href="flameback-advisory-disclosure.html">Advisory disclosure</a><a href="flameback-app-splash.html">Start your journey</a></div>
+        </div>
+      </div>
+      <div class="disc"><span>&copy; 2026 Flameback Capital Pvt Ltd</span><span class="legal">SEBI registered &middot; SEC filed for US strategy. Investments are subject to market risk. Past performance is not indicative of future results.</span></div>
+    </div>
+  </footer>
+
+<script>
+  var root=document.documentElement, tg=document.getElementById('toggle');
+  tg.addEventListener('click',function(){root.classList.toggle('light');tg.textContent=root.classList.contains('light')?'Dark':'Light';});
+  var nav=document.getElementById('nav');
+  window.addEventListener('scroll',function(){nav.classList.toggle('scrolled',window.scrollY>16)});
+</script>
+  <script src="reload.js"></script>
+</body>
+</html>

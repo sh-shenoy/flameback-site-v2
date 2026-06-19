@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>flameback. — Schedule a call</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#1A1714;--ink:#F2EDE3;--ink-soft:rgba(242,237,227,.66);--ink-mute:rgba(242,237,227,.44);--line:rgba(242,237,227,.16);--accent:#FF6D0A;--btn-bg:#FF6D0A;--btn-ink:#1A1714;--grain-blend:screen;--grain-op:.055;--card:rgba(242,237,227,.03)}
+  :root.light{--bg:#FCFAF6;--ink:#1A1714;--ink-soft:rgba(26,23,20,.68);--ink-mute:rgba(26,23,20,.46);--line:rgba(26,23,20,.14);--accent:#B23E08;--btn-bg:#1A1714;--btn-ink:#FCFAF6;--grain-blend:multiply;--grain-op:.035;--card:rgba(26,23,20,.025)}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:"Source Serif 4",serif;transition:background .5s,color .5s;line-height:1.55;font-variant-numeric:tabular-nums;min-height:100vh;display:flex;flex-direction:column}
+  body::after{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;mix-blend-mode:var(--grain-blend);opacity:var(--grain-op);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  h1,h2,h3,h4{font-family:"Cormorant Garamond",serif;font-weight:500;letter-spacing:-.014em;line-height:1.04}
+  h1 em,h2 em,h3 em{color:var(--accent);font-style:italic;font-weight:500}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 clamp(22px,5vw,44px)}
+
+  nav{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 84%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid transparent;transition:border-color .4s}
+  nav.scrolled{border-color:var(--line)}
+  .navin{display:flex;align-items:center;justify-content:space-between;padding:14px 0;gap:24px}
+  .wm{font-family:"Source Serif 4",serif;font-weight:600;font-size:18px;color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+  .wm .p{color:var(--accent)}
+  .navr{display:flex;align-items:center;gap:22px}
+  .navr a{color:var(--ink-soft);text-decoration:none;font-size:14px;transition:color .3s}
+  .navr a:hover{color:var(--ink)}
+  .toggle{background:none;border:1px solid var(--line);color:var(--ink-soft);cursor:pointer;font-family:"Source Serif 4",serif;font-size:12.5px;font-style:italic;padding:5px 13px;border-radius:999px}
+  @media(max-width:1020px){.navr .navlink{display:none}}
+
+  footer{padding:60px 0 32px;position:relative;z-index:2;border-top:1px solid var(--line);margin-top:auto}
+  .footin{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;margin-bottom:36px}
+  .footcols{display:flex;gap:clamp(34px,5vw,64px);flex-wrap:wrap}
+  .footcol h4{font-style:italic;font-weight:400;font-size:12.5px;color:var(--ink-mute);margin-bottom:14px;letter-spacing:.04em;text-transform:uppercase;font-family:"JetBrains Mono",monospace}
+  .footcol a{display:block;color:var(--ink-soft);text-decoration:none;font-size:14px;margin-bottom:9px}
+  .footcol a:hover{color:var(--accent)}
+  .disc{padding-top:22px;border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px}
+  .disc span{font-size:11.5px;color:var(--ink-mute);line-height:1.6}
+  .disc .legal{max-width:72ch;font-style:italic}
+  .disc .reg-links a{color:var(--ink-mute);text-decoration:none;font-size:11.5px;font-style:italic;margin-left:14px}
+
+  main{position:relative;z-index:2;flex:1}
+  .screen{max-width:620px;margin:0 auto;padding:clamp(44px,7vh,84px) 0 clamp(56px,9vh,96px)}
+  .back-link{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-style:italic;color:var(--ink-mute);text-decoration:none;margin-bottom:30px;transition:color .3s}
+  .back-link:hover{color:var(--ink-soft)}
+  .eyebrow{display:inline-flex;align-items:center;gap:10px;font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink-mute);letter-spacing:.09em;text-transform:uppercase;margin-bottom:16px}
+  .eyebrow .l{width:20px;height:1px;background:var(--accent)}
+  h1.head{font-size:clamp(38px,5.4vw,56px);line-height:1.04;margin-bottom:14px}
+  .lede{font-size:16px;font-style:italic;color:var(--ink-soft);margin-bottom:14px;max-width:460px}
+
+  .avail{display:flex;gap:12px;align-items:flex-start;border:1px solid var(--line);border-left:2px solid var(--accent);background:var(--card);padding:16px 18px;margin-bottom:34px}
+  .avail .ic{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:26px;color:var(--accent);line-height:.9}
+  .avail .t{font-size:13.5px;color:var(--ink-soft);line-height:1.6}
+  .avail .t b{color:var(--ink);font-weight:500;font-style:normal}
+
+  .seclab{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink-mute);letter-spacing:.09em;text-transform:uppercase;margin-bottom:14px}
+
+  .cal{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-bottom:8px}
+  .cal .dow{font-family:"JetBrains Mono",monospace;font-size:9px;color:var(--ink-mute);text-align:center;letter-spacing:.05em;padding-bottom:4px}
+  .day{aspect-ratio:1/1;border:1px solid var(--line);background:var(--card);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;transition:border-color .2s,background .2s;border-radius:2px}
+  .day .num{font-family:"Cormorant Garamond",serif;font-size:21px;line-height:1}
+  .day .mon{font-family:"JetBrains Mono",monospace;font-size:8px;color:var(--ink-mute);text-transform:uppercase}
+  .day:hover:not(.off){border-color:color-mix(in srgb,var(--accent) 45%,var(--line))}
+  .day.off{opacity:.28;cursor:not-allowed}
+  .day.sel{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,transparent)}
+  .day.sel .mon{color:var(--accent)}
+
+  .slots{display:flex;flex-wrap:wrap;gap:9px;margin-top:18px;margin-bottom:30px}
+  .slot{font-family:"Source Serif 4",serif;font-size:14px;color:var(--ink-soft);background:var(--card);border:1px solid var(--line);padding:9px 16px;border-radius:999px;cursor:pointer;transition:all .2s}
+  .slot:hover:not(.taken){border-color:var(--ink-soft)}
+  .slot.taken{opacity:.3;cursor:not-allowed;text-decoration:line-through}
+  .slot.sel{background:var(--accent);color:var(--btn-ink);border-color:var(--accent)}
+  .noslot{font-size:13.5px;font-style:italic;color:var(--ink-mute)}
+
+  .field{margin-bottom:26px}
+  label.fl{display:flex;align-items:center;gap:8px;font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink-mute);letter-spacing:.07em;text-transform:uppercase;margin-bottom:9px}
+  .opt{font-family:"JetBrains Mono",monospace;font-size:8.5px;color:var(--ink-mute);border:1px solid var(--line);border-radius:999px;padding:1px 6px}
+  textarea{width:100%;background:var(--card);border:1px solid var(--line);color:var(--ink);font-family:"Source Serif 4",serif;font-size:15px;padding:13px 14px;outline:none;resize:vertical;min-height:74px;transition:border-color .3s}
+  textarea:focus{border-color:var(--accent)}
+
+  .cta{display:flex;align-items:center;justify-content:center;gap:11px;width:100%;background:var(--btn-bg);color:var(--btn-ink);font-family:"Source Serif 4",serif;font-size:15.5px;font-weight:500;padding:16px;text-decoration:none;border:none;cursor:pointer;transition:gap .35s,opacity .3s}
+  .cta:hover:not(:disabled){gap:15px;opacity:.93}
+  .cta:disabled{opacity:.34;cursor:not-allowed}
+
+  /* booked confirmation */
+  .booked{display:none;text-align:center;padding:20px 0}
+  .booked.show{display:block;animation:fade .45s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+  .booked .mark{width:64px;height:64px;border-radius:50%;border:1px solid var(--accent);color:var(--accent);display:grid;place-items:center;font-size:30px;margin:0 auto 24px}
+  .booked h2{font-size:clamp(34px,5vw,46px);margin-bottom:12px}
+  .booked .when{font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--ink);letter-spacing:.03em;margin-bottom:8px}
+  .booked p{font-size:14.5px;color:var(--ink-soft);font-style:italic;max-width:420px;margin:0 auto 30px;line-height:1.6}
+  .booked .acts{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+  .booked .acts a{font-family:"Source Serif 4",serif;font-size:14px;text-decoration:none;padding:12px 22px;border:1px solid var(--line);color:var(--ink)}
+  .booked .acts a.fill{background:var(--btn-bg);color:var(--btn-ink);border-color:var(--btn-bg)}
+</style>
+</head>
+<body>
+
+  <nav id="nav">
+    <div class="wrap navin">
+      <a class="wm" href="index.html">flameback<span class="p">.</span></a>
+      <div class="navr">
+        <a class="navlink" href="flameback-who-we-are.html">Who we are</a>
+        <a class="navlink" href="flameback-what-we-do.html">What we do</a>
+        <a class="navlink" href="flameback-our-work.html">Our work</a>
+        <a class="navlink" href="flameback-insights.html">Insights</a>
+        <button class="toggle" id="toggle">Light</button>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <div class="wrap">
+      <div class="screen">
+        <a href="flameback-app-path.html" class="back-link">&larr; Back</a>
+
+        <!-- BOOKING STATE -->
+        <div id="booking">
+          <span class="eyebrow"><span class="l"></span>Path B · Schedule a call</span>
+          <h1 class="head">Talk it through <em>with us.</em></h1>
+          <p class="lede">A 30-minute call with one of our advisors — they'll walk you through the right fit.</p>
+
+          <div class="avail">
+            <span class="ic">&#9201;</span>
+            <span class="t"><b>Advisor hours</b> — Monday to Friday, 9:30 AM to 6:00 PM IST. Calls are 30 minutes over Google Meet; you'll get a link by email and WhatsApp.</span>
+          </div>
+
+          <div class="seclab">Pick a day</div>
+          <div class="cal" id="cal"><div class="dow">Mon</div><div class="dow">Tue</div><div class="dow">Wed</div><div class="dow">Thu</div><div class="dow">Fri</div><div class="dow">Sat</div><div class="dow">Sun</div></div>
+
+          <div class="seclab" style="margin-top:24px">Pick a time <span style="text-transform:none;font-family:'Source Serif 4',serif;font-style:italic;color:var(--ink-mute)">— IST</span></div>
+          <div class="slots" id="slots"><span class="noslot" id="noslot">Choose a day first.</span></div>
+
+          <div class="field">
+            <label class="fl">Anything we should know? <span class="opt">optional</span></label>
+            <textarea id="reason" maxlength="200" placeholder="e.g. I'm switching from mutual funds and want a second opinion."></textarea>
+          </div>
+
+          <button class="cta" id="confirm" disabled>Confirm slot &rarr;</button>
+        </div>
+
+        <!-- CONFIRMED STATE -->
+        <div class="booked" id="booked">
+          <div class="mark">&#10003;</div>
+          <h2>You're <em>booked.</em></h2>
+          <div class="when" id="whenLine"></div>
+          <p>A confirmation and Google Meet link are on their way to your inbox and WhatsApp. One of our advisors will have looked at your picture before the call.</p>
+          <div class="acts">
+            <a class="fill" href="flameback-app-path.html">Back to your options</a>
+            <a href="index.html">Return to site</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <div class="footin">
+        <a class="wm" href="index.html">flameback<span class="p">.</span></a>
+        <div class="footcols">
+          <div class="footcol"><h4>The firm</h4><a href="flameback-who-we-are.html">Who we are</a><a href="flameback-what-we-do.html">What we do</a><a href="flameback-our-work.html">Our work</a><a href="flameback-clients.html">Clients</a></div>
+          <div class="footcol"><h4>Open</h4><a href="flameback-insights.html">Insights</a><a href="flameback-tools.html">Tools</a><a href="flameback-offbook.html">Off-book</a></div>
+          <div class="footcol"><h4>Contact</h4><a href="flameback-app-splash.html">Start your journey</a><a href="#">hello@flameback.in</a><a href="#">Bangalore, India</a></div>
+        </div>
+      </div>
+      <div class="disc">
+        <span>&copy; 2026 Flameback Capital Pvt Ltd</span>
+        <span class="legal">SEBI registered &middot; SEC filed for US strategy. Investments are subject to market risk. Past performance is not indicative of future results.</span>
+        <span class="reg-links"><a href="flameback-pms-disclosure.html">PMS disclosure</a><a href="flameback-advisory-disclosure.html">IA disclosure</a></span>
+      </div>
+    </div>
+  </footer>
+
+<script>
+  var t=document.getElementById('toggle');
+  t.onclick=function(){var l=document.documentElement.classList.toggle('light');t.textContent=l?'Dark':'Light';};
+  var nv=document.getElementById('nav');
+  window.addEventListener('scroll',function(){nv.classList.toggle('scrolled',window.scrollY>8);});
+
+  var DOW=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'], MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var ALL_SLOTS=['9:30','10:00','10:30','11:00','11:30','12:00','2:00','2:30','3:00','3:30','4:00','4:30','5:00','5:30'];
+  var cal=document.getElementById('cal'), slotsBox=document.getElementById('slots'), confirmBtn=document.getElementById('confirm');
+  var selDay=null, selSlot=null, selLabel='';
+
+  // build next 14 calendar days; weekends unavailable
+  var base=new Date(); base.setHours(0,0,0,0);
+  for(var i=1;i<=14;i++){
+    var d=new Date(base); d.setDate(base.getDate()+i);
+    var wd=d.getDay(); var weekend=(wd===0||wd===6);
+    var cell=document.createElement('div'); cell.className='day'+(weekend?' off':'');
+    cell.innerHTML='<span class="num">'+d.getDate()+'</span><span class="mon">'+DOW[wd]+'</span>';
+    if(!weekend){
+      (function(d,cell){
+        cell.onclick=function(){
+          document.querySelectorAll('.day.sel').forEach(function(x){x.classList.remove('sel');});
+          cell.classList.add('sel'); selDay=d; selSlot=null;
+          renderSlots(d); check();
+        };
+      })(d,cell);
+    }
+    cal.appendChild(cell);
+  }
+
+  function renderSlots(d){
+    slotsBox.innerHTML='';
+    // deterministically mark a few as taken based on the date
+    ALL_SLOTS.forEach(function(s,idx){
+      var taken=((d.getDate()+idx)%4===0);
+      var el=document.createElement('div');
+      el.className='slot'+(taken?' taken':'');
+      el.textContent=s+(parseInt(s)<9?' PM':' AM');
+      if(!taken){
+        el.onclick=function(){
+          document.querySelectorAll('.slot.sel').forEach(function(x){x.classList.remove('sel');});
+          el.classList.add('sel'); selSlot=s; selLabel=el.textContent;
+          check();
+        };
+      }
+      slotsBox.appendChild(el);
+    });
+  }
+  function check(){ confirmBtn.disabled=!(selDay&&selSlot); }
+
+  confirmBtn.onclick=function(){
+    if(confirmBtn.disabled) return;
+    var d=selDay;
+    var line=DOW[d.getDay()]+', '+d.getDate()+' '+MON[d.getMonth()]+' · '+selLabel+' IST · 30 min';
+    document.getElementById('whenLine').textContent=line;
+    document.getElementById('booking').style.display='none';
+    document.getElementById('booked').classList.add('show');
+    window.scrollTo({top:0,behavior:'smooth'});
+  };
+</script>
+  <script src="reload.js"></script>
+</body>
+</html>

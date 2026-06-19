@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>flameback. — Off-book</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#1A1714; --ink:#F2EDE3; --ink-soft:rgba(242,237,227,.64); --ink-mute:rgba(242,237,227,.42);
+    --line:rgba(242,237,227,.15); --panel:#221E1A; --accent:#FF6D0A; --btn-bg:#FF6D0A; --btn-ink:#1A1714;
+    --grain-blend:screen; --grain-op:.05;
+  }
+  :root.light{
+    --bg:#FCFAF6; --ink:#1A1714; --ink-soft:rgba(26,23,20,.66); --ink-mute:rgba(26,23,20,.46);
+    --line:rgba(26,23,20,.13); --panel:#F4EFE7; --accent:#FF6D0A; --btn-bg:#1A1714; --btn-ink:#FCFAF6;
+    --grain-blend:multiply; --grain-op:.03;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:"Source Serif 4",serif;transition:background .5s,color .5s;font-variant-numeric:tabular-nums}
+  body::after{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;mix-blend-mode:var(--grain-blend);opacity:var(--grain-op);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 clamp(22px,5vw,44px)}
+  section{position:relative;z-index:2}
+  section[id]{scroll-margin-top:106px}
+  .mono{font-family:"JetBrains Mono",monospace}
+  .wm{font-family:"Source Serif 4",serif;font-weight:600;font-size:18px;color:var(--ink);text-decoration:none}
+  .wm .p{color:var(--accent)}
+  .lab{font-family:"Source Serif 4",serif;font-style:italic;font-size:14px;color:var(--ink-mute)}
+  .lab .n{font-style:normal;color:var(--accent);margin-right:10px}
+  h1,h2,h3,h4{font-family:"Cormorant Garamond",serif;font-weight:500;letter-spacing:-.012em;color:var(--ink)}
+  .btn,.btn-out{display:inline-flex;align-items:center;gap:11px;font-family:"Source Serif 4",serif;font-size:15px;font-weight:500;padding:12px 22px;text-decoration:none;transition:gap .35s,opacity .3s,border-color .3s;cursor:pointer;border:none}
+  .btn{background:var(--btn-bg);color:var(--btn-ink)}.btn:hover{gap:15px;opacity:.92}
+  .btn-out{background:transparent;color:var(--ink);border:1px solid var(--line)}.btn-out:hover{gap:15px;border-color:var(--ink-mute)}
+
+  nav{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 86%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid transparent;transition:border-color .4s}
+  nav.scrolled{border-color:var(--line)}
+  .navin{display:flex;align-items:center;justify-content:space-between;padding:15px 0}
+  .navr{display:flex;align-items:center;gap:21px}
+  .navr a{color:var(--ink-soft);text-decoration:none;font-size:14.5px;transition:color .3s}
+  .navr a:hover{color:var(--ink)} .navr a.current{color:var(--ink)}
+  .toggle{background:none;border:1px solid var(--line);color:var(--ink-soft);cursor:pointer;font-family:"Source Serif 4",serif;font-size:13px;font-style:italic;padding:5px 13px;border-radius:999px}
+  .navr a.navbtn{background:var(--btn-bg);color:var(--btn-ink);padding:8px 17px}
+  @media(max-width:880px){.navr .navlink{display:none}}
+
+  .subnav{border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--bg) 92%,transparent);position:sticky;top:58px;z-index:40;backdrop-filter:blur(8px)}
+  .subnav-in{display:flex;align-items:baseline;gap:clamp(14px,2vw,28px);padding:11px 0;flex-wrap:wrap}
+  .subnav .sn-lab{font-style:italic;font-size:13px;color:var(--ink-mute);margin-right:6px}
+  .subnav a{font-size:13.5px;color:var(--ink-mute);text-decoration:none;padding-bottom:3px;border-bottom:1px solid transparent;white-space:nowrap}
+  .subnav a:hover{color:var(--ink)} .subnav a.current{color:var(--ink);border-bottom-color:var(--accent)}
+
+  .hero{padding:clamp(44px,5.5vh,72px) 0 clamp(24px,3vh,40px)}
+  .dateline{display:flex;align-items:center;gap:13px;margin-bottom:20px}
+  .dateline .l{width:26px;height:1px;background:var(--accent)}
+  .hero h1{font-size:clamp(36px,5.4vw,62px);line-height:0.98;letter-spacing:-.018em;margin-bottom:22px;max-width:18ch}
+  .hero h1 .acc{color:var(--accent);font-style:italic}
+  .hero-sub{font-size:17px;line-height:1.6;color:var(--ink);max-width:64ch}
+
+  /* Opening statement */
+  .open-stmt{padding:clamp(36px,4.5vw,56px) 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .stmt-grid{display:grid;grid-template-columns:1fr 1.3fr;gap:48px;align-items:start}
+  @media(max-width:860px){.stmt-grid{grid-template-columns:1fr;gap:18px}}
+  .stmt-grid h2{font-size:clamp(26px,3.4vw,36px);line-height:1.05;letter-spacing:-.008em}
+  .stmt-grid h2 .acc{color:var(--accent);font-style:italic}
+  .stmt-grid .body p{font-size:15.5px;line-height:1.65;color:var(--ink);margin-bottom:14px;max-width:60ch}
+  .stmt-grid .body p:last-child{margin-bottom:0}
+  .stmt-grid .body p em{color:var(--accent);font-style:italic;font-weight:500}
+
+  /* Stats */
+  .stats{padding:clamp(20px,2.5vw,28px) 0;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--ink) 2%,transparent)}
+  .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+  @media(max-width:680px){.stats-row{grid-template-columns:repeat(2,1fr)}}
+  .stat{background:var(--bg);padding:16px 22px}
+  .stat-l{display:block;font-style:italic;font-size:11px;color:var(--ink-mute);letter-spacing:.05em;text-transform:uppercase;margin-bottom:6px}
+  .stat-v{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:24px;color:var(--ink);line-height:1}
+  .stat-v.acc{color:var(--accent)}
+
+  /* Project sections */
+  .proj{padding:clamp(48px,6vw,84px) 0;border-bottom:1px solid var(--line)}
+  .proj-grid{display:grid;grid-template-columns:1fr 320px;gap:clamp(28px,4vw,56px);align-items:center}
+  .proj.flip .proj-grid{grid-template-columns:320px 1fr}
+  .proj.flip .proj-text{order:2}
+  .proj.flip .proj-viz{order:1}
+  @media(max-width:860px){.proj-grid,.proj.flip .proj-grid{grid-template-columns:1fr;gap:24px}.proj.flip .proj-text{order:1}.proj.flip .proj-viz{order:2}}
+
+  .proj-num{font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--accent);font-size:18px;letter-spacing:.04em;margin-bottom:14px}
+  .proj-text h2{font-size:clamp(32px,4.2vw,52px);line-height:0.98;letter-spacing:-.014em;margin-bottom:14px}
+  .proj-text h2 .acc{color:var(--accent);font-style:italic}
+  .proj-tag{font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--ink-soft);font-size:18px;line-height:1.35;margin-bottom:22px;max-width:38ch}
+  .proj-body{font-size:14.5px;line-height:1.7;color:var(--ink);max-width:54ch;margin-bottom:14px}
+  .proj-body p{margin-bottom:12px}
+  .proj-body p:last-child{margin-bottom:0}
+
+  .proj-status{display:inline-flex;align-items:center;gap:7px;padding:4px 12px;border:1px solid var(--line);font-style:italic;font-size:10.5px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase;margin-bottom:14px}
+  .proj-status.live{border-color:color-mix(in srgb,var(--accent) 45%,transparent);color:var(--accent)}
+  .proj-status.live .dot{width:6px;height:6px;border-radius:50%;background:var(--accent)}
+  .proj-status .dot{width:6px;height:6px;border-radius:50%;background:var(--ink-mute)}
+
+  .proj-meta{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);margin:18px 0 22px;max-width:480px}
+  @media(max-width:540px){.proj-meta{grid-template-columns:1fr 1fr}}
+  .proj-meta-it{background:var(--bg);padding:10px 14px}
+  .proj-meta-it .pl{display:block;font-style:italic;font-size:10px;color:var(--ink-mute);letter-spacing:.05em;text-transform:uppercase;margin-bottom:3px}
+  .proj-meta-it .pv{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:17px;color:var(--ink);line-height:1}
+  .proj-meta-it .pv.acc{color:var(--accent)}
+
+  .proj-cta{display:flex;gap:10px;flex-wrap:wrap}
+
+  /* Phone mockup */
+  .phone{width:280px;max-width:100%;margin:0 auto;border:1.5px solid var(--ink-mute);border-radius:32px;padding:8px;background:color-mix(in srgb,var(--ink) 4%,transparent);box-shadow:0 24px 60px -24px rgba(0,0,0,0.4)}
+  .phone-screen{border-radius:24px;overflow:hidden;background:var(--bg);position:relative;aspect-ratio:9/19.5}
+  .phone-screen svg{display:block;width:100%;height:100%}
+
+  /* Future ideas */
+  .future{padding:clamp(48px,6vw,76px) 0;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--accent) 3%,transparent)}
+  .future-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,4vw,56px);align-items:center}
+  @media(max-width:760px){.future-grid{grid-template-columns:1fr;gap:24px}}
+  .future h2{font-size:clamp(28px,3.8vw,44px);line-height:1.02;margin-bottom:18px;max-width:18ch}
+  .future h2 .acc{color:var(--accent);font-style:italic}
+  .future p{font-size:15.5px;line-height:1.65;color:var(--ink);max-width:48ch;margin-bottom:14px}
+  .future .write{margin-top:8px;display:flex;gap:10px;flex-wrap:wrap}
+
+  .ideas{padding:24px 28px;border:1px solid var(--line);background:var(--bg)}
+  .ideas h4{font-size:18px;margin-bottom:14px}
+  .ideas-list{list-style:none}
+  .ideas-list li{padding:10px 0;border-top:1px dashed var(--line);font-size:13.5px;line-height:1.55;color:var(--ink-soft);display:flex;align-items:flex-start;gap:12px}
+  .ideas-list li:first-child{border-top:none}
+  .ideas-list li .rn{flex-shrink:0;font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--accent);font-size:14px;width:20px}
+  .ideas-list li strong{color:var(--ink);font-weight:500;display:block;margin-bottom:2px;font-family:"Cormorant Garamond",serif;font-style:italic;font-size:15px}
+
+  footer{border-top:1px solid var(--line);padding:48px 0 36px}
+  .footin{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;margin-bottom:36px}
+  .footcols{display:flex;gap:clamp(34px,6vw,68px);flex-wrap:wrap}
+  .footcol h4{font-style:italic;font-weight:400;font-size:14px;color:var(--ink-mute);margin-bottom:13px}
+  .footcol a{display:block;color:var(--ink-soft);text-decoration:none;font-size:15px;margin-bottom:9px}
+  .footcol a:hover{color:var(--accent)}
+  .disc{padding-top:22px;border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px}
+  .disc span{font-size:12.5px;color:var(--ink-mute);line-height:1.6}
+  .disc .legal{max-width:64ch;font-style:italic}
+</style>
+</head>
+<body>
+
+  <nav id="nav">
+    <div class="wrap navin">
+      <a class="wm" href="index.html">flameback<span class="p">.</span></a>
+      <div class="navr">
+        <a class="navlink" href="flameback-firm.html">Firm</a>
+        <a class="navlink" href="flameback-strategies.html">Strategies</a>
+        <a class="navlink" href="flameback-offerings.html">Offerings</a>
+        <a class="navlink" href="flameback-insights.html">Insights</a>
+        <a class="navlink" href="flameback-resources.html">Resources</a>
+        <a class="navlink current" href="#">Off-book</a>
+        <a class="login" href="#">Login</a>
+        <a class="navbtn" href="flameback-app-splash.html">Start your journey</a>
+        <button class="toggle" id="toggle">Light</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="subnav">
+    <div class="wrap subnav-in">
+      <span class="sn-lab">Off-book</span>
+      <a class="current" href="#top">Overview</a>
+      <a href="#onlyadopt">OnlyAdopt</a>
+      <a href="#findingmarx">Finding Marx</a>
+      <a href="#vitality">Vitality</a>
+      <a href="#future">On the bench</a>
+    </div>
+  </div>
+
+  <section class="hero" id="top">
+    <div class="wrap">
+      <div class="dateline"><span class="l"></span><span class="lab">Off-book</span></div>
+      <h1>Things the firm has built that have <span class="acc">nothing to do with money.</span></h1>
+      <p class="hero-sub">Three apps so far &mdash; a pet adoption marketplace, a missing-pet network, and an open-source wellness tracker built around Indian dietary and medical context. None are commercial. None are loss leaders. The firm builds them because the team noticed a problem worth solving and had the means to solve it.</p>
+    </div>
+  </section>
+
+  <section class="open-stmt">
+    <div class="wrap">
+      <div class="stmt-grid">
+        <h2>The firm&rsquo;s view, in <span class="acc">one paragraph.</span></h2>
+        <div class="body">
+          <p>A serious firm is allowed to care about things other than its bottom line. The team has the technical capacity to build software; some problems near the team&rsquo;s daily life don&rsquo;t have good software solutions. So the team builds them, releases them, and walks away.</p>
+          <p>None of these projects exist to generate leads, build brand, or earn anything. <em>They&rsquo;re side outputs of a firm that takes its work seriously and its time off seriously, too.</em> If they help, that&rsquo;s the entire point.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stats">
+    <div class="wrap">
+      <div class="stats-row">
+        <div class="stat"><span class="stat-l">Projects shipped</span><span class="stat-v acc">3</span></div>
+        <div class="stat"><span class="stat-l">Open source</span><span class="stat-v">1 of 3</span></div>
+        <div class="stat"><span class="stat-l">Built by</span><span class="stat-v">Flameback team</span></div>
+        <div class="stat"><span class="stat-l">Cost to users</span><span class="stat-v">&#8377; 0</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Project i: OnlyAdopt -->
+  <section class="proj" id="onlyadopt">
+    <div class="wrap">
+      <div class="proj-grid">
+        <div class="proj-text">
+          <div class="proj-num">project i</div>
+          <h2>Only<span class="acc">Adopt.</span></h2>
+          <p class="proj-tag">A marketplace for adopting pets, not buying them. Dogs, cats, rabbits, birds, and the occasional turtle.</p>
+          <span class="proj-status live"><span class="dot"></span>Live &middot; onlyadopt.in</span>
+          <div class="proj-body">
+            <p>India has tens of thousands of pets in shelters and rescue networks looking for homes, and a parallel ecosystem of breeders selling animals for profit. OnlyAdopt is the firm&rsquo;s attempt to make the adoption path the path of least resistance &mdash; clean listings, verified shelters, photo-driven discovery, location filters, and a clear path from interest to home visit.</p>
+            <p>No fees. No paid promotion. Shelters list freely; adopters browse freely; the firm pays the hosting bill.</p>
+          </div>
+          <div class="proj-meta">
+            <div class="proj-meta-it"><span class="pl">Verified shelters</span><span class="pv acc">240+</span></div>
+            <div class="proj-meta-it"><span class="pl">Cities covered</span><span class="pv">28</span></div>
+            <div class="proj-meta-it"><span class="pl">Adoptions facilitated</span><span class="pv">1,840+</span></div>
+          </div>
+          <div class="proj-cta">
+            <a class="btn" href="#">Visit OnlyAdopt &rarr;</a>
+            <a class="btn-out" href="#">List a shelter</a>
+          </div>
+        </div>
+
+        <div class="proj-viz">
+          <div class="phone">
+            <div class="phone-screen">
+              <svg viewBox="0 0 280 606" xmlns="http://www.w3.org/2000/svg">
+                <rect width="280" height="606" fill="var(--bg)"/>
+                <!-- status bar -->
+                <text x="20" y="32" font-size="11" font-family="Source Serif 4" font-weight="500" fill="var(--ink)">9:24</text>
+                <circle cx="240" cy="29" r="3" fill="var(--ink)"/>
+                <rect x="250" y="25" width="14" height="8" rx="1.5" fill="none" stroke="var(--ink)" stroke-width="0.8"/>
+                <rect x="252" y="27" width="10" height="4" fill="var(--ink)"/>
+                <!-- App header -->
+                <text x="20" y="74" font-size="22" font-family="Cormorant Garamond" font-style="italic" fill="var(--ink)">onlyAdopt</text>
+                <text x="20" y="92" font-size="10" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)">find a companion</text>
+                <!-- Search bar -->
+                <rect x="20" y="106" width="240" height="34" rx="6" fill="none" stroke="var(--line)" stroke-width="1"/>
+                <circle cx="36" cy="123" r="4" fill="none" stroke="var(--ink-mute)" stroke-width="1"/>
+                <line x1="40" y1="127" x2="44" y2="131" stroke="var(--ink-mute)" stroke-width="1"/>
+                <text x="56" y="127" font-size="11" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)">Bangalore &middot; all pets</text>
+                <!-- Filter chips -->
+                <rect x="20" y="156" width="46" height="22" rx="11" fill="var(--accent)"/>
+                <text x="43" y="171" font-size="10" font-family="Source Serif 4" fill="var(--btn-ink)" text-anchor="middle">All</text>
+                <rect x="72" y="156" width="48" height="22" rx="11" fill="none" stroke="var(--line)" stroke-width="0.8"/>
+                <text x="96" y="171" font-size="10" font-family="Source Serif 4" fill="var(--ink-soft)" text-anchor="middle">Dogs</text>
+                <rect x="126" y="156" width="46" height="22" rx="11" fill="none" stroke="var(--line)" stroke-width="0.8"/>
+                <text x="149" y="171" font-size="10" font-family="Source Serif 4" fill="var(--ink-soft)" text-anchor="middle">Cats</text>
+                <rect x="178" y="156" width="56" height="22" rx="11" fill="none" stroke="var(--line)" stroke-width="0.8"/>
+                <text x="206" y="171" font-size="10" font-family="Source Serif 4" fill="var(--ink-soft)" text-anchor="middle">Others</text>
+                <!-- Pet cards -->
+                <!-- card 1 -->
+                <rect x="20" y="196" width="115" height="156" rx="4" fill="none" stroke="var(--line)" stroke-width="0.8"/>
+                <rect x="20" y="196" width="115" height="96" fill="color-mix(in srgb,var(--accent) 12%,transparent)"/>
+                <!-- dog silhouette -->
+                <ellipse cx="77" cy="252" rx="22" ry="14" fill="color-mix(in srgb,var(--accent) 38%,transparent)"/>
+                <circle cx="60" cy="240" r="10" fill="color-mix(in srgb,var(--accent) 38%,transparent)"/>
+                <path d="M 53 234 L 50 224 L 57 230 Z" fill="color-mix(in srgb,var(--accent) 38%,transparent)"/>
+                <text x="28" y="308" font-size="11" font-family="Cormorant Garamond" font-style="italic" fill="var(--ink)">Tia</text>
+                <text x="28" y="322" font-size="8.5" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)">Indie &middot; 3 yrs &middot; F</text>
+                <text x="28" y="338" font-size="8" font-family="Source Serif 4" font-style="italic" fill="var(--accent)">Bangalore &middot; CARE</text>
+                <!-- card 2 -->
+                <rect x="145" y="196" width="115" height="156" rx="4" fill="none" stroke="var(--line)" stroke-width="0.8"/>
+                <rect x="145" y="196" width="115" height="96" fill="color-mix(in srgb,var(--ink) 6%,transparent)"/>
+                <!-- cat -->
+                <ellipse cx="202" cy="254" rx="18" ry="13" fill="color-mix(in srgb,var(--ink-mute) 35%,transparent)"/>
+                <circle cx="202" cy="238" r="11" fill="color-mix(in srgb,var(--ink-mute) 35%,transparent)"/>
+                <path d="M 195 230 L 192 220 L 198 226 Z M 209 230 L 212 220 L 206 226 Z" fill="color-mix(in srgb,var(--ink-mute) 35%,transparent)"/>
+                <text x="153" y="308" font-size="11" font-family="Cormorant Garamond" font-style="italic" fill="var(--ink)">Mochi</text>
+                <text x="153" y="322" font-size="8.5" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)">DSH &middot; 1 yr &middot; M</text>
+                <text x="153" y="338" font-size="8" font-family="Source Serif 4" font-style="italic" fill="var(--accent)">Mumbai &middot; PFA</text>
+                <!-- card 3 -->
+                <rect x="20" y="364" width="115" height="156" rx="4" fill="none" stroke="var(--line)" stroke-width="0.8"/>
+                <rect x="20" y="364" width="115" height="96" fill="color-mix(in srgb,var(--accent) 8%,transparent)"/>
+                <ellipse cx="77" cy="420" rx="22" ry="14" fill="color-mix(in srgb,var(--accent) 32%,transparent)"/>
+                <circle cx="60" cy="408" r="10" fill="color-mix(in srgb,var(--accent) 32%,transparent)"/>
+                <text x="28" y="476" font-size="11" font-family="Cormorant Garamond" font-style="italic" fill="var(--ink)">Bruno</text>
+                <text x="28" y="490" font-size="8.5" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)">Labrador &middot; 5 yrs &middot; M</text>
+                <text x="28" y="506" font-size="8" font-family="Source Serif 4" font-style="italic" fill="var(--accent)">Pune &middot; Atulya</text>
+                <!-- card 4 -->
+                <rect x="145" y="364" width="115" height="156" rx="4" fill="none" stroke="var(--line)" stroke-width="0.8"/>
+                <rect x="145" y="364" width="115" height="96" fill="color-mix(in srgb,var(--ink) 8%,transparent)"/>
+                <ellipse cx="202" cy="422" rx="20" ry="13" fill="color-mix(in srgb,var(--ink-mute) 30%,transparent)"/>
+                <circle cx="184" cy="408" r="10" fill="color-mix(in srgb,var(--ink-mute) 30%,transparent)"/>
+                <text x="153" y="476" font-size="11" font-family="Cormorant Garamond" font-style="italic" fill="var(--ink)">Pepper</text>
+                <text x="153" y="490" font-size="8.5" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)">Indie &middot; 2 yrs &middot; F</text>
+                <text x="153" y="506" font-size="8" font-family="Source Serif 4" font-style="italic" fill="var(--accent)">Delhi &middot; FoSA</text>
+                <!-- bottom nav -->
+                <line x1="0" y1="552" x2="280" y2="552" stroke="var(--line)" stroke-width="0.8"/>
+                <text x="36" y="578" font-size="9" font-family="Source Serif 4" fill="var(--accent)" text-anchor="middle">Browse</text>
+                <text x="104" y="578" font-size="9" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)" text-anchor="middle">Saved</text>
+                <text x="174" y="578" font-size="9" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)" text-anchor="middle">Visit</text>
+                <text x="244" y="578" font-size="9" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)" text-anchor="middle">More</text>
+                <rect x="14" y="585" width="44" height="2" fill="var(--accent)"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Project ii: Finding Marx -->
+  <section class="proj flip" id="findingmarx">
+    <div class="wrap">
+      <div class="proj-grid">
+        <div class="proj-viz">
+          <div class="phone">
+            <div class="phone-screen">
+              <svg viewBox="0 0 280 606" xmlns="http://www.w3.org/2000/svg">
+                <rect width="280" height="606" fill="var(--bg)"/>
+                <!-- status bar -->
+                <text x="20" y="32" font-size="11" font-family="Source Serif 4" font-weight="500" fill="var(--ink)">9:24</text>
+                <circle cx="240" cy="29" r="3" fill="var(--ink)"/>
+                <rect x="250" y="25" width="14" height="8" rx="1.5" fill="none" stroke="var(--ink)" stroke-width="0.8"/>
+                <rect x="252" y="27" width="10" height="4" fill="var(--ink)"/>
+                <!-- Alert banner -->
+                <rect x="0" y="48" width="280" height="36" fill="var(--accent)"/>
+                <text x="140" y="72" font-size="13" font-family="Cormorant Garamond" font-style="italic" fill="var(--btn-ink)" text-anchor="middle">MISSING &middot; Marx</text>
+                <!-- Header -->
+                <text x="20" y="116" font-size="22" font-family="Cormorant Garamond" font-style="italic" fill="var(--ink)">finding<tspan fill="var(--accent)">Marx</tspan></text>
+                <text x="20" y="134" font-size="10" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)">lost since 28 May &middot; 02:14 PM</text>
+                <!-- Pet photo placeholder -->
+                <rect x="20" y="150" width="240" height="180" rx="4" fill="color-mix(in srgb,var(--accent) 14%,transparent)" stroke="var(--accent)" stroke-width="1.2"/>
+                <!-- dog illustration -->
+                <ellipse cx="140" cy="248" rx="42" ry="24" fill="color-mix(in srgb,var(--accent) 38%,transparent)"/>
+                <circle cx="106" cy="226" r="20" fill="color-mix(in srgb,var(--accent) 38%,transparent)"/>
+                <path d="M 95 215 L 88 198 L 102 207 Z" fill="color-mix(in srgb,var(--accent) 38%,transparent)"/>
+                <circle cx="100" cy="223" r="2" fill="var(--accent)"/>
+                <ellipse cx="178" cy="270" rx="4" ry="6" fill="color-mix(in srgb,var(--accent) 42%,transparent)"/>
+                <text x="32" y="318" font-size="8.5" font-family="Source Serif 4" font-style="italic" fill="var(--bg)" font-weight="500" letter-spacing="0.5">3 PHOTOS &middot; TAP TO SWIPE</text>
+                <!-- Details -->
+                <text x="20" y="358" font-size="9.5" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)" letter-spacing="0.4">LAST SEEN</text>
+                <text x="20" y="374" font-size="13" font-family="Cormorant Garamond" font-style="italic" fill="var(--ink)">Indiranagar 12th Main</text>
+                <text x="20" y="388" font-size="10" font-family="Source Serif 4" font-style="italic" fill="var(--ink-soft)">near HSR junction, Bangalore</text>
+                <line x1="20" y1="402" x2="260" y2="402" stroke="var(--line)" stroke-width="0.6"/>
+                <text x="20" y="420" font-size="9.5" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)" letter-spacing="0.4">DESCRIPTION</text>
+                <text x="20" y="436" font-size="11" font-family="Source Serif 4" fill="var(--ink)">Brown lab mix, white chest patch</text>
+                <text x="20" y="450" font-size="11" font-family="Source Serif 4" fill="var(--ink)">Red collar with brass tag</text>
+                <text x="20" y="464" font-size="11" font-family="Source Serif 4" fill="var(--ink)">Answers to &lsquo;Marx&rsquo; &middot; friendly</text>
+                <line x1="20" y1="480" x2="260" y2="480" stroke="var(--line)" stroke-width="0.6"/>
+                <!-- Reward -->
+                <text x="20" y="500" font-size="9.5" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)" letter-spacing="0.4">REWARD</text>
+                <text x="20" y="518" font-size="14" font-family="Cormorant Garamond" font-style="italic" fill="var(--accent)">&#8377;25,000 on return</text>
+                <!-- CTA -->
+                <rect x="20" y="538" width="240" height="40" rx="4" fill="var(--accent)"/>
+                <text x="140" y="563" font-size="13" font-family="Source Serif 4" font-weight="500" fill="var(--btn-ink)" text-anchor="middle">Spotted Marx? Tap to alert &rarr;</text>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="proj-text">
+          <div class="proj-num">project ii</div>
+          <h2>finding<span class="acc">Marx.</span></h2>
+          <p class="proj-tag">A missing-pet network &mdash; lost-and-found infrastructure for India&rsquo;s urban pet families.</p>
+          <span class="proj-status live"><span class="dot"></span>Live &middot; in production &middot; second deployment</span>
+          <div class="proj-body">
+            <p>The platform started as Finding Marx &mdash; an actual emergency for an actual dog &mdash; and survives as a reusable system. A pet goes missing; an alert page goes live in under two minutes; alerts radiate out across neighbourhood networks via WhatsApp, posters, and geo-tagged sighting reports. The same engine has been deployed for Finding Ollie since.</p>
+            <p>The architecture is deliberately simple. Web-first (works on every phone without a download), location-aware, reward-trackable, and free for the family searching. Sightings are crowd-sourced and triangulated; the closer matches get pushed first.</p>
+          </div>
+          <div class="proj-meta">
+            <div class="proj-meta-it"><span class="pl">Deployments</span><span class="pv acc">2</span></div>
+            <div class="proj-meta-it"><span class="pl">Reunions</span><span class="pv">2 of 2</span></div>
+            <div class="proj-meta-it"><span class="pl">Alerts triggered</span><span class="pv">~3,400</span></div>
+          </div>
+          <div class="proj-cta">
+            <a class="btn" href="#">Use the platform &rarr;</a>
+            <a class="btn-out" href="#">How it works</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Project iii: Vitality -->
+  <section class="proj" id="vitality">
+    <div class="wrap">
+      <div class="proj-grid">
+        <div class="proj-text">
+          <div class="proj-num">project iii</div>
+          <h2>Vital<span class="acc">ity.</span></h2>
+          <p class="proj-tag">An open-source wellness tracker built for Indian dietary patterns and medical context.</p>
+          <span class="proj-status live"><span class="dot"></span>Live &middot; open source &middot; MIT</span>
+          <div class="proj-body">
+            <p>Every wellness tracker on the App Store assumes the user eats Western food, takes American-brand medication, and lives in a Western climate. Vitality was built for the firm and then opened up &mdash; an Indian-first health and fitness tracker with proper food entries (dosa, sabzi, dal, paratha), a medication database keyed to Indian brand names, a body map for symptoms, and an AI coach that doesn&rsquo;t suggest cottage cheese.</p>
+            <p>The repo is on GitHub. The hosted version is on Railway, free to use, no account required for basic tracking.</p>
+          </div>
+          <div class="proj-meta">
+            <div class="proj-meta-it"><span class="pl">Food database</span><span class="pv acc">3,200+</span></div>
+            <div class="proj-meta-it"><span class="pl">Medication DB</span><span class="pv">1,840 brands</span></div>
+            <div class="proj-meta-it"><span class="pl">License</span><span class="pv">MIT</span></div>
+          </div>
+          <div class="proj-cta">
+            <a class="btn" href="#">Open Vitality &rarr;</a>
+            <a class="btn-out" href="#">View on GitHub</a>
+          </div>
+        </div>
+
+        <div class="proj-viz">
+          <div class="phone">
+            <div class="phone-screen">
+              <svg viewBox="0 0 280 606" xmlns="http://www.w3.org/2000/svg">
+                <rect width="280" height="606" fill="var(--bg)"/>
+                <!-- status bar -->
+                <text x="20" y="32" font-size="11" font-family="Source Serif 4" font-weight="500" fill="var(--ink)">9:24</text>
+                <circle cx="240" cy="29" r="3" fill="var(--ink)"/>
+                <rect x="250" y="25" width="14" height="8" rx="1.5" fill="none" stroke="var(--ink)" stroke-width="0.8"/>
+                <rect x="252" y="27" width="10" height="4" fill="var(--ink)"/>
+                <!-- Header -->
+                <text x="20" y="72" font-size="11" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)" letter-spacing="0.4">WEDNESDAY, 28 MAY</text>
+                <text x="20" y="100" font-size="22" font-family="Cormorant Garamond" font-style="italic" fill="var(--ink)">Today&rsquo;s wellness</text>
+                <!-- Calorie ring -->
+                <circle cx="140" cy="200" r="64" fill="none" stroke="var(--line)" stroke-width="6"/>
+                <circle cx="140" cy="200" r="64" fill="none" stroke="var(--accent)" stroke-width="6" stroke-dasharray="280 402" stroke-linecap="round" transform="rotate(-90 140 200)"/>
+                <text x="140" y="194" font-size="26" font-family="Cormorant Garamond" font-style="italic" fill="var(--ink)" text-anchor="middle">1,640</text>
+                <text x="140" y="210" font-size="10" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)" text-anchor="middle">of 2,100 kcal</text>
+                <text x="140" y="224" font-size="9" font-family="Source Serif 4" font-style="italic" fill="var(--accent)" text-anchor="middle">460 remaining</text>
+                <!-- Stats row -->
+                <line x1="20" y1="290" x2="260" y2="290" stroke="var(--line)" stroke-width="0.6"/>
+                <text x="50" y="312" font-size="11" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)" text-anchor="middle" letter-spacing="0.4">STEPS</text>
+                <text x="50" y="332" font-size="15" font-family="Cormorant Garamond" font-style="italic" fill="var(--ink)" text-anchor="middle">7,420</text>
+                <text x="50" y="346" font-size="9" font-family="Source Serif 4" font-style="italic" fill="var(--accent)" text-anchor="middle">74% goal</text>
+                <line x1="100" y1="296" x2="100" y2="346" stroke="var(--line)" stroke-width="0.5"/>
+                <text x="140" y="312" font-size="11" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)" text-anchor="middle" letter-spacing="0.4">WATER</text>
+                <text x="140" y="332" font-size="15" font-family="Cormorant Garamond" font-style="italic" fill="var(--ink)" text-anchor="middle">1.8 L</text>
+                <text x="140" y="346" font-size="9" font-family="Source Serif 4" font-style="italic" fill="var(--accent)" text-anchor="middle">60% goal</text>
+                <line x1="190" y1="296" x2="190" y2="346" stroke="var(--line)" stroke-width="0.5"/>
+                <text x="230" y="312" font-size="11" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)" text-anchor="middle" letter-spacing="0.4">SLEEP</text>
+                <text x="230" y="332" font-size="15" font-family="Cormorant Garamond" font-style="italic" fill="var(--ink)" text-anchor="middle">7h 12m</text>
+                <text x="230" y="346" font-size="9" font-family="Source Serif 4" font-style="italic" fill="var(--accent)" text-anchor="middle">good</text>
+                <line x1="20" y1="364" x2="260" y2="364" stroke="var(--line)" stroke-width="0.6"/>
+                <!-- Today's meals -->
+                <text x="20" y="388" font-size="11" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)" letter-spacing="0.4">TODAY&rsquo;S MEALS</text>
+                <rect x="20" y="398" width="240" height="42" fill="none" stroke="var(--line)" stroke-width="0.6"/>
+                <text x="32" y="416" font-size="11" font-family="Cormorant Garamond" font-style="italic" fill="var(--ink)">Idli &middot; coconut chutney</text>
+                <text x="32" y="430" font-size="9" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)">Breakfast &middot; 380 kcal</text>
+                <text x="248" y="424" font-size="13" font-family="Cormorant Garamond" font-style="italic" fill="var(--accent)" text-anchor="end">8:14</text>
+                <rect x="20" y="446" width="240" height="42" fill="none" stroke="var(--line)" stroke-width="0.6"/>
+                <text x="32" y="464" font-size="11" font-family="Cormorant Garamond" font-style="italic" fill="var(--ink)">Dal &middot; jeera rice &middot; sabzi</text>
+                <text x="32" y="478" font-size="9" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)">Lunch &middot; 720 kcal</text>
+                <text x="248" y="472" font-size="13" font-family="Cormorant Garamond" font-style="italic" fill="var(--accent)" text-anchor="end">1:30</text>
+                <rect x="20" y="494" width="240" height="42" fill="none" stroke="var(--line)" stroke-width="0.6"/>
+                <text x="32" y="512" font-size="11" font-family="Cormorant Garamond" font-style="italic" fill="var(--ink)">Chai &middot; biscuit</text>
+                <text x="32" y="526" font-size="9" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)">Snack &middot; 180 kcal</text>
+                <text x="248" y="520" font-size="13" font-family="Cormorant Garamond" font-style="italic" fill="var(--accent)" text-anchor="end">4:42</text>
+                <!-- Bottom nav -->
+                <line x1="0" y1="552" x2="280" y2="552" stroke="var(--line)" stroke-width="0.8"/>
+                <text x="36" y="578" font-size="9" font-family="Source Serif 4" fill="var(--accent)" text-anchor="middle">Today</text>
+                <text x="104" y="578" font-size="9" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)" text-anchor="middle">Log</text>
+                <text x="174" y="578" font-size="9" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)" text-anchor="middle">Trends</text>
+                <text x="244" y="578" font-size="9" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)" text-anchor="middle">Coach</text>
+                <rect x="14" y="585" width="44" height="2" fill="var(--accent)"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Future projects -->
+  <section class="future" id="future">
+    <div class="wrap">
+      <div class="future-grid">
+        <div>
+          <span class="lab"><span class="n">iv</span>What might come next</span>
+          <h2>Other ideas the team has <span class="acc">on the bench.</span></h2>
+          <p>None of these are committed; they&rsquo;re things the team has noticed and would consider building if the right person on the team picks it up. If a project on this list resonates &mdash; or if there&rsquo;s an idea worth bringing &mdash; the door is open.</p>
+          <div class="write">
+            <a class="btn" href="#">Send an idea &rarr;</a>
+            <a class="btn-out" href="#">Open issues on GitHub</a>
+          </div>
+        </div>
+
+        <div class="ideas">
+          <h4>Concepts in the bench drawer.</h4>
+          <ul class="ideas-list">
+            <li><span class="rn">i</span><div><strong>Atulya local guide</strong>A neighbourhood-level discovery app for the small shops, repair people, and home services in a Bangalore neighbourhood. Hyperlocal yellow pages, basically.</div></li>
+            <li><span class="rn">ii</span><div><strong>Bequeath</strong>A guided digital estate planner &mdash; passwords, instructions, assets, last-wishes content &mdash; that releases on verified death. Built for people who watch their parents struggle with these things.</div></li>
+            <li><span class="rn">iii</span><div><strong>Practice Buddy</strong>A self-evaluation log for musicians, artists, athletes. Track practice sessions, deliberate focus areas, and small wins over months.</div></li>
+            <li><span class="rn">iv</span><div><strong>Open source addition to Vitality</strong>Indian-context mental health journaling module. Daily prompts grounded in local clinical research, not US frameworks.</div></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <div class="footin">
+        <a class="wm" href="index.html">flameback<span class="p">.</span></a>
+        <div class="footcols">
+          <div class="footcol"><h4>Firm</h4><a href="flameback-firm.html">Team</a><a href="flameback-philosophy.html">Investment philosophy</a><a href="flameback-strategy-rd.html">Strategy R&amp;D</a><a href="flameback-technology.html">Technology</a></div>
+          <div class="footcol"><h4>Off-book</h4><a href="#onlyadopt">OnlyAdopt</a><a href="#findingmarx">Finding Marx</a><a href="#vitality">Vitality</a><a href="#future">On the bench</a></div>
+          <div class="footcol"><h4>Contact</h4><a href="#">Bangalore, India</a><a href="#">hello@flameback.in</a></div>
+        </div>
+      </div>
+      <div class="disc">
+        <span>&copy; 2026 Flameback Capital Pvt Ltd</span>
+        <span class="legal">Off-book projects are independent of the firm&rsquo;s commercial activities. They are not marketed as Flameback products, generate no revenue, and exist purely as side work of the team.</span>
+      </div>
+    </div>
+  </footer>
+
+<script>
+  var root=document.documentElement, tg=document.getElementById('toggle');
+  tg.addEventListener('click',function(){root.classList.toggle('light');tg.textContent=root.classList.contains('light')?'Dark':'Light';});
+  var nav=document.getElementById('nav');
+  window.addEventListener('scroll',function(){nav.classList.toggle('scrolled',window.scrollY>16)});
+</script>
+  <script src="reload.js"></script>
+</body>
+</html>

@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>flameback. — Engagements</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#1A1714; --ink:#F2EDE3; --ink-soft:rgba(242,237,227,.64); --ink-mute:rgba(242,237,227,.42);
+    --line:rgba(242,237,227,.15); --panel:#221E1A; --accent:#FF6D0A; --btn-bg:#FF6D0A; --btn-ink:#1A1714;
+    --grain-blend:screen; --grain-op:.05;
+  }
+  :root.light{
+    --bg:#FCFAF6; --ink:#1A1714; --ink-soft:rgba(26,23,20,.66); --ink-mute:rgba(26,23,20,.46);
+    --line:rgba(26,23,20,.13); --panel:#F4EFE7; --accent:#FF6D0A; --btn-bg:#1A1714; --btn-ink:#FCFAF6;
+    --grain-blend:multiply; --grain-op:.03;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:"Source Serif 4",serif;transition:background .5s,color .5s;font-variant-numeric:tabular-nums;font-feature-settings:"tnum"}
+  body::after{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;mix-blend-mode:var(--grain-blend);opacity:var(--grain-op);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  .wrap{max-width:1160px;margin:0 auto;padding:0 clamp(22px,5vw,44px)}
+  section{position:relative;z-index:2}
+
+  .wm{font-family:"Source Serif 4",serif;font-weight:600;font-size:18px;letter-spacing:-.01em;color:var(--ink);text-decoration:none}
+  .wm .p{color:var(--accent)}
+  .lab{font-family:"Source Serif 4",serif;font-style:italic;font-size:14px;color:var(--ink-mute)}
+  h1,h2,h3,h4{font-family:"Cormorant Garamond",serif;font-weight:500;letter-spacing:-.012em;color:var(--ink)}
+  .btn,.btn-out{display:inline-flex;align-items:center;gap:11px;font-family:"Source Serif 4",serif;font-size:14px;font-weight:500;padding:10px 18px;text-decoration:none;transition:gap .35s,opacity .3s,border-color .3s}
+  .btn{background:var(--btn-bg);color:var(--btn-ink)}
+  .btn:hover{gap:14px;opacity:.92}
+  .btn-out{background:transparent;color:var(--ink);border:1px solid var(--line)}
+  .btn-out:hover{gap:14px;border-color:var(--ink-mute)}
+
+  nav{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 86%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid transparent;transition:border-color .4s}
+  nav.scrolled{border-color:var(--line)}
+  .navin{display:flex;align-items:center;justify-content:space-between;padding:15px 0}
+  .navr{display:flex;align-items:center;gap:21px}
+  .navr a{color:var(--ink-soft);text-decoration:none;font-size:14.5px;transition:color .3s}
+  .navr a:hover{color:var(--ink)}
+  .navr a.current{color:var(--ink)}
+  .toggle{background:none;border:1px solid var(--line);color:var(--ink-soft);cursor:pointer;font-family:"Source Serif 4",serif;font-size:13px;font-style:italic;padding:5px 13px;border-radius:999px;transition:border-color .3s,color .3s}
+  .toggle:hover{border-color:var(--ink-mute);color:var(--ink)}
+  .navr a.navbtn{background:var(--btn-bg);color:var(--btn-ink);padding:8px 17px;font-size:14.5px}
+  @media(max-width:880px){.navr .navlink{display:none}}
+  @media(max-width:520px){.navr{gap:14px}.navr .login{display:none}}
+
+  .subnav{border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--bg) 92%,transparent);position:sticky;top:58px;z-index:40;backdrop-filter:blur(8px)}
+  .subnav-in{display:flex;align-items:baseline;gap:clamp(18px,2.5vw,34px);padding:11px 0;flex-wrap:wrap}
+  .subnav .sn-lab{font-family:"Source Serif 4",serif;font-style:italic;font-size:13px;color:var(--ink-mute);margin-right:6px}
+  .subnav a{font-family:"Source Serif 4",serif;font-size:13.5px;color:var(--ink-mute);text-decoration:none;transition:color .3s;padding-bottom:3px;border-bottom:1px solid transparent}
+  .subnav a:hover{color:var(--ink)}
+  .subnav a.current{color:var(--ink);border-bottom-color:var(--accent)}
+
+  .hero{padding:clamp(44px,6vh,72px) 0 clamp(20px,3vh,32px)}
+  .dateline{display:flex;align-items:center;gap:13px;margin-bottom:22px}
+  .dateline .l{flex:0 0 26px;height:1px;background:var(--accent)}
+  .hero h1{font-family:"Cormorant Garamond",serif;font-weight:500;font-size:clamp(34px,5vw,56px);line-height:0.98;letter-spacing:-.018em;margin-bottom:20px}
+  .hero-sub{font-size:16.5px;line-height:1.6;color:var(--ink);max-width:64ch}
+
+  /* Stats strip */
+  .stats-strip{padding:clamp(22px,3vw,32px) 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+  @media(max-width:680px){.stats-row{grid-template-columns:repeat(2,1fr)}}
+  .stat{background:var(--bg);padding:14px 18px}
+  .stat-l{display:block;font-family:"Source Serif 4",serif;font-style:italic;font-size:11px;color:var(--ink-mute);letter-spacing:.05em;text-transform:uppercase;line-height:1.2;margin-bottom:6px}
+  .stat-v{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:24px;color:var(--accent);line-height:1;font-variant-numeric:tabular-nums}
+  .stat-v.muted{color:var(--ink)}
+
+  /* Tab toggle */
+  .tab-row{padding:18px 0;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--bg) 95%,transparent);position:sticky;top:58px;z-index:30;backdrop-filter:blur(8px)}
+  .tab-in{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
+  .tabs{display:flex;gap:0;border:1px solid var(--line)}
+  .tab{background:transparent;border:none;color:var(--ink-soft);font-family:"Source Serif 4",serif;font-size:13.5px;padding:8px 22px;cursor:pointer;transition:background .25s,color .25s;letter-spacing:.02em}
+  .tab:hover{color:var(--ink)}
+  .tab.active{background:var(--accent);color:var(--btn-ink)}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .chips .lab{font-family:"Source Serif 4",serif;font-style:italic;font-size:11.5px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase;margin-right:6px}
+  .chip{background:transparent;border:1px solid var(--line);color:var(--ink-soft);font-family:"Source Serif 4",serif;font-size:13px;padding:6px 12px;cursor:pointer;transition:border-color .25s,color .25s,background .25s}
+  .chip:hover{border-color:var(--ink-mute);color:var(--ink)}
+  .chip.active{border-color:var(--accent);color:var(--accent);background:color-mix(in srgb,var(--accent) 5%,transparent)}
+
+  /* Events list */
+  .events{padding:clamp(20px,3vw,30px) 0 clamp(48px,7vw,80px)}
+  .group-head{font-family:"Source Serif 4",serif;font-style:italic;font-size:13px;color:var(--ink-mute);letter-spacing:.08em;text-transform:uppercase;padding:18px 0 14px;border-top:1px solid var(--line)}
+  .group-head:first-child{border-top:none;padding-top:0}
+
+  .event{border-top:1px solid var(--line);padding:clamp(24px,3.4vw,36px) 0;display:grid;grid-template-columns:120px 1fr auto;gap:clamp(24px,3.5vw,44px);align-items:start;text-decoration:none;color:inherit;transition:background .3s}
+  .event:hover{background:color-mix(in srgb,var(--accent) 2%,transparent)}
+  .event:last-child{border-bottom:1px solid var(--line)}
+  @media(max-width:820px){.event{grid-template-columns:1fr;gap:14px}}
+
+  /* Date block */
+  .ev-date{display:flex;flex-direction:column;gap:2px;padding-right:18px;border-right:1px solid var(--line)}
+  @media(max-width:820px){.ev-date{padding-right:0;border-right:none;flex-direction:row;align-items:baseline;gap:10px}}
+  .d-day{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:42px;line-height:0.95;color:var(--accent);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+  @media(max-width:820px){.d-day{font-size:32px}}
+  .d-month{font-family:"Source Serif 4",serif;font-style:italic;font-size:13px;color:var(--ink);letter-spacing:.06em;text-transform:uppercase;line-height:1.1}
+  .d-year{font-family:"Source Serif 4",serif;font-style:italic;font-size:12px;color:var(--ink-mute);line-height:1.1;margin-top:1px}
+  .d-time{font-family:"Source Serif 4",serif;font-style:italic;font-size:11.5px;color:var(--ink-mute);margin-top:8px;line-height:1.3}
+  @media(max-width:820px){.d-time{margin-top:0}}
+
+  .ev-body{min-width:0}
+  .ev-meta{display:flex;align-items:center;gap:12px;margin-bottom:10px;flex-wrap:wrap}
+  .ev-format{font-family:"Source Serif 4",serif;font-style:italic;font-size:10.5px;color:var(--accent);letter-spacing:.06em;text-transform:uppercase;display:inline-flex;align-items:center;gap:6px}
+  .ev-format .dot{width:5px;height:5px;border-radius:50%;background:var(--accent)}
+  .ev-host{font-family:"Source Serif 4",serif;font-style:italic;font-size:12px;color:var(--ink-mute)}
+  .ev-title{font-family:"Cormorant Garamond",serif;font-size:24px;font-weight:500;line-height:1.15;color:var(--ink);margin-bottom:10px;letter-spacing:-.005em}
+  .ev-desc{font-size:14px;line-height:1.6;color:var(--ink-soft);max-width:62ch;margin-bottom:12px}
+  .ev-speakers{font-family:"Source Serif 4",serif;font-style:italic;font-size:12.5px;color:var(--ink-mute);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .ev-speakers .lab{color:var(--ink-mute);text-transform:uppercase;font-size:10.5px;letter-spacing:.06em;font-style:italic}
+  .ev-speakers .name{color:var(--ink);font-style:italic}
+
+  .ev-action{display:flex;flex-direction:column;align-items:flex-end;gap:8px;justify-content:flex-start;padding-top:4px}
+  @media(max-width:820px){.ev-action{align-items:flex-start;flex-direction:row;flex-wrap:wrap}}
+  .ev-loc{font-family:"Source Serif 4",serif;font-style:italic;font-size:11.5px;color:var(--ink-mute);text-align:right}
+  @media(max-width:820px){.ev-loc{text-align:left;width:100%}}
+
+  /* Sub banner */
+  .sub-banner{padding:clamp(40px,6vw,72px) 0;border-top:1px solid var(--line);text-align:center;background:color-mix(in srgb,var(--ink) 2%,transparent)}
+  .sub-banner h2{font-size:clamp(26px,3.6vw,38px);margin-bottom:12px;max-width:30ch;margin-left:auto;margin-right:auto}
+  .sub-banner p{font-size:14.5px;color:var(--ink-soft);max-width:48ch;margin:0 auto 22px;font-style:italic}
+  .sub-form{display:flex;gap:0;border:1px solid var(--line);background:var(--bg);max-width:420px;margin:0 auto}
+  .sub-form input{flex:1;background:transparent;border:none;color:var(--ink);font-family:"Source Serif 4",serif;font-size:14px;padding:11px 14px;outline:none}
+  .sub-form input::placeholder{color:var(--ink-mute);font-style:italic}
+  .sub-form button{background:var(--accent);color:var(--btn-ink);border:none;font-family:"Source Serif 4",serif;font-weight:500;font-size:14px;padding:11px 22px;cursor:pointer;transition:opacity .25s}
+  .sub-form button:hover{opacity:.92}
+
+  footer{border-top:1px solid var(--line);padding:48px 0 36px}
+  .footin{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;margin-bottom:36px}
+  .footcols{display:flex;gap:clamp(34px,6vw,68px);flex-wrap:wrap}
+  .footcol h4{font-style:italic;font-weight:400;font-size:14px;color:var(--ink-mute);margin-bottom:13px}
+  .footcol a{display:block;color:var(--ink-soft);text-decoration:none;font-size:15px;margin-bottom:9px;transition:color .3s}
+  .footcol a:hover{color:var(--accent)}
+  .disc{padding-top:22px;border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px}
+  .disc span{font-size:12.5px;color:var(--ink-mute);line-height:1.6}
+  .disc .legal{max-width:64ch;font-style:italic}
+</style>
+</head>
+<body>
+
+  <nav id="nav">
+    <div class="wrap navin">
+      <a class="wm" href="index.html">flameback<span class="p">.</span></a>
+      <div class="navr">
+        <a class="navlink" href="flameback-firm.html">Firm</a>
+        <a class="navlink" href="flameback-strategies.html">Strategies</a>
+        <a class="navlink" href="flameback-offerings.html">Offerings</a>
+        <a class="navlink current" href="flameback-insights.html">Insights</a>
+        <a class="navlink" href="#">Resources</a>
+        <a class="login" href="#">Login</a>
+        <a class="navbtn" href="flameback-app-splash.html">Start your journey</a>
+        <button class="toggle" id="toggle">Light</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="subnav">
+    <div class="wrap subnav-in">
+      <span class="sn-lab">Insights</span>
+      <a href="flameback-insights.html">Overview</a>
+      <a href="flameback-alpha-feed.html">Alpha Feed</a>
+      <a href="flameback-qlab-notes.html">QLab Notes</a>
+      <a href="flameback-release-notes.html">Release Notes</a>
+      <a class="current" href="#">Engagements</a>
+    </div>
+  </div>
+
+  <section class="hero">
+    <div class="wrap">
+      <div class="dateline"><span class="l"></span><span class="lab">Engagements</span></div>
+      <h1>Where the firm shows up.</h1>
+      <p class="hero-sub">Webinars, conferences, podcasts, television, and panels. Public appearances by the team, paper presentations, and the firm&rsquo;s own events &mdash; with replays where available.</p>
+    </div>
+  </section>
+
+  <section class="stats-strip">
+    <div class="wrap">
+      <div class="stats-row">
+        <div class="stat"><span class="stat-l">Upcoming this quarter</span><span class="stat-v">4</span></div>
+        <div class="stat"><span class="stat-l">Talks in 2025</span><span class="stat-v muted">18</span></div>
+        <div class="stat"><span class="stat-l">Media appearances</span><span class="stat-v muted">11</span></div>
+        <div class="stat"><span class="stat-l">Papers presented</span><span class="stat-v muted">3</span></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="tab-row">
+    <div class="wrap tab-in">
+      <div class="tabs">
+        <button class="tab active" data-tab="upcoming">Upcoming</button>
+        <button class="tab" data-tab="past">Past</button>
+      </div>
+      <div class="chips">
+        <span class="lab">Format</span>
+        <button class="chip active" data-fmt="all">All</button>
+        <button class="chip" data-fmt="webinar">Webinars</button>
+        <button class="chip" data-fmt="conference">Conferences</button>
+        <button class="chip" data-fmt="media">TV &amp; Media</button>
+        <button class="chip" data-fmt="podcast">Podcasts</button>
+      </div>
+    </div>
+  </div>
+
+  <section class="events">
+    <div class="wrap">
+
+      <!-- UPCOMING -->
+      <div class="ev-pane" data-pane="upcoming">
+
+        <a class="event" href="#" data-fmt="webinar">
+          <div class="ev-date">
+            <span class="d-day">18</span>
+            <span class="d-month">May</span>
+            <span class="d-year">2026</span>
+            <span class="d-time">5:30 pm IST &middot; 90 min</span>
+          </div>
+          <div class="ev-body">
+            <div class="ev-meta">
+              <span class="ev-format"><span class="dot"></span>Webinar</span>
+              <span class="ev-host">Hosted by Flameback</span>
+            </div>
+            <h3 class="ev-title">Risk parity for Indian markets: does it actually work?</h3>
+            <p class="ev-desc">An open webinar walking through 8 years of data on risk-parity construction in the Indian context. What works, what doesn&rsquo;t, and why the textbook approach needs meaningful modification when adapted to NIFTY constituents. Q&amp;A in the last 30 minutes.</p>
+            <div class="ev-speakers">
+              <span class="lab">Speakers</span>
+              <span class="name">Devesh Sati</span>
+              <span>&middot;</span>
+              <span class="name">Ashrith Rao</span>
+            </div>
+          </div>
+          <div class="ev-action">
+            <span class="ev-loc">Online &middot; Zoom</span>
+            <span class="btn">Register</span>
+          </div>
+        </a>
+
+        <a class="event" href="#" data-fmt="conference">
+          <div class="ev-date">
+            <span class="d-day">04</span>
+            <span class="d-month">Jun</span>
+            <span class="d-year">2026</span>
+            <span class="d-time">2:00 pm &middot; Panel</span>
+          </div>
+          <div class="ev-body">
+            <div class="ev-meta">
+              <span class="ev-format"><span class="dot"></span>Conference</span>
+              <span class="ev-host">FOM Conference Bangalore 2026</span>
+            </div>
+            <h3 class="ev-title">Family Office Forum: alternatives in the next decade</h3>
+            <p class="ev-desc">Kishan joins a panel of family office leaders discussing where alternatives fit in Indian family office allocation over the next decade. The conversation will cover liquidity, regulation, and the rise of domestic alternative managers.</p>
+            <div class="ev-speakers">
+              <span class="lab">Speaker</span>
+              <span class="name">Kishan Murjani</span>
+            </div>
+          </div>
+          <div class="ev-action">
+            <span class="ev-loc">ITC Gardenia, Bengaluru</span>
+            <span class="btn-out">View agenda &rarr;</span>
+          </div>
+        </a>
+
+        <a class="event" href="#" data-fmt="webinar">
+          <div class="ev-date">
+            <span class="d-day">22</span>
+            <span class="d-month">Jun</span>
+            <span class="d-year">2026</span>
+            <span class="d-time">5:30 pm IST &middot; 60 min</span>
+          </div>
+          <div class="ev-body">
+            <div class="ev-meta">
+              <span class="ev-format"><span class="dot"></span>Webinar</span>
+              <span class="ev-host">Hosted by Flameback</span>
+            </div>
+            <h3 class="ev-title">From signal to strategy: how QLab works</h3>
+            <p class="ev-desc">A look behind the curtain at the firm&rsquo;s research process. How an idea travels from notebook to backtest to paper-trade to live deployment, with concrete examples from production strategies. Open to clients and the public.</p>
+            <div class="ev-speakers">
+              <span class="lab">Speaker</span>
+              <span class="name">Devesh Sati</span>
+            </div>
+          </div>
+          <div class="ev-action">
+            <span class="ev-loc">Online &middot; Zoom</span>
+            <span class="btn">Register</span>
+          </div>
+        </a>
+
+        <a class="event" href="#" data-fmt="conference">
+          <div class="ev-date">
+            <span class="d-day">15</span>
+            <span class="d-month">Oct</span>
+            <span class="d-year">2026</span>
+            <span class="d-time">All day &middot; By invitation</span>
+          </div>
+          <div class="ev-body">
+            <div class="ev-meta">
+              <span class="ev-format"><span class="dot"></span>Firm event</span>
+              <span class="ev-host">Flameback Investor Day 2026</span>
+            </div>
+            <h3 class="ev-title">Annual Investor Day &middot; Bengaluru</h3>
+            <p class="ev-desc">The firm&rsquo;s annual day-long meeting for clients, partners, and prospective LPs. Strategy updates, year in review, the research roadmap for 2027, and conversations with the full team. By invitation only; clients receive details directly.</p>
+            <div class="ev-speakers">
+              <span class="lab">Hosted by</span>
+              <span class="name">The Flameback team</span>
+            </div>
+          </div>
+          <div class="ev-action">
+            <span class="ev-loc">Bengaluru &middot; venue TBA</span>
+            <span class="btn-out">Request invitation &rarr;</span>
+          </div>
+        </a>
+
+      </div>
+
+      <!-- PAST -->
+      <div class="ev-pane" data-pane="past" style="display:none">
+
+        <a class="event" href="#" data-fmt="media">
+          <div class="ev-date">
+            <span class="d-day">21</span>
+            <span class="d-month">Apr</span>
+            <span class="d-year">2026</span>
+            <span class="d-time">18 minutes</span>
+          </div>
+          <div class="ev-body">
+            <div class="ev-meta">
+              <span class="ev-format"><span class="dot"></span>Television</span>
+              <span class="ev-host">CNBC Awaaz</span>
+            </div>
+            <h3 class="ev-title">Quant investing comes of age in India</h3>
+            <p class="ev-desc">Kishan in conversation with Anuj Singhal on what Indian quantitative investing looks like in 2026: where the alpha is, why systematic approaches have struggled in some periods, and how the firm thinks about scaling without diluting performance.</p>
+            <div class="ev-speakers">
+              <span class="lab">Featured</span>
+              <span class="name">Kishan Murjani</span>
+            </div>
+          </div>
+          <div class="ev-action">
+            <span class="ev-loc">CNBC Awaaz studio</span>
+            <span class="btn-out">Watch &rarr;</span>
+          </div>
+        </a>
+
+        <a class="event" href="#" data-fmt="conference">
+          <div class="ev-date">
+            <span class="d-day">10</span>
+            <span class="d-month">Mar</span>
+            <span class="d-year">2026</span>
+            <span class="d-time">45 min talk</span>
+          </div>
+          <div class="ev-body">
+            <div class="ev-meta">
+              <span class="ev-format"><span class="dot"></span>Paper presentation</span>
+              <span class="ev-host">IAFI Quant Conference 2026</span>
+            </div>
+            <h3 class="ev-title">Momentum factor decay in Indian markets: a longitudinal study</h3>
+            <p class="ev-desc">Ashrith presented joint work with the research team on factor decay patterns in Indian momentum strategies from 2010 onward. The paper documents a clear post-2018 decay, debates causes (factor crowding vs structural shifts), and proposes mitigation approaches.</p>
+            <div class="ev-speakers">
+              <span class="lab">Presented by</span>
+              <span class="name">Ashrith Rao</span>
+            </div>
+          </div>
+          <div class="ev-action">
+            <span class="ev-loc">IIM Calcutta</span>
+            <span class="btn-out">Read paper &rarr;</span>
+          </div>
+        </a>
+
+        <a class="event" href="#" data-fmt="media">
+          <div class="ev-date">
+            <span class="d-day">14</span>
+            <span class="d-month">Feb</span>
+            <span class="d-year">2026</span>
+            <span class="d-time">12 minutes</span>
+          </div>
+          <div class="ev-body">
+            <div class="ev-meta">
+              <span class="ev-format"><span class="dot"></span>Television</span>
+              <span class="ev-host">ET Now</span>
+            </div>
+            <h3 class="ev-title">Markets Outlook: positioning for the rate cycle</h3>
+            <p class="ev-desc">A conversation on how systematic equity strategies are positioning ahead of the RBI&rsquo;s rate decisions and what the bond market is signalling about the inflation trajectory.</p>
+            <div class="ev-speakers">
+              <span class="lab">Featured</span>
+              <span class="name">Kishan Murjani</span>
+            </div>
+          </div>
+          <div class="ev-action">
+            <span class="ev-loc">ET Now studio, Mumbai</span>
+            <span class="btn-out">Watch &rarr;</span>
+          </div>
+        </a>
+
+        <a class="event" href="#" data-fmt="conference">
+          <div class="ev-date">
+            <span class="d-day">28</span>
+            <span class="d-month">Jan</span>
+            <span class="d-year">2026</span>
+            <span class="d-time">Panel discussion</span>
+          </div>
+          <div class="ev-body">
+            <div class="ev-meta">
+              <span class="ev-format"><span class="dot"></span>Conference</span>
+              <span class="ev-host">India Family Office Forum</span>
+            </div>
+            <h3 class="ev-title">Alternative strategies for Indian family offices</h3>
+            <p class="ev-desc">A panel on alternative manager selection, due diligence frameworks, and what family offices should look for in domestic quant managers. With co-panelists from family offices and PE firms.</p>
+            <div class="ev-speakers">
+              <span class="lab">Speaker</span>
+              <span class="name">Kishan Murjani</span>
+            </div>
+          </div>
+          <div class="ev-action">
+            <span class="ev-loc">The Leela, Mumbai</span>
+            <span class="btn-out">View slides &rarr;</span>
+          </div>
+        </a>
+
+        <a class="event" href="#" data-fmt="podcast">
+          <div class="ev-date">
+            <span class="d-day">12</span>
+            <span class="d-month">Dec</span>
+            <span class="d-year">2025</span>
+            <span class="d-time">62 minutes</span>
+          </div>
+          <div class="ev-body">
+            <div class="ev-meta">
+              <span class="ev-format"><span class="dot"></span>Podcast</span>
+              <span class="ev-host">The Pragmatic Capitalist</span>
+            </div>
+            <h3 class="ev-title">Building a quant firm in India: what we got right and wrong</h3>
+            <p class="ev-desc">A long-form conversation on the firm&rsquo;s eight-year journey, what worked, what didn&rsquo;t, and where Indian quantitative investing goes from here. Wide-ranging across technology, talent, regulation, and product.</p>
+            <div class="ev-speakers">
+              <span class="lab">Guest</span>
+              <span class="name">Kishan Murjani</span>
+            </div>
+          </div>
+          <div class="ev-action">
+            <span class="ev-loc">Audio &middot; Spotify, Apple</span>
+            <span class="btn-out">Listen &rarr;</span>
+          </div>
+        </a>
+
+        <a class="event" href="#" data-fmt="conference">
+          <div class="ev-date">
+            <span class="d-day">21</span>
+            <span class="d-month">Nov</span>
+            <span class="d-year">2025</span>
+            <span class="d-time">Keynote &middot; 40 min</span>
+          </div>
+          <div class="ev-body">
+            <div class="ev-meta">
+              <span class="ev-format"><span class="dot"></span>Conference</span>
+              <span class="ev-host">India Quants 2025</span>
+            </div>
+            <h3 class="ev-title">Eight years of FIST: what an in-house trade engine costs and earns</h3>
+            <p class="ev-desc">A frank technical talk on the trade-offs of building proprietary trading infrastructure as a small firm. What FIST has earned in execution alpha, what it has cost in engineering time, and when off-the-shelf would have been right.</p>
+            <div class="ev-speakers">
+              <span class="lab">Speaker</span>
+              <span class="name">Devesh Sati</span>
+            </div>
+          </div>
+          <div class="ev-action">
+            <span class="ev-loc">Mumbai</span>
+            <span class="btn-out">View slides &rarr;</span>
+          </div>
+        </a>
+
+        <a class="event" href="#" data-fmt="webinar">
+          <div class="ev-date">
+            <span class="d-day">15</span>
+            <span class="d-month">Oct</span>
+            <span class="d-year">2025</span>
+            <span class="d-time">75 min &middot; Recording</span>
+          </div>
+          <div class="ev-body">
+            <div class="ev-meta">
+              <span class="ev-format"><span class="dot"></span>Webinar</span>
+              <span class="ev-host">Hosted by Flameback</span>
+            </div>
+            <h3 class="ev-title">Annual Investor Day 2025 &middot; Year in review</h3>
+            <p class="ev-desc">The firm&rsquo;s 2025 investor day, recorded for clients who could not attend in person. Strategy performance review, the research roadmap, an operating-team update, and an extended Q&amp;A on the Cruise integration.</p>
+            <div class="ev-speakers">
+              <span class="lab">Hosted by</span>
+              <span class="name">The Flameback team</span>
+            </div>
+          </div>
+          <div class="ev-action">
+            <span class="ev-loc">Bengaluru &middot; replay available</span>
+            <span class="btn-out">Watch replay &rarr;</span>
+          </div>
+        </a>
+
+      </div>
+
+    </div>
+  </section>
+
+  <section class="sub-banner">
+    <div class="wrap">
+      <h2>Be the first to know.</h2>
+      <p>Upcoming webinars and talks announced in the weekly digest. Replays sent within 48 hours of broadcast.</p>
+      <form class="sub-form" onsubmit="event.preventDefault();this.querySelector('button').textContent='Subscribed';">
+        <input type="email" placeholder="name@firm.com" required/>
+        <button type="submit">Subscribe</button>
+      </form>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <div class="footin">
+        <a class="wm" href="index.html">flameback<span class="p">.</span></a>
+        <div class="footcols">
+          <div class="footcol"><h4>Firm</h4><a href="flameback-firm.html">Team</a><a href="flameback-philosophy.html">Investment philosophy</a><a href="flameback-strategy-rd.html">Strategy R&amp;D</a><a href="flameback-technology.html">Technology</a></div>
+          <div class="footcol"><h4>Insights</h4><a href="flameback-alpha-feed.html">Alpha Feed</a><a href="flameback-qlab-notes.html">QLab Notes</a><a href="flameback-release-notes.html">Release Notes</a><a href="flameback-engagements.html">Engagements</a></div>
+          <div class="footcol"><h4>Contact</h4><a href="#">Bangalore, India</a><a href="#">hello@flameback.in</a></div>
+        </div>
+      </div>
+      <div class="disc">
+        <span>&copy; 2026 Flameback Capital Pvt Ltd</span>
+        <span class="legal">Content here is informational only and does not constitute investment advice or a solicitation to invest.</span>
+      </div>
+    </div>
+  </footer>
+
+<script>
+  var root=document.documentElement, tg=document.getElementById('toggle');
+  tg.addEventListener('click',function(){root.classList.toggle('light');tg.textContent=root.classList.contains('light')?'Dark':'Light';});
+  var nav=document.getElementById('nav');
+  window.addEventListener('scroll',function(){nav.classList.toggle('scrolled',window.scrollY>16)});
+
+  // Tab switching
+  var currentTab = 'upcoming';
+  var currentFmt = 'all';
+  function applyFilters(){
+    document.querySelectorAll('.ev-pane').forEach(function(p){
+      p.style.display = p.dataset.pane === currentTab ? '' : 'none';
+    });
+    var pane = document.querySelector('.ev-pane[data-pane="'+currentTab+'"]');
+    pane.querySelectorAll('.event').forEach(function(e){
+      e.style.display = (currentFmt === 'all' || e.dataset.fmt === currentFmt) ? '' : 'none';
+    });
+  }
+  document.querySelectorAll('.tab').forEach(function(t){
+    t.addEventListener('click', function(){
+      document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('active');});
+      t.classList.add('active');
+      currentTab = t.dataset.tab;
+      applyFilters();
+    });
+  });
+  document.querySelectorAll('.chips .chip').forEach(function(c){
+    c.addEventListener('click', function(){
+      document.querySelectorAll('.chips .chip').forEach(function(x){x.classList.remove('active');});
+      c.classList.add('active');
+      currentFmt = c.dataset.fmt;
+      applyFilters();
+    });
+  });
+</script>
+  <script src="reload.js"></script>
+</body>
+</html>

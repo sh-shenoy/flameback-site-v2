@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>flameback. — Release Notes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#1A1714; --ink:#F2EDE3; --ink-soft:rgba(242,237,227,.64); --ink-mute:rgba(242,237,227,.42);
+    --line:rgba(242,237,227,.15); --panel:#221E1A; --accent:#FF6D0A; --btn-bg:#FF6D0A; --btn-ink:#1A1714;
+    --grain-blend:screen; --grain-op:.05;
+  }
+  :root.light{
+    --bg:#FCFAF6; --ink:#1A1714; --ink-soft:rgba(26,23,20,.66); --ink-mute:rgba(26,23,20,.46);
+    --line:rgba(26,23,20,.13); --panel:#F4EFE7; --accent:#FF6D0A; --btn-bg:#1A1714; --btn-ink:#FCFAF6;
+    --grain-blend:multiply; --grain-op:.03;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:"Source Serif 4",serif;transition:background .5s,color .5s;font-variant-numeric:tabular-nums;font-feature-settings:"tnum"}
+  body::after{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;mix-blend-mode:var(--grain-blend);opacity:var(--grain-op);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 clamp(22px,5vw,44px)}
+  section{position:relative;z-index:2}
+
+  .wm{font-family:"Source Serif 4",serif;font-weight:600;font-size:18px;letter-spacing:-.01em;color:var(--ink);text-decoration:none}
+  .wm .p{color:var(--accent)}
+  .lab{font-family:"Source Serif 4",serif;font-style:italic;font-size:14px;color:var(--ink-mute)}
+  h1,h2,h3,h4{font-family:"Cormorant Garamond",serif;font-weight:500;letter-spacing:-.012em;color:var(--ink)}
+  .mono{font-family:"JetBrains Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums}
+
+  nav{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 86%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid transparent;transition:border-color .4s}
+  nav.scrolled{border-color:var(--line)}
+  .navin{display:flex;align-items:center;justify-content:space-between;padding:15px 0}
+  .navr{display:flex;align-items:center;gap:21px}
+  .navr a{color:var(--ink-soft);text-decoration:none;font-size:14.5px;transition:color .3s}
+  .navr a:hover{color:var(--ink)}
+  .navr a.current{color:var(--ink)}
+  .toggle{background:none;border:1px solid var(--line);color:var(--ink-soft);cursor:pointer;font-family:"Source Serif 4",serif;font-size:13px;font-style:italic;padding:5px 13px;border-radius:999px;transition:border-color .3s,color .3s}
+  .toggle:hover{border-color:var(--ink-mute);color:var(--ink)}
+  .navr a.navbtn{background:var(--btn-bg);color:var(--btn-ink);padding:8px 17px;font-size:14.5px}
+  @media(max-width:880px){.navr .navlink{display:none}}
+  @media(max-width:520px){.navr{gap:14px}.navr .login{display:none}}
+
+  .subnav{border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--bg) 92%,transparent);position:sticky;top:58px;z-index:40;backdrop-filter:blur(8px)}
+  .subnav-in{display:flex;align-items:baseline;gap:clamp(18px,2.5vw,34px);padding:11px 0;flex-wrap:wrap}
+  .subnav .sn-lab{font-family:"Source Serif 4",serif;font-style:italic;font-size:13px;color:var(--ink-mute);margin-right:6px}
+  .subnav a{font-family:"Source Serif 4",serif;font-size:13.5px;color:var(--ink-mute);text-decoration:none;transition:color .3s;padding-bottom:3px;border-bottom:1px solid transparent}
+  .subnav a:hover{color:var(--ink)}
+  .subnav a.current{color:var(--ink);border-bottom-color:var(--accent)}
+
+  .hero{padding:clamp(44px,6vh,72px) 0 clamp(24px,3vh,40px)}
+  .dateline{display:flex;align-items:center;gap:13px;margin-bottom:22px}
+  .dateline .l{flex:0 0 26px;height:1px;background:var(--accent)}
+  .hero h1{font-family:"Cormorant Garamond",serif;font-weight:500;font-size:clamp(34px,5vw,56px);line-height:0.98;letter-spacing:-.018em;margin-bottom:20px}
+  .hero-sub{font-size:16.5px;line-height:1.6;color:var(--ink);max-width:64ch}
+
+  .filters{padding:18px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--bg) 95%,transparent);position:sticky;top:58px;z-index:30;backdrop-filter:blur(8px)}
+  .filt-row{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .chips .lab{font-family:"Source Serif 4",serif;font-style:italic;font-size:11.5px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase;margin-right:6px}
+  .chip{background:transparent;border:1px solid var(--line);color:var(--ink-soft);font-family:"Source Serif 4",serif;font-size:13px;padding:6px 14px;cursor:pointer;transition:border-color .25s,color .25s,background .25s}
+  .chip:hover{border-color:var(--ink-mute);color:var(--ink)}
+  .chip.active{border-color:var(--accent);color:var(--accent);background:color-mix(in srgb,var(--accent) 5%,transparent)}
+
+  /* Releases */
+  .releases{padding:clamp(20px,3vw,30px) 0 clamp(48px,7vw,80px)}
+  .release{padding:clamp(28px,4vw,44px) 0;border-top:1px solid var(--line);display:grid;grid-template-columns:200px 1fr;gap:clamp(28px,4vw,52px);align-items:start}
+  .release:last-child{border-bottom:1px solid var(--line)}
+  @media(max-width:760px){.release{grid-template-columns:1fr;gap:16px}}
+
+  .rel-left{display:flex;flex-direction:column;gap:12px;font-size:12px;position:sticky;top:130px}
+  @media(max-width:760px){.rel-left{position:static}}
+  .rel-version{font-family:"JetBrains Mono",monospace;font-size:18px;font-weight:500;color:var(--ink);letter-spacing:-.01em}
+  .rel-area{font-family:"Source Serif 4",serif;font-style:italic;font-size:11.5px;color:var(--accent);letter-spacing:.05em;text-transform:uppercase;line-height:1.3}
+  .rel-date{font-family:"Source Serif 4",serif;font-style:italic;font-size:12px;color:var(--ink-mute)}
+  .rel-tag{display:inline-flex;width:fit-content;padding:3px 9px;border:1px solid var(--line);font-family:"Source Serif 4",serif;font-style:italic;font-size:10.5px;color:var(--ink-mute);letter-spacing:.04em;text-transform:uppercase}
+
+  .rel-body{min-width:0}
+  .rel-title{font-family:"Cormorant Garamond",serif;font-size:28px;font-weight:500;line-height:1.1;color:var(--ink);margin-bottom:8px;letter-spacing:-.005em}
+  .rel-summary{font-size:14.5px;line-height:1.6;color:var(--ink);margin-bottom:18px;max-width:60ch}
+
+  .changes{margin-top:14px}
+  .ch-group{margin-bottom:18px}
+  .ch-group:last-child{margin-bottom:0}
+  .ch-head{display:inline-flex;align-items:center;gap:8px;font-family:"Source Serif 4",serif;font-style:italic;font-size:11px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px}
+  .ch-dot{width:7px;height:7px;border-radius:50%}
+  .ch-group.added .ch-head{color:var(--accent)}
+  .ch-group.added .ch-dot{background:var(--accent)}
+  .ch-group.improved .ch-head{color:var(--ink)}
+  .ch-group.improved .ch-dot{background:var(--ink)}
+  .ch-group.fixed .ch-head{color:var(--ink-soft)}
+  .ch-group.fixed .ch-dot{background:var(--ink-soft)}
+  .ch-group.deprecated .ch-head{color:var(--ink-mute)}
+  .ch-group.deprecated .ch-dot{background:var(--ink-mute)}
+  .ch-list{padding-left:0;list-style:none;margin:0}
+  .ch-list li{padding:5px 0 5px 18px;position:relative;font-size:14px;line-height:1.55;color:var(--ink);max-width:64ch}
+  .ch-list li::before{content:"\2014";position:absolute;left:0;color:var(--ink-mute);font-size:13px}
+  .ch-list code{font-family:"JetBrains Mono",monospace;font-size:12px;background:color-mix(in srgb,var(--ink) 7%,transparent);padding:1px 6px;border-radius:2px;color:var(--accent)}
+
+  .rel-foot{margin-top:18px;padding-top:14px;border-top:1px solid var(--line);font-family:"Source Serif 4",serif;font-style:italic;font-size:12.5px;color:var(--ink-mute);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+  .rel-foot a{color:var(--accent);text-decoration:none;font-style:normal}
+
+  /* Sub banner */
+  .sub-banner{padding:clamp(40px,6vw,72px) 0;border-top:1px solid var(--line);text-align:center;background:color-mix(in srgb,var(--ink) 2%,transparent)}
+  .sub-banner h2{font-size:clamp(26px,3.6vw,38px);margin-bottom:12px;max-width:26ch;margin-left:auto;margin-right:auto}
+  .sub-banner p{font-size:14.5px;color:var(--ink-soft);max-width:48ch;margin:0 auto 22px;font-style:italic}
+  .sub-form{display:flex;gap:0;border:1px solid var(--line);background:var(--bg);max-width:420px;margin:0 auto}
+  .sub-form input{flex:1;background:transparent;border:none;color:var(--ink);font-family:"Source Serif 4",serif;font-size:14px;padding:11px 14px;outline:none}
+  .sub-form input::placeholder{color:var(--ink-mute);font-style:italic}
+  .sub-form button{background:var(--accent);color:var(--btn-ink);border:none;font-family:"Source Serif 4",serif;font-weight:500;font-size:14px;padding:11px 22px;cursor:pointer;transition:opacity .25s}
+  .sub-form button:hover{opacity:.92}
+
+  footer{border-top:1px solid var(--line);padding:48px 0 36px}
+  .footin{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;margin-bottom:36px}
+  .footcols{display:flex;gap:clamp(34px,6vw,68px);flex-wrap:wrap}
+  .footcol h4{font-style:italic;font-weight:400;font-size:14px;color:var(--ink-mute);margin-bottom:13px}
+  .footcol a{display:block;color:var(--ink-soft);text-decoration:none;font-size:15px;margin-bottom:9px;transition:color .3s}
+  .footcol a:hover{color:var(--accent)}
+  .disc{padding-top:22px;border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px}
+  .disc span{font-size:12.5px;color:var(--ink-mute);line-height:1.6}
+  .disc .legal{max-width:64ch;font-style:italic}
+</style>
+</head>
+<body>
+
+  <nav id="nav">
+    <div class="wrap navin">
+      <a class="wm" href="index.html">flameback<span class="p">.</span></a>
+      <div class="navr">
+        <a class="navlink" href="flameback-firm.html">Firm</a>
+        <a class="navlink" href="flameback-strategies.html">Strategies</a>
+        <a class="navlink" href="flameback-offerings.html">Offerings</a>
+        <a class="navlink current" href="flameback-insights.html">Insights</a>
+        <a class="navlink" href="#">Resources</a>
+        <a class="login" href="#">Login</a>
+        <a class="navbtn" href="flameback-app-splash.html">Start your journey</a>
+        <button class="toggle" id="toggle">Light</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="subnav">
+    <div class="wrap subnav-in">
+      <span class="sn-lab">Insights</span>
+      <a href="flameback-insights.html">Overview</a>
+      <a href="flameback-alpha-feed.html">Alpha Feed</a>
+      <a href="flameback-qlab-notes.html">QLab Notes</a>
+      <a class="current" href="#">Release Notes</a>
+      <a href="flameback-engagements.html">Engagements</a>
+    </div>
+  </div>
+
+  <section class="hero">
+    <div class="wrap">
+      <div class="dateline"><span class="l"></span><span class="lab">Release Notes</span></div>
+      <h1>What we shipped.</h1>
+      <p class="hero-sub">Platform updates, app releases, infrastructure changes, and operational improvements &mdash; logged version by version for the record. Things that affect clients are flagged; things that don&rsquo;t are still logged.</p>
+    </div>
+  </section>
+
+  <div class="filters">
+    <div class="wrap filt-row">
+      <div class="chips">
+        <span class="lab">Filter</span>
+        <button class="chip active" data-value="all">All</button>
+        <button class="chip" data-value="client">Client app</button>
+        <button class="chip" data-value="fist">FIST</button>
+        <button class="chip" data-value="qlab">QLab</button>
+        <button class="chip" data-value="ops">Operations</button>
+      </div>
+      <span style="font-style:italic;font-size:13px;color:var(--ink-mute)"><span id="count" style="color:var(--accent);font-style:normal">6</span> releases</span>
+    </div>
+  </div>
+
+  <section class="releases">
+    <div class="wrap">
+
+      <article class="release" data-area="client">
+        <div class="rel-left">
+          <span class="rel-version mono">v4.6.0</span>
+          <span class="rel-area">Client app</span>
+          <span class="rel-date">29 April 2026</span>
+          <span class="rel-tag">Client-facing</span>
+        </div>
+        <div class="rel-body">
+          <h3 class="rel-title">Portfolio composition view &amp; monthly statements</h3>
+          <p class="rel-summary">A redesigned holdings view in the client app, downloadable monthly statements, and a faster cold-start on the mobile app. The biggest client-facing update since the November redesign.</p>
+          <div class="changes">
+            <div class="ch-group added">
+              <div class="ch-head"><span class="ch-dot"></span>Added</div>
+              <ul class="ch-list">
+                <li>New <code>Composition</code> tab in the client app showing live sector exposure, top-10 holdings with weights, and market-cap distribution per portfolio</li>
+                <li>Downloadable monthly statements in PDF, available on the 5th of every month for the prior month</li>
+                <li>Push notifications for monthly statement availability and material portfolio changes (opt-in)</li>
+                <li>Hindi language toggle in app settings, in addition to existing English</li>
+              </ul>
+            </div>
+            <div class="ch-group improved">
+              <div class="ch-head"><span class="ch-dot"></span>Improved</div>
+              <ul class="ch-list">
+                <li>Mobile cold-start time reduced from 2.8s to 1.1s (median across iOS and Android)</li>
+                <li>Portfolio overview now shows TWRR alongside absolute returns for clearer benchmark comparison</li>
+                <li>Tax document section reorganised by financial year</li>
+              </ul>
+            </div>
+            <div class="ch-group fixed">
+              <div class="ch-head"><span class="ch-dot"></span>Fixed</div>
+              <ul class="ch-list">
+                <li>Edge case where corporate-action adjustments displayed incorrectly for split-adjusted holdings</li>
+                <li>Notification timestamps now respect device timezone</li>
+              </ul>
+            </div>
+          </div>
+          <div class="rel-foot"><span>Shipped by Product Engineering</span><a href="#">Full notes &rarr;</a></div>
+        </div>
+      </article>
+
+      <article class="release" data-area="fist">
+        <div class="rel-left">
+          <span class="rel-version mono">v4.5.2</span>
+          <span class="rel-area">FIST</span>
+          <span class="rel-date">18 April 2026</span>
+          <span class="rel-tag">Internal</span>
+        </div>
+        <div class="rel-body">
+          <h3 class="rel-title">Kotak Securities integration &amp; reduced slippage</h3>
+          <p class="rel-summary">A third broker now lives inside FIST&rsquo;s smart-order router. Aggregate execution costs down 12% in A/B testing against single-broker baseline. Routing is transparent to strategies.</p>
+          <div class="changes">
+            <div class="ch-group added">
+              <div class="ch-head"><span class="ch-dot"></span>Added</div>
+              <ul class="ch-list">
+                <li>Kotak Securities broker adapter inside FIST &mdash; FIX 4.4, full order types supported</li>
+                <li>Per-broker execution analytics dashboard showing fill rates, latency, and effective spread</li>
+                <li>Auto-failover: if a broker&rsquo;s API drops, FIST routes to next-best available within 200ms</li>
+              </ul>
+            </div>
+            <div class="ch-group improved">
+              <div class="ch-head"><span class="ch-dot"></span>Improved</div>
+              <ul class="ch-list">
+                <li>Smart-order router now scores brokers on real-time spread + depth + historical latency (was: spread only)</li>
+                <li>Median slippage reduced from 8.4 bps to 7.4 bps across the strategy book</li>
+                <li>Pre-trade cost estimates now incorporate per-broker historical realisation</li>
+              </ul>
+            </div>
+          </div>
+          <div class="rel-foot"><span>Shipped by Trading Systems</span><a href="#">Full notes &rarr;</a></div>
+        </div>
+      </article>
+
+      <article class="release" data-area="qlab">
+        <div class="rel-left">
+          <span class="rel-version mono">v4.5.0</span>
+          <span class="rel-area">QLab</span>
+          <span class="rel-date">05 April 2026</span>
+          <span class="rel-tag">Internal</span>
+        </div>
+        <div class="rel-body">
+          <h3 class="rel-title">Hosted backtesting on cloud, internal API v2</h3>
+          <p class="rel-summary">A complete rewrite of the QLab compute layer. Backtests that took 40 minutes now run in 6. A new internal API gives the research team programmatic access to the data lake and signal evaluation framework.</p>
+          <div class="changes">
+            <div class="ch-group added">
+              <div class="ch-head"><span class="ch-dot"></span>Added</div>
+              <ul class="ch-list">
+                <li>Cloud-hosted backtest workers with parallel execution across signal variants</li>
+                <li>Internal API v2 with endpoints for <code>universe</code>, <code>signals</code>, <code>backtest</code>, and <code>evaluation</code></li>
+                <li>Signal versioning and lineage tracking &mdash; every backtest result is traceable to a specific git commit</li>
+                <li>Notebook templates for common research workflows (factor zoo, regime overlays, turnover analysis)</li>
+              </ul>
+            </div>
+            <div class="ch-group improved">
+              <div class="ch-head"><span class="ch-dot"></span>Improved</div>
+              <ul class="ch-list">
+                <li>Median backtest runtime reduced from 38 min to 6 min for an 8-year NSE 500 momentum backtest</li>
+                <li>Memory footprint on local research machines reduced by ~70% (compute now off-machine)</li>
+                <li>Evaluation framework v3 with bootstrap confidence intervals on all summary statistics</li>
+              </ul>
+            </div>
+            <div class="ch-group deprecated">
+              <div class="ch-head"><span class="ch-dot"></span>Deprecated</div>
+              <ul class="ch-list">
+                <li>Internal API v1 endpoints will be removed in v4.7. Migration guide in <code>/docs/api-migration</code></li>
+              </ul>
+            </div>
+          </div>
+          <div class="rel-foot"><span>Shipped by Research Engineering</span><a href="#">Full notes &rarr;</a></div>
+        </div>
+      </article>
+
+      <article class="release" data-area="ops">
+        <div class="rel-left">
+          <span class="rel-version mono">v4.4.3</span>
+          <span class="rel-area">Operations</span>
+          <span class="rel-date">22 March 2026</span>
+          <span class="rel-tag">Client-facing</span>
+        </div>
+        <div class="rel-body">
+          <h3 class="rel-title">Tax-aware reporting for PMS portfolios</h3>
+          <p class="rel-summary">A new PMS reporting layer that surfaces short-term vs long-term gain composition, harvesting opportunities, and trailing-12-month realised gains in client-friendly format.</p>
+          <div class="changes">
+            <div class="ch-group added">
+              <div class="ch-head"><span class="ch-dot"></span>Added</div>
+              <ul class="ch-list">
+                <li>STCG / LTCG breakdown in monthly portfolio reports</li>
+                <li>Year-end realised-gains summary, generated and emailed by April 15</li>
+                <li>Tax-loss harvesting suggestions surfaced (where applicable) in client app</li>
+              </ul>
+            </div>
+            <div class="ch-group improved">
+              <div class="ch-head"><span class="ch-dot"></span>Improved</div>
+              <ul class="ch-list">
+                <li>Cost basis tracking now uses FIFO with split/bonus/merger adjustments handled automatically</li>
+                <li>Annual reporting now includes a one-page tax companion sheet</li>
+              </ul>
+            </div>
+          </div>
+          <div class="rel-foot"><span>Shipped by Operations &amp; Reporting</span><a href="#">Full notes &rarr;</a></div>
+        </div>
+      </article>
+
+      <article class="release" data-area="ops">
+        <div class="rel-left">
+          <span class="rel-version mono">v4.4.0</span>
+          <span class="rel-area">Strategy R&amp;D</span>
+          <span class="rel-date">28 February 2026</span>
+          <span class="rel-tag">Internal</span>
+        </div>
+        <div class="rel-body">
+          <h3 class="rel-title">New strategy evaluation framework</h3>
+          <p class="rel-summary">A formalised five-stage evaluation process from signal discovery through deployment, codified into the QLab workflow. Drawing on lessons from 50+ research iterations.</p>
+          <div class="changes">
+            <div class="ch-group added">
+              <div class="ch-head"><span class="ch-dot"></span>Added</div>
+              <ul class="ch-list">
+                <li>Stage gates: <code>discovery &rarr; formulation &rarr; backtest &rarr; paper-trade &rarr; production</code></li>
+                <li>Evaluation criteria documented for each stage with minimum thresholds</li>
+                <li>Mandatory pre-registration of hypotheses before any backtest (eliminates p-hacking)</li>
+                <li>Hexagonal radar scoring system: Performance / Sharpe / Scalability / Correlation / Drawdown / Stability</li>
+              </ul>
+            </div>
+          </div>
+          <div class="rel-foot"><span>Shipped by Research</span><a href="#">Full notes &rarr;</a></div>
+        </div>
+      </article>
+
+      <article class="release" data-area="client">
+        <div class="rel-left">
+          <span class="rel-version mono">v4.3.0</span>
+          <span class="rel-area">Client app &middot; Platform</span>
+          <span class="rel-date">12 February 2026</span>
+          <span class="rel-tag">Major</span>
+        </div>
+        <div class="rel-body">
+          <h3 class="rel-title">Cruise integration: one platform, multiple offerings</h3>
+          <p class="rel-summary">The Cruise advisory product has been folded into the main Flameback client app. Clients now have a unified view across Advisory, PMS, and (where applicable) International portfolios in one interface. The Cruise sub-brand is being wound down.</p>
+          <div class="changes">
+            <div class="ch-group added">
+              <div class="ch-head"><span class="ch-dot"></span>Added</div>
+              <ul class="ch-list">
+                <li>Unified portfolio view spanning Advisory, PMS, and International in a single dashboard</li>
+                <li>Cross-portfolio aggregation: total wealth, asset allocation, and currency exposure across products</li>
+                <li>Migration path for existing Cruise users with no action required from clients</li>
+              </ul>
+            </div>
+            <div class="ch-group deprecated">
+              <div class="ch-head"><span class="ch-dot"></span>Deprecated</div>
+              <ul class="ch-list">
+                <li>The Cruise app will redirect to the Flameback app through end of June 2026, then sunset</li>
+                <li>Cruise-branded materials are being retired from client communications</li>
+              </ul>
+            </div>
+          </div>
+          <div class="rel-foot"><span>Shipped by Platform &amp; Product</span><a href="#">Full notes &rarr;</a></div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <section class="sub-banner">
+    <div class="wrap">
+      <h2>Release notes in the inbox.</h2>
+      <p>Sent the day a release ships. No marketing copy, just what changed.</p>
+      <form class="sub-form" onsubmit="event.preventDefault();this.querySelector('button').textContent='Subscribed';">
+        <input type="email" placeholder="name@firm.com" required/>
+        <button type="submit">Subscribe</button>
+      </form>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <div class="footin">
+        <a class="wm" href="index.html">flameback<span class="p">.</span></a>
+        <div class="footcols">
+          <div class="footcol"><h4>Firm</h4><a href="flameback-firm.html">Team</a><a href="flameback-philosophy.html">Investment philosophy</a><a href="flameback-strategy-rd.html">Strategy R&amp;D</a><a href="flameback-technology.html">Technology</a></div>
+          <div class="footcol"><h4>Insights</h4><a href="flameback-alpha-feed.html">Alpha Feed</a><a href="flameback-qlab-notes.html">QLab Notes</a><a href="flameback-release-notes.html">Release Notes</a><a href="flameback-engagements.html">Engagements</a></div>
+          <div class="footcol"><h4>Contact</h4><a href="#">Bangalore, India</a><a href="#">hello@flameback.in</a></div>
+        </div>
+      </div>
+      <div class="disc">
+        <span>&copy; 2026 Flameback Capital Pvt Ltd</span>
+        <span class="legal">Release notes describe changes to the firm&rsquo;s technology and products. They are informational and do not constitute investment advice.</span>
+      </div>
+    </div>
+  </footer>
+
+<script>
+  var root=document.documentElement, tg=document.getElementById('toggle');
+  tg.addEventListener('click',function(){root.classList.toggle('light');tg.textContent=root.classList.contains('light')?'Dark':'Light';});
+  var nav=document.getElementById('nav');
+  window.addEventListener('scroll',function(){nav.classList.toggle('scrolled',window.scrollY>16)});
+
+  var rels = Array.prototype.slice.call(document.querySelectorAll('.release'));
+  var count = document.getElementById('count');
+  document.querySelectorAll('.filters .chip').forEach(function(chip){
+    chip.addEventListener('click', function(){
+      document.querySelectorAll('.filters .chip').forEach(function(c){c.classList.remove('active');});
+      chip.classList.add('active');
+      var v = chip.dataset.value;
+      var visible = 0;
+      rels.forEach(function(r){
+        if(v === 'all' || r.dataset.area === v){ r.style.display=''; visible++; }
+        else { r.style.display='none'; }
+      });
+      count.textContent = visible;
+    });
+  });
+</script>
+  <script src="reload.js"></script>
+</body>
+</html>

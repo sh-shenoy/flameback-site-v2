@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>flameback. — Functional Specifications</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#1A1714;--ink:#F2EDE3;--ink-soft:rgba(242,237,227,.66);--ink-mute:rgba(242,237,227,.44);--line:rgba(242,237,227,.16);--accent:#FF6D0A;--btn-bg:#FF6D0A;--btn-ink:#1A1714;--grain-blend:screen;--grain-op:.055;--card:rgba(242,237,227,.03)}
+  :root.light{--bg:#FCFAF6;--ink:#1A1714;--ink-soft:rgba(26,23,20,.68);--ink-mute:rgba(26,23,20,.46);--line:rgba(26,23,20,.14);--accent:#B23E08;--btn-bg:#1A1714;--btn-ink:#FCFAF6;--grain-blend:multiply;--grain-op:.035;--card:rgba(26,23,20,.025)}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:"Source Serif 4",serif;transition:background .5s,color .5s;font-variant-numeric:tabular-nums;line-height:1.55}
+  body::after{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;mix-blend-mode:var(--grain-blend);opacity:var(--grain-op);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+  .wrap{max-width:960px;margin:0 auto;padding:0 clamp(22px,5vw,40px)}
+  section{position:relative;z-index:2}
+  h1,h2,h3,h4{font-family:"Cormorant Garamond",serif;font-weight:500;letter-spacing:-.014em;color:var(--ink);line-height:1.04}
+  h1 em,h2 em,h3 em,h4 em{color:var(--accent);font-style:italic;font-weight:500}
+  p{line-height:1.62}
+  .mono{font-family:"JetBrains Mono",monospace;letter-spacing:.07em;text-transform:uppercase}
+
+  /* ===== top nav ===== */
+  nav.top{position:sticky;top:0;z-index:60;background:color-mix(in srgb,var(--bg) 84%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid transparent;transition:border-color .4s}
+  nav.top.scrolled{border-color:var(--line)}
+  .navin{display:flex;align-items:center;justify-content:space-between;padding:14px 0;gap:24px}
+  .wm{font-family:"Source Serif 4",serif;font-weight:600;font-size:18px;color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+  .wm .p{color:var(--accent)}
+  .navr{display:flex;align-items:center;gap:18px}
+  .navr a{color:var(--ink-soft);text-decoration:none;font-size:14px;transition:color .3s}
+  .navr a:hover{color:var(--ink)}
+  .toggle{background:none;border:1px solid var(--line);color:var(--ink-soft);cursor:pointer;font-family:"Source Serif 4",serif;font-size:12.5px;font-style:italic;padding:5px 13px;border-radius:999px}
+  @media(max-width:760px){.navr .navlink{display:none}}
+
+  /* ===== hero ===== */
+  .hero{padding:clamp(56px,7vh,96px) 0 clamp(40px,5vh,64px);border-bottom:1px solid var(--line);position:relative}
+  .hero-meta{display:flex;align-items:center;gap:11px;font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--ink-mute);letter-spacing:.07em;text-transform:uppercase;margin-bottom:28px;flex-wrap:wrap}
+  .hero-meta .d{width:5px;height:5px;border-radius:50%;background:var(--accent)}
+  h1.hero-h{font-size:clamp(38px,6vw,68px);line-height:1;letter-spacing:-.02em;margin-bottom:22px;max-width:18ch}
+  .hero-sub{font-size:clamp(15.5px,1.5vw,18px);line-height:1.6;color:var(--ink-soft);max-width:62ch;font-style:italic}
+  .hero-wmark{position:absolute;right:-12px;bottom:18px;font-family:"Cormorant Garamond",serif;font-style:italic;font-size:clamp(120px,20vw,230px);color:var(--ink);opacity:.02;line-height:.8;pointer-events:none;letter-spacing:-.04em;white-space:nowrap}
+
+  /* ===== table of contents ===== */
+  .toc{padding:clamp(40px,5vh,64px) 0;border-bottom:1px solid var(--line)}
+  .toc-lab{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--ink-mute);letter-spacing:.08em;text-transform:uppercase;display:inline-flex;align-items:center;gap:11px;margin-bottom:28px}
+  .toc-lab .l{width:22px;height:1px;background:var(--accent)}
+  .toc-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+  @media(max-width:720px){.toc-grid{grid-template-columns:1fr}}
+  .toc-group{background:var(--bg);padding:22px 24px}
+  .toc-group h4{font-size:21px;line-height:1.1;margin-bottom:4px}
+  .toc-group h4 em{color:var(--accent);font-style:italic}
+  .toc-group .tg-meta{font-family:"JetBrains Mono",monospace;font-size:9.5px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase;margin-bottom:14px}
+  .toc-group ol{list-style:none}
+  .toc-group li{padding:6px 0;border-top:1px dashed var(--line)}
+  .toc-group li:first-child{border-top:none}
+  .toc-group a{display:flex;gap:11px;align-items:baseline;text-decoration:none;color:var(--ink-soft);font-size:13.5px;transition:color .25s}
+  .toc-group a:hover{color:var(--ink)}
+  .toc-group a .id{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--accent);letter-spacing:.04em;flex-shrink:0;width:54px}
+
+  /* ===== section divider ===== */
+  .sec{padding:clamp(56px,7vh,90px) 0 0}
+  .sec[id]{scroll-margin-top:84px}
+  .screen[id]{scroll-margin-top:84px}
+  .sec-divider{margin-bottom:clamp(30px,4vw,44px);padding-bottom:22px;border-bottom:1px solid var(--line)}
+  .sec-divider .lab{font-family:"Source Serif 4",serif;font-style:italic;font-size:13px;color:var(--ink-mute);letter-spacing:.03em;display:inline-flex;align-items:center;gap:11px;margin-bottom:12px}
+  .sec-divider .lab .l{width:24px;height:1px;background:var(--accent)}
+  .sec-divider .lab .n{font-style:normal;color:var(--accent);font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.05em}
+  .sec-divider h2{font-size:clamp(32px,4.6vw,52px);line-height:1;letter-spacing:-.018em;margin-bottom:14px}
+  .sec-divider .intro{font-size:15px;color:var(--ink-soft);font-style:italic;max-width:66ch;line-height:1.62}
+
+  /* ===== screen block ===== */
+  .screen{border:1px solid var(--line);background:var(--card);padding:clamp(22px,3vw,32px);margin-bottom:20px}
+  .screen.removed{opacity:.62;border-style:dashed}
+  .scr-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:6px}
+  .chip{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--accent);letter-spacing:.05em;border:1px solid color-mix(in srgb,var(--accent) 40%,transparent);border-radius:999px;padding:4px 11px;flex-shrink:0}
+  .scr-head h3{font-size:clamp(24px,3vw,32px);line-height:1.05}
+  .scr-head h3 em{color:var(--accent);font-style:italic}
+  .scr-meta{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:18px}
+  .timing{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase}
+  .path-tag{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase;border-left:1px solid var(--line);padding-left:14px}
+  .view-link{display:inline-flex;align-items:center;gap:7px;font-family:"Source Serif 4",serif;font-style:italic;color:var(--accent);text-decoration:none;font-size:13.5px;transition:gap .25s;margin-left:auto}
+  .view-link:hover{gap:11px}
+  .removed-tag{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--line);border-radius:999px;padding:4px 11px;margin-left:auto}
+
+  .purpose{font-size:15px;line-height:1.66;color:var(--ink);margin-bottom:22px;max-width:72ch}
+  .purpose em{color:var(--accent);font-style:italic;font-weight:500}
+  .copy-block{border-left:2px solid var(--accent);background:color-mix(in srgb,var(--ink) 2%,transparent);padding:14px 18px;margin-bottom:22px;font-style:italic;font-size:14.5px;line-height:1.6;color:var(--ink-soft)}
+  .copy-block .ql{font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--accent);font-size:13px;text-transform:none;letter-spacing:0;display:block;margin-bottom:6px;font-weight:500}
+
+  .block-lab{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink-mute);letter-spacing:.08em;text-transform:uppercase;margin:24px 0 12px}
+  .block-lab:first-of-type{margin-top:0}
+
+  /* ===== fields table ===== */
+  .tbl{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:8px}
+  .tbl thead th{font-family:"JetBrains Mono",monospace;font-size:9.5px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase;text-align:left;font-weight:400;padding:0 14px 10px;border-bottom:1px solid var(--line);vertical-align:bottom}
+  .tbl tbody td{padding:13px 14px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.55;color:var(--ink-soft)}
+  .tbl tbody tr:last-child td{border-bottom:none}
+  .tbl td.f{color:var(--ink);font-weight:500}
+  .tbl td.f .fid{font-family:"JetBrains Mono",monospace;font-size:9.5px;color:var(--accent);letter-spacing:.04em;display:block;margin-bottom:2px;font-weight:400}
+  .tbl td.t{font-style:italic;color:var(--ink-soft);white-space:nowrap}
+  .tbl .opt{color:var(--ink-soft)}
+  .tbl .opt b{color:var(--ink);font-weight:500;font-style:italic}
+  .tbl code{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink);background:color-mix(in srgb,var(--ink) 5%,transparent);padding:1px 5px;border-radius:3px}
+  @media(max-width:720px){
+    .tbl,.tbl thead,.tbl tbody,.tbl tr,.tbl td{display:block;width:100%}
+    .tbl thead{display:none}
+    .tbl tbody tr{border:1px solid var(--line);margin-bottom:12px;padding:6px 0}
+    .tbl tbody td{border:none;padding:8px 16px}
+    .tbl td:before{content:attr(data-l);display:block;font-family:"JetBrains Mono",monospace;font-size:8.5px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase;margin-bottom:3px}
+    .tbl td.f:before{display:none}
+  }
+
+  /* ===== notes (behaviour / routing / error) ===== */
+  .notes{margin-top:18px}
+  .note{display:grid;grid-template-columns:120px 1fr;gap:18px;padding:14px 0;border-top:1px solid var(--line)}
+  @media(max-width:600px){.note{grid-template-columns:1fr;gap:6px}}
+  .note .nh{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--accent);letter-spacing:.06em;text-transform:uppercase;padding-top:2px}
+  .note .nb{font-size:13.5px;line-height:1.62;color:var(--ink-soft)}
+  .note .nb ul{list-style:none;margin:0}
+  .note .nb li{padding:4px 0 4px 16px;position:relative}
+  .note .nb li:before{content:"·";position:absolute;left:2px;color:var(--accent);font-weight:700}
+  .note .nb em{color:var(--ink);font-style:italic}
+  .note .nb code{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink)}
+  .err li{color:var(--ink-soft)}
+  .err li em{color:var(--ink);font-style:italic}
+
+  /* ===== buckets / aux tables ===== */
+  .aux-tbl{width:100%;border-collapse:collapse;font-size:12.5px;margin:6px 0 8px}
+  .aux-tbl th{font-family:"JetBrains Mono",monospace;font-size:9px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase;text-align:left;font-weight:400;padding:0 12px 8px;border-bottom:1px solid var(--line)}
+  .aux-tbl td{padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top;color:var(--ink-soft);line-height:1.5}
+  .aux-tbl td:first-child{color:var(--ink);font-weight:500;font-style:italic;white-space:nowrap}
+  .aux-tbl tr:last-child td{border-bottom:none}
+
+  .pm-input{margin-top:16px;border:1px dashed var(--line);padding:14px 16px;font-size:12.5px;line-height:1.6;color:var(--ink-mute)}
+  .pm-input b{font-family:"JetBrains Mono",monospace;font-size:9.5px;color:var(--accent);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:6px;font-weight:400}
+  .pm-input em{color:var(--ink-soft);font-style:italic}
+
+  /* ===== footer ===== */
+  footer{padding:64px 0 36px;margin-top:clamp(60px,8vh,100px);border-top:1px solid var(--line)}
+  .footin{display:flex;justify-content:space-between;gap:30px;flex-wrap:wrap;margin-bottom:26px}
+  .footcol h4{font-style:italic;font-weight:400;font-size:11px;color:var(--ink-mute);margin-bottom:12px;letter-spacing:.05em;text-transform:uppercase;font-family:"JetBrains Mono",monospace}
+  .footcol a{display:block;color:var(--ink-soft);text-decoration:none;font-size:13.5px;margin-bottom:8px}
+  .footcol a:hover{color:var(--accent)}
+  .disc{padding-top:22px;border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px}
+  .disc span{font-size:11.5px;color:var(--ink-mute);line-height:1.6}
+  .disc .legal{max-width:64ch;font-style:italic}
+
+  .to-top{display:inline-flex;align-items:center;gap:7px;font-family:"Source Serif 4",serif;font-style:italic;color:var(--ink-mute);text-decoration:none;font-size:12.5px;margin-top:18px;transition:color .25s}
+  .to-top:hover{color:var(--accent)}
+</style>
+</head>
+<body>
+
+  <nav class="top" id="nav">
+    <div class="wrap navin">
+      <a class="wm" href="flameback-home.html">flameback<span class="p">.</span></a>
+      <div class="navr">
+        <a class="navlink" href="#toc">Contents</a>
+        <a class="navlink" href="flameback-who-we-are.html">Who we are</a>
+        <a class="navlink" href="flameback-lobby.html">The app</a>
+        <button class="toggle" id="toggle">Light</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ============ HERO ============ -->
+  <section class="hero" id="top">
+    <div class="wrap">
+      <div class="hero-meta">
+        <span class="d"></span>Product specification &middot; v1.0
+        <span style="margin-left:6px">·</span>11 sections (A&ndash;K)
+        <span>·</span>29 screens documented
+      </div>
+      <h1 class="hero-h">Screen-by-Screen &mdash; <em>Functional Specifications</em></h1>
+      <p class="hero-sub">The full functional map of the Flameback investing app &mdash; every screen from first impression to deployed portfolio, with its purpose, inputs, validation logic, routing, and error states. The microcopy here is the build copy. British spelling throughout.</p>
+    </div>
+    <div class="hero-wmark">spec.</div>
+  </section>
+
+  <!-- ============ TABLE OF CONTENTS ============ -->
+  <section class="toc" id="toc">
+    <div class="wrap">
+      <span class="toc-lab"><span class="l"></span>Table of contents &middot; by section</span>
+      <div class="toc-grid">
+
+        <div class="toc-group">
+          <h4>Section <em>A</em></h4>
+          <div class="tg-meta">Shared entry screens &middot; 6 screens</div>
+          <ol>
+            <li><a href="#s-a01"><span class="id">S-A01</span><span>Brand Impression</span></a></li>
+            <li><a href="#s-a02"><span class="id">S-A02</span><span>Login &mdash; Phone &amp; OTP</span></a></li>
+            <li><a href="#s-a03"><span class="id">S-A03</span><span>Registration &mdash; Create my account</span></a></li>
+            <li><a href="#s-a04"><span class="id">S-A04</span><span>Path Picker</span></a></li>
+            <li><a href="#s-a05"><span class="id">S-A05</span><span>Product Picker</span></a></li>
+            <li><a href="#s-a05a"><span class="id">S-A05a</span><span>Coming Soon Interstitial</span></a></li>
+          </ol>
+        </div>
+
+        <div class="toc-group">
+          <h4>Section <em>B</em></h4>
+          <div class="tg-meta">Investor profiling &amp; risk questionnaire &middot; 10 screens</div>
+          <ol>
+            <li><a href="#s-b00"><span class="id">S-B00</span><span>Getting to Know You</span></a></li>
+            <li><a href="#s-b01"><span class="id">S-B01</span><span>Step 1 &mdash; Your Finances</span></a></li>
+            <li><a href="#s-b02"><span class="id">S-B02</span><span>Income Streams</span></a></li>
+            <li><a href="#s-b03"><span class="id">S-B03</span><span>Income Security</span></a></li>
+            <li><a href="#s-b04"><span class="id">S-B04</span><span>Income Outlook</span></a></li>
+            <li><a href="#s-b05"><span class="id">S-B05</span><span>Family Wealth (Generational)</span></a></li>
+            <li><a href="#s-b06"><span class="id">S-B06</span><span>Drop Reaction (Behavioural)</span></a></li>
+            <li><a href="#s-b07"><span class="id">S-B07</span><span>Portfolio Preference</span></a></li>
+            <li><a href="#s-b08"><span class="id">S-B08</span><span>Investment Experience</span></a></li>
+            <li><a href="#s-b09"><span class="id">S-B09</span><span>Restrictions, Preferences &amp; Objective</span></a></li>
+          </ol>
+        </div>
+
+        <div class="toc-group">
+          <h4>Section <em>C</em></h4>
+          <div class="tg-meta">Lobby dashboard &middot; 1 screen</div>
+          <ol>
+            <li><a href="#s-c01"><span class="id">S-C01</span><span>Lobby Dashboard &mdash; Home</span></a></li>
+          </ol>
+        </div>
+
+        <div class="toc-group">
+          <h4>Section <em>D</em></h4>
+          <div class="tg-meta">Invest flows (post-profile) &middot; 4 screens</div>
+          <ol>
+            <li><a href="#s-d01"><span class="id">S-D01</span><span>Amount Entry</span></a></li>
+            <li><a href="#s-d02"><span class="id">S-D02</span><span>Portfolio Path Selection</span></a></li>
+            <li><a href="#s-d03"><span class="id">S-D03</span><span>Strategy Marketplace</span></a></li>
+            <li><a href="#s-d04"><span class="id">S-D04</span><span>Talk to Advisor &mdash; WhatsApp</span></a></li>
+          </ol>
+        </div>
+
+        <div class="toc-group">
+          <h4>Section <em>H</em></h4>
+          <div class="tg-meta">Portfolio reveal &amp; naming &middot; 2 screens</div>
+          <ol>
+            <li><a href="#s-h01"><span class="id">S-H01</span><span>Strategy Reveal &amp; Projection</span></a></li>
+            <li><a href="#s-h02"><span class="id">S-H02</span><span>Name Your Portfolio</span></a></li>
+          </ol>
+        </div>
+
+        <div class="toc-group">
+          <h4>Section <em>I</em></h4>
+          <div class="tg-meta">Activation &amp; deployment &middot; 5 screens</div>
+          <ol>
+            <li><a href="#s-i01"><span class="id">S-I01</span><span>KYC Verification</span></a></li>
+            <li><a href="#s-i02"><span class="id">S-I02</span><span>Advisory Agreement</span></a></li>
+            <li><a href="#s-i03"><span class="id">S-I03</span><span>Broker Linking</span></a></li>
+            <li><a href="#s-i04"><span class="id">S-I04</span><span>Fee Plan &amp; Payment</span></a></li>
+            <li><a href="#s-i05"><span class="id">S-I05</span><span>Strategy Deployment</span></a></li>
+          </ol>
+        </div>
+
+        <div class="toc-group">
+          <h4>Section <em>J</em></h4>
+          <div class="tg-meta">Path C: Explore strategies &middot; 2 screens</div>
+          <ol>
+            <li><a href="#s-j01"><span class="id">S-J01</span><span>Quick Risk Profiler (5 Questions)</span></a></li>
+            <li><a href="#s-j02"><span class="id">S-J02</span><span>Strategy Catalogue (Browse)</span></a></li>
+          </ol>
+        </div>
+
+        <div class="toc-group">
+          <h4>Section <em>K</em></h4>
+          <div class="tg-meta">Path B: Schedule a call &middot; 1 screen (removed)</div>
+          <ol>
+            <li><a href="#s-k01"><span class="id">S-K01</span><span>Schedule a Call</span></a></li>
+          </ol>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================== -->
+  <!-- ============ SECTION A ============ -->
+  <!-- ====================================================== -->
+  <section class="sec" id="section-a">
+    <div class="wrap">
+      <div class="sec-divider">
+        <span class="lab"><span class="l"></span><span class="n">A</span>Shared entry screens</span>
+        <h2>Section A &mdash; <em>Entry</em></h2>
+        <p class="intro">The screens every user passes through before a path is chosen &mdash; brand impression, authentication, registration, and the two pickers that route into a product.</p>
+      </div>
+
+      <!-- S-A01 -->
+      <article class="screen" id="s-a01">
+        <div class="scr-head"><span class="chip">S-A01</span><h3>Brand Impression</h3></div>
+        <div class="scr-meta"><span class="timing">Auto-advance 3 seconds</span><span class="path-tag">All paths</span><a class="view-link" href="flameback-app-splash.html">View screen &rarr;</a></div>
+        <p class="purpose"><b>Purpose.</b> Flameback Logo + Tagline (&ldquo;Ambition, without borders. Intimately managed.&rdquo;) + SEBI RIA Number.</p>
+        <div class="notes">
+          <div class="note"><span class="nh">Behaviour</span><div class="nb"><ul>
+            <li>Screen auto-advances to <b>S-A02</b> after 3 seconds. Any tap advances immediately.</li>
+            <li>One input (investor type chip). No back navigation to <b>S-A05</b>.</li>
+            <li>If user has active session: skip directly to <b>S-C01</b>.</li>
+          </ul></div></div>
+        </div>
+      </article>
+
+      <!-- S-A02 -->
+      <article class="screen" id="s-a02">
+        <div class="scr-head"><span class="chip">S-A02</span><h3>Login &mdash; Phone &amp; OTP</h3></div>
+        <div class="scr-meta"><span class="timing">~20 seconds</span><span class="path-tag">All paths</span><a class="view-link" href="flameback-app-login.html">View screen &rarr;</a></div>
+        <p class="purpose"><b>Purpose.</b> Captures phone number and authenticates via OTP. Google SSO is an alternative.</p>
+        <div class="block-lab">Fields &amp; inputs</div>
+        <table class="tbl">
+          <thead><tr><th style="width:20%">Field / Input</th><th style="width:13%">Type</th><th style="width:28%">Options / Format</th><th>Validation &amp; Logic</th></tr></thead>
+          <tbody>
+            <tr><td class="f" data-l="Field">Your mobile number</td><td class="t" data-l="Type">Phone field</td><td class="opt" data-l="Format">Country code dropdown, defaults to <b>+91</b>. 10-digit number.</td><td data-l="Logic">Required. <em>Send me a code</em> disabled until valid number entered.</td></tr>
+            <tr><td class="f" data-l="Field">Send me a code</td><td class="t" data-l="Type">Primary CTA</td><td class="opt" data-l="Format">Activates on valid entry. Triggers OTP.</td><td data-l="Logic">Disabled after tap to prevent duplicates.</td></tr>
+            <tr><td class="f" data-l="Field">Continue with Google / Apple / Email</td><td class="t" data-l="Type">SSO CTA</td><td class="opt" data-l="Format">Google OAuth &middot; Apple Sign-In &middot; Email + password. Each presented as a secondary CTA below the OTP form. Primary = phone OTP.</td><td data-l="Logic">Bypasses OTP. Creates or retrieves account via the chosen identity provider. For Email + password, email verification is required before the account is provisioned.</td></tr>
+            <tr><td class="f" data-l="Field">OTP input</td><td class="t" data-l="Type">6-digit field</td><td class="opt" data-l="Format">Heading: &ldquo;Enter the code we just sent&rdquo;. Sub: &ldquo;Check your messages &mdash; it&rsquo;s a 6-digit code, good for 5 minutes.&rdquo;</td><td data-l="Logic">6-digit field auto-submits when all 6 entered. Expires 5 min. Max 3 retries before lockout.</td></tr>
+            <tr><td class="f" data-l="Field">Resend code</td><td class="t" data-l="Type">Links</td><td class="opt" data-l="Format">Didn&rsquo;t get it? Resend by SMS &middot; or on WhatsApp.</td><td data-l="Logic">Available after 30-second countdown.</td></tr>
+          </tbody>
+        </table>
+        <div class="notes">
+          <div class="note"><span class="nh">Error states</span><div class="nb err"><ul>
+            <li>OTP mismatch: <em>&ldquo;That one didn&rsquo;t match. Try the latest code &mdash; they expire after 5 minutes.&rdquo;</em></li>
+            <li>Expired OTP: <em>&ldquo;That code&rsquo;s expired. Let&rsquo;s send you a fresh one.&rdquo;</em></li>
+            <li>Invalid number: <em>&ldquo;Please enter a valid 10-digit Indian mobile number.&rdquo;</em></li>
+            <li>Lockout (3 failures): <em>&ldquo;A few too many tries. Give it 30 minutes and we&rsquo;ll be right here.&rdquo;</em></li>
+            <li>Never expose technical error codes.</li>
+          </ul></div></div>
+        </div>
+      </article>
+
+      <!-- S-A03 -->
+      <article class="screen" id="s-a03">
+        <div class="scr-head"><span class="chip">S-A03</span><h3>Registration &mdash; Create my account</h3></div>
+        <div class="scr-meta"><span class="timing">~30 seconds &middot; First login only</span><span class="path-tag">All paths</span><a class="view-link" href="flameback-app-register.html">View screen &rarr;</a></div>
+        <p class="purpose"><b>Purpose.</b> Minimum identity data. Shown only on first login after OTP verification.</p>
+        <div class="block-lab">Fields &amp; inputs</div>
+        <table class="tbl">
+          <thead><tr><th style="width:20%">Field / Input</th><th style="width:13%">Type</th><th style="width:28%">Options / Format</th><th>Validation &amp; Logic</th></tr></thead>
+          <tbody>
+            <tr><td class="f" data-l="Field">Full name</td><td class="t" data-l="Type">Text input</td><td class="opt" data-l="Format">Label: &ldquo;Your full name&rdquo;.</td><td data-l="Logic">Required. Used for KYC and personalisation.</td></tr>
+            <tr><td class="f" data-l="Field">Email address</td><td class="t" data-l="Type">Email input</td><td class="opt" data-l="Format">Standard email format. Pre-filled (and not editable) if user signed up via Google SSO.</td><td data-l="Logic">Required. Pre-filled from Google account when SSO is used; user may not edit before continuing.</td></tr>
+            <tr><td class="f" data-l="Field">Phone number</td><td class="t" data-l="Type">Phone input</td><td class="opt" data-l="Format">+91 prefix, 10-digit Indian mobile. Pre-filled (and locked) if user signed up via phone OTP; editable if user signed up via Google SSO.</td><td data-l="Logic">Required. Locked when signup method = phone (the verified number cannot be changed here).</td></tr>
+            <tr><td class="f" data-l="Field">City</td><td class="t" data-l="Type">Searchable dropdown / text</td><td class="opt" data-l="Format">User&rsquo;s home city. Autocomplete from major Indian cities; free-text if not found.</td><td data-l="Logic">Required. Used for tier-based notifications (advisor availability hours) and SEBI residency context.</td></tr>
+            <tr><td class="f" data-l="Field">How&rsquo;d you find us?</td><td class="t" data-l="Type">Single-select chips</td><td class="opt" data-l="Format">Friend / Advisor / Social media / Google / News / Event.</td><td data-l="Logic">Optional. Attribution data.</td></tr>
+            <tr><td class="f" data-l="Field">WhatsApp opt-in</td><td class="t" data-l="Type">Toggle</td><td class="opt" data-l="Format">Pre-enabled by default. Helper text: &ldquo;Updates on WhatsApp &mdash; only the ones that matter.&rdquo;</td><td data-l="Logic">Optional.</td></tr>
+            <tr><td class="f" data-l="Field">Create my account</td><td class="t" data-l="Type">Primary CTA</td><td class="opt" data-l="Format">Enabled when required fields complete.</td><td data-l="Logic">Creates account and routes per investor type.</td></tr>
+            <tr><td class="f" data-l="Field">Privacy reassurance</td><td class="t" data-l="Type">Footer line</td><td class="opt" data-l="Format">Bottom of screen, below CTA. Text: &ldquo;We&rsquo;ll only ever message you about your money. Nothing else, ever.&rdquo;</td><td data-l="Logic">Always visible on this screen.</td></tr>
+          </tbody>
+        </table>
+        <div class="notes">
+          <div class="note"><span class="nh">Routing</span><div class="nb"><ul>
+            <li>Routes all individual users to <b>S-A04</b> Path Picker. Investor type (Individual / HUF / Financial Intermediary) is collected later, on <b>S-B01</b> &mdash; see Section B for HUF / Financial Intermediary routing.</li>
+            <li>[MOVED to <b>S-B00</b>] &mdash; HUF / Financial Intermediary waitlist message now fires at <b>S-B00</b> once the investor type is selected: <em>&ldquo;You&rsquo;re on the list. HUF and intermediary accounts are nearly here &mdash; we&rsquo;ll write to you at [email] the day they go live.&rdquo;</em> Onboarding ends here.</li>
+          </ul></div></div>
+        </div>
+      </article>
+
+      <!-- S-A04 -->
+      <article class="screen" id="s-a04">
+        <div class="scr-head"><span class="chip">S-A04</span><h3>Path Picker</h3></div>
+        <div class="scr-meta"><span class="timing">~10 seconds</span><span class="path-tag">All paths</span><a class="view-link" href="flameback-app-path.html">View screen &rarr;</a></div>
+        <p class="purpose"><b>Purpose.</b> Landing screen after Registration (and on every return visit). The user picks one of three paths: start the investing flow, schedule a call with an advisor, or explore the strategy catalogue first. Three stacked plain buttons (no cards, no sub-cards, no <em>Know more</em> dropdowns) &mdash; one per path. The picker sits as a thin router between auth/registration and the existing onboarding &mdash; it does not change any downstream screen.</p>
+        <div class="block-lab">Fields &amp; inputs</div>
+        <table class="tbl">
+          <thead><tr><th style="width:20%">Field / Input</th><th style="width:13%">Type</th><th style="width:28%">Options / Format</th><th>Validation &amp; Logic</th></tr></thead>
+          <tbody>
+            <tr><td class="f" data-l="Field">Headline</td><td class="t" data-l="Type">Display</td><td class="opt" data-l="Format">Headline: &ldquo;Where to next?&rdquo; Sub: &ldquo;Pick the route that fits &mdash; you can always come back and try another.&rdquo;</td><td data-l="Logic">Static. Centred above the cards.</td></tr>
+            <tr><td class="f" data-l="Field">Path A &mdash; Start your journey</td><td class="t" data-l="Type">Button (secondary, plain)</td><td class="opt" data-l="Format">Label: &ldquo;Start your journey&rdquo;. Sub-line: &ldquo;We&rsquo;ll ask a few questions, then match you to a strategy.&rdquo; No card frame, no sub-cards, no Know more dropdown.</td><td data-l="Logic">Routes to <b>S-A05</b> Product Picker. The umbrella for all investing products; the product picker disambiguates which onboarding flow to run.</td></tr>
+            <tr><td class="f" data-l="Field">Path B &mdash; Schedule a Call</td><td class="t" data-l="Type">Button (primary, filled)</td><td class="opt" data-l="Format">Label: &ldquo;Schedule a call&rdquo;. Sub-line: &ldquo;Talk to an advisor &mdash; they&rsquo;ll walk you through the right fit.&rdquo;</td><td data-l="Logic">Routes to Section K &mdash; Schedule a Call (in-app calendar picker).</td></tr>
+            <tr><td class="f" data-l="Field">Path C &mdash; Explore Strategies</td><td class="t" data-l="Type">Button (secondary, plain)</td><td class="opt" data-l="Format">Label: &ldquo;Explore strategies&rdquo;. Sub-line: &ldquo;Browse our catalogue first &mdash; invest in any strategy once you&rsquo;ve looked.&rdquo;</td><td data-l="Logic">Routes directly to <b>S-J02</b> Strategy Catalogue (browse mode). No questionnaire on the way in.</td></tr>
+            <tr><td class="f" data-l="Field">Logout / Switch account</td><td class="t" data-l="Type">Tertiary link</td><td class="opt" data-l="Format">Below the three paths. Label: &ldquo;Sign out&rdquo;.</td><td data-l="Logic">Standard sign-out. Ends the session and returns user to <b>S-A02</b>.</td></tr>
+          </tbody>
+        </table>
+        <div class="notes">
+          <div class="note"><span class="nh">Routing</span><div class="nb"><ul>
+            <li>First-time user &rarr; arrives here from <b>S-A03</b> Registration.</li>
+            <li>Path A commits the moment the user taps the Start CTA, and routes to <b>S-A05</b> Product Picker. From <b>S-A05</b> the user chooses PMS Lite (&rarr; <b>S-B00</b> questionnaire), PMS (&rarr; Coming Soon interstitial in v1.0), or International Investing (&rarr; Coming Soon interstitial in v1.0).</li>
+            <li>Path B routes to Section K Schedule a Call. Path C routes to Section J Explore Strategies.</li>
+          </ul></div></div>
+        </div>
+      </article>
+
+      <!-- S-A05 -->
+      <article class="screen" id="s-a05">
+        <div class="scr-head"><span class="chip">S-A05</span><h3>Product Picker</h3></div>
+        <div class="scr-meta"><span class="timing">~30 seconds</span><span class="path-tag">Path A &mdash; Start your journey</span><a class="view-link" href="flameback-app-product.html">View screen &rarr;</a></div>
+        <p class="purpose"><b>Purpose.</b> Reached when the user taps &ldquo;Start your journey&rdquo; on <b>S-A04</b>. Three stacked plain buttons (no card chrome) &mdash; one per product. The button itself is the tap target. Each carries a &ldquo;Know more&rdquo; arrow that toggles an inline explainer. v1.0 ships PMS Lite live (routes to <b>S-B00</b>); PMS and International tap-through to the <b>S-A05a</b> Coming Soon interstitial.</p>
+        <div class="block-lab">Fields &amp; inputs</div>
+        <table class="tbl">
+          <thead><tr><th style="width:20%">Field / Input</th><th style="width:13%">Type</th><th style="width:28%">Options / Format</th><th>Validation &amp; Logic</th></tr></thead>
+          <tbody>
+            <tr><td class="f" data-l="Field">Headline</td><td class="t" data-l="Type">Display</td><td class="opt" data-l="Format">Headline: &ldquo;Which Flameback?&rdquo; Sub: &ldquo;Pick the product that fits how you want to invest.&rdquo;</td><td data-l="Logic">Static. Centred above the cards.</td></tr>
+            <tr><td class="f" data-l="Field">PMS Lite card <span class="opt">[LIVE in v1.0]</span></td><td class="t" data-l="Type">Primary card</td><td class="opt" data-l="Format">Label: &ldquo;PMS Lite &mdash; Advisory&rdquo;. Sub-line: &ldquo;Get a portfolio matched to you, then approve each trade.&rdquo; Stats: Minimum &#8377;5L &middot; Self-authorized trades &middot; SEBI RIA-registered. Whole button is the tap target; a &ldquo;Know more&rdquo; arrow toggles the explainer.</td><td data-l="Logic">Routes to <b>S-B00</b> (Getting to Know You), then into the full Section B questionnaire.</td></tr>
+            <tr><td class="f" data-l="Field">PMS Lite &mdash; Know more</td><td class="t" data-l="Type">Inline panel</td><td class="opt" data-l="Format">&ldquo;PMS Lite is our RIA-advisory product. We build a portfolio matched to your risk profile, you approve every trade before it executes. Best for first-time investors and those who want to stay in the driver&rsquo;s seat. Minimum ticket: &#8377;5 lakh. Fee: 0.9% p.a. of AUM. SEBI registration: [number].&rdquo;</td><td data-l="Logic">Read-only. Closes by tapping the arrow again or tapping outside. Card CTA still routes regardless of panel state.</td></tr>
+            <tr><td class="f" data-l="Field">PMS card <span class="opt">[COMING SOON]</span></td><td class="t" data-l="Type">Secondary (locked)</td><td class="opt" data-l="Format">Label: &ldquo;PMS &mdash; Discretionary&rdquo;. Sub-line: &ldquo;Hand the keys over &mdash; our team trades on your behalf, no approval needed.&rdquo; Stats: Minimum &#8377;50L &middot; Discretionary &middot; SEBI PMS-registered. &ldquo;Coming soon&rdquo; badge on the right edge.</td><td data-l="Logic">v1.0: tapping routes to the <b>S-A05a</b> interstitial. Captures user&rsquo;s interest (email reminder opt-in). Full onboarding flow to be specified in v1.x.</td></tr>
+            <tr><td class="f" data-l="Field">PMS &mdash; Know more</td><td class="t" data-l="Type">Inline panel</td><td class="opt" data-l="Format">&ldquo;PMS is our discretionary product. You commit capital, our team makes the calls. No per-trade approval &mdash; fast execution, less hand-holding. Minimum ticket: &#8377;50 lakh (SEBI floor). Fee: [TBD]. SEBI PMS registration: [number].&rdquo;</td><td data-l="Logic">Read-only. Same toggle behaviour as PMS Lite panel.</td></tr>
+            <tr><td class="f" data-l="Field">International Investing card <span class="opt">[COMING SOON]</span></td><td class="t" data-l="Type">Secondary (locked)</td><td class="opt" data-l="Format">Label: &ldquo;International Investing&rdquo;. Sub-line: &ldquo;Diversify into global markets &mdash; US equities and beyond.&rdquo; Stats: Minimum $5,000 USD &middot; LRS-regulated &middot; Currency-hedged execution. &ldquo;Coming soon&rdquo; badge.</td><td data-l="Logic">v1.0: routes to <b>S-A05a</b> interstitial. Captures interest. Full onboarding flow to be specified in v1.x once partner broker and LRS rails are confirmed.</td></tr>
+            <tr><td class="f" data-l="Field">International &mdash; Know more</td><td class="t" data-l="Type">Inline panel</td><td class="opt" data-l="Format">&ldquo;International Investing lets you put a portion of your portfolio into US and other global markets. Operates under RBI&rsquo;s Liberalised Remittance Scheme (LRS) &mdash; annual USD limit applies. Minimum ticket: $5,000 USD. Fee: [TBD]. Partner broker: [TBD]. Tax reporting: foreign-asset disclosure on your ITR (Schedule FA).&rdquo;</td><td data-l="Logic">Read-only. Same toggle behaviour.</td></tr>
+            <tr><td class="f" data-l="Field">Back to Path Picker</td><td class="t" data-l="Type">Tertiary link</td><td class="opt" data-l="Format">Below the three cards. Label: &ldquo;Back to start&rdquo;.</td><td data-l="Logic">Routes to <b>S-A04</b> Path Picker without state loss.</td></tr>
+          </tbody>
+        </table>
+        <div class="pm-input"><b>PM Input &mdash; Product Picker &amp; Coming-Soon Flow</b><em>Confirm: (1) Coming Soon interstitial UX &mdash; separate screen vs. modal sheet vs. inline. (2) Interest-capture mechanism &mdash; single tap, email opt-in toggle, or full waitlist form. (3) Notification cadence when PMS / International go live. (4) Whether logged users can still browse PMS Lite onboarding after expressing interest in PMS / Intl, or if the choice is sticky.</em></div>
+      </article>
+
+      <!-- S-A05a -->
+      <article class="screen" id="s-a05a">
+        <div class="scr-head"><span class="chip">S-A05a</span><h3>Coming Soon Interstitial</h3></div>
+        <div class="scr-meta"><span class="timing">Sub-screen</span><span class="path-tag">Path A &mdash; PMS / International</span><a class="view-link" href="flameback-app-comingsoon.html">View screen &rarr;</a></div>
+        <p class="purpose"><b>Purpose.</b> Shown when the user taps PMS or International Investing in v1.0. Headline: <em>&ldquo;Almost there.&rdquo;</em> Sub-line: &ldquo;[PMS / International Investing] is launching soon. We&rsquo;ll write to you the moment it&rsquo;s live.&rdquo;</p>
+        <div class="notes">
+          <div class="note"><span class="nh">Behaviour</span><div class="nb"><ul>
+            <li>Two CTAs: &ldquo;Notify me&rdquo; (default &mdash; uses registered email, no extra form) and &ldquo;Back to products&rdquo; (returns to <b>S-A05</b>).</li>
+            <li>On &ldquo;Notify me&rdquo; tap, log interest against user record and show a confirmation toast: <em>&ldquo;You&rsquo;re on the list.&rdquo;</em></li>
+          </ul></div></div>
+        </div>
+        <a class="to-top" href="#toc">&uarr; Back to contents</a>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ====================================================== -->
+  <!-- ============ SECTION B ============ -->
+  <!-- ====================================================== -->
+  <section class="sec" id="section-b">
+    <div class="wrap">
+      <div class="sec-divider">
+        <span class="lab"><span class="l"></span><span class="n">B</span>Investor profiling &amp; risk questionnaire</span>
+        <h2>Section B &mdash; <em>Profiling</em></h2>
+        <p class="intro">Two profile screens, an experience checklist, and a restrictions screen. Progress indicator: &ldquo;Step 1 of 3&rdquo;. Save-and-resume on every screen. Individual users continue; HUF and Financial Intermediary users hit the waitlist at S-B00 before any financial inputs.</p>
+      </div>
+
+      <!-- S-B00 -->
+      <article class="screen" id="s-b00">
+        <div class="scr-head"><span class="chip">S-B00</span><h3>Getting to Know You (Interstitial)</h3></div>
+        <div class="scr-meta"><span class="timing">Interstitial</span><span class="path-tag">Profiling</span><a class="view-link" href="flameback-app-profile-intro.html">View screen &rarr;</a></div>
+        <p class="purpose"><b>Purpose.</b> Warm intro screen between PMS Lite selection (<b>S-A05</b>) and the financial questionnaire. Carries the warm-tone framing plus one routing question &mdash; who&rsquo;s investing &mdash; so HUF and Financial Intermediary users hit the waitlist before doing any financial inputs. Individual users continue to <b>S-B01</b>.</p>
+        <div class="copy-block"><span class="ql">On-screen copy</span>Now, a bit about you. So we can build a portfolio that fits your life &mdash; not someone else&rsquo;s. Everything you tell us stays with us. Always.</div>
+        <div class="block-lab">Fields &amp; inputs</div>
+        <table class="tbl">
+          <thead><tr><th style="width:20%">Field / Input</th><th style="width:13%">Type</th><th style="width:28%">Options / Format</th><th>Validation &amp; Logic</th></tr></thead>
+          <tbody>
+            <tr><td class="f" data-l="Field">Investor type</td><td class="t" data-l="Type">Single-select chips</td><td class="opt" data-l="Format">Individual / HUF / Financial Intermediary</td><td data-l="Logic">Required. Determines routing. Individual &rarr; continues to <b>S-B01</b>. HUF / Financial Intermediary &rarr; waitlist message: <em>&ldquo;You&rsquo;re on the list. HUF and intermediary accounts are nearly here &mdash; we&rsquo;ll write to you at [email] the day they go live.&rdquo;</em> Onboarding ends here for non-individual users.</td></tr>
+            <tr><td class="f" data-l="Field">Continue CTA</td><td class="t" data-l="Type">Primary CTA</td><td class="opt" data-l="Format">Orange, full-width. Label: &ldquo;Continue &rarr;&rdquo;.</td><td data-l="Logic">Disabled until a chip is selected. On tap: Individual &rarr; routes to <b>S-B01</b> (Step 1 &mdash; Your Finances). HUF / FI &rarr; routes to waitlist confirmation (S-B00 stays open showing the waitlist message).</td></tr>
+          </tbody>
+        </table>
+        <div class="notes">
+          <div class="note"><span class="nh">Behaviour</span><div class="nb"><ul>
+            <li>User selects an investor type chip, then taps Continue. No auto-advance.</li>
+            <li>One input (investor type chip). No back navigation to <b>S-A05</b>.</li>
+            <li>Visual: subtle brand wash background. Copy stacked above the chip row; Continue CTA at the bottom.</li>
+          </ul></div></div>
+        </div>
+      </article>
+
+      <!-- S-B01 -->
+      <article class="screen" id="s-b01">
+        <div class="scr-head"><span class="chip">S-B01</span><h3>Step 1 &mdash; Your Finances</h3></div>
+        <div class="scr-meta"><span class="timing">Step 1 of 3</span><span class="path-tag">Profiling</span><a class="view-link" href="flameback-app-finances.html">View screen &rarr;</a></div>
+        <p class="purpose"><b>Purpose.</b> 7 numeric inputs capturing the user&rsquo;s financial position. All currency fields live-format on keystroke. Save-and-resume on every field.</p>
+        <div class="block-lab">Fields &amp; inputs</div>
+        <table class="tbl">
+          <thead><tr><th style="width:22%">Field / Input</th><th style="width:11%">Type</th><th style="width:26%">Options / Format</th><th>Validation &amp; Logic &middot; Why we ask</th></tr></thead>
+          <tbody>
+            <tr><td class="f" data-l="Field"><span class="fid">F1</span>Date of birth <span class="opt">[scores 10% &mdash; derived to age]</span></td><td class="t" data-l="Type">Number input</td><td class="opt" data-l="Format">Single integer. Years.</td><td data-l="Logic">Required. Must be 18+. Scores: &lt;30=90 / 30&ndash;45=75 / 45&ndash;60=50 / 60&ndash;70=22 / 70+=10.</td></tr>
+            <tr><td class="f" data-l="Field"><span class="fid">F2</span>Own annual income (net) <span class="opt">[scores 10%]</span></td><td class="t" data-l="Type">Currency input</td><td class="opt" data-l="Format">After-tax. Live formats on keystroke.</td><td data-l="Logic">Required. Scores: &lt;&#8377;5L=20 / 5&ndash;15L=40 / 15&ndash;50L=65 / 50L&ndash;1Cr=80 / &gt;1Cr=92. Also used to derive A4 [CALC] and A6 [CALC].</td></tr>
+            <tr><td class="f" data-l="Field"><span class="fid">F3</span>Monthly expenses <span class="opt">[feeds CALC A4 + A6]</span></td><td class="t" data-l="Type">Currency input</td><td class="opt" data-l="Format">Monthly household expenses (excluding EMI). Live-formatted.</td><td data-l="Logic">Required. Used to compute A4 Cash Reserves Ratio and A6 Savings Rate. Not scored directly. <em>Monthly expenses give us your cushion &mdash; how many months of life your income covers.</em></td></tr>
+            <tr><td class="f" data-l="Field"><span class="fid">F4</span>Monthly EMI <span class="opt">[feeds CALC A6]</span></td><td class="t" data-l="Type">Currency input</td><td class="opt" data-l="Format">Total monthly loan EMIs across all liabilities. Live-formatted. Enter 0 if no loans.</td><td data-l="Logic">Required. Used to compute A6 Savings Rate. Not scored directly. Should reconcile with F5. <em>EMIs eat into what you can actually invest each month.</em></td></tr>
+            <tr><td class="f" data-l="Field"><span class="fid">F5</span>Total assets <span class="opt">[scores 10%]</span></td><td class="t" data-l="Type">Currency input</td><td class="opt" data-l="Format">All assets combined. Live-formatted.</td><td data-l="Logic">Required. Scores: &lt;&#8377;10L=15 / 10&ndash;50L=35 / 50L&ndash;2Cr=55 / 2&ndash;10Cr=75 / &gt;10Cr=90.</td></tr>
+            <tr><td class="f" data-l="Field"><span class="fid">F6</span>Total liabilities <span class="opt">[scores 10%]</span></td><td class="t" data-l="Type">Currency input</td><td class="opt" data-l="Format">Outstanding loans and total EMI burden.</td><td data-l="Logic">Required. Scores: &lt;&#8377;10L=90 / 10&ndash;50L=75 / 50L&ndash;2Cr=55 / 2&ndash;10Cr=35 / &gt;10Cr=10. Also feeds A6 [CALC] savings rate via EMI component.</td></tr>
+            <tr><td class="f" data-l="Field"><span class="fid">F7</span>Financial dependants <span class="opt">[scores 5%]</span></td><td class="t" data-l="Type">Single-select chips</td><td class="opt" data-l="Format">0 / 1 / 2 / 3 / 4+</td><td data-l="Logic">Required. People financially dependent on user. Scores: 0=100 / 1=65 / 2=42 / 3=28 / 4+=15. +10 if dual-income household.</td></tr>
+            <tr><td class="f" data-l="Field">Continue CTA</td><td class="t" data-l="Type">Primary CTA</td><td class="opt" data-l="Format">&mdash;</td><td data-l="Logic">Enabled when all 7 fields complete. Routes to <b>S-B02</b>.</td></tr>
+          </tbody>
+        </table>
+        <div class="notes">
+          <div class="note"><span class="nh">Live calc</span><div class="nb">Estimated savings rate = (Annual Income &minus; (Expenses &times; 12) &minus; (EMI &times; 12)) / Annual Income. Updates on every keystroke. Shown as a sanity check for the user.</div></div>
+        </div>
+      </article>
+
+      <!-- S-B02 -->
+      <article class="screen" id="s-b02">
+        <div class="scr-head"><span class="chip">S-B02</span><h3>Income Streams</h3></div>
+        <div class="scr-meta"><span class="timing">~10 seconds</span><span class="path-tag">Profiling</span><a class="view-link" href="flameback-app-income-streams.html">View screen &rarr;</a></div>
+        <p class="purpose"><b>Purpose.</b> Captures how many distinct income streams the household has. Single-select chips. Profile-scored only.</p>
+        <div class="block-lab">Fields &amp; inputs</div>
+        <table class="tbl">
+          <thead><tr><th style="width:22%">Field / Input</th><th style="width:13%">Type</th><th style="width:24%">Options / Format</th><th>Validation &amp; Logic &middot; Why we ask</th></tr></thead>
+          <tbody>
+            <tr><td class="f" data-l="Field"><span class="fid">F8</span>Income streams <span class="opt">[scores 5%]</span></td><td class="t" data-l="Type">Single-select chips</td><td class="opt" data-l="Format">0 / 1 / 2 / 3 / 4+</td><td data-l="Logic">Required. Total distinct income streams (salary, business, rental, dividends etc). Scores: 0=0 / 1=25 / 2=55 / 3=80 / 4+=95. +10 bonus if dual-income household. <em>Multiple streams cushion against any single source drying up.</em></td></tr>
+            <tr><td class="f" data-l="Field">Continue CTA</td><td class="t" data-l="Type">Primary CTA</td><td class="opt" data-l="Format">[Continue &rarr;]</td><td data-l="Logic">Enabled when the question is answered. Routes to <b>S-B03</b>.</td></tr>
+          </tbody>
+        </table>
+      </article>
+
+      <!-- S-B03 -->
+      <article class="screen" id="s-b03">
+        <div class="scr-head"><span class="chip">S-B03</span><h3>Income Security</h3></div>
+        <div class="scr-meta"><span class="timing">~10 seconds</span><span class="path-tag">Profiling</span><a class="view-link" href="flameback-app-income-security.html">View screen &rarr;</a></div>
+        <p class="purpose"><b>Purpose.</b> Captures how secure the user feels their primary income source is. Single-select chips.</p>
+        <div class="block-lab">Fields &amp; inputs</div>
+        <table class="tbl">
+          <thead><tr><th style="width:22%">Field / Input</th><th style="width:13%">Type</th><th style="width:24%">Options / Format</th><th>Validation &amp; Logic &middot; Why we ask</th></tr></thead>
+          <tbody>
+            <tr><td class="f" data-l="Field"><span class="fid">F9</span>Income security <span class="opt">[scores 5%]</span></td><td class="t" data-l="Type">Single-select chips</td><td class="opt" data-l="Format">Very secure / Secure / Uncertain / At risk</td><td data-l="Logic">Required. Scores: V.Secure=95 / Secure=70 / Uncertain=35 / At Risk=10. <em>Income stability changes your safety net. Secure income lets us hold longer-horizon positions; uncertain income means a larger cash buffer.</em></td></tr>
+            <tr><td class="f" data-l="Field">Continue CTA</td><td class="t" data-l="Type">Primary CTA</td><td class="opt" data-l="Format">[Continue &rarr;]</td><td data-l="Logic">Enabled when the question is answered. Routes to <b>S-B04</b>.</td></tr>
+          </tbody>
+        </table>
+      </article>
+
+      <!-- S-B04 -->
+      <article class="screen" id="s-b04">
+        <div class="scr-head"><span class="chip">S-B04</span><h3>Income Outlook</h3></div>
+        <div class="scr-meta"><span class="timing">~10 seconds</span><span class="path-tag">Profiling</span><a class="view-link" href="flameback-app-income-outlook.html">View screen &rarr;</a></div>
+        <p class="purpose"><b>Purpose.</b> Captures user&rsquo;s expectation of income trajectory over the next 5 years. Single-select chips.</p>
+        <div class="block-lab">Fields &amp; inputs</div>
+        <table class="tbl">
+          <thead><tr><th style="width:22%">Field / Input</th><th style="width:13%">Type</th><th style="width:24%">Options / Format</th><th>Validation &amp; Logic &middot; Why we ask</th></tr></thead>
+          <tbody>
+            <tr><td class="f" data-l="Field"><span class="fid">F10</span>Income outlook <span class="opt">[scores 5%]</span></td><td class="t" data-l="Type">Single-select chips</td><td class="opt" data-l="Format">Rise significantly / Rise moderately / Same / Reduce / Drastic drop</td><td data-l="Logic">Required. Scores: Rise sig=95 / Rise mod=75 / Same=50 / Reduce=25 / Drastic=5. <em>Where your income is heading shapes how much risk we should be taking today.</em></td></tr>
+            <tr><td class="f" data-l="Field">Continue CTA</td><td class="t" data-l="Type">Primary CTA</td><td class="opt" data-l="Format">[Continue &rarr;]</td><td data-l="Logic">Enabled when the question is answered. Routes to <b>S-B05</b>.</td></tr>
+          </tbody>
+        </table>
+      </article>
+
+      <!-- S-B05 -->
+      <article class="screen" id="s-b05">
+        <div class="scr-head"><span class="chip">S-B05</span><h3>Family Wealth (Generational Context)</h3></div>
+        <div class="scr-meta"><span class="timing">~10 seconds</span><span class="path-tag">Profiling</span><a class="view-link" href="flameback-app-family-wealth.html">View screen &rarr;</a></div>
+        <p class="purpose"><b>Purpose.</b> Captures user&rsquo;s wealth position relative to their parents&rsquo; generation. Single-select chips.</p>
+        <div class="block-lab">Fields &amp; inputs</div>
+        <table class="tbl">
+          <thead><tr><th style="width:22%">Field / Input</th><th style="width:13%">Type</th><th style="width:24%">Options / Format</th><th>Validation &amp; Logic &middot; Why we ask</th></tr></thead>
+          <tbody>
+            <tr><td class="f" data-l="Field"><span class="fid">F11</span>Family wealth <span class="opt">[scores 5%]</span></td><td class="t" data-l="Type">Single-select chips</td><td class="opt" data-l="Format">Way beyond my needs / Significantly above / Somewhat above / About the same / N/A</td><td data-l="Logic">Required. Scores: Way beyond=100 / Significantly=88 / Somewhat=70 / Same=45 / N/A=0. <em>Generational starting point matters. If you&rsquo;re ahead of where your parents were, you have margin for risk. If you&rsquo;re rebuilding, capital protection comes first.</em></td></tr>
+            <tr><td class="f" data-l="Field">Continue CTA</td><td class="t" data-l="Type">Primary CTA</td><td class="opt" data-l="Format">[Continue &rarr;]</td><td data-l="Logic">Enabled when the question is answered. Routes to <b>S-B06</b>.</td></tr>
+          </tbody>
+        </table>
+      </article>
+
+      <!-- S-B06 -->
+      <article class="screen" id="s-b06">
+        <div class="scr-head"><span class="chip">S-B06</span><h3>Drop Reaction (Behavioural)</h3></div>
+        <div class="scr-meta"><span class="timing">~30 seconds</span><span class="path-tag">Profiling</span><a class="view-link" href="flameback-app-drop-reaction.html">View screen &rarr;</a></div>
+        <p class="purpose"><b>Purpose.</b> Captures how the user would actually behave in a 30% market drop. Phrased as a market percentage to make the loss concrete without requiring a portfolio-value input. Scores into the Profile Score (10% weight) and is not re-asked downstream.</p>
+        <div class="block-lab">Fields &amp; inputs</div>
+        <table class="tbl">
+          <thead><tr><th style="width:22%">Field / Input</th><th style="width:13%">Type</th><th style="width:26%">Options / Format</th><th>Validation &amp; Logic &middot; Why we ask</th></tr></thead>
+          <tbody>
+            <tr><td class="f" data-l="Field"><span class="fid">F12</span>Drop reaction <span class="opt">[scores 10%]</span></td><td class="t" data-l="Type">Single-select cards</td><td class="opt" data-l="Format">Question: &ldquo;The market falls 30%. Your portfolio drops with it. Your move?&rdquo; Cards: Sell everything / Sell some, reduce exposure / Hold and wait / Invest more at lower prices.</td><td data-l="Logic">Required. Scores: Sell=10 / Sell some=30 / Hold=70 / Buy more=90. Weight 10% in Profile Score. <em>Your true risk tolerance only shows up in a downturn. We need to know how you&rsquo;d actually behave &mdash; not how you&rsquo;d like to behave &mdash; so we never put you in something you&rsquo;d panic out of.</em></td></tr>
+            <tr><td class="f" data-l="Field">Continue CTA</td><td class="t" data-l="Type">Primary CTA</td><td class="opt" data-l="Format">[Continue &rarr;]</td><td data-l="Logic">Enabled when the question is answered. Routes to <b>S-B07</b>.</td></tr>
+          </tbody>
+        </table>
+      </article>
+
+      <!-- S-B07 -->
+      <article class="screen" id="s-b07">
+        <div class="scr-head"><span class="chip">S-B07</span><h3>Portfolio Preference (Behavioural)</h3></div>
+        <div class="scr-meta"><span class="timing">~30 seconds</span><span class="path-tag">Profiling</span><a class="view-link" href="flameback-app-portfolio-preference.html">View screen &rarr;</a></div>
+        <p class="purpose"><b>Purpose.</b> Captures user&rsquo;s gut preference among portfolios with different return / drawdown profiles. Single-select cards each showing AVG / BEST / WORST annual return inline.</p>
+        <div class="block-lab">Fields &amp; inputs</div>
+        <table class="tbl">
+          <thead><tr><th style="width:22%">Field / Input</th><th style="width:13%">Type</th><th style="width:26%">Options / Format</th><th>Validation &amp; Logic &middot; Why we ask</th></tr></thead>
+          <tbody>
+            <tr><td class="f" data-l="Field"><span class="fid">F13</span>Portfolio preference <span class="opt">[scores 10%]</span></td><td class="t" data-l="Type">Single-select cards</td><td class="opt" data-l="Format">Question: &ldquo;Which portfolio would you pick? Each has a different swing. Trust your gut.&rdquo; Cards (AVG / BEST / WORST): Steady &mdash; +8% / +12% / &minus;8% &middot; Growth &mdash; +12% / +22% / &minus;30% &middot; Aggressive &mdash; +18% / +30% / &minus;45% &middot; High-octane &mdash; +22% / +35% / &minus;50%.</td><td data-l="Logic">Required. Show avg return and worst year per option. Scores: Steady=15 / Growth=50 / Aggressive=75 / High-octane=100. <em>We want to see what you actually prefer when returns are abstract numbers &mdash; not what you&rsquo;ve been told you should prefer.</em></td></tr>
+            <tr><td class="f" data-l="Field">Continue CTA</td><td class="t" data-l="Type">Primary CTA</td><td class="opt" data-l="Format">[Continue &rarr;]</td><td data-l="Logic">Enabled when the question is answered. Routes to <b>S-B08</b>.</td></tr>
+          </tbody>
+        </table>
+      </article>
+
+      <!-- S-B08 -->
+      <article class="screen" id="s-b08">
+        <div class="scr-head"><span class="chip">S-B08</span><h3>Investment Experience</h3></div>
+        <div class="scr-meta"><span class="timing">Experience checklist</span><span class="path-tag">Profiling</span><a class="view-link" href="flameback-app-experience.html">View screen &rarr;</a></div>
+        <p class="purpose"><b>Purpose.</b> Records which asset classes user has invested in. Drives W6 (experience score in the willingness model) and strategy access gating.</p>
+        <div class="block-lab">Fields &amp; inputs</div>
+        <table class="tbl">
+          <thead><tr><th style="width:22%">Field / Input</th><th style="width:13%">Type</th><th style="width:26%">Options / Format</th><th>Validation &amp; Logic</th></tr></thead>
+          <tbody>
+            <tr><td class="f" data-l="Field">Experience checklist</td><td class="t" data-l="Type">Checkboxes / Chips</td><td class="opt" data-l="Format">10 instruments: FDs/Savings Accounts / Mutual Funds / Bonds/NCDs / Indian Stocks / F&amp;O / US/International Equities / Real Estate / Gold/SGBs / Crypto/Digital Assets / AIFs/PMS.</td><td data-l="Logic">User checks all classes they have experience with. No minimum selection required.</td></tr>
+            <tr><td class="f" data-l="Field">Continue CTA</td><td class="t" data-l="Type">Primary CTA</td><td class="opt" data-l="Format">&mdash;</td><td data-l="Logic">Enabled once user has interacted with the list.</td></tr>
+          </tbody>
+        </table>
+        <div class="block-lab">Experience bucket classification</div>
+        <table class="aux-tbl">
+          <thead><tr><th>Bucket</th><th>Instruments</th><th>Strategy access</th><th>W6 score</th></tr></thead>
+          <tbody>
+            <tr><td>Bucket 1 &mdash; Low</td><td>FDs/Savings Accounts, Mutual Funds, Gold/SGBs</td><td>Low risk strategies only</td><td>5</td></tr>
+            <tr><td>Bucket 2 &mdash; Moderate</td><td>Bonds/NCDs, Indian Stocks, Real Estate, US/International Equities</td><td>Low + Moderate risk strategies</td><td>8</td></tr>
+            <tr><td>Bucket 3 &mdash; High</td><td>F&amp;O, Crypto/Digital Assets, AIFs/PMS</td><td>All strategies</td><td>10</td></tr>
+            <tr><td>No selection</td><td>Nothing checked</td><td>Low risk strategies only</td><td>2</td></tr>
+          </tbody>
+        </table>
+        <div class="notes">
+          <div class="note"><span class="nh">Rule</span><div class="nb">User experience level = highest bucket in which at least one instrument is checked. A single selection is sufficient. Insufficient experience = advisory warning only, never a hard block. User can proceed with explicit acknowledgment recorded.</div></div>
+        </div>
+      </article>
+
+      <!-- S-B09 -->
+      <article class="screen" id="s-b09">
+        <div class="scr-head"><span class="chip">S-B09</span><h3>Restrictions, Preferences &amp; Objective</h3></div>
+        <div class="scr-meta"><span class="timing">Profiling Step 3 of 3</span><span class="path-tag">Profiling</span><a class="view-link" href="flameback-app-restrictions.html">View screen &rarr;</a></div>
+        <p class="purpose"><b>Purpose.</b> Captures investment objective, goal linkage, legal restrictions, and ethical exclusions. Objective and Goal Linkage directly adjust the final risk score. Restrictions applied as hard filters at portfolio construction.</p>
+        <div class="block-lab">Fields &amp; inputs</div>
+        <table class="tbl">
+          <thead><tr><th style="width:20%">Field / Input</th><th style="width:14%">Type</th><th style="width:30%">Options / Format</th><th>Validation &amp; Logic</th></tr></thead>
+          <tbody>
+            <tr><td class="f" data-l="Field">Investment Objective</td><td class="t" data-l="Type">Single-select chips</td><td class="opt" data-l="Format">Preserve Capital / Steady Growth / Build Wealth / Max Growth</td><td data-l="Logic">Required. Maps to strategy recommendation and IPS.</td></tr>
+            <tr><td class="f" data-l="Field">Goal Linkage</td><td class="t" data-l="Type">Single-select chips</td><td class="opt" data-l="Format">Critical goal / Important goal / Surplus capital / Discretionary</td><td data-l="Logic">Required. Adjusts Effective Risk Score. See Section 5.2.</td></tr>
+            <tr><td class="f" data-l="Field">Restricted stocks</td><td class="t" data-l="Type">Searchable dropdown / text</td><td class="opt" data-l="Format">Employer-restricted tickers. Comma-separated.</td><td data-l="Logic">Optional. Hard exclusion at portfolio construction.</td></tr>
+            <tr><td class="f" data-l="Field">Sectors to avoid &mdash; preset</td><td class="t" data-l="Type">Multi-select chips</td><td class="opt" data-l="Format">Tobacco / Alcohol / Gambling / Weapons &amp; Defence / Adult Content / Fossil Fuels / Animal Testing</td><td data-l="Logic">Multi-select. Applied as hard filter.</td></tr>
+            <tr><td class="f" data-l="Field">Sectors to avoid &mdash; custom</td><td class="t" data-l="Type">Typeahead input</td><td class="opt" data-l="Format">User types sector name; matching options appear.</td><td data-l="Logic">Optional. Searches against master sector list.</td></tr>
+            <tr><td class="f" data-l="Field">Complete Profile CTA</td><td class="t" data-l="Type">Primary CTA</td><td class="opt" data-l="Format">&mdash;</td><td data-l="Logic">Enabled when Objective and Goal Linkage are filled. Routes to <b>S-C01</b>.</td></tr>
+          </tbody>
+        </table>
+        <div class="notes">
+          <div class="note"><span class="nh">Note</span><div class="nb">See annexure 1 for the master list of all sectors for users to choose from.</div></div>
+        </div>
+        <a class="to-top" href="#toc">&uarr; Back to contents</a>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ====================================================== -->
+  <!-- ============ SECTION C ============ -->
+  <!-- ====================================================== -->
+  <section class="sec" id="section-c">
+    <div class="wrap">
+      <div class="sec-divider">
+        <span class="lab"><span class="l"></span><span class="n">C</span>Lobby dashboard</span>
+        <h2>Section C &mdash; <em>Lobby</em></h2>
+        <p class="intro">The permanent home screen, in two states &mdash; pre-investment (profile complete, nothing funded) and post-investment (at least one funded portfolio).</p>
+      </div>
+
+      <!-- S-C01 -->
+      <article class="screen" id="s-c01">
+        <div class="scr-head"><span class="chip">S-C01</span><h3>Lobby Dashboard &mdash; Home</h3></div>
+        <div class="scr-meta"><span class="timing">Permanent home</span><span class="path-tag">All paths (persistent)</span><a class="view-link" href="flameback-lobby.html">View screen &rarr;</a></div>
+        <p class="purpose"><b>Purpose.</b> The home screen. <em>Pre-investment state</em> shows the user&rsquo;s Final Score and a CTA to start building; <em>post-investment state</em> shows live portfolio metrics, SIP streak, market commentary, and rebalance prompts.</p>
+
+        <div class="block-lab">Pre-investment state &mdash; fields &amp; inputs</div>
+        <table class="tbl">
+          <thead><tr><th style="width:20%">Field / Input</th><th style="width:13%">Type</th><th style="width:30%">Options / Format</th><th>Validation &amp; Logic</th></tr></thead>
+          <tbody>
+            <tr><td class="f" data-l="Field">Greeting header</td><td class="t" data-l="Type">Dynamic text</td><td class="opt" data-l="Format">&ldquo;Welcome in, [Name].&rdquo;</td><td data-l="Logic">Personalised. Static after first visit.</td></tr>
+            <tr><td class="f" data-l="Field">Risk Score Meter</td><td class="t" data-l="Type">Display strip</td><td class="opt" data-l="Format">Horizontal gradient meter (green &rarr; amber &rarr; red), 0&ndash;100. User&rsquo;s Final Score plotted as a labelled needle. Above: band label (e.g. &ldquo;Moderate&rdquo;) and score (e.g. &ldquo;62 / 100&rdquo;). Below: one-line summary (e.g. &ldquo;You sit in the middle band &mdash; we&rsquo;ll build a balanced portfolio for you, with room to lean either way.&rdquo;).</td><td data-l="Logic">Final Score computed at the end of Section B and revealed for the first time here. Single-stage scoring &mdash; no post-questionnaire adjustment. Tappable: opens a modal explaining how the score is derived (weighted Section B factors + experience adjustment) and what the band means. Hidden in post-investment state.</td></tr>
+            <tr><td class="f" data-l="Field">Let&rsquo;s build your portfolio CTA</td><td class="t" data-l="Type">Primary CTA</td><td class="opt" data-l="Format">&mdash;</td><td data-l="Logic">Routes to <b>S-D01</b>.</td></tr>
+            <tr><td class="f" data-l="Field">Tools grid</td><td class="t" data-l="Type">Card grid</td><td class="opt" data-l="Format">Asset Map / Portfolio X-Ray / My IPS.</td><td data-l="Logic">Locked tools. Placeholders for v1.0.</td></tr>
+            <tr><td class="f" data-l="Field">Explainer strip</td><td class="t" data-l="Type">Static display</td><td class="opt" data-l="Format">&ldquo;How we manage this for you.&rdquo;</td><td data-l="Logic">Shown every visit.</td></tr>
+          </tbody>
+        </table>
+
+        <div class="block-lab">Post-investment state &mdash; fields &amp; inputs</div>
+        <table class="tbl">
+          <thead><tr><th style="width:20%">Field / Input</th><th style="width:13%">Type</th><th style="width:30%">Options / Format</th><th>Validation &amp; Logic</th></tr></thead>
+          <tbody>
+            <tr><td class="f" data-l="Field">Greeting header</td><td class="t" data-l="Type">Dynamic text</td><td class="opt" data-l="Format">&ldquo;Good [morning / afternoon / evening], [Name].&rdquo; Sub-line: date and time of last market close.</td><td data-l="Logic">Personalised. Sub-line refreshes on each visit.</td></tr>
+            <tr><td class="f" data-l="Field">Portfolio performance graph</td><td class="t" data-l="Type">Line graph</td><td class="opt" data-l="Format">Single line plotting portfolio NAV over time. Default period: 1Y. Selector chips: 1M / 3M / 6M / 1Y / 3Y / All. Y-axis in &#8377; (lakh/crore). Tap any point to see NAV + date.</td><td data-l="Logic">Data source: backend NAV snapshots (daily). Empty state until first NAV is computed (~T+2 after first buy).</td></tr>
+            <tr><td class="f" data-l="Field">Headline value strip</td><td class="t" data-l="Type">4-cell stat row</td><td class="opt" data-l="Format">Cell 1: Current value (&#8377;). Cell 2: Invested (&#8377;). Cell 3: Gains &mdash; line 1 &#8377; amount with &uarr;/&darr; arrow, line 2 percentage. Cell 4: CAGR (annualised, since first investment). Green if positive, red if negative; muted grey if portfolio age &lt; 30 days.</td><td data-l="Logic">Live values. Gains = Current &minus; Invested. CAGR uses XIRR for irregular SIP + lump sum flows. Hidden until portfolio age &ge; 1 day.</td></tr>
+            <tr><td class="f" data-l="Field">SIP discipline streak</td><td class="t" data-l="Type">Streak counter card</td><td class="opt" data-l="Format">&ldquo;[N] months on track&rdquo; with a 12-cell strip below (last 12 months, filled = SIP cleared, hollow = missed/paused). Tap opens a list view of SIP history.</td><td data-l="Logic">A month counts as on track when all scheduled SIPs cleared on or before due date + 3-day grace. Streak resets on a missed month; pauses freeze the streak rather than break it.</td></tr>
+            <tr><td class="f" data-l="Field">Market commentary</td><td class="t" data-l="Type">2-line text card</td><td class="opt" data-l="Format">Line 1: factual headline &mdash; number, direction, time window. Line 2: one-line context, no exhortation. E.g. &ldquo;Up &#8377;12,84,000 over seven days. Volume thin &mdash; nothing to do.&rdquo;</td><td data-l="Logic">Auto-generated daily by a curation layer. Voice rule: written as if by a brilliant friend who happens to manage money &mdash; quiet, factual, no broker-speak. Refreshes at market open.</td></tr>
+            <tr><td class="f" data-l="Field">Rebalance Now banner</td><td class="t" data-l="Type">Conditional banner</td><td class="opt" data-l="Format">Shown only when backend has pushed a rebalance recommendation. Text: &ldquo;We&rsquo;ve tuned your strategy. Have a look, then apply when you&rsquo;re ready.&rdquo; CTA: &ldquo;Rebalance Now&rdquo;. Dismissible (snooze 7 days) but reappears until applied.</td><td data-l="Logic">Trigger: backend rebalance flag = true AND not yet applied. Tapping CTA routes to the rebalance review screen (separate spec). Hidden otherwise.</td></tr>
+            <tr><td class="f" data-l="Field">View My IPS</td><td class="t" data-l="Type">Secondary action card</td><td class="opt" data-l="Format">Label: &ldquo;My Investment Policy Statement&rdquo;. Sub-text: &ldquo;The plan we built together.&rdquo; Tap opens read-only IPS document.</td><td data-l="Logic">Always visible post-investment. IPS generated at portfolio confirmation (post <b>S-H02</b>) and updated on material changes.</td></tr>
+            <tr><td class="f" data-l="Field">Explore Flameback Tools</td><td class="t" data-l="Type">Card grid (locked)</td><td class="opt" data-l="Format">Section header: &ldquo;Explore Flameback Tools&rdquo;. Cards: Asset Map &middot; Portfolio X-Ray &middot; [additional tools TBD]. Each card shows tool name, 1-line description.</td><td data-l="Logic">Locked.</td></tr>
+            <tr><td class="f" data-l="Field">Contact Us</td><td class="t" data-l="Type">Persistent footer action</td><td class="opt" data-l="Format">Label: &ldquo;Talk to us&rdquo;. Icon: chat bubble. Tap opens a sheet: WhatsApp the advisor &middot; Call the desk &middot; Email &middot; In-app message.</td><td data-l="Logic">Always visible. WhatsApp deep link reuses the <b>S-D04</b> advisor number config.</td></tr>
+          </tbody>
+        </table>
+        <a class="to-top" href="#toc">&uarr; Back to contents</a>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ====================================================== -->
+  <!-- ============ SECTION D ============ -->
+  <!-- ====================================================== -->
+  <section class="sec" id="section-d">
+    <div class="wrap">
+      <div class="sec-divider">
+        <span class="lab"><span class="l"></span><span class="n">D</span>Invest flows (post-profile)</span>
+        <h2>Section D &mdash; <em>Invest flows</em></h2>
+        <p class="intro">Single entry point from <b>S-C01</b> via the &ldquo;Let&rsquo;s build your portfolio&rdquo; CTA. Amount entry, path selection, the strategy marketplace, and the in-flow advisor escalation.</p>
+      </div>
+
+      <!-- S-D01 -->
+      <article class="screen" id="s-d01">
+        <div class="scr-head"><span class="chip">S-D01</span><h3>Amount Entry</h3></div>
+        <div class="scr-meta"><span class="timing">Post-Profile &middot; ~1 minute</span><span class="path-tag">Post-Profile</span><a class="view-link" href="flameback-app-amount.html">View screen &rarr;</a></div>
+        <div class="block-lab">Fields &amp; inputs</div>
+        <table class="tbl">
+          <thead><tr><th style="width:24%">Field / Input</th><th style="width:18%">Type</th><th style="width:30%">Options / Format</th><th>Validation &amp; Logic</th></tr></thead>
+          <tbody>
+            <tr><td class="f" data-l="Field">Starting investment</td><td class="t" data-l="Type">Currency input</td><td class="opt" data-l="Format">Hint: &ldquo;about X% of your net worth&rdquo; &mdash; live.</td><td data-l="Logic">Required.</td></tr>
+            <tr><td class="f" data-l="Field">Monthly SIP</td><td class="t" data-l="Type">Currency input</td><td class="opt" data-l="Format">&mdash;</td><td data-l="Logic">Optional.</td></tr>
+            <tr><td class="f" data-l="Field">Investment horizon</td><td class="t" data-l="Type">Single-select chips</td><td class="opt" data-l="Format">1&ndash;3 yr / 3&ndash;5 yr / 5&ndash;10 yr / 10+ yr</td><td data-l="Logic">Required.</td></tr>
+            <tr><td class="f" data-l="Field">Next: Build Portfolio CTA</td><td class="t" data-l="Type">Primary CTA</td><td class="opt" data-l="Format">&mdash;</td><td data-l="Logic">Routes to <b>S-D02</b>.</td></tr>
+          </tbody>
+        </table>
+      </article>
+
+      <!-- S-D02 -->
+      <article class="screen" id="s-d02">
+        <div class="scr-head"><span class="chip">S-D02</span><h3>Portfolio Path Selection</h3></div>
+        <div class="scr-meta"><span class="timing">Post-Profile &middot; ~20 seconds</span><span class="path-tag">Post-Profile</span><a class="view-link" href="flameback-app-portfolio-path.html">View screen &rarr;</a></div>
+        <p class="purpose"><b>Purpose.</b> User chooses how to build their portfolio from three options. Pre-filled context bar shows their risk score and investment amounts from <b>S-D01</b>. All three paths are available regardless of risk tier.</p>
+        <div class="block-lab">Fields &amp; inputs</div>
+        <table class="tbl">
+          <thead><tr><th style="width:20%">Field / Input</th><th style="width:13%">Type</th><th style="width:30%">Options / Format</th><th>Validation &amp; Logic</th></tr></thead>
+          <tbody>
+            <tr><td class="f" data-l="Field">Context bar</td><td class="t" data-l="Type">Display only</td><td class="opt" data-l="Format">Risk score [score] &middot; Strategy tier [tier] &middot; Investment &#8377;[lumpsum] + &#8377;[SIP]/mo.</td><td data-l="Logic">Pre-filled from profile and <b>S-D01</b>. Not editable here.</td></tr>
+            <tr><td class="f" data-l="Field">AI-Optimised Portfolio card <span class="opt">[RECOMMENDED]</span></td><td class="t" data-l="Type">Tappable card</td><td class="opt" data-l="Format">RECOMMENDED badge. Profile-Matched &middot; Auto-Rebalance. Stats: Time = Instant &middot; Decisions = None needed &middot; Best for = Most investors.</td><td data-l="Logic">Routes to <b>S-H01</b>. Optimisation engine selects strategy mix and weights based on Final Score, investment amounts, horizon, and objective.</td></tr>
+            <tr><td class="f" data-l="Field">Build Your Own card</td><td class="t" data-l="Type">Tappable card</td><td class="opt" data-l="Format">Full Control &middot; Strategy Marketplace &middot; Guardrailed. Stats: Time = 5&ndash;10 min &middot; Decisions = You choose &middot; Best for = Experienced investors.</td><td data-l="Logic">Routes to <b>S-D03</b>. Available to all risk tiers. Guardrails enforced throughout.</td></tr>
+            <tr><td class="f" data-l="Field">Talk to an Advisor card</td><td class="t" data-l="Type">Tappable card</td><td class="opt" data-l="Format">Human Guidance &middot; Profile Pre-Reviewed &middot; No Obligation. Stats: Time = 20 min call &middot; Decisions = Guided &middot; Best for = First-time investors.</td><td data-l="Logic">Routes to <b>S-D04</b> (WhatsApp redirect). Profile data already shared with advisor before call.</td></tr>
+            <tr><td class="f" data-l="Field">Explainer strip</td><td class="t" data-l="Type">Static display</td><td class="opt" data-l="Format">&ldquo;All three paths lead to the same place &mdash; a Cruise portfolio you review and approve before money moves. You&rsquo;re always in control.&rdquo;</td><td data-l="Logic">Display only. Always shown.</td></tr>
+          </tbody>
+        </table>
+      </article>
+
+      <!-- S-D03 -->
+      <article class="screen" id="s-d03">
+        <div class="scr-head"><span class="chip">S-D03</span><h3>Build Your Own &mdash; Strategy Marketplace</h3></div>
+        <div class="scr-meta"><span class="timing">Post-Profile &middot; ~5&ndash;10 minutes</span><span class="path-tag">Post-Profile</span><a class="view-link" href="flameback-app-marketplace.html">View screen &rarr;</a></div>
+        <p class="purpose"><b>Purpose.</b> Full-width marketplace UI. On entry, lands the user on their recommended risk band (derived from Final Score + Profile Score) and displays the two strategies available at that band &mdash; one Static, one Dynamic &mdash; side by side. A risk spectrum slider lets the user shift between four bands (Conservative &harr; Very Aggressive); the cards update to reflect the active band. The user picks one strategy, allocates an amount, and proceeds. Choosing a band other than recommended triggers an amber warning but is not blocked. Strategy names are placeholders.</p>
+        <div class="block-lab">Part A &mdash; Risk spectrum and strategy cards</div>
+        <table class="tbl">
+          <thead><tr><th style="width:18%">Field / Input</th><th style="width:15%">Type</th><th style="width:32%">Options / Format</th><th>Validation &amp; Logic</th></tr></thead>
+          <tbody>
+            <tr><td class="f" data-l="Field">Risk spectrum slider</td><td class="t" data-l="Type">Horizontal slider (4 stops)</td><td class="opt" data-l="Format">Coloured gradient bar left (green/stable) to right (red/high-risk). Stops: Conservative &middot; Moderate &middot; Aggressive &middot; Very Aggressive. Anchor labels: &ldquo;Less Risk &rarr; Stable Returns&rdquo; (left), &ldquo;More Risk &rarr; Higher Returns&rdquo; (right). Recommended band shows an orange &ldquo;Recommended for you&rdquo; badge.</td><td data-l="Logic">Lands on recommended band by default on first entry. Moving to any other band updates the two cards below. Browsing is free &mdash; no warning fires here. Selection committed only when the user taps [Select] on a card.</td></tr>
+            <tr><td class="f" data-l="Field">Strategy cards (Static + Dynamic)</td><td class="t" data-l="Type">Card pair (side by side)</td><td class="opt" data-l="Format">Two cards for the active band. Each shows: strategy name &middot; Type tag (Static / Dynamic) &middot; Historic CAGR &middot; Maximum Drawdown &middot; Since Inception Return &middot; Investment Philosophy (1&ndash;2 lines) &middot; dropdown arrow expanding a performance graph (vs Nifty 500 TRI, default 1Y, selector 1M/3M/6M/1Y/3Y/All) &middot; [Select] CTA. Selected card shows orange border + &ldquo;&#10003; Selected&rdquo; badge.</td><td data-l="Logic">Cards re-render whenever the spectrum slider moves. Selecting a card replaces any prior selection. Graph dropdown is independent per card and remembers its expanded/collapsed state within a session.</td></tr>
+          </tbody>
+        </table>
+        <div class="block-lab">Part B &mdash; Strategy detail and invest</div>
+        <table class="tbl">
+          <thead><tr><th style="width:18%">Field / Input</th><th style="width:15%">Type</th><th style="width:32%">Options / Format</th><th>Validation &amp; Logic</th></tr></thead>
+          <tbody>
+            <tr><td class="f" data-l="Field">Card selection behaviour</td><td class="t" data-l="Type">Card tap</td><td class="opt" data-l="Format">Each card carries a [Select] CTA. The graph dropdown lets the user expand performance, risk metrics, and holdings before deciding &mdash; toggles independently of selection.</td><td data-l="Logic">Selecting is a deliberate final step: tapping [Select] commits the strategy and routes forward &mdash; first to the band-override guardrail (Part D), then to the Invest panel. Only one strategy selectable across the whole screen. If selected band differs from recommended, the override guardrail fires; if bands match, route straight to Invest.</td></tr>
+            <tr><td class="f" data-l="Field">Know More &mdash; factsheet</td><td class="t" data-l="Type">Expandable panel</td><td class="opt" data-l="Format">Triggered by the dropdown arrow. Expands inline below that card. Shows: Performance chart vs Nifty 500 TRI with period selector &middot; Trailing returns table &middot; Risk metrics grid (Sharpe, Sortino, Calmar, Max DD, Vol, Win rate).</td><td data-l="Logic">Each card&rsquo;s detail expansion toggles independently &mdash; both cards may be expanded at once for comparison. Chart period default: 1Y.</td></tr>
+            <tr><td class="f" data-l="Field">Select CTA</td><td class="t" data-l="Type">Primary CTA (per card)</td><td class="opt" data-l="Format">Orange filled button. Label: &ldquo;Select [Strategy Name]&rdquo;. Selected card&rsquo;s CTA flips to outlined &ldquo;&#10003; Selected&rdquo; and remains tappable to re-select.</td><td data-l="Logic">Tapping [Select] commits the strategy and routes forward. If selected band == recommended band, routes straight to the Invest panel. If different, the override gate (Part D) fires. Selecting a new card overrides the prior selection silently.</td></tr>
+            <tr><td class="f" data-l="Field">Invest panel</td><td class="t" data-l="Type">Expandable panel</td><td class="opt" data-l="Format">Opens after [Select] commit (and after the guardrail clears, if it fired). Shows: &#8377; amount field (large currency input, pre-filled with the user&rsquo;s total investable amount from <b>S-D01</b>) &middot; Lumpsum / SIP toggle &middot; SIP frequency selector (Monthly default) &middot; SIP amount field. CTA: &ldquo;Review Portfolio &middot; &#8377;[amount] &rarr;&rdquo;.</td><td data-l="Logic">The full amount goes into the single selected strategy &mdash; no split. Amount must be &ge; selected strategy&rsquo;s minimum and &le; user&rsquo;s total investable amount. Lumpsum and SIP are independent inputs &mdash; either or both may be set.</td></tr>
+          </tbody>
+        </table>
+        <div class="block-lab">Part D &mdash; Guardrail (band override)</div>
+        <table class="tbl">
+          <thead><tr><th style="width:18%">Field / Input</th><th style="width:15%">Type</th><th style="width:32%">Options / Format</th><th>Validation &amp; Logic</th></tr></thead>
+          <tbody>
+            <tr><td class="f" data-l="Field">Override gate</td><td class="t" data-l="Type">Trigger</td><td class="opt" data-l="Format">Fires when the user taps [Select] on a strategy whose band differs from the recommended band. Does not fire on slider movement, card expansion, or browsing. If selected band == recommended band, no gate appears.</td><td data-l="Logic">Single guardrail per session of S-D03. Acknowledgement is recorded once and not re-prompted for the same selection. Changing the selection re-evaluates and may re-fire the gate. The same check fires when the user taps &ldquo;Adjust allocation&rdquo; on <b>S-H01</b> and lands here.</td></tr>
+            <tr><td class="f" data-l="Field">Override waiver modal</td><td class="t" data-l="Type">Modal overlay</td><td class="opt" data-l="Format">Selected strategy summary + Recommended strategy summary for comparison &middot; Plain-language risk explanation of the deviation &middot; Waiver checkbox: &ldquo;I understand the selected strategy sits outside the band recommended for my risk profile. I accept this deviation and full responsibility for the outcome.&rdquo; &middot; [Switch to recommended] secondary CTA &middot; [Proceed with selection] primary CTA (disabled until checkbox ticked).</td><td data-l="Logic">[Switch to recommended] routes back to the cards with the recommended band active and its matching strategy pre-selected. [Proceed with selection] commits the override, records the waiver (text, selected strategy, recommended strategy, timestamp) for SEBI audit, and routes to the Invest panel.</td></tr>
+          </tbody>
+        </table>
+      </article>
+
+      <!-- S-D04 -->
+      <article class="screen" id="s-d04">
+        <div class="scr-head"><span class="chip">S-D04</span><h3>Talk to Advisor &mdash; WhatsApp Redirect</h3></div>
+        <div class="scr-meta"><span class="timing">Post-Profile &middot; ~30 seconds + async</span><span class="path-tag">Post-Profile</span><a class="view-link" href="flameback-app-advisor-config.html">View screen &rarr;</a></div>
+        <p class="purpose"><b>Purpose.</b> In-flow advisor escalation &mdash; distinct from Path B (<b>S-K01</b> scheduled call). Reached when the user taps &ldquo;Talk to advisor first&rdquo; on <b>S-D02</b>. User is redirected to WhatsApp with a pre-filled message to Flameback Capital&rsquo;s advisor number. On returning, a confirmation state is shown while they await the advisor callback.</p>
+        <div class="block-lab">Fields &amp; inputs</div>
+        <table class="tbl">
+          <thead><tr><th style="width:18%">Field / Input</th><th style="width:15%">Type</th><th style="width:32%">Options / Format</th><th>Validation &amp; Logic</th></tr></thead>
+          <tbody>
+            <tr><td class="f" data-l="Field">Pre-redirect screen</td><td class="t" data-l="Type">Display + CTA</td><td class="opt" data-l="Format">Shows: &ldquo;We&rsquo;ll put you with one of our advisors.&rdquo; &middot; Advisor availability hours &middot; What the advisor has already seen (risk score, investment amounts, tier) &middot; &ldquo;Open WhatsApp&rdquo; CTA (orange, full-width).</td><td data-l="Logic">Display only before redirect. Advisor context is derived from profile and <b>S-D03</b> inputs.</td></tr>
+            <tr><td class="f" data-l="Field">WhatsApp redirect</td><td class="t" data-l="Type">Deep link</td><td class="opt" data-l="Format">Opens WhatsApp with Flameback Capital&rsquo;s registered advisory number. Pre-filled: &ldquo;Hi &mdash; I&rsquo;d like to talk through my portfolio with an advisor. My risk score&rsquo;s [score], and I&rsquo;m looking at &#8377;[lumpsum] plus &#8377;[SIP]/month.&rdquo;</td><td data-l="Logic">Uses wa.me deep link with URL-encoded pre-filled text. User can edit the message before sending. Flameback WhatsApp number is a system configuration value.</td></tr>
+            <tr><td class="f" data-l="Field">Return state (after redirect)</td><td class="t" data-l="Type">Confirmation screen</td><td class="opt" data-l="Format">On return: &ldquo;We&rsquo;ve got it from here&rdquo; confirmation. Sub-text: &ldquo;One of our advisors will go through your profile and call you within [X] business hours.&rdquo; Two secondary options: [Start with AI Portfolio] and [Build My Own Portfolio].</td><td data-l="Logic">Return detection via app resume event. Screen persists until advisor contact is logged or user explicitly chooses another path.</td></tr>
+            <tr><td class="f" data-l="Field">Return state &mdash; secondary paths</td><td class="t" data-l="Type">Two option cards</td><td class="opt" data-l="Format">Card 1: &ldquo;Start with AI Portfolio&rdquo; &middot; Instant &middot; Can always change later. Card 2: &ldquo;Build My Own&rdquo; &middot; 5&ndash;10 min &middot; Full control. Both show same metadata as <b>S-D02</b>.</td><td data-l="Logic">Tapping either routes to <b>S-H01</b> (AI) or <b>S-D03</b> (Build Your Own) directly, bypassing <b>S-D02</b> (path selection already happened by going to advisor).</td></tr>
+          </tbody>
+        </table>
+        <a class="to-top" href="#toc">&uarr; Back to contents</a>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ====================================================== -->
+  <!-- ============ SECTION H ============ -->
+  <!-- ====================================================== -->
+  <section class="sec" id="section-h">
+    <div class="wrap">
+      <div class="sec-divider">
+        <span class="lab"><span class="l"></span><span class="n">H</span>Portfolio reveal &amp; naming</span>
+        <h2>Section H &mdash; <em>Reveal</em></h2>
+        <p class="intro">The convergence point for all paths. The user sees the single strategy they&rsquo;ll invest into &mdash; with metrics, composition, and a 10-year three-scenario projection &mdash; then names the portfolio to make it theirs.</p>
+      </div>
+
+      <!-- S-H01 -->
+      <article class="screen" id="s-h01">
+        <div class="scr-head"><span class="chip">S-H01</span><h3>Strategy Reveal &amp; Projection</h3></div>
+        <div class="scr-meta"><span class="timing">All paths (convergence)</span><span class="path-tag">AI / BYO</span><a class="view-link" href="flameback-app-portfolio-review.html">View screen &rarr;</a></div>
+        <p class="purpose"><b>Purpose.</b> Shows the user the single strategy they&rsquo;ll invest into &mdash; selected by the AI optimiser (AI path) or chosen by the user from the spectrum (BYO path) &mdash; with its key metrics, debt/equity composition, and 10-year three-scenario projection. Both paths display the same layout. The Final Score (first revealed on <b>S-C01</b>) is shown here again for context. User can change the strategy or proceed to confirm before any money moves.</p>
+        <div class="block-lab">Part A &mdash; Hero header</div>
+        <table class="tbl">
+          <thead><tr><th style="width:18%">Field / Input</th><th style="width:13%">Type</th><th style="width:34%">Options / Format</th><th>Validation &amp; Logic</th></tr></thead>
+          <tbody>
+            <tr><td class="f" data-l="Field">Navy hero banner</td><td class="t" data-l="Type">Display only</td><td class="opt" data-l="Format">Dark navy background. Path type badge (AI-OPTIMISED or CUSTOM) &middot; Strategy name &middot; Type tag (Static / Dynamic) &middot; Risk band &middot; Final Score (e.g. &ldquo;Score 62 / 100&rdquo;) &middot; &ldquo;Your Strategy&rdquo; heading &middot; Sub-text: &ldquo;Selected by Flameback&rsquo;s optimisation engine &middot; Matched to your risk profile.&rdquo; (AI) or &ldquo;Selected by you &middot; Within your risk profile.&rdquo; (BYO).</td><td data-l="Logic">Score shown is the same Final Score the user first saw on <b>S-C01</b>. Badge differs by path.</td></tr>
+            <tr><td class="f" data-l="Field">Investment summary strip</td><td class="t" data-l="Type">Display only</td><td class="opt" data-l="Format">4-column grid: Initial &middot; Monthly SIP &middot; Horizon &middot; Objective. Values pulled from <b>S-D01</b>.</td><td data-l="Logic">Display only. Not editable here.</td></tr>
+          </tbody>
+        </table>
+        <div class="block-lab">Part B &mdash; Selected strategy &amp; composition</div>
+        <table class="tbl">
+          <thead><tr><th style="width:18%">Field / Input</th><th style="width:13%">Type</th><th style="width:34%">Options / Format</th><th>Validation &amp; Logic</th></tr></thead>
+          <tbody>
+            <tr><td class="f" data-l="Field">Debt / Equity composition bar</td><td class="t" data-l="Type">Display only</td><td class="opt" data-l="Format">Two-segment colour bar proportional to the strategy&rsquo;s asset mix: Equity (orange) and Debt (navy). Percentage labels on each segment. Cash/other shown as a thin grey sliver if present.</td><td data-l="Logic">Composition is a property of the selected strategy (from product data), identical on AI and BYO paths once a strategy is chosen.</td></tr>
+            <tr><td class="f" data-l="Field">Strategy summary card</td><td class="t" data-l="Type">Display only</td><td class="opt" data-l="Format">Strategy name &middot; Type &middot; Risk band &middot; Historic CAGR &middot; Maximum Drawdown &middot; Since Inception Return &middot; &#8377; Amount allocated &middot; Investment Philosophy &middot; dropdown arrow expanding the performance graph (vs Nifty 500 TRI, selector 1M/3M/6M/1Y/3Y/All).</td><td data-l="Logic">AI path: strategy chosen by the optimisation engine. BYO path: strategy selected on <b>S-D02</b> (<b>S-D03</b>). Graph dropdown state persists until the user leaves the screen.</td></tr>
+            <tr><td class="f" data-l="Field">Top holdings preview</td><td class="t" data-l="Type">Display list</td><td class="opt" data-l="Format">Top 5 holdings: instrument name &middot; type (Equity / Debt / Cash) &middot; sector or category &middot; weight % within the strategy. &ldquo;View all holdings&rdquo; link expands the full list inline. Cream background box.</td><td data-l="Logic">Holdings sourced from the strategy&rsquo;s product data, refreshed at strategy load.</td></tr>
+            <tr><td class="f" data-l="Field">Change strategy link</td><td class="t" data-l="Type">Secondary link</td><td class="opt" data-l="Format">&ldquo;Change strategy&rdquo; &mdash; below the summary card.</td><td data-l="Logic">Routes to <b>S-D02</b> (Strategy Marketplace) with the spectrum slider pre-set to the current strategy&rsquo;s band and the current strategy highlighted as &ldquo;Current selection.&rdquo; AI path users see an inline note: &ldquo;You&rsquo;re overriding the AI-selected strategy.&rdquo; Returning with a new selection updates S-H01 in place. Override guardrail (Part E) applies if the new band differs from recommended.</td></tr>
+          </tbody>
+        </table>
+        <div class="block-lab">Part C &mdash; Strategy metrics</div>
+        <table class="tbl">
+          <thead><tr><th style="width:18%">Field / Input</th><th style="width:13%">Type</th><th style="width:34%">Options / Format</th><th>Validation &amp; Logic</th></tr></thead>
+          <tbody>
+            <tr><td class="f" data-l="Field">4-metric grid</td><td class="t" data-l="Type">Display only</td><td class="opt" data-l="Format">Historic CAGR (green) &middot; Sharpe Ratio &middot; Maximum Drawdown (red) &middot; Correlation vs Nifty 500 TRI.</td><td data-l="Logic">Values taken directly from the selected strategy&rsquo;s product data &mdash; no blending. Green for positive, red for drawdown, neutral for others.</td></tr>
+          </tbody>
+        </table>
+        <div class="block-lab">Part D &mdash; Three-scenario projection (FV calculator)</div>
+        <p class="purpose" style="font-size:13.5px;color:var(--ink-soft)">Replaces the standalone FV calculator; embedded in S-H01. Defaults pre-populated from <b>S-D01</b> inputs and the strategy&rsquo;s historic returns. User can adjust horizon and contributions live &mdash; chart and corpus update in real-time. See Section 5.2.6 for the formula.</p>
+        <table class="tbl">
+          <thead><tr><th style="width:18%">Field / Input</th><th style="width:13%">Type</th><th style="width:34%">Options / Format</th><th>Validation &amp; Logic</th></tr></thead>
+          <tbody>
+            <tr><td class="f" data-l="Field">Growth curve chart</td><td class="t" data-l="Type">Computed SVG chart</td><td class="opt" data-l="Format">Navy background. Three lines: Bullish (green dashed) &middot; Base case (orange solid, fill gradient) &middot; Bearish (red dashed) &middot; Contributions line (white dashed, thin). X-axis: Today / 3yr / 5yr / 8yr / 10yr. Y-axis: &#8377; corpus. End-point labels per scenario.</td><td data-l="Logic">Chart updates live on input changes. Disclaimer required: &ldquo;Projections based on backtested strategy returns. Not a guarantee of future performance.&rdquo;</td></tr>
+            <tr><td class="f" data-l="Field">Three scenario cards</td><td class="t" data-l="Type">Display only</td><td class="opt" data-l="Format">Bullish (green) &middot; Base Case (orange) &middot; Bearish (red). Each shows: scenario label &middot; corpus value &middot; CAGR &middot; brief assumption text.</td><td data-l="Logic">CAGRs derived from the strategy&rsquo;s historic return distribution (Bullish = 90th percentile rolling 5y CAGR; Base = median; Bearish = 10th percentile). Stored with product data.</td></tr>
+            <tr><td class="f" data-l="Field">Contributions vs system wealth</td><td class="t" data-l="Type">Display only</td><td class="opt" data-l="Format">Two-column: &ldquo;Your Contributions (10yr)&rdquo; = lumpsum + (SIP &times; 120) &middot; &ldquo;System-Generated Wealth (base)&rdquo; = base corpus minus contributions. System wealth in green. Expressed as &ldquo;X% of what you put in&rdquo;.</td><td data-l="Logic">Display only.</td></tr>
+          </tbody>
+        </table>
+        <div class="block-lab">Part E &mdash; Guardrail (strategy change) &amp; Part F &mdash; Actions</div>
+        <table class="tbl">
+          <thead><tr><th style="width:18%">Field / Input</th><th style="width:13%">Type</th><th style="width:34%">Options / Format</th><th>Validation &amp; Logic</th></tr></thead>
+          <tbody>
+            <tr><td class="f" data-l="Field">Strategy-change guardrail</td><td class="t" data-l="Type">Trigger</td><td class="opt" data-l="Format">When the user taps &ldquo;Change strategy&rdquo; and returns from <b>S-D02</b> with a strategy in a band other than recommended, the same single override guardrail from S-D03 Part D applies. Selection Summary shows the &ldquo;Override&rdquo; badge.</td><td data-l="Logic">Tapping &ldquo;Make this mine&rdquo; opens the override waiver modal. Returning with a strategy in the recommended band clears any prior override state and routes directly to <b>S-H02</b> on confirm.</td></tr>
+            <tr><td class="f" data-l="Field">What happens next box</td><td class="t" data-l="Type">Plain-language display</td><td class="opt" data-l="Format">Cream/dark box. Explains: strategy created in account &middot; initial lumpsum deployed within 3 business days &middot; SIP starts on 5th of next month &middot; user approves every trade (RIA model) &middot; strategy switchable anytime from the Lobby.</td><td data-l="Logic">Always shown before CTA. Copy adapts slightly between AI and BYO paths.</td></tr>
+            <tr><td class="f" data-l="Field">Make this mine CTA</td><td class="t" data-l="Type">Primary CTA</td><td class="opt" data-l="Format">Orange, full-width. Label: &ldquo;Make this mine &rarr;&rdquo;.</td><td data-l="Logic">Routes to <b>S-H02</b>. Investment cannot be placed until formal onboarding (KYC, PAN, bank) is complete.</td></tr>
+            <tr><td class="f" data-l="Field">Adjust allocation</td><td class="t" data-l="Type">Secondary link</td><td class="opt" data-l="Format">Below primary CTA.</td><td data-l="Logic">Routes to <b>S-D02</b> (Strategy Marketplace) with the current strategy pre-highlighted on the spectrum.</td></tr>
+            <tr><td class="f" data-l="Field">Talk to advisor first</td><td class="t" data-l="Type">Tertiary link</td><td class="opt" data-l="Format">Below adjust link.</td><td data-l="Logic">Routes to <b>S-D04</b>. Profile and current strategy draft (name, band, &#8377; amount, override flag) passed as context.</td></tr>
+          </tbody>
+        </table>
+      </article>
+
+      <!-- S-H02 -->
+      <article class="screen" id="s-h02">
+        <div class="scr-head"><span class="chip">S-H02</span><h3>Name Your Portfolio</h3></div>
+        <div class="scr-meta"><span class="timing">~30 seconds</span><span class="path-tag">All paths (convergence)</span><a class="view-link" href="flameback-app-portfolio-actions.html">View screen &rarr;</a></div>
+        <p class="purpose"><b>Purpose.</b> Final step before activation. User gives the portfolio a personal name so it shows up in the Lobby as theirs, not as a strategy SKU. One field, one CTA &mdash; the moment the strategy becomes the user&rsquo;s.</p>
+        <div class="block-lab">Fields &amp; inputs</div>
+        <table class="tbl">
+          <thead><tr><th style="width:18%">Field / Input</th><th style="width:13%">Type</th><th style="width:32%">Options / Format</th><th>Validation &amp; Logic</th></tr></thead>
+          <tbody>
+            <tr><td class="f" data-l="Field">Heading</td><td class="t" data-l="Type">Display</td><td class="opt" data-l="Format">Headline (large): &ldquo;Give it a name.&rdquo; Sub: &ldquo;Something you&rsquo;ll recognise &mdash; this is yours now.&rdquo;</td><td data-l="Logic">Static. Centred above the input.</td></tr>
+            <tr><td class="f" data-l="Field">Portfolio name input</td><td class="t" data-l="Type">Text input</td><td class="opt" data-l="Format">Single-line. Placeholder examples cycle: &ldquo;My retirement plan&rdquo; &middot; &ldquo;London 2030&rdquo; &middot; &ldquo;Mum&rsquo;s gift&rdquo; &middot; &ldquo;FU money&rdquo;. Character counter shown when typing.</td><td data-l="Logic">Required. 2&ndash;40 characters. Letters, numbers, spaces, and basic punctuation. No emoji in v1.0. Trimmed on save.</td></tr>
+            <tr><td class="f" data-l="Field">Suggested names</td><td class="t" data-l="Type">Chip row</td><td class="opt" data-l="Format">Three suggested-name chips, generated from profile context: e.g. &ldquo;Long-term wealth&rdquo; &middot; &ldquo;My growth bet&rdquo; &middot; &ldquo;Portfolio one&rdquo;. Tapping a chip fills the input.</td><td data-l="Logic">Suggestions adapt to the user&rsquo;s strategy band and horizon. Optional &mdash; user can ignore and type their own.</td></tr>
+            <tr><td class="f" data-l="Field">Confirm CTA</td><td class="t" data-l="Type">Primary CTA</td><td class="opt" data-l="Format">Orange, full-width. Label: &ldquo;This is mine &rarr;&rdquo;.</td><td data-l="Logic">Disabled until a valid name is entered. Saves the portfolio name, persists the strategy + &#8377; amount + cadence from <b>S-H01</b>, and routes to <b>S-I01</b> (KYC). Once tapped, the portfolio is committed.</td></tr>
+            <tr><td class="f" data-l="Field">Back to Reveal</td><td class="t" data-l="Type">Secondary link</td><td class="opt" data-l="Format">Below the CTA. Label: &ldquo;Back to strategy details&rdquo;.</td><td data-l="Logic">Routes to <b>S-H01</b> with the strategy selection preserved. Naming state held in memory but not committed until the primary CTA is tapped.</td></tr>
+          </tbody>
+        </table>
+        <a class="to-top" href="#toc">&uarr; Back to contents</a>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ====================================================== -->
+  <!-- ============ SECTION I ============ -->
+  <!-- ====================================================== -->
+  <section class="sec" id="section-i">
+    <div class="wrap">
+      <div class="sec-divider">
+        <span class="lab"><span class="l"></span><span class="n">I</span>Activation &amp; deployment</span>
+        <h2>Section I &mdash; <em>Activation</em></h2>
+        <p class="intro">Reached after the user confirms their portfolio name on <b>S-H02</b>. Five sequential screens take the user from a named portfolio to a live, deployed position: KYC, Advisory Agreement, Broker Linking, Fee Plan &amp; Payment, Deployment. Each step blocks the next; partial completion is resumable from the Lobby.</p>
+      </div>
+
+      <!-- S-I01 -->
+      <article class="screen" id="s-i01">
+        <div class="scr-head"><span class="chip">S-I01</span><h3>KYC Verification</h3></div>
+        <div class="scr-meta"><span class="timing">~3&ndash;5 minutes (vendor flow)</span><span class="path-tag">Activation</span><a class="view-link" href="flameback-app-kyc.html">View screen &rarr;</a></div>
+        <p class="purpose"><b>Purpose.</b> First step of activation. Warm hand-off to the KYC vendor. User completes PAN, Aadhaar, address, and selfie/liveness via vendor&rsquo;s flow, then returns to Flameback.</p>
+        <div class="block-lab">Fields &amp; inputs</div>
+        <table class="tbl">
+          <thead><tr><th style="width:18%">Field / Input</th><th style="width:14%">Type</th><th style="width:34%">Options / Format</th><th>Validation &amp; Logic</th></tr></thead>
+          <tbody>
+            <tr><td class="f" data-l="Field">Intro screen</td><td class="t" data-l="Type">Display + CTA</td><td class="opt" data-l="Format">Headline: &ldquo;Let&rsquo;s get you set up.&rdquo; Sub: &ldquo;First, a quick KYC &mdash; we&rsquo;ll hand you over to our verification partner. Five minutes, and we&rsquo;re done.&rdquo; What you&rsquo;ll need: PAN card &middot; Aadhaar &middot; a quick selfie. [Begin KYC] primary CTA (orange).</td><td data-l="Logic">CTA enabled by default. Tapping routes to the KYC vendor via deep link or in-app webview. Profile context (name, mobile, email) passed to vendor.</td></tr>
+            <tr><td class="f" data-l="Field">Vendor handoff</td><td class="t" data-l="Type">External vendor flow</td><td class="opt" data-l="Format">User completes vendor&rsquo;s verification steps outside Flameback&rsquo;s UI. On return, vendor posts completion event with status (approved / rejected / pending).</td><td data-l="Logic">Flameback waits for webhook confirmation; user sees a Return state in the meantime.</td></tr>
+            <tr><td class="f" data-l="Field">Return state &mdash; success</td><td class="t" data-l="Type">Confirmation screen</td><td class="opt" data-l="Format">Headline: &ldquo;That&rsquo;s KYC sorted.&rdquo; Sub: &ldquo;You&rsquo;re verified. Next, the advisory agreement.&rdquo; [Continue] primary CTA.</td><td data-l="Logic">Shown when vendor returns approved status. Routes to <b>S-I02</b>.</td></tr>
+            <tr><td class="f" data-l="Field">Return state &mdash; pending</td><td class="t" data-l="Type">Status screen</td><td class="opt" data-l="Format">Headline: &ldquo;KYC under review.&rdquo; Sub: &ldquo;Your verification is being reviewed. This usually takes a few hours. We&rsquo;ll notify you the moment it&rsquo;s cleared.&rdquo; Secondary CTA: [Back to Lobby].</td><td data-l="Logic">Shown when vendor returns pending. Flow paused at this step; resumable from Lobby once cleared.</td></tr>
+            <tr><td class="f" data-l="Field">Return state &mdash; rejected</td><td class="t" data-l="Type">Error screen</td><td class="opt" data-l="Format">Headline: &ldquo;We need another look.&rdquo; Primary CTA: [Retry KYC]. Secondary CTA: [Talk to us] (routes to <b>S-D04</b>).</td><td data-l="Logic">Shown when vendor returns rejected. Retry re-enters vendor flow with same context.</td></tr>
+          </tbody>
+        </table>
+        <div class="pm-input"><b>PM Input &mdash; KYC Vendor Selection</b><em>Vendor locked: Bureau (eKYC). Open: (1) Deep link vs in-app webview integration. (2) Webhook spec for status callbacks. (3) Data fields passed to Bureau and retained on return. (4) Handling of CKYC re-use when the user is already KRA-verified.</em></div>
+      </article>
+
+      <!-- S-I02 -->
+      <article class="screen" id="s-i02">
+        <div class="scr-head"><span class="chip">S-I02</span><h3>Advisory Agreement</h3></div>
+        <div class="scr-meta"><span class="timing">~3 minutes (vendor flow)</span><span class="path-tag">Activation</span><a class="view-link" href="flameback-app-advisory-agreement.html">View screen &rarr;</a></div>
+        <p class="purpose"><b>Purpose.</b> Reached after KYC clears. User reviews and e-signs the Investment Advisory Agreement via the agreement vendor (e-sign + Aadhaar OTP based).</p>
+        <div class="block-lab">Fields &amp; inputs</div>
+        <table class="tbl">
+          <thead><tr><th style="width:18%">Field / Input</th><th style="width:14%">Type</th><th style="width:34%">Options / Format</th><th>Validation &amp; Logic</th></tr></thead>
+          <tbody>
+            <tr><td class="f" data-l="Field">Intro screen</td><td class="t" data-l="Type">Display + CTA</td><td class="opt" data-l="Format">Headline: &ldquo;Now the advisory agreement.&rdquo; Sub: &ldquo;This is the contract between you and Flameback Capital as your SEBI-registered investment adviser.&rdquo; What you&rsquo;ll need: &ldquo;Keep your Aadhaar and registered mobile handy &mdash; you&rsquo;ll receive an OTP to sign.&rdquo; [Review &amp; Sign] primary CTA. [Read the agreement] secondary link opens a read-only preview.</td><td data-l="Logic">CTA enabled by default. Tapping routes to the agreement vendor with pre-filled user details. Read-only preview generated client-side.</td></tr>
+            <tr><td class="f" data-l="Field">Vendor handoff</td><td class="t" data-l="Type">External e-sign flow</td><td class="opt" data-l="Format">User reviews the agreement, enters Aadhaar OTP, and signs via vendor&rsquo;s flow. Signed document returned via webhook.</td><td data-l="Logic">Stored against user record for SEBI audit.</td></tr>
+            <tr><td class="f" data-l="Field">Return state &mdash; success</td><td class="t" data-l="Type">Confirmation screen</td><td class="opt" data-l="Format">Headline: &ldquo;All signed.&rdquo; Sub: &ldquo;Your advisory agreement is in your records. Next, we&rsquo;ll link your broker.&rdquo; Secondary link: [View signed agreement]. [Continue] primary CTA.</td><td data-l="Logic">Shown on signed status. Routes to <b>S-I03</b>.</td></tr>
+            <tr><td class="f" data-l="Field">Return state &mdash; failed</td><td class="t" data-l="Type">Error screen</td><td class="opt" data-l="Format">Headline: &ldquo;Couldn&rsquo;t complete the signing.&rdquo; Sub: vendor-supplied reason. Primary CTA: [Try again]. Secondary CTA: [Talk to us].</td><td data-l="Logic">Shown when vendor returns failure. Retry re-enters vendor flow.</td></tr>
+          </tbody>
+        </table>
+        <div class="pm-input"><b>PM Input &mdash; Agreement Vendor Selection</b><em>Vendor locked: Digio (e-Sign via Aadhaar OTP). Open: (1) Agreement template (static PDF vs templated). (2) Storage and retrieval spec for signed documents. (3) Webhook spec for signing status callbacks.</em></div>
+      </article>
+
+      <!-- S-I03 -->
+      <article class="screen" id="s-i03">
+        <div class="scr-head"><span class="chip">S-I03</span><h3>Broker Linking</h3></div>
+        <div class="scr-meta"><span class="timing">~5&ndash;10 minutes (broker flow)</span><span class="path-tag">Activation</span><a class="view-link" href="flameback-app-broker-linking.html">View screen &rarr;</a></div>
+        <p class="purpose"><b>Purpose.</b> User connects a supported broker account. Pick from Flameback&rsquo;s list of integrated brokers. If the user already has an account with that broker, they log in to link it; otherwise they open a new account through the broker&rsquo;s flow.</p>
+        <div class="block-lab">Fields &amp; inputs</div>
+        <table class="tbl">
+          <thead><tr><th style="width:18%">Field / Input</th><th style="width:14%">Type</th><th style="width:34%">Options / Format</th><th>Validation &amp; Logic</th></tr></thead>
+          <tbody>
+            <tr><td class="f" data-l="Field">Broker list</td><td class="t" data-l="Type">Card grid</td><td class="opt" data-l="Format">Headline: &ldquo;Pick your broker.&rdquo; Sub: &ldquo;We&rsquo;ll connect your Flameback strategy to your broker account so trades can flow through.&rdquo; Cards per broker: logo &middot; broker name &middot; &ldquo;Existing account&rdquo; / &ldquo;New account&rdquo; tags &middot; 1-line note (e.g. typical opening time).</td><td data-l="Logic">User selects exactly one broker. Selection routes to that broker&rsquo;s choose-flow screen.</td></tr>
+            <tr><td class="f" data-l="Field">Broker handoff</td><td class="t" data-l="Type">External broker flow</td><td class="opt" data-l="Format">User completes login or new-account flow inside the broker&rsquo;s UI. On return, broker posts linking event with account ID and trading permissions scope.</td><td data-l="Logic">Flameback verifies the scope covers strategy deployment.</td></tr>
+            <tr><td class="f" data-l="Field">Return state &mdash; linked</td><td class="t" data-l="Type">Confirmation screen</td><td class="opt" data-l="Format">Headline: &ldquo;[Broker]&rsquo;s connected.&rdquo; Sub: &ldquo;Your broker account is connected. Next, fees.&rdquo; [Continue] primary CTA.</td><td data-l="Logic">Shown on successful link. Routes to <b>S-I04</b>.</td></tr>
+            <tr><td class="f" data-l="Field">Return state &mdash; failed / scope insufficient</td><td class="t" data-l="Type">Error screen</td><td class="opt" data-l="Format">Headline: &ldquo;We couldn&rsquo;t fully link [Broker].&rdquo; Sub: plain-language reason (login failed / trading permissions not granted / account still under broker review). Primary CTA: [Try again]. Secondary CTA: [Pick a different broker].</td><td data-l="Logic">Shown on failure or insufficient scope. Retry re-enters broker flow; broker-change resets the screen.</td></tr>
+          </tbody>
+        </table>
+        <div class="pm-input"><b>PM Input &mdash; Broker List &amp; Integration</b><em>Confirm: (1) Full list of supported brokers at launch (Zerodha + ?). (2) Integration mechanism per broker (OAuth / API key / iframe / deep link). (3) New-account referral flow per broker. (4) Trading-permissions scope required for strategy deployment per broker.</em></div>
+      </article>
+
+      <!-- S-I04 -->
+      <article class="screen" id="s-i04">
+        <div class="scr-head"><span class="chip">S-I04</span><h3>Fee Plan &amp; Payment</h3></div>
+        <div class="scr-meta"><span class="timing">~2 minutes</span><span class="path-tag">Activation</span><a class="view-link" href="flameback-app-fee-payment.html">View screen &rarr;</a></div>
+        <p class="purpose"><b>Purpose.</b> User pays the one-time onboarding fee (&#8377;5,000, offset against future advisory fees) and picks a billing cadence for the recurring advisory fee (0.9% of AUM per annum).</p>
+        <div class="block-lab">Fields &amp; inputs</div>
+        <table class="tbl">
+          <thead><tr><th style="width:18%">Field / Input</th><th style="width:14%">Type</th><th style="width:34%">Options / Format</th><th>Validation &amp; Logic</th></tr></thead>
+          <tbody>
+            <tr><td class="f" data-l="Field">Fee summary</td><td class="t" data-l="Type">Display block</td><td class="opt" data-l="Format">Block 1 &mdash; One-time fee: &#8377;5,000 onboarding fee. Caption: &ldquo;Fully offset against your advisory fees &mdash; a credit you draw down over your first few months.&rdquo; Block 2 &mdash; Advisory fee: 0.9% of AUM per annum. Caption: &ldquo;Charged on the value of your invested portfolio. Billed monthly, quarterly, or yearly &mdash; your choice.&rdquo;</td><td data-l="Logic">Both blocks always shown. Values pulled from system config.</td></tr>
+            <tr><td class="f" data-l="Field">Billing cadence</td><td class="t" data-l="Type">Single-select chips</td><td class="opt" data-l="Format">Monthly / Quarterly / Yearly. Default: Monthly. Each chip shows the implied per-period amount (0.9% p.a. &divide; 12 monthly, &divide; 4 quarterly, full 0.9% yearly). E.g. on &#8377;10L: &#8377;750/month &middot; &#8377;2,250/quarter &middot; &#8377;9,000/year.</td><td data-l="Logic">Required. User must select one before proceeding. Stored against user record; changeable later in account settings.</td></tr>
+            <tr><td class="f" data-l="Field">Pay onboarding fee</td><td class="t" data-l="Type">Primary CTA + payment sheet</td><td class="opt" data-l="Format">[Pay &#8377;5,000 &rarr;] primary CTA. Tapping opens Cashfree&rsquo;s in-app payment sheet (UPI / cards / netbanking). Sheet shows: amount, description (&ldquo;Flameback Capital onboarding fee&rdquo;), and selected payment method. Cashfree also provisions the recurring subscription mandate (e-NACH / UPI AutoPay).</td><td data-l="Logic">Payment processed via Cashfree (PG + subscriptions). On success, fee record stored, cadence committed, recurring advisory-fee mandate created via Cashfree Subscriptions. On failure, sheet surfaces error and offers retry.</td></tr>
+            <tr><td class="f" data-l="Field">Return state &mdash; paid</td><td class="t" data-l="Type">Confirmation screen</td><td class="opt" data-l="Format">Headline: &ldquo;You&rsquo;re set.&rdquo; Sub: &ldquo;Payment received. Let&rsquo;s deploy your strategy.&rdquo; [Deploy now &rarr;] primary CTA.</td><td data-l="Logic">Shown on successful payment. Routes to <b>S-I05</b>.</td></tr>
+            <tr><td class="f" data-l="Field">Return state &mdash; payment failed</td><td class="t" data-l="Type">Error screen</td><td class="opt" data-l="Format">Headline: &ldquo;Payment didn&rsquo;t go through.&rdquo; Sub: PG-supplied reason. Primary CTA: [Try again]. Secondary CTA: [Try a different method].</td><td data-l="Logic">Shown on payment failure. No state advance until payment clears.</td></tr>
+          </tbody>
+        </table>
+        <div class="pm-input"><b>PM Input &mdash; Payment Gateway &amp; Fee Mechanics</b><em>Vendor locked: Cashfree (Payment Gateway + Subscriptions) for both the one-time onboarding fee and the recurring advisory-fee mandate. Open: (1) Exact mechanism for offsetting onboarding fee &mdash; monthly drawdown vs lump credit. (2) Cadence-change rules and proration on switch. (3) Refund policy on incomplete activation. (4) Mandate type per cadence.</em></div>
+      </article>
+
+      <!-- S-I05 -->
+      <article class="screen" id="s-i05">
+        <div class="scr-head"><span class="chip">S-I05</span><h3>Strategy Deployment</h3></div>
+        <div class="scr-meta"><span class="timing">~30 seconds + broker latency</span><span class="path-tag">Activation</span><a class="view-link" href="flameback-app-deployment.html">View screen &rarr;</a></div>
+        <p class="purpose"><b>Purpose.</b> Final step. Flameback checks the linked broker account for sufficient funds, then triggers the strategy&rsquo;s initial orders. On success, user lands on the funded Lobby (<b>S-C01</b>).</p>
+        <div class="block-lab">Fields &amp; inputs</div>
+        <table class="tbl">
+          <thead><tr><th style="width:18%">Field / Input</th><th style="width:14%">Type</th><th style="width:34%">Options / Format</th><th>Validation &amp; Logic</th></tr></thead>
+          <tbody>
+            <tr><td class="f" data-l="Field">Deploying state</td><td class="t" data-l="Type">Progress screen</td><td class="opt" data-l="Format">Headline: &ldquo;Deploying your strategy.&rdquo; Sub-text rotates through: &ldquo;Checking broker balance&hellip;&rdquo; &rarr; &ldquo;Placing initial orders&hellip;&rdquo; &rarr; &ldquo;Confirming execution&hellip;&rdquo; Animated loader.</td><td data-l="Logic">Backend performs: (a) balance check at broker, (b) order placement for each leg, (c) execution confirmation. State machine advances when each leg confirms.</td></tr>
+            <tr><td class="f" data-l="Field">Success</td><td class="t" data-l="Type">Confirmation screen</td><td class="opt" data-l="Format">Headline: &ldquo;You&rsquo;re invested.&rdquo; Sub: &ldquo;Your [Strategy Name] is live. Track everything from the Lobby.&rdquo; [Go to Lobby] primary CTA.</td><td data-l="Logic">Shown when all initial orders confirm. Routes to <b>S-C01</b> (post-investment state).</td></tr>
+            <tr><td class="f" data-l="Field">Insufficient funds</td><td class="t" data-l="Type">Action screen</td><td class="opt" data-l="Format">Headline: &ldquo;Looks like the broker account&rsquo;s a little short.&rdquo; Primary CTA: [I&rsquo;ve added funds &mdash; Try again]. Secondary link: [Open [Broker]] (deep link to broker app).</td><td data-l="Logic">Shown when balance check fails. Retry re-runs the balance check + deployment sequence. No partial deployment &mdash; either the full strategy deploys or none of it does.</td></tr>
+            <tr><td class="f" data-l="Field">Partial / failed orders</td><td class="t" data-l="Type">Error screen</td><td class="opt" data-l="Format">Headline: &ldquo;Something&rsquo;s not right.&rdquo; Sub: &ldquo;Some of your strategy&rsquo;s orders didn&rsquo;t go through. We&rsquo;ve paused the deployment. Talk to us and we&rsquo;ll sort it.&rdquo; Primary CTA: [Talk to us] (routes to <b>S-D04</b>).</td><td data-l="Logic">Shown when one or more legs fail after balance check passed. Any partial fills recorded; resolution handled manually via advisor.</td></tr>
+          </tbody>
+        </table>
+        <div class="pm-input"><b>PM Input &mdash; Deployment Mechanics</b><em>Confirm: (1) Exact broker handoff for order placement (per-broker API spec). (2) Behaviour if only some legs fill (cancel partials vs hold). (3) Slippage and order-type policy (market vs limit). (4) Retry window before timing out the deployment. Pending discussion with Malay and Devesh.</em></div>
+
+        <div class="block-lab">Vendor stack</div>
+        <table class="aux-tbl">
+          <thead><tr><th>Vendor</th><th>Purpose</th><th>Used in</th></tr></thead>
+          <tbody>
+            <tr><td>Bureau</td><td>eKYC verification (PAN, Aadhaar, address, liveness)</td><td>S-I01 KYC Verification</td></tr>
+            <tr><td>Digio</td><td>e-Sign of advisory agreement (Aadhaar OTP based)</td><td>S-I02 Advisory Agreement</td></tr>
+            <tr><td>Cashfree</td><td>Payment gateway (one-time onboarding fee) + Subscriptions (recurring advisory-fee mandate via e-NACH / UPI AutoPay)</td><td>S-I04 Fee Plan &amp; Payment</td></tr>
+            <tr><td>Twilio</td><td>SMS and WhatsApp transactional notifications (OTPs, status updates)</td><td>S-A02 Login (OTP), system-wide</td></tr>
+            <tr><td>AWS Pinpoint</td><td>SMS delivery (backup / bulk channel)</td><td>System-wide SMS notifications</td></tr>
+            <tr><td>WhatsApp Graph API</td><td>WhatsApp webhook &mdash; inbound message handling, message status callbacks</td><td>System-wide WhatsApp infrastructure</td></tr>
+            <tr><td>Doubletick</td><td>WhatsApp Business API &mdash; outbound templates and customer messaging</td><td>System-wide WhatsApp outbound</td></tr>
+            <tr><td>Jheel</td><td>WhatsApp notifications (operational / portfolio updates)</td><td>Post-investment notifications, system events</td></tr>
+          </tbody>
+        </table>
+        <a class="to-top" href="#toc">&uarr; Back to contents</a>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ====================================================== -->
+  <!-- ============ SECTION J ============ -->
+  <!-- ====================================================== -->
+  <section class="sec" id="section-j">
+    <div class="wrap">
+      <div class="sec-divider">
+        <span class="lab"><span class="l"></span><span class="n">J</span>Path C: Explore strategies</span>
+        <h2>Section J &mdash; <em>Explore</em></h2>
+        <p class="intro">Reached when the user taps &ldquo;Open catalogue&rdquo; on <b>S-A04</b> Path Picker. A short 5-question profiler (S-J01) defaults the catalogue&rsquo;s spectrum slider, followed by the catalogue itself (S-J02). Each strategy card replaces [Select] with [Start your journey]; tapping it drops the user into <b>S-B00</b> &mdash; the formal Section B profile is still run, no bypass.</p>
+      </div>
+
+      <!-- S-J01 -->
+      <article class="screen" id="s-j01">
+        <div class="scr-head"><span class="chip">S-J01</span><h3>Quick Risk Profiler (5 Questions)</h3></div>
+        <div class="scr-meta"><span class="timing">~2 minutes</span><span class="path-tag">Path C &mdash; Explore</span><a class="view-link" href="flameback-app-quick-profiler.html">View screen &rarr;</a></div>
+        <p class="purpose"><b>Purpose.</b> Five quick questions before the user reaches the catalogue. Minimum signal &mdash; just enough to default the catalogue&rsquo;s spectrum slider to a sensible band. No scoring, no profile committed; this is exploratory. If the user later moves into PMS Lite onboarding, the full Section B questionnaire runs from scratch.</p>
+        <div class="block-lab">Fields &amp; inputs</div>
+        <table class="tbl">
+          <thead><tr><th style="width:18%">Field / Input</th><th style="width:14%">Type</th><th style="width:30%">Options / Format</th><th>Validation &amp; Logic</th></tr></thead>
+          <tbody>
+            <tr><td class="f" data-l="Field">Q1 [TBD]</td><td class="t" data-l="Type">[TBD]</td><td class="opt" data-l="Format">Question 1 &mdash; exact wording and options to be supplied.</td><td data-l="Logic">Required. Stored on session for the catalogue band default and future pre-fill.</td></tr>
+            <tr><td class="f" data-l="Field">Q2 [TBD]</td><td class="t" data-l="Type">[TBD]</td><td class="opt" data-l="Format">Question 2 &mdash; TBD.</td><td data-l="Logic">Required.</td></tr>
+            <tr><td class="f" data-l="Field">Q3 [TBD]</td><td class="t" data-l="Type">[TBD]</td><td class="opt" data-l="Format">Question 3 &mdash; TBD.</td><td data-l="Logic">Required.</td></tr>
+            <tr><td class="f" data-l="Field">Q4 [TBD]</td><td class="t" data-l="Type">[TBD]</td><td class="opt" data-l="Format">Question 4 &mdash; TBD.</td><td data-l="Logic">Required.</td></tr>
+            <tr><td class="f" data-l="Field">Q5 [TBD]</td><td class="t" data-l="Type">[TBD]</td><td class="opt" data-l="Format">Question 5 &mdash; TBD.</td><td data-l="Logic">Required.</td></tr>
+            <tr><td class="f" data-l="Field">Continue CTA</td><td class="t" data-l="Type">Primary CTA</td><td class="opt" data-l="Format">Orange, full-width. Label: &ldquo;Show me strategies &rarr;&rdquo;.</td><td data-l="Logic">Enabled once all 5 questions answered. Routes to <b>S-J02</b> with the spectrum slider pre-positioned at the band these answers map to.</td></tr>
+          </tbody>
+        </table>
+        <div class="pm-input"><b>PM Input &mdash; S-J01 Question Set</b><em>Confirm: (1) The five questions and their option sets. (2) How each answer maps to a band on the catalogue spectrum. (3) Whether these answers persist for the Section B questionnaire pre-fill if the user later commits to PMS Lite, or are dropped at session end. (4) Whether the user can edit S-J01 answers from the catalogue without exiting and re-entering.</em></div>
+      </article>
+
+      <!-- S-J02 -->
+      <article class="screen" id="s-j02">
+        <div class="scr-head"><span class="chip">S-J02</span><h3>Strategy Catalogue (Browse)</h3></div>
+        <div class="scr-meta"><span class="timing">~5&ndash;10 minutes</span><span class="path-tag">Path C &mdash; Explore</span><a class="view-link" href="flameback-app-catalogue.html">View screen &rarr;</a></div>
+        <p class="purpose"><b>Purpose.</b> Browse the strategy catalogue without committing to onboarding. Identical UI to <b>S-D03</b> (Strategy Marketplace) &mdash; risk spectrum slider plus two Static/Dynamic strategy cards per band &mdash; but in browse-only mode. The default band shown is informed by the user&rsquo;s S-J01 answers.</p>
+        <div class="block-lab">Fields &amp; inputs</div>
+        <table class="tbl">
+          <thead><tr><th style="width:18%">Field / Input</th><th style="width:15%">Type</th><th style="width:32%">Options / Format</th><th>Validation &amp; Logic</th></tr></thead>
+          <tbody>
+            <tr><td class="f" data-l="Field">Risk spectrum slider</td><td class="t" data-l="Type">Horizontal slider (4 stops)</td><td class="opt" data-l="Format">Coloured gradient bar. Stops: Conservative &middot; Moderate &middot; Aggressive &middot; Very Aggressive. Default landing band computed from S-J01 answers. No &ldquo;Recommended&rdquo; badge in this mode &mdash; user is exploring, not being matched.</td><td data-l="Logic">Slider movement updates the two cards below. No warnings on band changes &mdash; pure browsing.</td></tr>
+            <tr><td class="f" data-l="Field">Strategy cards (Static + Dynamic)</td><td class="t" data-l="Type">Card pair (side by side)</td><td class="opt" data-l="Format">Same content as <b>S-D03</b> cards: strategy name &middot; Type tag &middot; Historic CAGR &middot; Max Drawdown &middot; Since-Inception Return &middot; Investment Philosophy &middot; performance graph dropdown. Replace the [Select] CTA with [Start your journey &rarr;].</td><td data-l="Logic">Tapping [Start your journey]: if the user has no Section B profile yet &rarr; <b>S-B00</b> (full PMS Lite onboarding). If the user already has a completed profile from a prior session &rarr; <b>S-D01</b> (Amount Entry) with the clicked strategy session-stored so it&rsquo;s pre-highlighted on <b>S-D03</b>. Either path, the chosen strategy is a hint, not a commitment.</td></tr>
+            <tr><td class="f" data-l="Field">Back to Path Picker</td><td class="t" data-l="Type">Secondary link</td><td class="opt" data-l="Format">Always visible at the bottom. Label: &ldquo;Back to start&rdquo;.</td><td data-l="Logic">Routes to <b>S-A04</b> without state loss.</td></tr>
+          </tbody>
+        </table>
+        <a class="to-top" href="#toc">&uarr; Back to contents</a>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ====================================================== -->
+  <!-- ============ SECTION K ============ -->
+  <!-- ====================================================== -->
+  <section class="sec" id="section-k">
+    <div class="wrap">
+      <div class="sec-divider">
+        <span class="lab"><span class="l"></span><span class="n">K</span>Path B: Schedule a call</span>
+        <h2>Section K &mdash; <em>Advisor call</em></h2>
+        <p class="intro">Originally reached when the user taps &ldquo;Schedule a call&rdquo; on <b>S-A04</b> Path Picker &mdash; a single screen for date/time selection followed by an automated Google Calendar invite. This screen has been removed from the current build; the spec is retained below for reference.</p>
+      </div>
+
+      <!-- S-K01 -->
+      <article class="screen removed" id="s-k01">
+        <div class="scr-head"><span class="chip">S-K01</span><h3>Schedule a Call</h3></div>
+        <div class="scr-meta"><span class="timing">~1 minute</span><span class="path-tag">Path B &mdash; Advisor</span><span class="removed-tag">Removed &mdash; not in current build</span></div>
+        <p class="purpose"><b>Purpose.</b> User picks a 30-minute slot from the advisor&rsquo;s published availability. On confirmation, both the user and the advisor receive a Google Calendar invite (Google Meet link included) at the user&rsquo;s registered email. The user lands on a confirmation screen with a &ldquo;Back to start&rdquo; CTA.</p>
+        <div class="block-lab">Fields &amp; inputs</div>
+        <table class="tbl">
+          <thead><tr><th style="width:18%">Field / Input</th><th style="width:14%">Type</th><th style="width:34%">Options / Format</th><th>Validation &amp; Logic</th></tr></thead>
+          <tbody>
+            <tr><td class="f" data-l="Field">Date picker</td><td class="t" data-l="Type">In-app calendar grid</td><td class="opt" data-l="Format">Next 14 days shown. Dates with no available slots are greyed out. Default highlight on the soonest day with at least one open slot.</td><td data-l="Logic">Pulls availability from the advisor&rsquo;s Google Calendar (free/busy via the Calendar API). Refreshes every 60 seconds while the screen is open.</td></tr>
+            <tr><td class="f" data-l="Field">Time slot picker</td><td class="t" data-l="Type">Chip row</td><td class="opt" data-l="Format">30-minute slots between 10:00 and 18:00 IST on the selected date. Booked slots filtered out. Shown in 24-hour or 12-hour format based on user&rsquo;s device locale.</td><td data-l="Logic">Required. Only enabled once a date is selected.</td></tr>
+            <tr><td class="f" data-l="Field">Reason for call</td><td class="t" data-l="Type">Optional text input</td><td class="opt" data-l="Format">Single-line. Placeholder: &ldquo;Anything you&rsquo;d like us to prep? (Optional)&rdquo; Character limit: 200.</td><td data-l="Logic">Optional. Included in the calendar invite description if provided.</td></tr>
+            <tr><td class="f" data-l="Field">Confirm CTA</td><td class="t" data-l="Type">Primary CTA</td><td class="opt" data-l="Format">Orange, full-width. Label: &ldquo;Confirm slot &rarr;&rdquo;.</td><td data-l="Logic">Disabled until a date and time slot are both selected. On tap: (a) creates a Google Calendar event in the advisor&rsquo;s calendar with the user added as a required attendee, (b) attaches a Google Meet link, (c) sends invite emails to both. Failure rolls back the event creation and surfaces an error.</td></tr>
+            <tr><td class="f" data-l="Field">Return state &mdash; confirmed</td><td class="t" data-l="Type">Confirmation screen</td><td class="opt" data-l="Format">Headline: &ldquo;You&rsquo;re booked.&rdquo; Sub-text: &ldquo;We&rsquo;ve sent the calendar invite to [email]. See you at [date] at [time].&rdquo; Secondary line: &ldquo;Need to reschedule? Edit the invite from your calendar.&rdquo; Primary CTA: &ldquo;Back to start&rdquo;.</td><td data-l="Logic">Shown after successful event creation. &ldquo;Back to start&rdquo; routes to <b>S-A04</b> Path Picker.</td></tr>
+            <tr><td class="f" data-l="Field">Return state &mdash; error</td><td class="t" data-l="Type">Error screen</td><td class="opt" data-l="Format">Headline: &ldquo;Couldn&rsquo;t lock the slot.&rdquo; Sub-text: GCal-supplied reason in plain language. Primary CTA: &ldquo;Try again&rdquo;. Secondary CTA: &ldquo;Pick a different time&rdquo;.</td><td data-l="Logic">Shown when calendar event creation fails (auth expired, slot taken in the gap).</td></tr>
+          </tbody>
+        </table>
+        <div class="pm-input"><b>PM Input &mdash; Calendar Integration</b><em>Confirm: (1) Which Google account hosts advisor availability (shared advisor calendar vs. round-robin). (2) Buffer time between slots. (3) Cancellation/reschedule rules from the user side. (4) Reminder cadence &mdash; does Flameback send its own pre-call reminders or rely on GCal notifications?</em></div>
+        <a class="to-top" href="#toc">&uarr; Back to contents</a>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ====================================================== -->
+  <!-- ============ FOOTER ============ -->
+  <!-- ====================================================== -->
+  <footer>
+    <div class="wrap">
+      <div class="footin">
+        <a class="wm" href="flameback-home.html">flameback<span class="p">.</span></a>
+        <div class="footcols" style="display:flex;gap:48px;flex-wrap:wrap">
+          <div class="footcol"><h4>The firm</h4><a href="flameback-who-we-are.html">Who we are</a><a href="flameback-what-we-do.html">What we do</a><a href="flameback-our-work.html">Our work</a></div>
+          <div class="footcol"><h4>The app</h4><a href="flameback-lobby.html">Lobby</a><a href="flameback-app-splash.html">Splash</a><a href="flameback-app-catalogue.html">Catalogue</a></div>
+          <div class="footcol"><h4>Document</h4><a href="#toc">Table of contents</a><a href="#top">Back to top</a></div>
+        </div>
+      </div>
+      <div class="disc">
+        <span>&copy; 2026 Flameback Capital Pvt Ltd &middot; Functional specification v1.0</span>
+        <span class="legal">Internal product document. SEBI registered &middot; SEC filed for US strategy. Investments are subject to market risk. Past performance is not indicative of future results.</span>
+      </div>
+    </div>
+  </footer>
+
+<script>
+  // light/dark toggle
+  var root=document.documentElement, tg=document.getElementById('toggle');
+  tg.addEventListener('click',function(){root.classList.toggle('light');tg.textContent=root.classList.contains('light')?'Dark':'Light';});
+
+  // nav border on scroll
+  var nav=document.getElementById('nav');
+  window.addEventListener('scroll',function(){nav.classList.toggle('scrolled',window.scrollY>16)});
+
+  // smooth-scroll for in-page anchors
+  document.querySelectorAll('a[href^="#"]').forEach(function(a){
+    a.addEventListener('click',function(e){
+      var id=a.getAttribute('href');
+      if(id.length>1){
+        var el=document.querySelector(id);
+        if(el){e.preventDefault();el.scrollIntoView({behavior:'smooth',block:'start'});history.replaceState(null,'',id);}
+      }
+    });
+  });
+</script>
+  <script src="reload.js"></script>
+</body>
+</html>

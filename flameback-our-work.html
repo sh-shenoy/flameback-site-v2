@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our work — flameback.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#1A1714;--ink:#F2EDE3;--ink-soft:rgba(242,237,227,.66);--ink-mute:rgba(242,237,227,.44);--line:rgba(242,237,227,.16);--panel:#221E1A;--accent:#FF6D0A;--btn-bg:#FF6D0A;--btn-ink:#1A1714;--grain-blend:screen;--grain-op:.055}
+  :root.light{--bg:#FCFAF6;--ink:#1A1714;--ink-soft:rgba(26,23,20,.68);--ink-mute:rgba(26,23,20,.46);--line:rgba(26,23,20,.14);--panel:#F4EFE7;--accent:#B23E08;--btn-bg:#1A1714;--btn-ink:#FCFAF6;--grain-blend:multiply;--grain-op:.035}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:"Source Serif 4",serif;transition:background .5s,color .5s;font-variant-numeric:tabular-nums;line-height:1.55}
+  body::after{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;mix-blend-mode:var(--grain-blend);opacity:var(--grain-op);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  .wrap{max-width:1200px;margin:0 auto;padding:0 clamp(22px,5vw,44px)}
+  section{position:relative;z-index:2}
+  .wm{font-family:"Source Serif 4",serif;font-weight:600;font-size:18px;color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+  .wm .p{color:var(--accent)}
+  h1,h2,h3,h4{font-family:"Cormorant Garamond",serif;font-weight:500;letter-spacing:-.014em;color:var(--ink);line-height:1.04}
+  h1 em,h2 em,h3 em,h4 em{color:var(--accent);font-style:italic;font-weight:500}
+  p{line-height:1.62}
+  .btn,.btn-out{display:inline-flex;align-items:center;gap:11px;font-family:"Source Serif 4",serif;font-size:15px;font-weight:500;padding:13px 24px;text-decoration:none;transition:gap .35s,opacity .3s,border-color .3s;cursor:pointer;border:none}
+  .btn{background:var(--btn-bg);color:var(--btn-ink)} .btn:hover{gap:15px;opacity:.92}
+  .btn-out{background:transparent;color:var(--ink);border:1px solid var(--line)} .btn-out:hover{gap:15px;border-color:var(--ink-mute)}
+  nav.top{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 84%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid transparent;transition:border-color .4s}
+  nav.top.scrolled{border-color:var(--line)}
+  .navin{display:flex;align-items:center;justify-content:space-between;padding:16px 0}
+  .navr{display:flex;align-items:center;gap:22px}
+  .navr a{color:var(--ink-soft);text-decoration:none;font-size:14.5px;transition:color .3s}
+  .navr a:hover{color:var(--ink)}
+  .navr a.active{color:var(--ink)}
+  .toggle{background:none;border:1px solid var(--line);color:var(--ink-soft);cursor:pointer;font-family:"Source Serif 4",serif;font-size:13px;font-style:italic;padding:5px 13px;border-radius:999px}
+  .navr a.cta{background:var(--btn-bg);color:var(--btn-ink);padding:9px 18px}
+  @media(max-width:1000px){.navr .navlink{display:none}}
+  .hero{padding:clamp(70px,11vh,130px) 0 clamp(54px,7vh,90px);border-bottom:1px solid var(--line);position:relative}
+  .hero-eb{display:flex;align-items:center;gap:14px;margin-bottom:32px;font-style:italic;font-size:13px;color:var(--ink-mute);letter-spacing:.04em}
+  .hero-eb .l{width:32px;height:1px;background:var(--accent)}
+  .hero-eb .dateline{font-family:"JetBrains Mono",monospace;font-style:normal;font-size:11.5px;margin-left:auto;letter-spacing:.05em}
+  @media(max-width:760px){.hero-eb .dateline{display:none}}
+  h1.h-h{font-size:clamp(58px,9vw,128px);line-height:.92;letter-spacing:-.025em;margin-bottom:32px;max-width:14ch;font-weight:500}
+  .h-sub{font-size:clamp(17px,1.7vw,21px);line-height:1.55;color:var(--ink-soft);max-width:54ch;font-style:italic;margin-bottom:38px}
+  .h-cta{display:flex;gap:12px;flex-wrap:wrap}
+  .wmark{position:absolute;right:0;bottom:0;font-family:"Cormorant Garamond",serif;font-style:italic;font-size:clamp(180px,30vw,360px);color:var(--ink);opacity:.02;line-height:.8;pointer-events:none;letter-spacing:-.04em;white-space:nowrap;overflow:hidden}
+  .sec{padding:clamp(70px,10vh,120px) 0;border-bottom:1px solid var(--line);position:relative}
+  .sec.tint{background:color-mix(in srgb,var(--ink) 2.2%,transparent)}
+  .sec-h{display:grid;grid-template-columns:160px 1fr;gap:48px;align-items:flex-start;margin-bottom:clamp(36px,4vw,52px)}
+  @media(max-width:760px){.sec-h{grid-template-columns:1fr;gap:14px}}
+  .sec-h .meta{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase;padding-top:14px;border-top:1px solid var(--line);line-height:1.7}
+  .sec-h h2{font-size:clamp(36px,5vw,62px);line-height:1.02;letter-spacing:-.015em;max-width:18ch}
+  .prose{max-width:62ch;font-size:17px;line-height:1.7;color:var(--ink)}
+  .prose p{margin-bottom:22px}
+  .prose p:last-child{margin-bottom:0}
+  .prose em{color:var(--accent);font-style:italic;font-weight:500}
+  .prose strong{font-weight:500;color:var(--ink);font-style:italic}
+  .prose-grid{display:grid;grid-template-columns:160px 1fr;gap:48px;align-items:flex-start}
+  @media(max-width:760px){.prose-grid{grid-template-columns:1fr;gap:14px}}
+  .meta.lab{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase;padding-top:14px;border-top:1px solid var(--line);line-height:1.7}
+  .meta.lab .n{color:var(--accent);margin-right:8px}
+
+  /* Featured strategy intro panel */
+  .feat-intro{display:grid;grid-template-columns:1.05fr 1fr;gap:clamp(32px,5vw,56px);align-items:flex-start;border:1px solid var(--line);background:var(--bg);padding:clamp(28px,4vw,44px)}
+  @media(max-width:860px){.feat-intro{grid-template-columns:1fr;gap:28px}}
+  .feat-intro .lhs .pre{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--accent);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px}
+  .feat-intro .lhs h3{font-size:clamp(30px,4vw,46px);line-height:1.04;letter-spacing:-.012em;margin-bottom:18px}
+  .feat-intro .lhs h3 em{color:var(--accent);font-style:italic}
+  .feat-intro .lhs p{font-size:15.5px;line-height:1.7;color:var(--ink-soft);margin-bottom:14px}
+  .feat-intro .lhs p:last-child{margin-bottom:0}
+  .feat-intro .lhs p em{color:var(--ink);font-style:italic;font-weight:500}
+  .feat-intro .rhs{display:flex;flex-direction:column;gap:0;border-left:1px solid var(--line);padding-left:clamp(20px,3vw,34px)}
+  @media(max-width:860px){.feat-intro .rhs{border-left:none;border-top:1px solid var(--line);padding-left:0;padding-top:24px}}
+  .feat-intro .kv{display:grid;grid-template-columns:130px 1fr;gap:18px;padding:12px 0;border-bottom:1px dashed var(--line);align-items:flex-start}
+  .feat-intro .kv:last-child{border-bottom:none}
+  .feat-intro .kv .k{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase;padding-top:3px}
+  .feat-intro .kv .v{font-size:14.5px;line-height:1.55;color:var(--ink)}
+  .feat-intro .kv .v em{color:var(--accent);font-style:italic;font-weight:500}
+
+  /* The 8-layer stack */
+  .stack{margin-top:42px;border:1px solid var(--line);background:var(--bg)}
+  .stack-hd{padding:18px 32px;border-bottom:1px solid var(--line);display:flex;align-items:baseline;gap:18px;flex-wrap:wrap;background:color-mix(in srgb,var(--accent) 3%,transparent)}
+  .stack-hd .l{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--accent);letter-spacing:.08em;text-transform:uppercase}
+  .stack-hd .t{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:22px;color:var(--ink);letter-spacing:-.005em}
+  .stack-hd .t em{color:var(--accent);font-style:italic}
+  .stk-row{display:grid;grid-template-columns:64px 1.1fr 1fr 220px;gap:22px;padding:22px 32px;border-bottom:1px solid var(--line);align-items:flex-start}
+  .stk-row:last-child{border-bottom:none}
+  @media(max-width:980px){.stk-row{grid-template-columns:52px 1fr 1fr;gap:18px}.stk-row .io{grid-column:2/-1;margin-top:6px}}
+  @media(max-width:680px){.stk-row{grid-template-columns:1fr;gap:8px;padding:22px 24px}.stk-row .io{grid-column:auto}}
+  .stk-row .rn{font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--accent);font-size:32px;line-height:1;letter-spacing:-.01em}
+  .stk-row .name-c{display:flex;flex-direction:column;gap:4px}
+  .stk-row .name{font-family:"Cormorant Garamond",serif;font-size:22px;line-height:1.1;letter-spacing:-.005em;color:var(--ink)}
+  .stk-row .name em{color:var(--accent);font-style:italic}
+  .stk-row .lbl{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase}
+  .stk-row .desc{font-size:13.5px;line-height:1.6;color:var(--ink-soft)}
+  .stk-row .desc em{color:var(--ink);font-style:italic;font-weight:500}
+  .stk-row .io{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink-mute);letter-spacing:.04em;line-height:1.7;padding-top:4px}
+  .stk-row .io .ar{color:var(--accent)}
+  .stk-row .io em{color:var(--ink);font-style:normal;font-weight:500}
+
+  /* Pull quote */
+  .pq{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:clamp(28px,3.6vw,40px);line-height:1.25;color:var(--ink);max-width:28ch;padding-left:24px;border-left:2px solid var(--accent);margin:32px 0}
+  .pq em{color:var(--accent);font-style:italic}
+  .pq .at{display:block;font-family:"Source Serif 4",serif;font-size:13px;font-style:italic;color:var(--ink-mute);letter-spacing:.02em;margin-top:18px;line-height:1.5}
+
+  /* Catalogue */
+  .cat{border:1px solid var(--line);background:var(--bg);margin-top:8px}
+  .cat-grp{border-bottom:1px solid var(--line)}
+  .cat-grp:last-child{border-bottom:none}
+  .cat-grp-hd{display:flex;align-items:baseline;gap:18px;padding:20px 32px;background:color-mix(in srgb,var(--ink) 3%,transparent);border-bottom:1px solid var(--line);flex-wrap:wrap}
+  .cat-grp-hd .num{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--accent);letter-spacing:.08em;text-transform:uppercase}
+  .cat-grp-hd .grp{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:22px;color:var(--ink);letter-spacing:-.005em}
+  .cat-grp-hd .grp em{color:var(--accent);font-style:italic}
+  .cat-grp-hd .ct{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--ink-mute);letter-spacing:.05em;text-transform:uppercase;margin-left:auto}
+  .strat{display:grid;grid-template-columns:1.3fr 1.5fr 130px 110px;gap:22px;padding:18px 32px;border-bottom:1px dashed var(--line);align-items:flex-start;text-decoration:none;color:var(--ink);transition:background .25s}
+  .strat:last-child{border-bottom:none}
+  .strat:hover{background:color-mix(in srgb,var(--accent) 4%,transparent)}
+  @media(max-width:980px){.strat{grid-template-columns:1fr 1fr;gap:12px}.strat .since{grid-column:1}.strat .arr{grid-column:2;text-align:right}}
+  @media(max-width:560px){.strat{grid-template-columns:1fr}.strat .arr{text-align:left}}
+  .strat .nm{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:18px;color:var(--ink);line-height:1.2;letter-spacing:-.005em}
+  .strat .nm em{color:var(--accent);font-style:italic}
+  .strat .feat{display:inline-block;margin-left:8px;font-family:"JetBrains Mono",monospace;font-size:8.5px;color:var(--accent);letter-spacing:.08em;text-transform:uppercase;padding:2px 6px;border:1px solid var(--accent);vertical-align:middle}
+  .strat .what{font-size:13.5px;line-height:1.55;color:var(--ink-soft);font-style:italic}
+  .strat .since{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-mute);letter-spacing:.04em;padding-top:3px}
+  .strat .since em{color:var(--accent);font-style:normal}
+  .strat .arr{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-mute);letter-spacing:.04em;padding-top:3px}
+  .strat:hover .arr{color:var(--accent)}
+
+  /* Track-record reading panel */
+  .six-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:8px}
+  @media(max-width:880px){.six-stats{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:520px){.six-stats{grid-template-columns:1fr}}
+  .stat-c{background:var(--bg);padding:24px 26px;display:flex;flex-direction:column;gap:10px;min-height:180px}
+  .stat-c .rn{font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--accent);font-size:24px;line-height:1}
+  .stat-c h4{font-size:18px;line-height:1.2;letter-spacing:-.005em}
+  .stat-c h4 em{color:var(--accent);font-style:italic}
+  .stat-c p{font-size:13.5px;line-height:1.6;color:var(--ink-soft);flex:1}
+  .stat-c p em{color:var(--ink);font-style:italic;font-weight:500}
+
+  /* Lifecycle blocks */
+  .lc{display:grid;grid-template-columns:1fr;gap:0;border:1px solid var(--line);background:var(--bg);max-width:980px;margin-top:8px}
+  .lc-row{display:grid;grid-template-columns:80px 1fr;gap:30px;padding:24px 32px;border-bottom:1px solid var(--line);align-items:flex-start}
+  .lc-row:last-child{border-bottom:none}
+  @media(max-width:680px){.lc-row{grid-template-columns:1fr;gap:10px;padding:22px 24px}}
+  .lc-row .num{font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--accent);font-size:32px;line-height:1}
+  .lc-row .body h4{font-size:20px;line-height:1.15;letter-spacing:-.005em;margin-bottom:8px}
+  .lc-row .body h4 em{color:var(--accent);font-style:italic}
+  .lc-row .body p{font-size:14.5px;line-height:1.65;color:var(--ink-soft);max-width:60ch}
+  .lc-row .body p em{color:var(--ink);font-style:italic;font-weight:500}
+
+  /* Cross links + close + footer */
+  .xlinks{padding:clamp(70px,10vh,110px) 0;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--ink) 2.2%,transparent)}
+  .xl-h{margin-bottom:36px}
+  .xl-h h2{font-size:clamp(28px,3.4vw,40px);line-height:1.05;margin-bottom:10px}
+  .xl-h p{font-size:14.5px;color:var(--ink-soft);font-style:italic;max-width:48ch}
+  .xl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+  @media(max-width:760px){.xl-grid{grid-template-columns:1fr}}
+  .xl-card{background:var(--bg);padding:28px 26px;display:flex;flex-direction:column;gap:10px;text-decoration:none;color:var(--ink);transition:background .25s}
+  .xl-card:hover{background:color-mix(in srgb,var(--accent) 5%,transparent)}
+  .xl-card .n{font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--accent);font-size:20px;line-height:1}
+  .xl-card .t{font-family:"Cormorant Garamond",serif;font-size:24px;line-height:1.1;color:var(--ink);margin-top:2px}
+  .xl-card .t em{color:var(--accent);font-style:italic}
+  .xl-card .d{font-size:13.5px;line-height:1.55;color:var(--ink-soft);font-style:italic;flex:1}
+  .xl-card .arr{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-mute);letter-spacing:.04em;margin-top:6px}
+  .xl-card:hover .arr{color:var(--accent)}
+  .close{padding:clamp(80px,10vh,120px) 0;text-align:center;border-bottom:1px solid var(--line)}
+  .close h2{font-size:clamp(34px,5vw,56px);line-height:1.0;margin-bottom:22px;max-width:22ch;margin-left:auto;margin-right:auto}
+  .close h2 em{color:var(--accent);font-style:italic}
+  .close .sub{font-size:15.5px;color:var(--ink-soft);font-style:italic;max-width:48ch;margin:0 auto 32px;line-height:1.65}
+  .close .ct-row{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+  footer{padding:60px 0 36px}
+  .footin{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;margin-bottom:42px}
+  .footcols{display:flex;gap:clamp(38px,6vw,72px);flex-wrap:wrap}
+  .footcol h4{font-style:italic;font-weight:400;font-size:13px;color:var(--ink-mute);margin-bottom:14px;letter-spacing:.03em}
+  .footcol a{display:block;color:var(--ink-soft);text-decoration:none;font-size:14.5px;margin-bottom:9px}
+  .footcol a:hover{color:var(--accent)}
+  .disc{padding-top:24px;border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px}
+  .disc span{font-size:12px;color:var(--ink-mute);line-height:1.6}
+  .disc .legal{max-width:72ch;font-style:italic}
+</style>
+</head>
+<body>
+
+  <nav class="top" id="nav">
+    <div class="wrap navin">
+      <a class="wm" href="flameback-home.html">flameback<span class="p">.</span></a>
+      <div class="navr">
+        <a class="navlink" href="flameback-who-we-are.html">Who we are</a>
+        <a class="navlink" href="flameback-what-we-do.html">What we do</a>
+        <a class="navlink active" href="flameback-our-work.html">Our work</a>
+        <a class="navlink" href="flameback-insights.html">Insights</a>
+        <a class="navlink" href="flameback-tools.html">Tools</a>
+        <a class="navlink" href="flameback-offbook.html">Off-book</a>
+        <a class="cta" href="flameback-app-splash.html">Start your journey</a>
+        <button class="toggle" id="toggle">Light</button>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-eb"><span class="l"></span><span>Our work</span><span class="dateline">18 LIVE STRATEGIES &middot; EST. 2017</span></div>
+      <h1 class="h-h">Our <em>work.</em></h1>
+      <p class="h-sub">Eighteen strategies that survived the research funnel and are deployed to live capital. None of them is a marketed product. All of them are running with founders&rsquo; capital alongside client capital, on the same terms, with the same drawdowns.</p>
+      <div class="h-cta">
+        <a class="btn" href="flameback-app-splash.html">Start your journey &rarr;</a>
+        <a class="btn-out" href="flameback-strategy-rd.html">Read about Strategy R&amp;D</a>
+      </div>
+    </div>
+    <div class="wmark">our work.</div>
+  </section>
+
+  <!-- i. The frame -->
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-h">
+        <div class="meta">i. THE FRAME<br/>Why this page is called<br/>&lsquo;Our work&rsquo;</div>
+        <h2>This is not a product catalogue. <em>It is what the firm makes.</em></h2>
+      </div>
+
+      <div class="prose-grid">
+        <div class="meta lab"><span class="n">a.</span>Work, not products</div>
+        <div class="prose">
+          <p>Most wealth-management firms call this page <em>Products</em>. The choice of word is honest, in its way &mdash; it describes the underlying activity, which is to package investment strategies into containers that can be sold and priced. The firm has chosen a different word because it does a different activity. <strong>The strategies on this page are the firm&rsquo;s craft.</strong></p>
+          <p>Each one is a piece of working code that emerged from the research funnel. Each one was selected, sized, and deployed by people whose names appear on the <a href="flameback-team.html" style="color:var(--accent);text-decoration:underline">team page</a>. Each one carries founders&rsquo; capital alongside client capital. None of them is marketed in the conventional sense &mdash; there are no commission incentives for advisors to push them, no in-flight magazine ads, no quarterly product launches.</p>
+          <p>The list below is what the firm is for. It is, as much as anything, an answer to the question a serious prospective client should ask: <em>what, specifically, are you proposing to do with my capital?</em></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ii. Featured: Momentum of Velocity -->
+  <section class="sec tint">
+    <div class="wrap">
+      <div class="sec-h">
+        <div class="meta">ii. FEATURED<br/>Momentum of Velocity<br/>The eight-layer stack</div>
+        <h2>One strategy, <em>top to bottom.</em></h2>
+      </div>
+
+      <div class="prose-grid" style="margin-bottom:36px">
+        <div class="meta lab"><span class="n">a.</span>Why this one</div>
+        <div class="prose">
+          <p>The firm&rsquo;s eighteen strategies share a common architecture &mdash; the same stages of universe, signal, risk, construction, and execution. They differ in which signals they harvest and how they weight them. The strategy below, <em>Momentum of Velocity,</em> is presented in full so that the architecture is legible. The others are listed in the catalogue that follows.</p>
+        </div>
+      </div>
+
+      <div class="feat-intro">
+        <div class="lhs">
+          <div class="pre">Featured strategy</div>
+          <h3>Momentum of <em>Velocity.</em></h3>
+          <p>An Indian-equity strategy that selects names on the basis of <em>accelerating</em> momentum &mdash; the rate of change of momentum, not the level &mdash; filtered through a quality gate and constrained by realized-volatility risk-budgeting. Sector caps, drawdown control, and capacity-aware execution sit downstream.</p>
+          <p>The intuition: a moving stock that is also speeding up has a different return profile from one that is moving at a constant rate. The first usually continues; the second usually mean-reverts. <strong>The premium is the difference.</strong></p>
+        </div>
+        <div class="rhs">
+          <div class="kv"><span class="k">UNIVERSE</span><span class="v">Indian listed equity, <em>NSE + BSE</em></span></div>
+          <div class="kv"><span class="k">STYLE</span><span class="v">Long-only, factor-driven, weekly rebalanced</span></div>
+          <div class="kv"><span class="k">HORIZON</span><span class="v"><em>3&ndash;5 years</em>, intended for patient capital</span></div>
+          <div class="kv"><span class="k">LIVE SINCE</span><span class="v">October 2018, founders&rsquo; book first</span></div>
+          <div class="kv"><span class="k">CAPACITY</span><span class="v">Defined; published in the factsheet</span></div>
+          <div class="kv"><span class="k">FACTSHEET</span><span class="v"><a href="flameback-strategy-large-cap-momentum.html" style="color:var(--accent);text-decoration:underline">Open the factsheet &rarr;</a></span></div>
+        </div>
+      </div>
+
+      <div class="stack">
+        <div class="stack-hd"><span class="l">Architecture</span><span class="t">The strategy as <em>eight sequential layers,</em> top to bottom.</span></div>
+
+        <div class="stk-row">
+          <span class="rn">i.</span>
+          <div class="name-c"><span class="lbl">INPUT LAYER</span><span class="name"><em>Universe.</em></span></div>
+          <div class="desc">The full set of listed Indian equities meeting basic liquidity and listing-age requirements. Adjusted weekly. <em>The starting pool from which everything downstream selects.</em></div>
+          <div class="io"><span class="ar">In:</span> <em>~3,000 listed equities</em><br/><span class="ar">Out:</span> <em>~1,200</em> liquidity-cleared</div>
+        </div>
+
+        <div class="stk-row">
+          <span class="rn">ii.</span>
+          <div class="name-c"><span class="lbl">FILTER</span><span class="name">Quality <em>gate.</em></span></div>
+          <div class="desc">Survival of the fundamentals: ROE consistency, debt-to-equity, earnings stability, accrual quality. <em>Removes companies the strategy should not be exposed to, regardless of price action.</em></div>
+          <div class="io"><span class="ar">In:</span> <em>~1,200</em><br/><span class="ar">Out:</span> <em>~500</em> quality-cleared</div>
+        </div>
+
+        <div class="stk-row">
+          <span class="rn">iii.</span>
+          <div class="name-c"><span class="lbl">PRIMARY SIGNAL</span><span class="name"><em>Momentum.</em></span></div>
+          <div class="desc">The standard 12-month-minus-1-month total return. Each name in the cleared universe is scored. <em>This is the academic factor; the strategy&rsquo;s edge is what comes next.</em></div>
+          <div class="io"><span class="ar">In:</span> <em>~500 quality names</em><br/><span class="ar">Out:</span> ranked by momentum</div>
+        </div>
+
+        <div class="stk-row">
+          <span class="rn">iv.</span>
+          <div class="name-c"><span class="lbl">PROPRIETARY OVERLAY</span><span class="name">Velocity <em>overlay.</em></span></div>
+          <div class="desc">The rate of change of momentum itself. Names whose momentum is <em>accelerating</em> are scored higher than those at the same momentum level whose momentum is decaying. <em>This is the strategy&rsquo;s distinctive contribution.</em></div>
+          <div class="io"><span class="ar">In:</span> momentum-ranked<br/><span class="ar">Out:</span> <em>velocity-adjusted</em> ranks</div>
+        </div>
+
+        <div class="stk-row">
+          <span class="rn">v.</span>
+          <div class="name-c"><span class="lbl">RISK WEIGHTING</span><span class="name">Inverse-vol <em>sizing.</em></span></div>
+          <div class="desc">Position sizes are set inversely proportional to realized 90-day volatility. Higher-vol names get smaller positions for the same conviction. <em>Equalizes risk contribution across names.</em></div>
+          <div class="io"><span class="ar">In:</span> ranked candidates<br/><span class="ar">Out:</span> <em>risk-budgeted weights</em></div>
+        </div>
+
+        <div class="stk-row">
+          <span class="rn">vi.</span>
+          <div class="name-c"><span class="lbl">PORTFOLIO LIMITS</span><span class="name">Construction <em>gate.</em></span></div>
+          <div class="desc">Single-name cap, sector cap, correlation overlay. Prevents the strategy from over-concentrating in correlated bets even when the signal says yes. <em>The strategy is forbidden from looking like a sector trade.</em></div>
+          <div class="io"><span class="ar">In:</span> risk-budgeted<br/><span class="ar">Out:</span> <em>constraint-feasible</em> portfolio</div>
+        </div>
+
+        <div class="stk-row">
+          <span class="rn">vii.</span>
+          <div class="name-c"><span class="lbl">DRAWDOWN CONTROL</span><span class="name">De-gross <em>rule.</em></span></div>
+          <div class="desc">If realized drawdown exceeds a defined threshold, the strategy reduces gross exposure automatically. <em>Re-grossing happens by rule, not by mood.</em> The client is not asked. The system does it.</div>
+          <div class="io"><span class="ar">In:</span> intended portfolio<br/><span class="ar">Out:</span> <em>net-of-DD-rule</em> positions</div>
+        </div>
+
+        <div class="stk-row">
+          <span class="rn">viii.</span>
+          <div class="name-c"><span class="lbl">OUTPUT LAYER</span><span class="name"><em>Execution.</em></span></div>
+          <div class="desc">Capacity-aware orders routed through FIST to the firm&rsquo;s brokers. VWAP and implementation-shortfall algos depending on size and liquidity. <em>Every order is logged. Every fill is reconciled.</em></div>
+          <div class="io"><span class="ar">In:</span> target positions<br/><span class="ar">Out:</span> <em>live client capital</em></div>
+        </div>
+      </div>
+
+      <div class="pq" style="margin-top:54px">
+        The big money is not in the buying and selling. <em>It is in the waiting.</em>
+        <span class="at">&mdash; Charles T. Munger, with the firm&rsquo;s preferred emphasis on the last clause.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- iii. The catalogue -->
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-h">
+        <div class="meta">iii. THE CATALOGUE<br/>All eighteen,<br/>grouped by exposure</div>
+        <h2>Eighteen strategies. <em>One link each.</em></h2>
+      </div>
+
+      <div class="prose-grid" style="margin-bottom:36px">
+        <div class="meta lab"><span class="n">a.</span>How the catalogue is organised</div>
+        <div class="prose">
+          <p>The strategies below are grouped by what they take exposure to &mdash; Indian equity, US equity, multi-asset, and tactical overlays. Within each group, they are listed in order of live-since date. Each entry links to its factsheet, which carries the full track record (1-year, 3-year, 5-year, since-inception, drawdowns included).</p>
+          <p>Note that <strong>some strategies are not available to every client portfolio</strong> &mdash; the firm allocates strategies to portfolios based on fit with the client&rsquo;s mandate, not as a menu to choose from. The catalogue is descriptive of what the firm runs, not prescriptive of what any one client owns.</p>
+        </div>
+      </div>
+
+      <div class="cat">
+
+        <div class="cat-grp">
+          <div class="cat-grp-hd"><span class="num">i.</span><span class="grp">Indian <em>equity</em></span><span class="ct">8 strategies &middot; ~64% of firm AUM</span></div>
+          <a class="strat" href="flameback-strategy-large-cap-momentum.html"><span class="nm">Momentum of <em>Velocity</em><span class="feat">Featured</span></span><span class="what">Large-cap accelerating momentum with quality gate and inverse-vol sizing.</span><span class="since">Live since <em>2018</em></span><span class="arr">Factsheet &rarr;</span></a>
+          <a class="strat" href="flameback-strategy-large-cap-momentum.html"><span class="nm">Large-Cap <em>Momentum</em></span><span class="what">Classic 12&ndash;1 momentum on the Nifty 500 universe. The firm&rsquo;s oldest live strategy.</span><span class="since">Live since <em>2017</em></span><span class="arr">Factsheet &rarr;</span></a>
+          <a class="strat" href="flameback-strategy-large-cap-momentum.html"><span class="nm">Mid-Cap <em>Quality</em></span><span class="what">Mid-cap names selected on accrual quality, ROE consistency, and balance-sheet strength.</span><span class="since">Live since <em>2019</em></span><span class="arr">Factsheet &rarr;</span></a>
+          <a class="strat" href="flameback-strategy-large-cap-momentum.html"><span class="nm">Multi-Factor <em>India</em></span><span class="what">Blended momentum, quality, and low-vol factor exposure across the Nifty 500.</span><span class="since">Live since <em>2019</em></span><span class="arr">Factsheet &rarr;</span></a>
+          <a class="strat" href="flameback-strategy-large-cap-momentum.html"><span class="nm">Small-Cap <em>Carry</em></span><span class="what">Small-cap names with yield, earnings stability, and momentum confirmation.</span><span class="since">Live since <em>2020</em></span><span class="arr">Factsheet &rarr;</span></a>
+          <a class="strat" href="flameback-strategy-large-cap-momentum.html"><span class="nm">Low-Vol <em>India</em></span><span class="what">Defensive factor exposure for drawdown-averse mandates.</span><span class="since">Live since <em>2021</em></span><span class="arr">Factsheet &rarr;</span></a>
+          <a class="strat" href="flameback-strategy-large-cap-momentum.html"><span class="nm">Sector <em>Rotation</em></span><span class="what">Sector-level momentum and earnings-revision signals on the Nifty sector indices.</span><span class="since">Live since <em>2022</em></span><span class="arr">Factsheet &rarr;</span></a>
+          <a class="strat" href="flameback-strategy-large-cap-momentum.html"><span class="nm">India <em>Long/Short</em></span><span class="what">Market-neutral pair of the firm&rsquo;s long factors against a short-leg of low-quality, decelerating names.</span><span class="since">Live since <em>2023</em></span><span class="arr">Factsheet &rarr;</span></a>
+        </div>
+
+        <div class="cat-grp">
+          <div class="cat-grp-hd"><span class="num">ii.</span><span class="grp">US <em>equity</em></span><span class="ct">3 strategies &middot; SEC-filed</span></div>
+          <a class="strat" href="flameback-strategy-large-cap-momentum.html"><span class="nm">US <em>Momentum</em></span><span class="what">12&ndash;1 momentum on the S&amp;P 1500 universe, capacity-aware, weekly rebalanced.</span><span class="since">Live since <em>2023</em></span><span class="arr">Factsheet &rarr;</span></a>
+          <a class="strat" href="flameback-strategy-large-cap-momentum.html"><span class="nm">US <em>Quality</em></span><span class="what">Quality factor exposure with earnings-revision overlay across US large-caps.</span><span class="since">Live since <em>2023</em></span><span class="arr">Factsheet &rarr;</span></a>
+          <a class="strat" href="flameback-strategy-large-cap-momentum.html"><span class="nm">US <em>Long/Short</em></span><span class="what">Market-neutral US exposure; long quality and momentum, short their inverse.</span><span class="since">Live since <em>2024</em></span><span class="arr">Factsheet &rarr;</span></a>
+        </div>
+
+        <div class="cat-grp">
+          <div class="cat-grp-hd"><span class="num">iii.</span><span class="grp"><em>Multi-asset</em></span><span class="ct">3 strategies &middot; cross-asset</span></div>
+          <a class="strat" href="flameback-strategy-large-cap-momentum.html"><span class="nm">Risk <em>Parity</em></span><span class="what">Equity, fixed-income, gold, and cash weighted to equal risk contribution. The firm&rsquo;s defensive backbone.</span><span class="since">Live since <em>2020</em></span><span class="arr">Factsheet &rarr;</span></a>
+          <a class="strat" href="flameback-strategy-large-cap-momentum.html"><span class="nm">Tactical <em>Asset Allocation</em></span><span class="what">Asset-class momentum across equity, debt, gold; weekly weights with regime overlay.</span><span class="since">Live since <em>2021</em></span><span class="arr">Factsheet &rarr;</span></a>
+          <a class="strat" href="flameback-strategy-large-cap-momentum.html"><span class="nm">India&ndash;US <em>Cross-Asset</em></span><span class="what">Cross-geography asset allocation; gives Indian clients quantitatively driven US exposure.</span><span class="since">Live since <em>2023</em></span><span class="arr">Factsheet &rarr;</span></a>
+        </div>
+
+        <div class="cat-grp">
+          <div class="cat-grp-hd"><span class="num">iv.</span><span class="grp">Tactical <em>&amp; overlay</em></span><span class="ct">4 strategies &middot; portfolio overlays</span></div>
+          <a class="strat" href="flameback-strategy-large-cap-momentum.html"><span class="nm">Volatility <em>Overlay</em></span><span class="what">Tactical hedging of equity exposure based on a realized-vol regime signal.</span><span class="since">Live since <em>2020</em></span><span class="arr">Factsheet &rarr;</span></a>
+          <a class="strat" href="flameback-strategy-large-cap-momentum.html"><span class="nm">Drawdown <em>Hedge</em></span><span class="what">Defined-cost protection against drawdowns above a stated threshold; available as an overlay.</span><span class="since">Live since <em>2021</em></span><span class="arr">Factsheet &rarr;</span></a>
+          <a class="strat" href="flameback-strategy-large-cap-momentum.html"><span class="nm">Carry <em>Curve</em></span><span class="what">Fixed-income carry strategy across the Indian yield curve, regime-conditioned.</span><span class="since">Live since <em>2022</em></span><span class="arr">Factsheet &rarr;</span></a>
+          <a class="strat" href="flameback-strategy-large-cap-momentum.html"><span class="nm">Macro <em>Tilt</em></span><span class="what">Slow-moving macro overlay across asset classes; intended as a directional regime filter.</span><span class="since">Live since <em>2024</em></span><span class="arr">Factsheet &rarr;</span></a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- iv. How to read a track record -->
+  <section class="sec tint">
+    <div class="wrap">
+      <div class="sec-h">
+        <div class="meta">iv. READING<br/>How to look at<br/>any factsheet on this site</div>
+        <h2>Six numbers on every factsheet. <em>None of them is hidden.</em></h2>
+      </div>
+
+      <div class="prose-grid" style="margin-bottom:36px">
+        <div class="meta lab"><span class="n">a.</span>The reporting discipline</div>
+        <div class="prose">
+          <p>Each strategy factsheet on this site carries the same six numbers, calculated on the same convention, reported over the same windows (1-year, 3-year, 5-year, since-inception). The firm does not have a favourite window. The strategies have what they have. The factsheets show what they show.</p>
+        </div>
+      </div>
+
+      <div class="six-stats">
+        <div class="stat-c"><span class="rn">i.</span><h4>Compounded <em>annual return.</em></h4><p>Net of fees, taxes, transaction costs. Reported in side-by-side periods so that any single period&rsquo;s strength doesn&rsquo;t obscure the others.</p></div>
+        <div class="stat-c"><span class="rn">ii.</span><h4>Realized <em>volatility.</em></h4><p>Annualized standard deviation of monthly returns. Not a substitute for risk; a useful summary of how much the strategy moves.</p></div>
+        <div class="stat-c"><span class="rn">iii.</span><h4><em>Sharpe</em> ratio.</h4><p>Return per unit of volatility, net of the risk-free rate. <em>Useful for comparison; not a complete picture.</em></p></div>
+        <div class="stat-c"><span class="rn">iv.</span><h4>Maximum <em>drawdown.</em></h4><p>The deepest peak-to-trough decline the strategy has experienced live. Reported alongside the date range it occurred in.</p></div>
+        <div class="stat-c"><span class="rn">v.</span><h4>Time to <em>recovery.</em></h4><p>How long after the deepest drawdown it took to reach a new high. <em>Often the most useful number for a patient client.</em></p></div>
+        <div class="stat-c"><span class="rn">vi.</span><h4>Worst <em>calendar year.</em></h4><p>Plain January-to-December performance in the strategy&rsquo;s worst observed year. Not the worst rolling 12 months &mdash; that&rsquo;s a separate number.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- v. The lifecycle -->
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-h">
+        <div class="meta">v. LIFECYCLE<br/>How a strategy enters,<br/>lives in, leaves a portfolio</div>
+        <h2>The journey a strategy makes into <em>your portfolio.</em></h2>
+      </div>
+
+      <div class="prose-grid" style="margin-bottom:32px">
+        <div class="meta lab"><span class="n">a.</span>The journey, in five steps</div>
+        <div class="prose">
+          <p>The strategies on this page do not arrive in a client portfolio by virtue of being on this page. Each one is allocated, sized, monitored, and eventually retired according to the lifecycle below. <em>The discipline is on the firm. The client&rsquo;s only obligation is patience.</em></p>
+        </div>
+      </div>
+
+      <div class="lc">
+        <div class="lc-row"><span class="num">i.</span><div class="body"><h4>The strategy <em>survives R&amp;D.</em></h4><p>It passes hypothesis, back-test, walk-forward, regime-testing, and paper-trading, and then runs on the firm&rsquo;s own capital for six to twelve months. <em>See the Strategy R&amp;D page for the funnel in detail.</em></p></div></div>
+        <div class="lc-row"><span class="num">ii.</span><div class="body"><h4>It is <em>allocated</em> to a client mandate.</h4><p>Strategies are allocated to client portfolios based on the client&rsquo;s liabilities, horizon, behaviour, and stated mandate &mdash; not as a choose-from-the-menu list. A young accumulator and a retired estate get different mixes of the same underlying eighteen.</p></div></div>
+        <div class="lc-row"><span class="num">iii.</span><div class="body"><h4>It is <em>sized</em> by the strategy&rsquo;s live track record.</h4><p>New live strategies enter at small allocations and earn their weight over time. <em>A strategy with eighteen months of live capital does not start with the same allocation as one with eight years.</em></p></div></div>
+        <div class="lc-row"><span class="num">iv.</span><div class="body"><h4>It is <em>monitored</em> against its pre-registered behaviour.</h4><p>Every live strategy has a documented expectation: target Sharpe, expected drawdown profile, expected regime behaviour. Quarterly reviews compare live results to expectation; material divergences trigger investigation.</p></div></div>
+        <div class="lc-row"><span class="num">v.</span><div class="body"><h4>It is <em>retired</em> when the evidence says so.</h4><p>Signals decay. Capacity changes. Market structure evolves. When a strategy materially diverges from its pre-registered behaviour &mdash; over a horizon long enough to be meaningful, not after one bad quarter &mdash; the firm retires it. <strong>Client capital is reallocated to the strategies still earning their place.</strong></p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cross links -->
+  <section class="xlinks">
+    <div class="wrap">
+      <div class="xl-h"><h2>Where to go from <em>here.</em></h2><p>Our Work is the proof. The pages below explain the rest of the practice.</p></div>
+      <div class="xl-grid">
+        <a class="xl-card" href="flameback-strategy-rd.html"><span class="n">i.</span><span class="t">Strategy <em>R&amp;D.</em></span><span class="d">The five-stage funnel that produced the eighteen strategies on this page. The 2% survival rate. The disciplined kills.</span><span class="arr">Read &rarr;</span></a>
+        <a class="xl-card" href="flameback-technology.html"><span class="n">ii.</span><span class="t"><em>Technology.</em></span><span class="d">FIST, QX, the data lake, Jarvis. The stack that the strategies run on. What the firm built. What it didn&rsquo;t.</span><span class="arr">Read &rarr;</span></a>
+        <a class="xl-card" href="flameback-what-we-do.html"><span class="n">iii.</span><span class="t">What we <em>do.</em></span><span class="d">How these strategies are wrapped into Private Wealth Management, Advisory, and QX Funds engagements.</span><span class="arr">Read &rarr;</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="close">
+    <div class="wrap">
+      <h2>The work is the <em>argument.</em></h2>
+      <p class="sub">Decks, slides, and outlooks are someone else&rsquo;s industry. The firm&rsquo;s argument is the strategies above, the track records on each factsheet, and the founders&rsquo; capital running alongside. A conversation starts wherever you&rsquo;d like.</p>
+      <div class="ct-row">
+        <a class="btn" href="flameback-app-splash.html">Start your journey &rarr;</a>
+        <a class="btn-out" href="flameback-who-we-are.html">Read about the firm</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <div class="footin">
+        <a class="wm" href="flameback-home.html">flameback<span class="p">.</span></a>
+        <div class="footcols">
+          <div class="footcol"><h4>Who we are</h4><a href="flameback-firm.html">The firm</a><a href="flameback-team.html">Team</a><a href="flameback-philosophy.html">Philosophy</a><a href="flameback-strategy-rd.html">Strategy R&amp;D</a><a href="flameback-technology.html">Technology</a></div>
+          <div class="footcol"><h4>What we do</h4><a href="flameback-what-we-do.html#pwm">Private Wealth Management</a><a href="flameback-what-we-do.html#advisory">Advisory</a><a href="flameback-what-we-do.html#qx">QX Funds</a></div>
+          <div class="footcol"><h4>Open</h4><a href="flameback-our-work.html">Our work</a><a href="flameback-insights.html">Insights</a><a href="flameback-tools.html">Tools</a><a href="flameback-offbook.html">Off-book</a></div>
+          <div class="footcol"><h4>Regulatory</h4><a href="flameback-pms-disclosure.html">PMS disclosure</a><a href="flameback-advisory-disclosure.html">Advisory disclosure</a><a href="flameback-app-splash.html">Start your journey</a></div>
+        </div>
+      </div>
+      <div class="disc"><span>&copy; 2026 Flameback Capital Pvt Ltd</span><span class="legal">SEBI registered &middot; SEC filed for US strategy. Investments are subject to market risk. Past performance is not indicative of future results. Strategy names, live-since dates and capacity figures shown for illustration; refer to each factsheet for audited disclosures.</span></div>
+    </div>
+  </footer>
+
+<script>
+  var root=document.documentElement, tg=document.getElementById('toggle');
+  tg.addEventListener('click',function(){root.classList.toggle('light');tg.textContent=root.classList.contains('light')?'Dark':'Light';});
+  var nav=document.getElementById('nav');
+  window.addEventListener('scroll',function(){nav.classList.toggle('scrolled',window.scrollY>16)});
+</script>
+  <script src="reload.js"></script>
+</body>
+</html>

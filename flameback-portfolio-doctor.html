@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>flameback. — Portfolio Doctor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#1A1714; --ink:#F2EDE3; --ink-soft:rgba(242,237,227,.64); --ink-mute:rgba(242,237,227,.42);
+    --line:rgba(242,237,227,.15); --panel:#221E1A; --accent:#FF6D0A; --btn-bg:#FF6D0A; --btn-ink:#1A1714;
+    --grain-blend:screen; --grain-op:.05; --warn:#E8A547; --bad:#D04A2A; --good:#8FB87A;
+  }
+  :root.light{
+    --bg:#FCFAF6; --ink:#1A1714; --ink-soft:rgba(26,23,20,.66); --ink-mute:rgba(26,23,20,.46);
+    --line:rgba(26,23,20,.13); --panel:#F4EFE7; --accent:#FF6D0A; --btn-bg:#1A1714; --btn-ink:#FCFAF6;
+    --grain-blend:multiply; --grain-op:.03; --warn:#C8821E; --bad:#A03615; --good:#5F8048;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:"Source Serif 4",serif;transition:background .5s,color .5s;font-variant-numeric:tabular-nums;font-feature-settings:"tnum"}
+  body::after{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;mix-blend-mode:var(--grain-blend);opacity:var(--grain-op);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 clamp(22px,5vw,44px)}
+  section{position:relative;z-index:2}
+  .mono{font-family:"JetBrains Mono",monospace}
+
+  .wm{font-family:"Source Serif 4",serif;font-weight:600;font-size:18px;color:var(--ink);text-decoration:none}
+  .wm .p{color:var(--accent)}
+  .lab{font-family:"Source Serif 4",serif;font-style:italic;font-size:14px;color:var(--ink-mute)}
+  .lab .n{font-style:normal;color:var(--accent);margin-right:10px}
+  h1,h2,h3,h4{font-family:"Cormorant Garamond",serif;font-weight:500;letter-spacing:-.012em;color:var(--ink)}
+  .btn,.btn-out{display:inline-flex;align-items:center;gap:11px;font-family:"Source Serif 4",serif;font-size:15px;font-weight:500;padding:12px 22px;text-decoration:none;transition:gap .35s,opacity .3s,border-color .3s;cursor:pointer;border:none}
+  .btn{background:var(--btn-bg);color:var(--btn-ink)}.btn:hover{gap:15px;opacity:.92}
+  .btn-out{background:transparent;color:var(--ink);border:1px solid var(--line)}.btn-out:hover{gap:15px;border-color:var(--ink-mute)}
+
+  nav{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 86%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid transparent;transition:border-color .4s}
+  nav.scrolled{border-color:var(--line)}
+  .navin{display:flex;align-items:center;justify-content:space-between;padding:15px 0}
+  .navr{display:flex;align-items:center;gap:21px}
+  .navr a{color:var(--ink-soft);text-decoration:none;font-size:14.5px;transition:color .3s}
+  .navr a:hover{color:var(--ink)} .navr a.current{color:var(--ink)}
+  .toggle{background:none;border:1px solid var(--line);color:var(--ink-soft);cursor:pointer;font-family:"Source Serif 4",serif;font-size:13px;font-style:italic;padding:5px 13px;border-radius:999px}
+  .navr a.navbtn{background:var(--btn-bg);color:var(--btn-ink);padding:8px 17px}
+  @media(max-width:880px){.navr .navlink{display:none}}
+
+  .subnav{border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--bg) 92%,transparent);position:sticky;top:58px;z-index:40;backdrop-filter:blur(8px)}
+  .subnav-in{display:flex;align-items:baseline;gap:clamp(14px,2vw,28px);padding:11px 0;flex-wrap:wrap}
+  .subnav .sn-lab{font-style:italic;font-size:13px;color:var(--ink-mute);margin-right:6px}
+  .subnav a{font-size:13.5px;color:var(--ink-mute);text-decoration:none;padding-bottom:3px;border-bottom:1px solid transparent;white-space:nowrap}
+  .subnav a:hover{color:var(--ink)} .subnav a.current{color:var(--ink);border-bottom-color:var(--accent)}
+
+  .hero{padding:clamp(40px,5vh,68px) 0 clamp(20px,3vh,32px)}
+  .dateline{display:flex;align-items:center;gap:13px;margin-bottom:20px}
+  .dateline .l{width:26px;height:1px;background:var(--accent)}
+  .hero h1{font-size:clamp(34px,5vw,58px);line-height:0.98;letter-spacing:-.018em;margin-bottom:18px;max-width:18ch}
+  .hero h1 .acc{color:var(--accent);font-style:italic}
+  .hero-sub{font-size:16px;line-height:1.6;color:var(--ink);max-width:64ch;margin-bottom:24px}
+  .h-status{display:inline-flex;align-items:center;gap:7px;padding:4px 12px;border:1px solid color-mix(in srgb,var(--accent) 45%,transparent);font-style:italic;font-size:11px;color:var(--accent);letter-spacing:.06em;text-transform:uppercase;margin-bottom:18px}
+  .h-status .dot{width:6px;height:6px;border-radius:50%;background:var(--accent)}
+
+  /* Auth banner */
+  .auth-banner{padding:clamp(20px,2.5vw,28px) 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--accent) 4%,transparent)}
+  .auth-row{display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center}
+  @media(max-width:760px){.auth-row{grid-template-columns:1fr}}
+  .auth-row .lab-i{display:inline-flex;align-items:center;gap:6px;font-style:italic;font-size:11px;color:var(--accent);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+  .auth-row .lab-i .lk{width:11px;height:11px;border:1.4px solid var(--accent);border-radius:2px;display:inline-block;position:relative}
+  .auth-row .lab-i .lk::after{content:"";position:absolute;top:-4px;left:2.5px;width:5px;height:5px;border:1.4px solid var(--accent);border-bottom:none;border-radius:5px 5px 0 0}
+  .auth-row h3{font-size:20px;line-height:1.2;margin-bottom:6px}
+  .auth-row p{font-size:13.5px;color:var(--ink-soft);line-height:1.55;max-width:60ch}
+
+  /* How it works */
+  .how{padding:clamp(36px,5vw,60px) 0;border-bottom:1px solid var(--line)}
+  .how-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:28px;gap:18px;flex-wrap:wrap}
+  .how-head-l h2{font-size:clamp(28px,3.6vw,40px);line-height:1.05;margin-bottom:8px}
+  .how-head-l h2 .acc{color:var(--accent);font-style:italic}
+  .how-head-l p{font-style:italic;font-size:14px;color:var(--ink-soft);max-width:48ch;line-height:1.55}
+  .how-head-r{font-style:italic;font-size:12.5px;color:var(--ink-mute);text-align:right}
+
+  .steps{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+  @media(max-width:1100px){.steps{grid-template-columns:repeat(3,1fr)}}
+  @media(max-width:680px){.steps{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:440px){.steps{grid-template-columns:1fr}}
+
+  .step{padding:18px 18px 20px;border:1px solid var(--line);background:color-mix(in srgb,var(--ink) 2%,transparent);display:flex;flex-direction:column;gap:12px;transition:border-color .3s,transform .3s}
+  .step:hover{border-color:var(--accent)}
+  .step-num{font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--accent);font-size:14px;letter-spacing:.04em}
+  .step-mock{aspect-ratio:5/3;border:1px solid var(--line);background:var(--bg);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
+  .step-mock svg{display:block;width:100%;height:100%}
+  .step h4{font-size:18px;line-height:1.2}
+  .step p{font-size:12.5px;color:var(--ink-soft);line-height:1.55}
+
+  /* Input options */
+  .input-sec{padding:clamp(28px,3.5vw,44px) 0;border-bottom:1px solid var(--line)}
+  .input-head{margin-bottom:22px}
+  .input-head h2{font-size:clamp(24px,3vw,32px);margin-bottom:8px;line-height:1.05}
+  .input-head h2 .acc{color:var(--accent);font-style:italic}
+  .input-head p{font-style:italic;font-size:13.5px;color:var(--ink-soft);max-width:54ch;line-height:1.55}
+  .input-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  @media(max-width:860px){.input-grid{grid-template-columns:1fr}}
+  .in-opt{padding:22px;border:1px solid var(--line);background:color-mix(in srgb,var(--ink) 2%,transparent);position:relative;transition:border-color .3s}
+  .in-opt:hover{border-color:var(--accent)}
+  .in-opt.active{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 4%,transparent)}
+  .in-opt-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+  .in-opt-head .ic{width:34px;height:34px;border:1px solid var(--line);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--accent);font-family:"Cormorant Garamond",serif;font-style:italic;font-size:16px}
+  .in-opt.active .in-opt-head .ic{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 8%,transparent)}
+  .in-opt-head .pill{font-style:italic;font-size:10px;color:var(--ink-mute);padding:2px 9px;border:1px solid var(--line);letter-spacing:.06em;text-transform:uppercase}
+  .in-opt.active .in-opt-head .pill{color:var(--accent);border-color:var(--accent)}
+  .in-opt h4{font-size:18px;margin-bottom:6px;line-height:1.2}
+  .in-opt p{font-size:12.5px;color:var(--ink-soft);line-height:1.55;margin-bottom:14px}
+  .in-opt .files{font-style:italic;font-size:11px;color:var(--ink-mute);padding-top:10px;border-top:1px dashed var(--line)}
+
+  /* Questionnaire mini */
+  .quiz-pnl{padding:clamp(22px,2.8vw,32px);border:1px solid var(--line);background:color-mix(in srgb,var(--ink) 2%,transparent);margin-top:20px}
+  .quiz-pnl-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+  .quiz-pnl-head h3{font-size:20px}
+  .quiz-pnl-head .progress{font-style:italic;font-size:12px;color:var(--ink-mute)}
+  .quiz-pnl-head .progress .acc{color:var(--accent);font-style:normal;font-weight:500}
+  .q-show{padding:8px 0 16px}
+  .q-show .q-lab{font-style:italic;font-size:10.5px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:8px}
+  .q-show .q-text{font-family:"Cormorant Garamond",serif;font-size:20px;line-height:1.2;margin-bottom:14px;display:block}
+  .q-show .q-opts{display:flex;gap:8px;flex-wrap:wrap}
+  .q-show .q-opt{padding:9px 16px;border:1px solid var(--line);font-family:"Source Serif 4",serif;font-size:13.5px;color:var(--ink-soft);background:transparent;cursor:pointer;transition:all .25s}
+  .q-show .q-opt:hover{border-color:var(--ink-mute);color:var(--ink)}
+  .q-show .q-opt.sel{border-color:var(--accent);color:var(--accent);background:color-mix(in srgb,var(--accent) 5%,transparent)}
+  .quiz-pnl-foot{padding-top:14px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;font-style:italic;font-size:12px;color:var(--ink-mute);flex-wrap:wrap;gap:10px}
+
+  /* Report */
+  .report{padding:clamp(28px,3.5vw,44px) 0;border-bottom:1px solid var(--line)}
+  .report-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:22px;gap:16px;flex-wrap:wrap}
+  .report-head h2{font-size:clamp(28px,3.6vw,40px);line-height:1.05}
+  .report-head h2 .acc{color:var(--accent);font-style:italic}
+  .report-head .stamp{font-style:italic;font-size:12.5px;color:var(--ink-mute)}
+
+  /* Tab system */
+  .tabs{display:flex;border-bottom:1px solid var(--line);margin-bottom:28px;gap:0}
+  .tab{padding:12px 24px;font-family:"Cormorant Garamond",serif;font-style:italic;font-size:18px;color:var(--ink-mute);background:transparent;border:none;border-bottom:2px solid transparent;cursor:pointer;transition:color .25s,border-color .25s;margin-bottom:-1px}
+  .tab:hover{color:var(--ink)}
+  .tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+  .tab-pane{display:none}
+  .tab-pane.active{display:block}
+
+  /* Score banner */
+  .score-row{display:grid;grid-template-columns:auto 1fr;gap:30px;align-items:center;padding:clamp(20px,3vw,30px);border:1px solid var(--line);background:color-mix(in srgb,var(--accent) 3%,transparent);margin-bottom:28px}
+  @media(max-width:760px){.score-row{grid-template-columns:1fr}}
+  .score-circle{width:128px;height:128px;border:2px solid var(--accent);border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--bg);position:relative}
+  .score-circle .v{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:48px;color:var(--accent);line-height:1}
+  .score-circle .o{font-style:italic;font-size:11px;color:var(--ink-mute);margin-top:2px}
+  .score-text h3{font-size:22px;margin-bottom:8px;line-height:1.15}
+  .score-text p{font-size:14px;line-height:1.6;color:var(--ink-soft);max-width:60ch}
+
+  /* Findings */
+  .findings{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:28px}
+  @media(max-width:760px){.findings{grid-template-columns:1fr}}
+  .finding{padding:18px 20px;border:1px solid var(--line);background:color-mix(in srgb,var(--ink) 2%,transparent);position:relative}
+  .finding::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px}
+  .finding.warn::before{background:var(--warn)}
+  .finding.bad::before{background:var(--bad)}
+  .finding.good::before{background:var(--good)}
+  .finding-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;font-style:italic;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase}
+  .finding.warn .finding-meta .sev{color:var(--warn)}
+  .finding.bad .finding-meta .sev{color:var(--bad)}
+  .finding.good .finding-meta .sev{color:var(--good)}
+  .finding-meta .cat{color:var(--ink-mute)}
+  .finding h4{font-size:18px;line-height:1.2;margin-bottom:6px}
+  .finding p{font-size:13px;line-height:1.55;color:var(--ink-soft)}
+
+  /* Block sections */
+  .blk{padding:clamp(22px,2.6vw,30px);border:1px solid var(--line);background:color-mix(in srgb,var(--ink) 2%,transparent);margin-bottom:26px}
+  .blk-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:18px;flex-wrap:wrap;gap:10px}
+  .blk-head h3{font-size:22px;line-height:1.15}
+  .blk-head .stamp{font-style:italic;font-size:11.5px;color:var(--ink-mute)}
+
+  .comp-bar{display:flex;height:34px;width:100%;border:1px solid var(--line);overflow:hidden;margin-bottom:14px}
+  .seg{display:flex;align-items:center;justify-content:center;color:var(--btn-ink);font-size:11px;font-weight:500}
+  .seg.financials{background:var(--accent);width:38%} .seg.it{background:#A66B3E;width:18%}
+  .seg.consumer{background:#7A5F4A;width:14%} .seg.energy{background:#5C4837;width:10%}
+  .seg.health{background:#9B7E55;width:8%} .seg.other{background:var(--ink-mute);width:12%}
+  .comp-legend{display:flex;flex-wrap:wrap;gap:14px;font-size:11.5px;color:var(--ink-soft);font-style:italic}
+  .legend-i{display:flex;align-items:center;gap:6px}
+  .legend-i .sw{width:9px;height:9px}
+
+  /* Factor exposure */
+  .factor-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:26px}
+  @media(max-width:760px){.factor-grid{grid-template-columns:repeat(2,1fr)}}
+  .factor{padding:14px 16px;border:1px solid var(--line);background:color-mix(in srgb,var(--ink) 2%,transparent)}
+  .factor-l{font-style:italic;font-size:10.5px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px;display:block}
+  .factor-v{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:22px;color:var(--ink);line-height:1;margin-bottom:8px;display:block}
+  .factor-v.acc{color:var(--accent)}
+  .factor-bar{height:4px;background:var(--line);overflow:hidden}
+  .factor-bar .fill{height:100%;background:var(--accent)}
+
+  /* MF-specific: TER bars */
+  .ter-tbl{margin-bottom:6px}
+  .ter-row{display:grid;grid-template-columns:1fr 1fr 50px;gap:14px;align-items:center;padding:8px 0;border-top:1px dashed var(--line);font-size:12.5px}
+  .ter-row:first-child{border-top:none;font-style:italic;font-size:10.5px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase}
+  .ter-row .fname{color:var(--ink)}
+  .ter-row .fname-meta{display:block;font-style:italic;color:var(--ink-mute);font-size:10.5px;margin-top:2px}
+  .ter-bar-wrap{position:relative;height:14px;background:var(--bg);border:1px solid var(--line)}
+  .ter-bar{position:absolute;left:0;top:0;bottom:0;background:var(--accent)}
+  .ter-bar.ok{background:var(--good)}
+  .ter-bar.bad{background:var(--bad)}
+  .ter-med{position:absolute;top:-3px;bottom:-3px;width:1.5px;background:var(--ink-mute)}
+  .ter-val{font-variant-numeric:tabular-nums;text-align:right;font-weight:500;color:var(--ink)}
+  .ter-val.bad{color:var(--bad)} .ter-val.warn{color:var(--warn)} .ter-val.ok{color:var(--good)}
+
+  /* Correlation matrix */
+  .corr{margin-bottom:6px;overflow-x:auto}
+  .corr table{border-collapse:collapse;width:100%;min-width:560px;font-size:11px}
+  .corr th,.corr td{padding:6px 8px;text-align:center;border:1px solid var(--line);font-variant-numeric:tabular-nums}
+  .corr th{font-style:italic;font-weight:400;color:var(--ink-mute);font-size:10px;background:color-mix(in srgb,var(--ink) 3%,transparent)}
+  .corr th.row{text-align:left;color:var(--ink);font-style:normal;font-size:11px}
+  .corr td.diag{background:color-mix(in srgb,var(--ink-mute) 20%,transparent);color:var(--ink-mute)}
+  .corr td.high{background:color-mix(in srgb,var(--bad) 28%,transparent);color:var(--ink)}
+  .corr td.medhi{background:color-mix(in srgb,var(--accent) 22%,transparent);color:var(--ink)}
+  .corr td.med{background:color-mix(in srgb,var(--warn) 14%,transparent);color:var(--ink)}
+  .corr td.low{background:color-mix(in srgb,var(--good) 10%,transparent);color:var(--ink-soft)}
+  .corr-legend{display:flex;flex-wrap:wrap;gap:14px;font-size:11px;color:var(--ink-soft);font-style:italic;margin-top:12px}
+  .corr-legend .it{display:flex;align-items:center;gap:6px}
+  .corr-legend .sw{width:14px;height:10px}
+
+  /* Vol vs profile */
+  .vol-wrap{position:relative;height:80px;margin-top:10px;margin-bottom:18px}
+  .vol-scale{position:absolute;left:0;right:0;top:22px;height:36px;border:1px solid var(--line);display:flex;overflow:hidden}
+  .vol-band{flex:1;border-right:1px dashed var(--line);position:relative;display:flex;align-items:center;justify-content:center}
+  .vol-band:last-child{border-right:none}
+  .vol-band.cons{background:color-mix(in srgb,var(--good) 7%,transparent)}
+  .vol-band.mod{background:color-mix(in srgb,var(--warn) 8%,transparent)}
+  .vol-band.aggr{background:color-mix(in srgb,var(--bad) 8%,transparent)}
+  .vol-band-l{font-style:italic;font-size:10.5px;color:var(--ink-mute);letter-spacing:.04em;text-transform:uppercase}
+  .vol-prof-l{position:absolute;left:0;right:0;top:0;display:flex;font-size:10px;color:var(--ink-mute);font-style:italic}
+  .vol-prof-l span{flex:1;text-align:center;letter-spacing:.04em}
+  .vol-marker{position:absolute;top:14px;left:42%;width:2px;height:52px;background:var(--accent)}
+  .vol-marker::after{content:"actual: 16.4%";position:absolute;top:-22px;left:50%;transform:translateX(-50%);font-family:"Cormorant Garamond",serif;font-style:italic;font-size:12px;color:var(--accent);white-space:nowrap}
+  .vol-user{position:absolute;top:14px;left:25%;width:2px;height:52px;background:var(--ink-mute)}
+  .vol-user::after{content:"user profile: 11%";position:absolute;top:64px;left:50%;transform:translateX(-50%);font-family:"Cormorant Garamond",serif;font-style:italic;font-size:11px;color:var(--ink-mute);white-space:nowrap}
+
+  /* MF tile row */
+  .mf-tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px}
+  @media(max-width:760px){.mf-tiles{grid-template-columns:1fr}}
+  .mf-t{padding:18px 20px;border:1px solid var(--line);background:color-mix(in srgb,var(--ink) 2%,transparent);position:relative}
+  .mf-t::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px}
+  .mf-t.bad::before{background:var(--bad)} .mf-t.warn::before{background:var(--warn)} .mf-t.good::before{background:var(--good)}
+  .mf-t-l{font-style:italic;font-size:10.5px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:8px}
+  .mf-t-v{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:30px;line-height:1;margin-bottom:6px;color:var(--ink)}
+  .mf-t-v.bad{color:var(--bad)} .mf-t-v.warn{color:var(--warn)} .mf-t-v.good{color:var(--good)}
+  .mf-t-d{font-size:12.5px;color:var(--ink-soft);line-height:1.5}
+
+  /* MF fund table */
+  .mf-tbl{width:100%;border-collapse:collapse;font-size:12.5px}
+  .mf-tbl th,.mf-tbl td{padding:10px 12px;text-align:left;border-top:1px solid var(--line)}
+  .mf-tbl th{font-style:italic;font-weight:400;font-size:10.5px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase;background:color-mix(in srgb,var(--ink) 3%,transparent);border-top:none}
+  .mf-tbl td.r,.mf-tbl th.r{text-align:right;font-variant-numeric:tabular-nums}
+  .mf-tbl .fnm{font-style:italic;color:var(--ink)}
+  .mf-tbl .fcat{font-style:italic;font-size:10.5px;color:var(--ink-mute);display:block;margin-top:2px}
+  .mf-tbl .flag{padding:2px 8px;font-style:italic;font-size:10px;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--line);white-space:nowrap}
+  .mf-tbl .flag.bad{color:var(--bad);border-color:var(--bad)}
+  .mf-tbl .flag.warn{color:var(--warn);border-color:var(--warn)}
+  .mf-tbl .flag.good{color:var(--good);border-color:var(--good)}
+
+  /* Recommendations */
+  .recos{padding:clamp(22px,2.6vw,30px);border:1px solid var(--line);background:color-mix(in srgb,var(--ink) 2%,transparent);margin-bottom:24px}
+  .recos h3{font-size:22px;margin-bottom:14px}
+  .reco{display:flex;gap:18px;padding:14px 0;border-top:1px solid var(--line);align-items:flex-start}
+  .reco:first-of-type{border-top:none}
+  .reco-mark{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:20px;color:var(--accent);line-height:1;flex-shrink:0;width:24px}
+  .reco-body p{font-size:14px;line-height:1.6;color:var(--ink)}
+  .reco-body p strong{font-weight:500}
+
+  .rec-cta{padding:24px;border:1px solid var(--accent);background:color-mix(in srgb,var(--accent) 6%,transparent);display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;margin-bottom:8px}
+  .rec-cta-text{flex:1;min-width:240px}
+  .rec-cta-text h4{font-style:italic;font-size:20px;color:var(--ink);margin-bottom:6px}
+  .rec-cta-text p{font-size:13.5px;color:var(--ink-soft);max-width:48ch;line-height:1.55}
+
+  /* Methodology */
+  .meth{padding:clamp(28px,3.5vw,44px) 0;border-bottom:1px solid var(--line)}
+  .meth-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}
+  @media(max-width:760px){.meth-grid{grid-template-columns:1fr}}
+  .meth-card{padding:18px 20px;border:1px solid var(--line);background:color-mix(in srgb,var(--ink) 2%,transparent)}
+  .meth-card h4{font-size:18px;margin-bottom:6px;line-height:1.2}
+  .meth-card p{font-size:13px;line-height:1.55;color:var(--ink-soft)}
+
+  .lim{padding:clamp(28px,3vw,40px) 0;background:color-mix(in srgb,var(--ink) 2%,transparent)}
+  .lim h3{font-size:22px;margin-bottom:12px}
+  .lim p{font-size:14px;color:var(--ink-soft);line-height:1.65;max-width:64ch}
+
+  footer{border-top:1px solid var(--line);padding:48px 0 36px}
+  .footin{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;margin-bottom:36px}
+  .footcols{display:flex;gap:clamp(34px,6vw,68px);flex-wrap:wrap}
+  .footcol h4{font-style:italic;font-weight:400;font-size:14px;color:var(--ink-mute);margin-bottom:13px}
+  .footcol a{display:block;color:var(--ink-soft);text-decoration:none;font-size:15px;margin-bottom:9px}
+  .footcol a:hover{color:var(--accent)}
+  .disc{padding-top:22px;border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px}
+  .disc span{font-size:12.5px;color:var(--ink-mute);line-height:1.6}
+  .disc .legal{max-width:64ch;font-style:italic}
+</style>
+</head>
+<body>
+
+  <nav id="nav">
+    <div class="wrap navin">
+      <a class="wm" href="index.html">flameback<span class="p">.</span></a>
+      <div class="navr">
+        <a class="navlink" href="flameback-firm.html">Firm</a>
+        <a class="navlink" href="flameback-strategies.html">Strategies</a>
+        <a class="navlink" href="flameback-offerings.html">Offerings</a>
+        <a class="navlink" href="flameback-insights.html">Insights</a>
+        <a class="navlink current" href="flameback-resources.html">Resources</a>
+        <a class="login" href="#">Login</a>
+        <a class="navbtn" href="flameback-app-splash.html">Start your journey</a>
+        <button class="toggle" id="toggle">Light</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="subnav">
+    <div class="wrap subnav-in">
+      <span class="sn-lab">Resources</span>
+      <a href="flameback-resources.html">Overview</a>
+      <a class="current" href="#">Portfolio doctor</a>
+      <a href="flameback-asset-map.html">Asset map</a>
+      <a href="flameback-insurance-advisor.html">Insurance advisor</a>
+      <a href="flameback-economic-indicators.html">Economic data</a>
+      <a href="flameback-market-indicators.html">Market data</a>
+      <a href="flameback-screener.html">Screener</a>
+      <a href="flameback-opensource.html">Open source</a>
+    </div>
+  </div>
+
+  <section class="hero">
+    <div class="wrap">
+      <div class="dateline"><span class="l"></span><span class="lab">Portfolio doctor</span></div>
+      <span class="h-status"><span class="dot"></span>Beta &middot; signed-in tool</span>
+      <h1>Diagnose any portfolio, <span class="acc">in five steps.</span></h1>
+      <p class="hero-sub">Upload by screenshot, by CSV/Excel, or by connecting an Account Aggregator. Answer six short questions on risk and goals. The factor-model engine returns a frank read on concentration, correlation, expense drag, factor exposure, and risk-profile fit &mdash; plus a list of suggested adjustments.</p>
+    </div>
+  </section>
+
+  <!-- Auth banner -->
+  <section class="auth-banner">
+    <div class="wrap">
+      <div class="auth-row">
+        <div>
+          <span class="lab-i"><span class="lk"></span>Sign-in required</span>
+          <h3>This tool runs on the user&rsquo;s real holdings.</h3>
+          <p>To protect the data and run a personalised diagnostic, the tool requires a free Flameback account. Holdings stay encrypted, never appear in any client communication, and are deleted on logout if not saved.</p>
+        </div>
+        <a class="btn" href="#">Sign in to begin &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how">
+    <div class="wrap">
+      <div class="how-head">
+        <div class="how-head-l">
+          <h2>How it <span class="acc">works.</span></h2>
+          <p>Five steps. Three to five minutes for screenshot or CSV input; under two for Account Aggregator.</p>
+        </div>
+        <div class="how-head-r">A short walkthrough video is on the way.<br/>The illustrations below mirror the actual screens.</div>
+      </div>
+
+      <div class="steps">
+
+        <!-- Step 1: Sign in -->
+        <div class="step">
+          <span class="step-num">step i</span>
+          <div class="step-mock">
+            <svg viewBox="0 0 260 160" xmlns="http://www.w3.org/2000/svg">
+              <rect width="260" height="160" fill="var(--bg)"/>
+              <rect x="60" y="30" width="140" height="100" fill="none" stroke="var(--line)" stroke-width="1"/>
+              <text x="130" y="48" font-size="9" font-family="Cormorant Garamond" font-style="italic" fill="var(--ink-mute)" text-anchor="middle" letter-spacing="0.5">SIGN IN</text>
+              <line x1="74" y1="58" x2="186" y2="58" stroke="var(--line)" stroke-width="0.5"/>
+              <text x="74" y="74" font-size="7" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)" letter-spacing="0.3">EMAIL</text>
+              <rect x="74" y="78" width="112" height="14" fill="none" stroke="var(--line)" stroke-width="0.6"/>
+              <text x="80" y="88" font-size="7" font-family="JetBrains Mono" fill="var(--ink-soft)">name@firm.com</text>
+              <text x="74" y="106" font-size="7" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)" letter-spacing="0.3">OTP</text>
+              <rect x="74" y="110" width="60" height="14" fill="none" stroke="var(--line)" stroke-width="0.6"/>
+              <text x="80" y="120" font-size="7" font-family="JetBrains Mono" fill="var(--ink-soft)">8 4 2 6</text>
+              <rect x="140" y="110" width="46" height="14" fill="var(--accent)"/>
+              <text x="163" y="120" font-size="7" font-family="Source Serif 4" fill="var(--btn-ink)" text-anchor="middle">Verify</text>
+            </svg>
+          </div>
+          <h4>Sign in securely.</h4>
+          <p>Email + OTP. No passwords. Session ends on logout.</p>
+        </div>
+
+        <!-- Step 2: Upload -->
+        <div class="step">
+          <span class="step-num">step ii</span>
+          <div class="step-mock">
+            <svg viewBox="0 0 260 160" xmlns="http://www.w3.org/2000/svg">
+              <rect width="260" height="160" fill="var(--bg)"/>
+              <text x="130" y="22" font-size="8" font-family="Cormorant Garamond" font-style="italic" fill="var(--ink-mute)" text-anchor="middle" letter-spacing="0.5">CHOOSE INPUT</text>
+              <rect x="14" y="34" width="72" height="108" fill="none" stroke="var(--line)" stroke-width="1"/>
+              <circle cx="50" cy="64" r="11" fill="none" stroke="var(--accent)" stroke-width="1"/>
+              <path d="M 45,60 L 50,68 L 56,58" stroke="var(--accent)" stroke-width="1.2" fill="none"/>
+              <text x="50" y="92" font-size="7.5" font-family="Cormorant Garamond" font-style="italic" fill="var(--ink)" text-anchor="middle">Screenshot</text>
+              <text x="50" y="106" font-size="6" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)" text-anchor="middle">PNG, JPG</text>
+              <text x="50" y="124" font-size="6" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)" text-anchor="middle">OCR extracts</text>
+              <rect x="94" y="34" width="72" height="108" fill="none" stroke="var(--accent)" stroke-width="1.4"/>
+              <rect x="118" y="52" width="24" height="30" fill="none" stroke="var(--accent)" stroke-width="0.9"/>
+              <line x1="124" y1="60" x2="138" y2="60" stroke="var(--accent)" stroke-width="0.7"/>
+              <line x1="124" y1="66" x2="138" y2="66" stroke="var(--accent)" stroke-width="0.7"/>
+              <line x1="124" y1="72" x2="138" y2="72" stroke="var(--accent)" stroke-width="0.7"/>
+              <text x="130" y="98" font-size="7.5" font-family="Cormorant Garamond" font-style="italic" fill="var(--accent)" text-anchor="middle">CSV / Excel</text>
+              <text x="130" y="112" font-size="6" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)" text-anchor="middle">Template ready</text>
+              <text x="130" y="128" font-size="6" font-family="Source Serif 4" font-style="italic" fill="var(--accent)" text-anchor="middle">Drag &amp; drop</text>
+              <rect x="174" y="34" width="72" height="108" fill="none" stroke="var(--line)" stroke-width="1"/>
+              <circle cx="210" cy="62" r="6" fill="none" stroke="var(--ink-mute)" stroke-width="1"/>
+              <circle cx="210" cy="74" r="6" fill="none" stroke="var(--ink-mute)" stroke-width="1"/>
+              <line x1="210" y1="68" x2="210" y2="68" stroke="var(--ink-mute)" stroke-width="0.6"/>
+              <text x="210" y="98" font-size="7.5" font-family="Cormorant Garamond" font-style="italic" fill="var(--ink)" text-anchor="middle">Account Agg.</text>
+              <text x="210" y="112" font-size="6" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)" text-anchor="middle">SEBI consent</text>
+              <text x="210" y="128" font-size="6" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)" text-anchor="middle">Auto-refresh</text>
+            </svg>
+          </div>
+          <h4>Upload the portfolio.</h4>
+          <p>Three ways in: screenshot OCR, CSV/Excel, or live AA link.</p>
+        </div>
+
+        <!-- Step 3: Questionnaire -->
+        <div class="step">
+          <span class="step-num">step iii</span>
+          <div class="step-mock">
+            <svg viewBox="0 0 260 160" xmlns="http://www.w3.org/2000/svg">
+              <rect width="260" height="160" fill="var(--bg)"/>
+              <rect x="20" y="20" width="220" height="120" fill="none" stroke="var(--line)" stroke-width="1"/>
+              <text x="32" y="36" font-size="6.5" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)" letter-spacing="0.4">QUESTION 03 OF 06</text>
+              <text x="228" y="36" font-size="6.5" font-family="Source Serif 4" font-style="italic" fill="var(--accent)" text-anchor="end" letter-spacing="0.4">RISK PROFILE</text>
+              <line x1="32" y1="44" x2="228" y2="44" stroke="var(--line)" stroke-width="0.4"/>
+              <text x="32" y="62" font-size="10" font-family="Cormorant Garamond" font-style="italic" fill="var(--ink)">If the portfolio fell</text>
+              <text x="32" y="76" font-size="10" font-family="Cormorant Garamond" font-style="italic" fill="var(--ink)">25%, how would</text>
+              <text x="32" y="90" font-size="10" font-family="Cormorant Garamond" font-style="italic" fill="var(--ink)">you respond?</text>
+              <rect x="32" y="102" width="68" height="14" fill="none" stroke="var(--line)" stroke-width="0.7"/>
+              <text x="66" y="111" font-size="6.5" font-family="Source Serif 4" fill="var(--ink-mute)" text-anchor="middle">Sell some</text>
+              <rect x="106" y="102" width="58" height="14" fill="color-mix(in srgb,var(--accent) 12%,transparent)" stroke="var(--accent)" stroke-width="1"/>
+              <text x="135" y="111" font-size="6.5" font-family="Source Serif 4" fill="var(--accent)" text-anchor="middle">Hold</text>
+              <rect x="170" y="102" width="58" height="14" fill="none" stroke="var(--line)" stroke-width="0.7"/>
+              <text x="199" y="111" font-size="6.5" font-family="Source Serif 4" fill="var(--ink-mute)" text-anchor="middle">Buy more</text>
+              <rect x="32" y="122" width="80" height="6" fill="var(--accent)"/>
+              <rect x="112" y="122" width="116" height="6" fill="var(--line)"/>
+            </svg>
+          </div>
+          <h4>Tell us about risk + goals.</h4>
+          <p>Six short questions. Used to set the personal benchmark.</p>
+        </div>
+
+        <!-- Step 4: Analyzing -->
+        <div class="step">
+          <span class="step-num">step iv</span>
+          <div class="step-mock">
+            <svg viewBox="0 0 260 160" xmlns="http://www.w3.org/2000/svg">
+              <rect width="260" height="160" fill="var(--bg)"/>
+              <text x="130" y="22" font-size="8" font-family="Cormorant Garamond" font-style="italic" fill="var(--accent)" text-anchor="middle" letter-spacing="0.5">ANALYSING . . .</text>
+              <!-- 4 pipeline boxes -->
+              <rect x="20" y="38" width="100" height="22" fill="none" stroke="var(--accent)" stroke-width="0.8"/>
+              <text x="28" y="52" font-size="6.5" font-family="JetBrains Mono" fill="var(--accent)">[</text>
+              <text x="38" y="52" font-size="6.5" font-family="JetBrains Mono" fill="var(--accent)">&#10003;</text>
+              <text x="48" y="52" font-size="6.5" font-family="JetBrains Mono" fill="var(--accent)">]</text>
+              <text x="58" y="52" font-size="6.5" font-family="Source Serif 4" font-style="italic" fill="var(--ink)">Factor model</text>
+              <rect x="140" y="38" width="100" height="22" fill="none" stroke="var(--accent)" stroke-width="0.8"/>
+              <text x="148" y="52" font-size="6.5" font-family="JetBrains Mono" fill="var(--accent)">[</text>
+              <text x="158" y="52" font-size="6.5" font-family="JetBrains Mono" fill="var(--accent)">&#10003;</text>
+              <text x="168" y="52" font-size="6.5" font-family="JetBrains Mono" fill="var(--accent)">]</text>
+              <text x="178" y="52" font-size="6.5" font-family="Source Serif 4" font-style="italic" fill="var(--ink)">Correlation</text>
+              <rect x="20" y="70" width="100" height="22" fill="none" stroke="var(--accent)" stroke-width="0.8"/>
+              <text x="28" y="84" font-size="6.5" font-family="JetBrains Mono" fill="var(--accent)">[</text>
+              <text x="38" y="84" font-size="6.5" font-family="JetBrains Mono" fill="var(--accent)">&#10003;</text>
+              <text x="48" y="84" font-size="6.5" font-family="JetBrains Mono" fill="var(--accent)">]</text>
+              <text x="58" y="84" font-size="6.5" font-family="Source Serif 4" font-style="italic" fill="var(--ink)">Vol vs profile</text>
+              <rect x="140" y="70" width="100" height="22" fill="none" stroke="var(--accent)" stroke-width="0.8"/>
+              <text x="148" y="84" font-size="6.5" font-family="JetBrains Mono" fill="var(--accent)">[</text>
+              <rect x="156" y="79" width="8" height="2" fill="var(--accent)">
+                <animate attributeName="opacity" values="1;0.3;1" dur="0.8s" repeatCount="indefinite"/>
+              </rect>
+              <text x="168" y="84" font-size="6.5" font-family="JetBrains Mono" fill="var(--accent)">]</text>
+              <text x="178" y="84" font-size="6.5" font-family="Source Serif 4" font-style="italic" fill="var(--ink)">Tax position</text>
+              <!-- progress bar -->
+              <rect x="20" y="110" width="220" height="6" fill="var(--line)"/>
+              <rect x="20" y="110" width="158" height="6" fill="var(--accent)"/>
+              <text x="20" y="130" font-size="6" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)">7 of 9 modules complete</text>
+              <text x="240" y="130" font-size="6" font-family="JetBrains Mono" fill="var(--accent)" text-anchor="end">72%</text>
+            </svg>
+          </div>
+          <h4>The engine runs.</h4>
+          <p>Nine analytical modules. Takes 8&ndash;14 seconds.</p>
+        </div>
+
+        <!-- Step 5: Report -->
+        <div class="step">
+          <span class="step-num">step v</span>
+          <div class="step-mock">
+            <svg viewBox="0 0 260 160" xmlns="http://www.w3.org/2000/svg">
+              <rect width="260" height="160" fill="var(--bg)"/>
+              <text x="20" y="22" font-size="7" font-family="Cormorant Garamond" font-style="italic" fill="var(--ink-mute)" letter-spacing="0.4">DIAGNOSTIC REPORT</text>
+              <text x="240" y="22" font-size="6" font-family="Source Serif 4" font-style="italic" fill="var(--accent)" text-anchor="end">Equity | MF</text>
+              <line x1="20" y1="30" x2="240" y2="30" stroke="var(--line)" stroke-width="0.4"/>
+              <!-- Score circle -->
+              <circle cx="48" cy="64" r="22" fill="none" stroke="var(--accent)" stroke-width="1.5"/>
+              <text x="48" y="68" font-size="18" font-family="Cormorant Garamond" font-style="italic" fill="var(--accent)" text-anchor="middle">73</text>
+              <text x="48" y="92" font-size="6" font-family="Source Serif 4" font-style="italic" fill="var(--ink-mute)" text-anchor="middle">/ 100</text>
+              <!-- Findings -->
+              <rect x="86" y="44" width="148" height="14" fill="none" stroke="var(--line)" stroke-width="0.5"/>
+              <rect x="86" y="44" width="3" height="14" fill="var(--bad)"/>
+              <text x="94" y="54" font-size="6.5" font-family="Source Serif 4" font-style="italic" fill="var(--ink)">Financials at 38% &mdash; high</text>
+              <rect x="86" y="62" width="148" height="14" fill="none" stroke="var(--line)" stroke-width="0.5"/>
+              <rect x="86" y="62" width="3" height="14" fill="var(--warn)"/>
+              <text x="94" y="72" font-size="6.5" font-family="Source Serif 4" font-style="italic" fill="var(--ink)">Growth tilt &mdash; moderate</text>
+              <rect x="86" y="80" width="148" height="14" fill="none" stroke="var(--line)" stroke-width="0.5"/>
+              <rect x="86" y="80" width="3" height="14" fill="var(--good)"/>
+              <text x="94" y="90" font-size="6.5" font-family="Source Serif 4" font-style="italic" fill="var(--ink)">Quality &mdash; top quartile</text>
+              <!-- Suggested adjustments -->
+              <text x="20" y="116" font-size="7" font-family="Cormorant Garamond" font-style="italic" fill="var(--accent)">Suggested adjustments</text>
+              <line x1="20" y1="120" x2="240" y2="120" stroke="var(--accent)" stroke-width="0.4"/>
+              <text x="20" y="132" font-size="6" font-family="Source Serif 4" font-style="italic" fill="var(--ink-soft)">i. Trim financials by ~8 pp</text>
+              <text x="20" y="142" font-size="6" font-family="Source Serif 4" font-style="italic" fill="var(--ink-soft)">ii. Add value sleeve 12&ndash;15%</text>
+              <text x="20" y="152" font-size="6" font-family="Source Serif 4" font-style="italic" fill="var(--ink-soft)">iii. Hold STCG to LTCG threshold</text>
+            </svg>
+          </div>
+          <h4>Get the diagnostic.</h4>
+          <p>Health score, findings, suggested adjustments &mdash; equity and MF.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Input options live (active interface) -->
+  <section class="input-sec">
+    <div class="wrap">
+      <div class="input-head">
+        <h2><span class="acc">Step 2 &middot;</span> Pick an input method.</h2>
+        <p>Choose whichever is easiest. The factor-model engine handles all three identically downstream.</p>
+      </div>
+
+      <div class="input-grid">
+
+        <div class="in-opt">
+          <div class="in-opt-head">
+            <span class="ic">i</span>
+            <span class="pill">OCR</span>
+          </div>
+          <h4>Screenshot upload.</h4>
+          <p>Drag in a screenshot from any broker app or PMS statement &mdash; Kite, Groww, Zerodha Coin, ICICI Direct, HDFC Sec, Smallcase, or a PMS quarterly. The engine extracts holdings.</p>
+          <span class="files">PNG, JPG &middot; up to 10 MB per image</span>
+        </div>
+
+        <div class="in-opt active">
+          <div class="in-opt-head">
+            <span class="ic">ii</span>
+            <span class="pill">Active</span>
+          </div>
+          <h4>CSV or Excel.</h4>
+          <p>Drag in a CSV or Excel with columns for ticker, quantity, average cost. A pre-formatted template downloads on first use; most broker exports work without editing.</p>
+          <span class="files">CSV, XLSX &middot; up to 5 MB</span>
+        </div>
+
+        <div class="in-opt">
+          <div class="in-opt-head">
+            <span class="ic">iii</span>
+            <span class="pill">Auto</span>
+          </div>
+          <h4>Account Aggregator.</h4>
+          <p>Link demat and mutual-fund folio holdings through India&rsquo;s consent-based AA framework. Read-only, time-bound, one-tap revocation. The map refreshes itself.</p>
+          <span class="files">Finvu, OneMoney, CAMS, Setu</span>
+        </div>
+
+      </div>
+
+      <!-- Mini quiz preview -->
+      <div class="quiz-pnl">
+        <div class="quiz-pnl-head">
+          <h3>Six short questions on risk + goals.</h3>
+          <span class="progress">Question <span class="acc">03</span> of 06</span>
+        </div>
+        <div class="q-show">
+          <span class="q-lab">Risk tolerance</span>
+          <span class="q-text">If the portfolio dropped 25% over a three-month window, what would the natural response be?</span>
+          <div class="q-opts">
+            <button class="q-opt">Sell most positions</button>
+            <button class="q-opt">Sell some positions</button>
+            <button class="q-opt sel">Hold and ride it out</button>
+            <button class="q-opt">Add more capital</button>
+          </div>
+        </div>
+        <div class="quiz-pnl-foot">
+          <span>Answers shape the risk-profile benchmark used in the report.</span>
+          <button class="btn-out" onclick="document.getElementById('report').scrollIntoView({behavior:'smooth'});">Skip to sample report &rarr;</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REPORT -->
+  <section class="report" id="report">
+    <div class="wrap">
+      <div class="report-head">
+        <h2>Sample <span class="acc">diagnostic.</span></h2>
+        <span class="stamp">Illustrative output &middot; user profile: moderate &middot; equity + MF mix</span>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tabs">
+        <button class="tab active" data-tab="equity">Direct equity</button>
+        <button class="tab" data-tab="mf">Mutual funds</button>
+      </div>
+
+      <!-- EQUITY tab -->
+      <div class="tab-pane active" id="tab-equity">
+
+        <div class="score-row">
+          <div class="score-circle"><span class="v">73</span><span class="o">out of 100</span></div>
+          <div class="score-text">
+            <h3>Well-constructed equity book with concentration in financials and a growth tilt.</h3>
+            <p>The headline number is a weighted score across six dimensions. Composition is solid, expense drag is minimal, and quality is strong. Sector concentration and high growth-factor tilt are the most material findings &mdash; both flagged below.</p>
+          </div>
+        </div>
+
+        <div class="findings">
+          <div class="finding bad">
+            <div class="finding-meta"><span class="cat">Concentration</span><span class="sev">High severity</span></div>
+            <h4>Financial services exposure at 38%.</h4>
+            <p>Six holdings make up 38% of the portfolio. A 10% adverse move in financials would translate to ~3.8% portfolio drawdown. Consider reducing to 28&ndash;30% range.</p>
+          </div>
+          <div class="finding warn">
+            <div class="finding-meta"><span class="cat">Factor tilt</span><span class="sev">Moderate</span></div>
+            <h4>Growth-tilted; minimal value exposure.</h4>
+            <p>Median P/E of holdings is 28.4 versus NIFTY 100 median of 22.1. Quality is strong, but the book is structurally exposed to multiple compression.</p>
+          </div>
+          <div class="finding warn">
+            <div class="finding-meta"><span class="cat">Tax</span><span class="sev">Moderate</span></div>
+            <h4>STCG composition higher than typical.</h4>
+            <p>Approximately 22% of unrealised gains would be taxed at short-term rates. Suggests recent additions or recent rebalances.</p>
+          </div>
+          <div class="finding good">
+            <div class="finding-meta"><span class="cat">Quality</span><span class="sev">Strong</span></div>
+            <h4>Quality score in the top quartile.</h4>
+            <p>Weighted ROE of 18.4%, weighted debt/equity of 0.42, no holdings with credit concerns.</p>
+          </div>
+        </div>
+
+        <div class="blk">
+          <div class="blk-head"><h3>Sector composition</h3><span class="stamp">Weighted by holding</span></div>
+          <div class="comp-bar">
+            <span class="seg financials">Financials 38%</span>
+            <span class="seg it">IT 18%</span>
+            <span class="seg consumer">Consumer 14%</span>
+            <span class="seg energy">Energy 10%</span>
+            <span class="seg health">Healthcare 8%</span>
+            <span class="seg other">Other 12%</span>
+          </div>
+          <div class="comp-legend">
+            <span class="legend-i"><span class="sw" style="background:var(--accent)"></span>Financials &middot; flag</span>
+            <span class="legend-i"><span class="sw" style="background:#A66B3E"></span>IT</span>
+            <span class="legend-i"><span class="sw" style="background:#7A5F4A"></span>Consumer</span>
+            <span class="legend-i"><span class="sw" style="background:#5C4837"></span>Energy</span>
+            <span class="legend-i"><span class="sw" style="background:#9B7E55"></span>Healthcare</span>
+            <span class="legend-i"><span class="sw" style="background:var(--ink-mute)"></span>Other</span>
+          </div>
+        </div>
+
+        <div class="factor-grid">
+          <div class="factor"><span class="factor-l">Size tilt</span><span class="factor-v">Large-cap</span><div class="factor-bar"><div class="fill" style="width:88%"></div></div></div>
+          <div class="factor"><span class="factor-l">Value</span><span class="factor-v acc">Low</span><div class="factor-bar"><div class="fill" style="width:24%"></div></div></div>
+          <div class="factor"><span class="factor-l">Momentum</span><span class="factor-v">Neutral</span><div class="factor-bar"><div class="fill" style="width:52%"></div></div></div>
+          <div class="factor"><span class="factor-l">Quality</span><span class="factor-v">High</span><div class="factor-bar"><div class="fill" style="width:78%"></div></div></div>
+        </div>
+
+        <div class="recos">
+          <h3>Suggested adjustments &mdash; direct equity</h3>
+          <div class="reco"><span class="reco-mark">i</span><div class="reco-body"><p><strong>Trim financials by ~8 percentage points.</strong> Reduce from 38% to 30%. Simplest path: cut KOTAKBANK, AXISBANK, BAJFINANCE by roughly a third each, redeploy into materials, consumer staples, or healthcare at reasonable multiples.</p></div></div>
+          <div class="reco"><span class="reco-mark">ii</span><div class="reco-body"><p><strong>Add a value sleeve of 12&ndash;15%.</strong> The book is growth-tilted. Three to four positions trading at P/E &lt; 18 with adequate quality lowers aggregate multiple sensitivity.</p></div></div>
+          <div class="reco"><span class="reco-mark">iii</span><div class="reco-body"><p><strong>Hold STCG positions to the LTCG threshold.</strong> Holding through 12 months typically improves after-tax outcome by 5&ndash;7%.</p></div></div>
+          <div class="reco"><span class="reco-mark">iv</span><div class="reco-body"><p><strong>Cash at 0.6% is below typical buffer.</strong> A 2&ndash;3% liquid sleeve provides opportunistic deployment capacity during volatile windows.</p></div></div>
+        </div>
+
+      </div>
+
+      <!-- MUTUAL FUNDS tab -->
+      <div class="tab-pane" id="tab-mf">
+
+        <!-- MF summary tiles -->
+        <div class="mf-tiles">
+          <div class="mf-t bad">
+            <span class="mf-t-l">Aggregate TER</span>
+            <span class="mf-t-v bad">1.45%</span>
+            <span class="mf-t-d">Weighted across 7 funds. Category median is 0.96%. Drag of ~0.49 pp per year on a &#8377;2.4 Cr book is &#8377;1,17,600 annually.</span>
+          </div>
+          <div class="mf-t warn">
+            <span class="mf-t-l">Effective number of bets</span>
+            <span class="mf-t-v warn">3.8</span>
+            <span class="mf-t-d">Seven funds, but average pairwise correlation of 0.72 reduces effective diversification to under four independent positions.</span>
+          </div>
+          <div class="mf-t warn">
+            <span class="mf-t-l">Risk-profile fit</span>
+            <span class="mf-t-v warn">Slightly off</span>
+            <span class="mf-t-d">Realised 12-month volatility is 16.4%. The user&rsquo;s stated profile (Moderate) maps to a target band of 10&ndash;13%. The book is running hotter than intended.</span>
+          </div>
+        </div>
+
+        <!-- Expense ratio breakdown -->
+        <div class="blk">
+          <div class="blk-head"><h3>Expense ratio by fund</h3><span class="stamp">Each bar &middot; vertical line is category median</span></div>
+          <div class="ter-tbl">
+            <div class="ter-row"><span>Fund</span><span>TER vs category median</span><span class="r">TER</span></div>
+            <div class="ter-row"><span class="fname">Parag Parikh Flexi Cap Reg<span class="fname-meta">Flexi-cap &middot; &#8377;48 L</span></span><div class="ter-bar-wrap"><div class="ter-bar bad" style="width:82%"></div><div class="ter-med" style="left:52%"></div></div><span class="ter-val bad">1.42%</span></div>
+            <div class="ter-row"><span class="fname">Mirae Asset Large &amp; Mid Reg<span class="fname-meta">Large &amp; mid &middot; &#8377;42 L</span></span><div class="ter-bar-wrap"><div class="ter-bar bad" style="width:78%"></div><div class="ter-med" style="left:54%"></div></div><span class="ter-val bad">1.68%</span></div>
+            <div class="ter-row"><span class="fname">Axis Bluechip Reg<span class="fname-meta">Large-cap &middot; &#8377;38 L</span></span><div class="ter-bar-wrap"><div class="ter-bar bad" style="width:74%"></div><div class="ter-med" style="left:50%"></div></div><span class="ter-val bad">1.58%</span></div>
+            <div class="ter-row"><span class="fname">SBI Small Cap Reg<span class="fname-meta">Small-cap &middot; &#8377;32 L</span></span><div class="ter-bar-wrap"><div class="ter-bar" style="width:85%"></div><div class="ter-med" style="left:62%"></div></div><span class="ter-val">1.74%</span></div>
+            <div class="ter-row"><span class="fname">HDFC Mid Cap Opp Direct<span class="fname-meta">Mid-cap &middot; &#8377;28 L</span></span><div class="ter-bar-wrap"><div class="ter-bar ok" style="width:42%"></div><div class="ter-med" style="left:58%"></div></div><span class="ter-val ok">0.78%</span></div>
+            <div class="ter-row"><span class="fname">Mirae ELSS Tax Saver Direct<span class="fname-meta">ELSS &middot; &#8377;28 L</span></span><div class="ter-bar-wrap"><div class="ter-bar" style="width:68%"></div><div class="ter-med" style="left:60%"></div></div><span class="ter-val warn">1.18%</span></div>
+            <div class="ter-row"><span class="fname">ICICI Pru Corp Bond Direct<span class="fname-meta">Debt &middot; &#8377;24 L</span></span><div class="ter-bar-wrap"><div class="ter-bar ok" style="width:30%"></div><div class="ter-med" style="left:38%"></div></div><span class="ter-val ok">0.34%</span></div>
+          </div>
+        </div>
+
+        <!-- Correlation matrix -->
+        <div class="blk">
+          <div class="blk-head"><h3>Cross-fund correlation</h3><span class="stamp">Daily returns, last 36 months</span></div>
+          <div class="corr">
+            <table>
+              <thead><tr><th></th><th>PP Flexi</th><th>Mirae L&amp;M</th><th>Axis BC</th><th>SBI Small</th><th>HDFC Mid</th><th>Mirae ELSS</th><th>ICICI Bond</th></tr></thead>
+              <tbody>
+                <tr><th class="row">PP Flexi</th><td class="diag">1.00</td><td class="high">0.92</td><td class="high">0.88</td><td class="medhi">0.74</td><td class="medhi">0.78</td><td class="high">0.90</td><td class="low">0.08</td></tr>
+                <tr><th class="row">Mirae L&amp;M</th><td class="high">0.92</td><td class="diag">1.00</td><td class="high">0.94</td><td class="medhi">0.76</td><td class="medhi">0.80</td><td class="high">0.93</td><td class="low">0.12</td></tr>
+                <tr><th class="row">Axis BC</th><td class="high">0.88</td><td class="high">0.94</td><td class="diag">1.00</td><td class="med">0.68</td><td class="med">0.72</td><td class="high">0.91</td><td class="low">0.06</td></tr>
+                <tr><th class="row">SBI Small</th><td class="medhi">0.74</td><td class="medhi">0.76</td><td class="med">0.68</td><td class="diag">1.00</td><td class="medhi">0.82</td><td class="med">0.70</td><td class="low">0.04</td></tr>
+                <tr><th class="row">HDFC Mid</th><td class="medhi">0.78</td><td class="medhi">0.80</td><td class="med">0.72</td><td class="medhi">0.82</td><td class="diag">1.00</td><td class="medhi">0.74</td><td class="low">0.06</td></tr>
+                <tr><th class="row">Mirae ELSS</th><td class="high">0.90</td><td class="high">0.93</td><td class="high">0.91</td><td class="med">0.70</td><td class="medhi">0.74</td><td class="diag">1.00</td><td class="low">0.10</td></tr>
+                <tr><th class="row">ICICI Bond</th><td class="low">0.08</td><td class="low">0.12</td><td class="low">0.06</td><td class="low">0.04</td><td class="low">0.06</td><td class="low">0.10</td><td class="diag">1.00</td></tr>
+              </tbody>
+            </table>
+            <div class="corr-legend">
+              <span class="it"><span class="sw" style="background:color-mix(in srgb,var(--bad) 28%,transparent)"></span>High (&gt; 0.85)</span>
+              <span class="it"><span class="sw" style="background:color-mix(in srgb,var(--accent) 22%,transparent)"></span>Med-high (0.70&ndash;0.85)</span>
+              <span class="it"><span class="sw" style="background:color-mix(in srgb,var(--warn) 14%,transparent)"></span>Medium (0.50&ndash;0.70)</span>
+              <span class="it"><span class="sw" style="background:color-mix(in srgb,var(--good) 10%,transparent)"></span>Low (&lt; 0.30)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Volatility vs profile -->
+        <div class="blk">
+          <div class="blk-head"><h3>Realised volatility vs risk profile</h3><span class="stamp">12-month rolling annualised</span></div>
+          <div class="vol-wrap">
+            <div class="vol-prof-l"><span>5%</span><span>9%</span><span>13%</span><span>18%</span><span>25%</span></div>
+            <div class="vol-scale">
+              <div class="vol-band cons"><span class="vol-band-l">Conservative</span></div>
+              <div class="vol-band mod"><span class="vol-band-l">Moderate &middot; user band</span></div>
+              <div class="vol-band aggr"><span class="vol-band-l">Aggressive</span></div>
+            </div>
+            <div class="vol-user"></div>
+            <div class="vol-marker"></div>
+          </div>
+          <p style="font-size:13px;color:var(--ink-soft);line-height:1.55;padding-top:14px;border-top:1px dashed var(--line);margin-top:14px">The book is running 5.4 percentage points hotter than the moderate profile target. Two drivers: the small-cap fund (SBI Small Cap, contributing ~3.2 pp) and a thematic tilt across mid-cap holdings. Either bring vol back to band or revisit the risk profile honestly.</p>
+        </div>
+
+        <!-- MF table -->
+        <div class="blk">
+          <div class="blk-head"><h3>Fund-level read</h3><span class="stamp">3-year return vs benchmark, TER, risk flag</span></div>
+          <table class="mf-tbl">
+            <thead>
+              <tr><th>Fund</th><th class="r">AUM in folio</th><th class="r">3Y return</th><th class="r">vs Benchmark</th><th class="r">TER</th><th class="r">Flag</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><span class="fnm">Parag Parikh Flexi Cap Reg</span><span class="fcat">Flexi-cap</span></td><td class="r">&#8377;48,00,000</td><td class="r">19.4%</td><td class="r" style="color:var(--good)">+3.2%</td><td class="r">1.42%</td><td class="r"><span class="flag warn">Keep, switch to Direct</span></td></tr>
+              <tr><td><span class="fnm">Mirae Asset Large &amp; Mid Reg</span><span class="fcat">Large &amp; mid</span></td><td class="r">&#8377;42,00,000</td><td class="r">16.8%</td><td class="r" style="color:var(--good)">+1.4%</td><td class="r">1.68%</td><td class="r"><span class="flag warn">Redundant w/ Axis BC</span></td></tr>
+              <tr><td><span class="fnm">Axis Bluechip Reg</span><span class="fcat">Large-cap</span></td><td class="r">&#8377;38,00,000</td><td class="r">12.4%</td><td class="r" style="color:var(--bad)">&minus;2.8%</td><td class="r">1.58%</td><td class="r"><span class="flag bad">Underperforming</span></td></tr>
+              <tr><td><span class="fnm">SBI Small Cap Reg</span><span class="fcat">Small-cap</span></td><td class="r">&#8377;32,00,000</td><td class="r">24.2%</td><td class="r" style="color:var(--good)">+4.8%</td><td class="r">1.74%</td><td class="r"><span class="flag warn">Reposition, off-profile</span></td></tr>
+              <tr><td><span class="fnm">HDFC Mid Cap Opportunities Direct</span><span class="fcat">Mid-cap</span></td><td class="r">&#8377;28,00,000</td><td class="r">21.6%</td><td class="r" style="color:var(--good)">+2.4%</td><td class="r">0.78%</td><td class="r"><span class="flag good">Keep</span></td></tr>
+              <tr><td><span class="fnm">Mirae ELSS Tax Saver Direct</span><span class="fcat">ELSS</span></td><td class="r">&#8377;28,00,000</td><td class="r">14.2%</td><td class="r" style="color:var(--bad)">&minus;1.6%</td><td class="r">1.18%</td><td class="r"><span class="flag bad">Replace, lock-in over</span></td></tr>
+              <tr><td><span class="fnm">ICICI Pru Corporate Bond Direct</span><span class="fcat">Debt</span></td><td class="r">&#8377;24,00,000</td><td class="r">7.4%</td><td class="r" style="color:var(--good)">+0.6%</td><td class="r">0.34%</td><td class="r"><span class="flag good">Keep</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="recos">
+          <h3>Suggested adjustments &mdash; mutual funds</h3>
+          <div class="reco"><span class="reco-mark">i</span><div class="reco-body"><p><strong>Consolidate the correlated four.</strong> Parag Parikh, Mirae L&amp;M, Axis Bluechip, and Mirae ELSS run at &gt; 0.88 average pairwise correlation. They are not four bets; they are one bet held four times. Retain Parag Parikh as the flexi-cap anchor; exit Axis Bluechip; switch Mirae L&amp;M and Mirae ELSS to Direct plans at lower TER.</p></div></div>
+          <div class="reco"><span class="reco-mark">ii</span><div class="reco-body"><p><strong>Re-allocate the small-cap weight down the risk curve.</strong> SBI Small Cap is the single largest contributor to off-profile volatility. Trimming it by 50&ndash;60% and parking the freed capital in HDFC Mid Cap (in profile, lower TER, comparable performance) brings realised vol back toward the moderate band.</p></div></div>
+          <div class="reco"><span class="reco-mark">iii</span><div class="reco-body"><p><strong>Replace Mirae ELSS &mdash; lock-in expired.</strong> The 3-year ELSS lock-in is past. The fund is underperforming its benchmark and the tax benefit is locked in already. Redirect future ELSS allocation to a Direct plan with stronger 3- and 5-year numbers.</p></div></div>
+          <div class="reco"><span class="reco-mark">iv</span><div class="reco-body"><p><strong>TER target: 0.85%.</strong> Switching Regular plans to Direct on three funds, plus the consolidation above, brings aggregate TER from 1.45% to an estimated 0.85% &mdash; a recurring annual saving of ~&#8377;1,44,000 on this folio.</p></div></div>
+        </div>
+
+      </div>
+
+      <div class="rec-cta">
+        <div class="rec-cta-text">
+          <h4>Want this run on the real portfolio?</h4>
+          <p>The sample above is illustrative. Sign in to upload actual holdings, answer the questionnaire, and get a personalised report. The firm also offers a fuller portfolio review as part of its Advisory and PMS conversations.</p>
+        </div>
+        <a class="btn" href="flameback-app-splash.html">Start your journey &rarr;</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Methodology -->
+  <section class="meth">
+    <div class="wrap">
+      <span class="lab"><span class="n">i</span>Methodology</span>
+      <h2 style="font-size:clamp(26px,3.4vw,36px);margin-top:8px;margin-bottom:14px">How the engine works.</h2>
+      <p style="font-size:15px;color:var(--ink-soft);max-width:64ch;line-height:1.6">The factor-model engine runs nine analytical modules against the holdings + risk-profile inputs. Scores are weighted by a transparent rubric. Factor exposures are computed against the NSE 500 universe; mutual-fund factor decomposition uses 60-month rolling regressions on category benchmarks.</p>
+      <div class="meth-grid">
+        <div class="meth-card"><h4>i. Concentration</h4><p>Top-10 weight, single-name max, sector max, Herfindahl index. Scored against typical large-cap PMS distributions.</p></div>
+        <div class="meth-card"><h4>ii. Factor exposure</h4><p>Each name attributed to size, value, momentum, quality, and low-vol factors via 60-month rolling regressions.</p></div>
+        <div class="meth-card"><h4>iii. Correlation &amp; diversification</h4><p>Effective number of bets from the cross-correlation matrix. Surfaces funds doing the same job.</p></div>
+        <div class="meth-card"><h4>iv. Risk-profile fit</h4><p>Realised vol of the portfolio compared against the band implied by the user&rsquo;s questionnaire answers.</p></div>
+        <div class="meth-card"><h4>v. Expense drag</h4><p>Embedded TER across mutual funds + PMS, plus implied trading cost when turnover data is available.</p></div>
+        <div class="meth-card"><h4>vi. Tax position</h4><p>Trade-history-implied STCG/LTCG composition versus an idealised aged portfolio.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="lim">
+    <div class="wrap">
+      <span class="lab"><span class="n">ii</span>Limitations</span>
+      <h3 style="margin-top:8px">What this tool does not do.</h3>
+      <p>The diagnostic is a structural read at a point in time. It does not forecast returns, predict which positions will outperform, or recommend specific replacements by name. It does not replace a personalised conversation with a SEBI-registered investment adviser; outputs are based on rule-based heuristics, factor-model regressions, and the holdings + risk profile inputs alone. For decisions involving meaningful capital, the firm recommends a personal consultation.</p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <div class="footin">
+        <a class="wm" href="index.html">flameback<span class="p">.</span></a>
+        <div class="footcols">
+          <div class="footcol"><h4>Firm</h4><a href="flameback-firm.html">Team</a><a href="flameback-philosophy.html">Investment philosophy</a><a href="flameback-strategy-rd.html">Strategy R&amp;D</a><a href="flameback-technology.html">Technology</a></div>
+          <div class="footcol"><h4>Resources</h4><a href="flameback-resources.html">Overview</a><a href="flameback-asset-map.html">Asset map</a><a href="flameback-insurance-advisor.html">Insurance advisor</a><a href="flameback-screener.html">Screener</a></div>
+          <div class="footcol"><h4>Contact</h4><a href="#">Bangalore, India</a><a href="#">hello@flameback.in</a></div>
+        </div>
+      </div>
+      <div class="disc">
+        <span>&copy; 2026 Flameback Capital Pvt Ltd</span>
+        <span class="legal">Portfolio Doctor is a diagnostic tool for educational purposes. It does not constitute investment advice. Past portfolio characteristics do not guarantee future returns.</span>
+      </div>
+    </div>
+  </footer>
+
+<script>
+  var root=document.documentElement, tg=document.getElementById('toggle');
+  tg.addEventListener('click',function(){root.classList.toggle('light');tg.textContent=root.classList.contains('light')?'Dark':'Light';});
+  var nav=document.getElementById('nav');
+  window.addEventListener('scroll',function(){nav.classList.toggle('scrolled',window.scrollY>16)});
+
+  // Tab switching
+  document.querySelectorAll('.tab').forEach(function(t){
+    t.addEventListener('click',function(){
+      document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('active');});
+      document.querySelectorAll('.tab-pane').forEach(function(x){x.classList.remove('active');});
+      t.classList.add('active');
+      document.getElementById('tab-'+t.dataset.tab).classList.add('active');
+    });
+  });
+
+  // Quiz option select
+  document.querySelectorAll('.q-opts').forEach(function(g){
+    g.addEventListener('click',function(e){
+      if(e.target.classList.contains('q-opt')){
+        g.querySelectorAll('.q-opt').forEach(function(o){o.classList.remove('sel');});
+        e.target.classList.add('sel');
+      }
+    });
+  });
+</script>
+  <script src="reload.js"></script>
+</body>
+</html>
