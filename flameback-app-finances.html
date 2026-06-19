@@ -112,9 +112,9 @@
         <p class="lede">Seven quick numbers. They set your baseline — your cushion, what you can put to work, and the room you've got to take risk.</p>
 
         <div class="field">
-          <label class="fl">Your age</label>
-          <input id="f1" type="number" inputmode="numeric" min="18" placeholder="e.g. 34">
-          <div class="why">Must be 18 or over.</div>
+          <label class="fl">Date of birth</label>
+          <input id="f1" type="date" max="2007-12-31">
+          <div class="why">For KYC — and to confirm you're 18 or over.</div>
         </div>
 
         <div class="field">
@@ -202,6 +202,7 @@
 
   var f1=document.getElementById('f1');
   f1.addEventListener('input',function(){validate();});
+  f1.addEventListener('change',function(){validate();});
 
   // dependants chips (single-select)
   var dep=null;
@@ -223,9 +224,14 @@
     } else { sv.textContent='—'; sv.classList.add('muted'); }
   }
 
+  function ageFromDOB(v){
+    if(!v)return 0; var d=new Date(v); if(isNaN(d.getTime()))return 0;
+    var t=new Date(), a=t.getFullYear()-d.getFullYear(), m=t.getMonth()-d.getMonth();
+    if(m<0||(m===0&&t.getDate()<d.getDate()))a--; return a;
+  }
   var cta=document.getElementById('cta');
   function validate(){
-    var age=parseInt(f1.value||'0',10);
+    var age=ageFromDOB(f1.value);
     var ok = age>=18 && val('f2')>0 && val('f3')>0 && f4.value!=='' && val('f5')>0 && document.getElementById('f6').value!=='' && dep!==null;
     cta.disabled=!ok;
   }
