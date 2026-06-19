@@ -129,29 +129,17 @@
 
         <span class="eyebrow"><span class="l"></span>Restrictions &amp; objective</span>
         <h1 class="q">What's this money <em>for</em> — and what's off-limits?</h1>
-        <p class="lede">Two questions shape your final score; the rest just tell us what to leave out. Everything you set here we hold to.</p>
+        <p class="lede">This one shapes your final score; the rest just tell us what to leave out. Everything you set here we hold to.</p>
 
         <!-- Investment Objective -->
         <div class="fg">
-          <div class="fg-h"><span class="fg-t">Your objective</span></div>
-          <p class="fg-sub">What you're really after — it maps to your strategy and your policy statement.</p>
+          <div class="fg-h"><span class="fg-t">How do you want to grow your wealth with us?</span></div>
+          <p class="fg-sub">Pick the pace that fits — it maps to your strategy and your policy statement.</p>
           <div class="chips single" id="objective">
             <button class="chip">Preserve capital</button>
             <button class="chip">Steady growth</button>
             <button class="chip">Build wealth</button>
             <button class="chip">Max growth</button>
-          </div>
-        </div>
-
-        <!-- Goal Linkage -->
-        <div class="fg">
-          <div class="fg-h"><span class="fg-t">Goal linkage</span></div>
-          <p class="fg-sub">How much rides on it. This nudges your effective risk score.</p>
-          <div class="chips single" id="goal">
-            <button class="chip">Critical goal</button>
-            <button class="chip">Important goal</button>
-            <button class="chip">Surplus capital</button>
-            <button class="chip">Discretionary</button>
           </div>
         </div>
 
@@ -222,8 +210,8 @@
   window.addEventListener('load',function(){setTimeout(function(){document.querySelector('.prog-fill').style.width='100%';},250);});
 
   var cta=document.getElementById('cta');
-  var objDone=false, goalDone=false;
-  function refresh(){ if(objDone&&goalDone){cta.removeAttribute('disabled');} else {cta.setAttribute('disabled','');} }
+  var objDone=false;
+  function refresh(){ if(objDone){cta.removeAttribute('disabled');} else {cta.setAttribute('disabled','');} }
 
   function wireSingle(id,onpick){
     var opts=document.getElementById(id).querySelectorAll('.chip');
@@ -232,7 +220,6 @@
     });
   }
   wireSingle('objective',function(){objDone=true;refresh();});
-  wireSingle('goal',function(){goalDone=true;refresh();});
 
   // multi-select sectors (optional — doesn't gate the CTA)
   document.getElementById('sectors').querySelectorAll('.chip').forEach(function(c){
