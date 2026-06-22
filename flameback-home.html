@@ -5,44 +5,93 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>flameback. — Quantitative wealth management</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root{--bg:#0B0C0E;--ink:#F5F2EA;--ink-soft:rgba(245,242,234,.66);--ink-mute:rgba(245,242,234,.44);--line:rgba(245,242,234,.16);--accent:#B59669;--btn-bg:#B59669;--btn-ink:#0B0C0E;--grain-blend:screen;--grain-op:.055}
-  :root.light{--bg:#F5F2EA;--ink:#0B0C0E;--ink-soft:rgba(11,12,14,.68);--ink-mute:rgba(11,12,14,.46);--line:rgba(11,12,14,.14);--accent:#8A6D43;--btn-bg:#0B0C0E;--btn-ink:#F5F2EA;--grain-blend:multiply;--grain-op:.035}
+  /* ─── Tokens (from home v3 — two oranges by theme) ─── */
+  :root{
+    --bg:#0B0C0E; --ink:#F5F2EA;
+    --ink-soft:rgba(245,242,234,.66); --ink-mute:rgba(245,242,234,.44);
+    --line:rgba(245,242,234,.16); --panel:#221E1A;
+    --accent:#B59669; --btn-bg:#B59669; --btn-ink:#0B0C0E;
+    --grain-blend:screen; --grain-op:.055;
+  }
+  :root.light{
+    --bg:#F5F2EA; --ink:#0B0C0E;
+    --ink-soft:rgba(11,12,14,.68); --ink-mute:rgba(11,12,14,.46);
+    --line:rgba(11,12,14,.14); --panel:#F4EFE7;
+    --accent:#8A6D43; --btn-bg:#0B0C0E; --btn-ink:#F5F2EA;
+    --grain-blend:multiply; --grain-op:.035;
+  }
+
+  /* ─── Base ─── */
   *{margin:0;padding:0;box-sizing:border-box}
   html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
   body{background:var(--bg);color:var(--ink);font-family:"Geist",serif;transition:background .5s,color .5s;font-variant-numeric:tabular-nums;line-height:1.55}
   body::after{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;mix-blend-mode:var(--grain-blend);opacity:var(--grain-op);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
-  .wrap{max-width:1240px;margin:0 auto;padding:0 clamp(22px,5vw,44px)}
+  .wrap{max-width:1200px;margin:0 auto;padding:0 clamp(22px,5vw,44px)}
   section{position:relative;z-index:2}
+
+  /* ─── Type ─── */
   .wm{font-family:"Geist",serif;font-weight:600;font-size:18px;color:var(--ink);text-decoration:none;letter-spacing:-.01em}
   .wm .p{color:var(--accent)}
-  .lab{font-family:"Geist",serif;font-style:italic;font-size:13px;color:var(--ink-mute);letter-spacing:.03em;display:inline-flex;align-items:center;gap:11px}
-  .lab .l{width:24px;height:1px;background:var(--accent)}
   h1,h2,h3,h4{font-family:"Instrument Serif",serif;font-weight:500;letter-spacing:-.014em;color:var(--ink);line-height:1.04}
   h1 em,h2 em,h3 em,h4 em{color:var(--accent);font-style:italic;font-weight:500}
-  p{line-height:1.62}
-  .btn,.btn-out{display:inline-flex;align-items:center;gap:11px;font-family:"Geist",serif;font-size:14.5px;font-weight:500;padding:12px 22px;text-decoration:none;transition:gap .35s,opacity .3s,border-color .3s;cursor:pointer;border:none}
-  .btn{background:var(--btn-bg);color:var(--btn-ink)}.btn:hover{gap:15px;opacity:.92}
-  .btn-out{background:transparent;color:var(--ink);border:1px solid var(--line)}.btn-out:hover{gap:15px;border-color:var(--ink-mute)}
-  nav{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 84%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid transparent;transition:border-color .4s}
-  nav.scrolled{border-color:var(--line)}
-  .navin{display:flex;align-items:center;justify-content:space-between;padding:14px 0;gap:24px}
-  .navr{display:flex;align-items:center;gap:22px}
-  .navr a{color:var(--ink-soft);text-decoration:none;font-size:14px;transition:color .3s}
+  .lab{font-family:"Geist",serif;font-style:italic;font-size:13px;color:var(--ink-mute);letter-spacing:.03em;display:inline-flex;align-items:center;gap:11px}
+  .lab .l{width:24px;height:1px;background:var(--accent)}
+  .lab .n{font-style:normal;color:var(--accent);font-family:"Geist Mono",monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;margin-right:0}
+
+  /* ─── Buttons ─── */
+  .btn,.btn-out{display:inline-flex;align-items:center;gap:11px;font-family:"Geist",serif;font-size:15px;font-weight:500;padding:13px 24px;text-decoration:none;transition:gap .35s,opacity .3s,border-color .3s;cursor:pointer;border:none}
+  .btn{background:var(--btn-bg);color:var(--btn-ink)} .btn:hover{gap:15px;opacity:.92}
+  .btn-out{background:transparent;color:var(--ink);border:1px solid var(--line)} .btn-out:hover{gap:15px;border-color:var(--ink-mute)}
+  .btn .ar{transition:transform .35s cubic-bezier(.16,1,.3,1)}
+  .btn:hover .ar{transform:translateX(3px)}
+
+  /* ─── Nav ─── */
+  nav.top{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 84%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid transparent;transition:border-color .4s}
+  nav.top.scrolled{border-color:var(--line)}
+  .navin{display:flex;align-items:center;justify-content:space-between;padding:15px 0;gap:22px}
+  .navr{display:flex;align-items:center;gap:21px}
+  .navr a{color:var(--ink-soft);text-decoration:none;font-size:14.5px;transition:color .3s}
   .navr a:hover{color:var(--ink)}
-  .toggle{background:none;border:1px solid var(--line);color:var(--ink-soft);cursor:pointer;font-family:"Geist",serif;font-size:12.5px;font-style:italic;padding:5px 13px;border-radius:999px}
-  .navr a.cta{background:var(--btn-bg);color:var(--btn-ink);padding:8px 16px;font-weight:500}
+  .navr a.cta{background:var(--btn-bg);color:var(--btn-ink);padding:8px 17px;font-weight:500}
+  .toggle{background:none;border:1px solid var(--line);color:var(--ink-soft);cursor:pointer;font-family:"Geist",serif;font-size:13px;font-style:italic;padding:5px 13px;border-radius:999px;transition:border-color .3s,color .3s}
+  .toggle:hover{border-color:var(--ink-mute);color:var(--ink)}
   @media(max-width:1020px){.navr .navlink{display:none}}
-  .hero{padding:clamp(56px,8vh,96px) 0 clamp(40px,5vh,64px);border-bottom:1px solid var(--line);position:relative}
-  .hero-meta{display:flex;justify-content:space-between;align-items:center;font-family:"Geist Mono",monospace;font-size:10.5px;color:var(--ink-mute);letter-spacing:.07em;text-transform:uppercase;margin-bottom:42px;flex-wrap:wrap;gap:14px}
+
+  /* ─── Hero: two columns ─── */
+  .hero{padding:clamp(38px,7vh,76px) 0 clamp(36px,6vh,60px);border-bottom:1px solid var(--line);position:relative;overflow:hidden}
+  .hero .wrap{display:grid;grid-template-columns:1.04fr .96fr;gap:clamp(34px,5vw,68px);align-items:center}
+  @media(max-width:880px){.hero .wrap{grid-template-columns:1fr;gap:42px}}
+  .hero-meta{display:flex;justify-content:space-between;align-items:center;font-family:"Geist Mono",monospace;font-size:10.5px;color:var(--ink-mute);letter-spacing:.07em;text-transform:uppercase;margin-bottom:34px;flex-wrap:wrap;gap:14px}
   .hero-meta .left{display:flex;align-items:center;gap:11px}
   .hero-meta .left .d{width:5px;height:5px;border-radius:50%;background:var(--accent)}
-  h1.hero-h{font-size:clamp(40px,6.4vw,82px);line-height:.98;letter-spacing:-.02em;margin-bottom:28px;max-width:20ch}
-  .hero-sub{font-size:clamp(16px,1.5vw,18.5px);line-height:1.55;color:var(--ink-soft);max-width:54ch;font-style:italic;margin-bottom:34px}
-  .hero-ct{display:flex;gap:12px;flex-wrap:wrap}
-  .hero-wmark{position:absolute;right:-20px;bottom:30px;font-family:"Instrument Serif",serif;font-style:italic;font-size:clamp(140px,22vw,260px);color:var(--ink);opacity:.018;line-height:.8;pointer-events:none;letter-spacing:-.04em;white-space:nowrap}
-  .nums{padding:0;border-bottom:1px solid var(--line)}
+  h1.hero-h{font-size:clamp(38px,5.6vw,72px);line-height:.98;letter-spacing:-.02em;margin-bottom:24px;max-width:16ch;opacity:0;animation:up 1.1s cubic-bezier(.16,1,.3,1) .26s forwards}
+  .hero-sub{font-size:clamp(16px,1.6vw,18.5px);line-height:1.55;color:var(--ink-soft);max-width:46ch;margin-bottom:30px;font-style:italic;opacity:0;animation:up 1s ease .42s forwards}
+  .hero-sub em{color:var(--ink);font-style:italic;font-weight:500}
+  .hero-ct{display:flex;align-items:center;gap:14px;flex-wrap:wrap;opacity:0;animation:up 1s ease .56s forwards}
+  .hero-wmark{position:absolute;right:-30px;bottom:-30px;font-family:"Instrument Serif",serif;font-style:italic;font-size:clamp(160px,24vw,300px);color:var(--ink);opacity:.022;line-height:.8;pointer-events:none;letter-spacing:-.04em;white-space:nowrap;z-index:1}
+
+  /* ─── App card (from v30) ─── */
+  .appcard{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:24px 22px 22px;opacity:0;animation:up 1.1s cubic-bezier(.16,1,.3,1) .5s forwards;max-width:420px;width:100%;margin:0 auto}
+  .ac-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:20px}
+  .ac-top .wm{font-size:15px}
+  .ac-meta{font-style:italic;font-size:12.5px;color:var(--ink-mute)}
+  .pf-vlab{font-style:italic;font-size:12.5px;color:var(--ink-mute);margin-bottom:4px}
+  .pf-val{font-family:"Instrument Serif",serif;font-size:32px;font-weight:500;line-height:1;margin-bottom:3px}
+  .pf-since{font-style:italic;font-size:12.5px;color:var(--ink-mute);margin-bottom:14px}
+  .pf-chart{margin-bottom:16px}
+  .pf-chart svg{width:100%;height:auto;display:block;overflow:visible;color:var(--ink)}
+  .pf-alloc{border-top:1px solid var(--line)}
+  .pf-arow{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:baseline;padding:9px 0;border-bottom:1px solid var(--line)}
+  .pf-arow:last-child{border-bottom:none}
+  .pf-arow .nm{font-size:14.5px}
+  .pf-arow .pct{font-size:14.5px;color:var(--ink-soft);font-family:"Geist Mono",monospace;font-size:13px;letter-spacing:.02em}
+  .pf-foot{margin-top:14px;font-style:italic;font-size:12.5px;color:var(--ink-mute);text-align:center}
+
+  /* ─── Numbers row (from home) ─── */
+  .nums{border-bottom:1px solid var(--line)}
   .nums-row{display:grid;grid-template-columns:repeat(4,1fr);align-items:stretch}
   @media(max-width:760px){.nums-row{grid-template-columns:repeat(2,1fr)}}
   .nums-cell{padding:24px clamp(20px,3vw,32px);border-left:1px solid var(--line)}
@@ -52,73 +101,146 @@
   .nums-cell .v{font-family:"Instrument Serif",serif;font-style:italic;font-size:clamp(28px,3.4vw,36px);color:var(--ink);line-height:1.02;letter-spacing:-.012em}
   .nums-cell .v em{color:var(--accent);font-style:italic}
   .nums-cell .d{font-family:"Geist",serif;font-style:italic;font-size:11.5px;color:var(--ink-mute);margin-top:7px;line-height:1.5}
-  .manif{padding:clamp(70px,8vh,100px) 0;border-bottom:1px solid var(--line)}
-  .manif-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
-  @media(max-width:860px){.manif-grid{grid-template-columns:1fr}}
-  .manif-cell{background:var(--bg);padding:34px 30px}
-  .manif-cell .n{font-family:"Instrument Serif",serif;font-style:italic;color:var(--accent);font-size:22px;margin-bottom:10px;display:block}
-  .manif-cell h3{font-size:22px;line-height:1.18;margin-bottom:12px}
-  .manif-cell .d{font-size:14px;line-height:1.65;color:var(--ink-soft)}
+
+  /* ─── Sections (head left, body right — from v30) ─── */
+  .sec{padding:clamp(50px,7vw,84px) 0;border-top:1px solid var(--line)}
+  .sec .wrap{display:grid;grid-template-columns:minmax(250px,.82fr) 1.7fr;gap:clamp(32px,4.5vw,64px);align-items:start}
+  @media(max-width:860px){.sec .wrap{grid-template-columns:1fr;gap:26px}}
+  .sec.full .wrap{display:block}
+  .head{max-width:34ch}
+  .sec.full .head{max-width:60ch;margin-bottom:clamp(28px,3.5vw,40px)}
+  .head .lab{display:inline-flex;margin-bottom:15px}
+  .head h2{font-size:clamp(32px,4.4vw,52px);line-height:1.04;margin-bottom:16px}
+  .head .intro{font-size:16px;line-height:1.62;color:var(--ink-soft);font-style:italic;max-width:44ch}
+  .head .intro em{color:var(--ink);font-style:italic;font-weight:500}
+
+  /* ─── Column grids ─── */
+  .cols{display:grid;gap:1px;background:var(--line);border:1px solid var(--line)}
+  .cols.c3{grid-template-columns:repeat(3,1fr)}
+  .cols.c2{grid-template-columns:repeat(2,1fr)}
+  .cols.c4{grid-template-columns:repeat(4,1fr)}
+  @media(max-width:760px){.cols.c3,.cols.c4{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:520px){.cols.c2,.cols.c3,.cols.c4{grid-template-columns:1fr}}
+  .col{background:var(--bg);padding:clamp(20px,2.4vw,30px)}
+  .col .cn{font-family:"Instrument Serif",serif;font-style:italic;font-size:20px;color:var(--accent);margin-bottom:10px;display:block;line-height:1}
+  .col h3{font-family:"Instrument Serif",serif;font-weight:500;font-size:clamp(20px,2.3vw,24px);line-height:1.16;margin-bottom:10px}
+  .col h3 em{color:var(--accent);font-style:italic}
+  .col p{font-size:14.5px;line-height:1.6;color:var(--ink-soft)}
+  .col p em{color:var(--ink);font-style:italic;font-weight:500}
+
+  /* ─── Three statements (manifesto, from home) ─── */
+  .manif-cell{padding:32px 30px}
+  .manif-cell .n{font-family:"Instrument Serif",serif;font-style:italic;color:var(--accent);font-size:22px;margin-bottom:14px;display:block;line-height:1}
+  .manif-cell h3{font-size:23px;line-height:1.18;margin-bottom:12px}
+  .manif-cell .d{font-size:14.5px;line-height:1.65;color:var(--ink-soft)}
   .manif-cell .d em{color:var(--ink);font-style:italic;font-weight:500}
-  .feat-strat{padding:clamp(70px,8vh,100px) 0;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--ink) 2.2%,transparent)}
-  .fs-grid{display:grid;grid-template-columns:1fr 1.4fr;gap:clamp(40px,5vw,68px);align-items:center}
-  @media(max-width:860px){.fs-grid{grid-template-columns:1fr;gap:24px}}
-  .fs-grid h2{font-size:clamp(34px,4.6vw,52px);line-height:1.02;margin-bottom:14px;max-width:16ch}
-  .fs-grid .lede{font-size:15px;color:var(--ink-soft);font-style:italic;max-width:42ch;line-height:1.65;margin-bottom:22px}
+
+  /* ─── Portfolio construction frows (from v30) ─── */
+  .frows{border-top:1px solid var(--line)}
+  .frow{display:grid;grid-template-columns:minmax(160px,.55fr) 1fr;gap:clamp(16px,3vw,44px);padding:18px 0;border-bottom:1px solid var(--line);align-items:baseline}
+  .frow .ft{font-family:"Instrument Serif",serif;font-style:italic;font-size:clamp(20px,2.2vw,24px);font-weight:500;line-height:1.1;color:var(--ink)}
+  .frow .ft em{color:var(--accent);font-style:italic}
+  .frow .fd{font-size:14.5px;line-height:1.6;color:var(--ink-soft)}
+  .frow .fd em{color:var(--ink);font-style:italic;font-weight:500}
+  @media(max-width:560px){.frow{grid-template-columns:1fr;gap:6px}}
+
+  /* ─── Featured strategy: MOV 8-layer (from home) ─── */
+  .feat-strat{padding:clamp(60px,8vw,100px) 0;border-top:1px solid var(--line);background:color-mix(in srgb,var(--ink) 2.2%,transparent)}
+  .fs-grid{display:grid;grid-template-columns:1fr 1.45fr;gap:clamp(36px,5vw,68px);align-items:center}
+  @media(max-width:860px){.fs-grid{grid-template-columns:1fr;gap:28px}}
+  .fs-grid h2{font-size:clamp(34px,4.6vw,52px);line-height:1.02;margin-top:14px;margin-bottom:14px;max-width:16ch}
+  .fs-grid .lede{font-size:15px;color:var(--ink-soft);font-style:italic;max-width:42ch;line-height:1.65;margin-bottom:24px}
   .fs-grid .lede em{color:var(--ink);font-style:italic;font-weight:500}
   .fs-list{border:1px solid var(--line);background:var(--bg)}
-  .fs-list .row{display:grid;grid-template-columns:54px 1fr 120px;align-items:center;padding:14px 22px;border-bottom:1px solid var(--line);transition:padding-left .25s,background .25s}
+  .fs-list .row{display:grid;grid-template-columns:54px 1fr 130px;align-items:center;padding:15px 22px;border-bottom:1px solid var(--line);transition:padding-left .25s,background .25s}
   .fs-list .row:last-child{border-bottom:none}
   .fs-list .row:hover{padding-left:30px;background:color-mix(in srgb,var(--accent) 3%,transparent)}
   .fs-list .rn{font-family:"Instrument Serif",serif;font-style:italic;font-size:20px;color:var(--accent)}
   .fs-list .ttl{font-family:"Instrument Serif",serif;font-style:italic;font-size:17px;color:var(--ink);line-height:1.2}
-  .fs-list .tag{font-family:"Geist Mono",monospace;font-size:10px;color:var(--ink-mute);text-align:right;letter-spacing:.04em;text-transform:uppercase}
-  .mind{padding:clamp(70px,8vh,110px) 0;border-bottom:1px solid var(--line)}
-  .mind-h{margin-bottom:clamp(36px,4vw,52px);max-width:780px}
-  .mind-h h2{font-size:clamp(34px,4.8vw,54px);line-height:1.02;margin-top:14px;margin-bottom:16px;max-width:22ch}
-  .mind-h p{font-size:15.5px;color:var(--ink-soft);font-style:italic;max-width:60ch;line-height:1.65}
-  .mind-h p em{color:var(--ink);font-style:italic;font-weight:500}
+  .fs-list .ttl em{color:var(--accent);font-style:italic}
+  .fs-list .tag{font-family:"Geist Mono",monospace;font-size:10.5px;color:var(--ink-mute);text-align:right;letter-spacing:.05em;text-transform:uppercase}
+
+  /* ─── Track record locked-table (from v30) ─── */
+  .lockline{font-style:italic;font-size:14.5px;color:var(--ink-soft);margin-bottom:14px}
+  .locked{position:relative;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--panel)}
+  .locked-head{display:flex;justify-content:space-between;align-items:baseline;padding:14px 20px;border-bottom:1px solid var(--line);position:relative;z-index:3}
+  .locked-head .lh{font-style:italic;font-size:13.5px;color:var(--ink-soft)}
+  .locked-head .lm{font-family:"Geist Mono",monospace;font-size:10.5px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase}
+  .ltable{padding:4px 20px 16px;filter:blur(5px);-webkit-filter:blur(5px);user-select:none;pointer-events:none}
+  .ltrow{display:grid;grid-template-columns:1.6fr .8fr .8fr .8fr;gap:14px;padding:11px 0;border-bottom:1px solid var(--line);align-items:baseline}
+  .ltrow:last-child{border-bottom:none}
+  .ltrow .s{font-size:15px;text-align:left}
+  .ltrow .c{text-align:right;font-size:15px;color:var(--ink-soft);font-family:"Geist Mono",monospace;font-size:13px}
+  .ltrow.h .s,.ltrow.h .c{font-style:italic;font-size:12.5px;color:var(--ink-mute);font-family:"Geist",serif}
+  .lock-ov{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center;padding:24px;z-index:2;background:color-mix(in srgb,var(--bg) 55%,transparent)}
+  .lock-ov .lic{color:var(--accent);margin-bottom:2px}
+  .lock-ov .lt{font-size:15.5px;color:var(--ink);max-width:36ch;line-height:1.45}
+  .lock-ov .lt em{color:var(--accent);font-style:italic;font-weight:500}
+  .lock-ov .la{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:2px}
+  .lock-ov .btn,.lock-ov .btn-out{padding:11px 22px;font-size:15px}
+
+  /* ─── Mindset cards (from home) ─── */
   .mind-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:0;border:1px solid var(--line);background:var(--bg)}
   @media(max-width:760px){.mind-grid{grid-template-columns:1fr}}
-  .mind-cell{padding:24px 28px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);display:flex;gap:18px;align-items:flex-start}
+  .mind-cell{padding:26px 28px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);display:flex;gap:18px;align-items:flex-start}
   .mind-cell:nth-child(2n){border-right:none}
   .mind-cell:nth-last-child(-n+2){border-bottom:none}
   @media(max-width:760px){.mind-cell{border-right:none}.mind-cell:nth-last-child(-n+2){border-bottom:1px solid var(--line)}.mind-cell:last-child{border-bottom:none}}
   .mind-cell .rn{font-family:"Instrument Serif",serif;font-style:italic;color:var(--accent);font-size:22px;line-height:1;flex-shrink:0;width:22px}
   .mind-cell .body{flex:1}
-  .mind-cell h4{font-size:18px;margin-bottom:6px;line-height:1.2}
-  .mind-cell p{font-size:13.5px;line-height:1.62;color:var(--ink-soft);margin:0}
-  .client-t{padding:clamp(70px,8vh,110px) 0;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--ink) 2.2%,transparent)}
-  .ct-grid{display:grid;grid-template-columns:240px 1fr 280px;gap:clamp(28px,3.5vw,48px);align-items:center}
-  @media(max-width:960px){.ct-grid{grid-template-columns:1fr;gap:24px}}
-  .ct-portrait{aspect-ratio:4/5;background:color-mix(in srgb,var(--accent) 8%,transparent);border:1px solid var(--line);position:relative;overflow:hidden}
-  .ct-portrait svg{display:block;width:100%;height:100%}
-  .ct-portrait .stamp-p{position:absolute;bottom:10px;left:10px;font-family:"Geist Mono",monospace;font-size:9px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase;padding:4px 8px;border:1px solid var(--line);background:var(--bg)}
-  .ct-body .id{font-family:"Instrument Serif",serif;font-style:italic;font-size:18px;color:var(--ink);margin-bottom:4px}
-  .ct-body .role{font-family:"Geist Mono",monospace;font-size:10px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase;margin-bottom:20px}
-  .ct-quote{font-family:"Instrument Serif",serif;font-style:italic;font-size:clamp(20px,2.3vw,26px);line-height:1.35;color:var(--ink);margin-bottom:16px;border-left:2px solid var(--accent);padding-left:18px}
-  .ct-quote em{color:var(--accent)}
-  .ct-side h3{font-size:22px;line-height:1.15;margin-bottom:10px;margin-top:12px}
-  .ct-side p{font-size:13.5px;color:var(--ink-soft);font-style:italic;line-height:1.6;margin-bottom:16px}
-  .ct-side a{font-style:italic;color:var(--accent);text-decoration:none;font-size:13.5px}
-  .ct-side a:hover{text-decoration:underline}
-  .close{padding:clamp(80px,10vh,140px) 0;text-align:center;border-bottom:1px solid var(--line)}
-  .close h2{font-size:clamp(36px,5.4vw,72px);line-height:.99;letter-spacing:-.018em;margin-bottom:22px;max-width:18ch;margin-left:auto;margin-right:auto}
-  .close .sub{font-size:15.5px;color:var(--ink-soft);font-style:italic;max-width:50ch;margin:0 auto 32px;line-height:1.65}
-  .close .ct-row{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
-  .close .small{margin-top:28px;font-size:11.5px;color:var(--ink-mute);font-style:italic;letter-spacing:.02em;font-family:"Geist Mono",monospace;text-transform:uppercase}
-  footer{padding:60px 0 32px}
+  .mind-cell .body h4{font-family:"Instrument Serif",serif;font-weight:500;font-size:19px;line-height:1.2;margin-bottom:8px;letter-spacing:-.005em}
+  .mind-cell .body h4 em{color:var(--accent);font-style:italic}
+  .mind-cell .body p{font-size:13.5px;line-height:1.6;color:var(--ink-soft)}
+  .mind-cell .body p em{color:var(--ink);font-style:italic;font-weight:500}
+
+  /* ─── Compare table (from v30) ─── */
+  .compare{border-top:1px solid var(--ink-mute)}
+  .crow{display:grid;grid-template-columns:1fr 1.35fr 1.35fr;gap:clamp(14px,2.5vw,32px);padding:16px 0;border-bottom:1px solid var(--line);align-items:baseline}
+  .crow .ck{font-family:"Geist",serif;font-style:italic;font-size:14px;color:var(--ink-mute)}
+  .crow .cv{font-size:15px;line-height:1.5;color:var(--ink)}
+  .crow .cv em{color:var(--accent);font-style:italic;font-weight:500}
+  .crow.chead{padding:0 0 16px}
+  .crow.chead .cv{font-family:"Instrument Serif",serif;font-size:clamp(22px,2.6vw,28px);font-weight:500;color:var(--ink);font-style:normal}
+  .crow.chead .cv small{display:block;font-family:"Geist",serif;font-style:italic;font-size:12.5px;color:var(--ink-mute);margin-top:2px;font-weight:400}
+  .cnote{font-style:italic;font-size:13px;color:var(--ink-mute);margin-top:20px;max-width:60ch}
+  @media(max-width:620px){
+    .crow{grid-template-columns:1fr;gap:4px;padding:18px 0}
+    .crow .ck{font-style:normal;color:var(--ink);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px}
+    .crow.chead{display:none}
+    .crow .cv::before{content:attr(data-h);display:block;font-style:italic;font-size:11.5px;color:var(--accent);margin-top:7px;letter-spacing:.04em;text-transform:uppercase}
+  }
+
+  /* ─── FAQ (from v30) ─── */
+  .faq-item{border-bottom:1px solid var(--line)}
+  .faq-item:first-of-type{border-top:1px solid var(--line)}
+  .faq-q{cursor:pointer;padding:20px 32px 20px 0;list-style:none;font-family:"Instrument Serif",serif;font-size:clamp(18px,2vw,22px);font-weight:500;line-height:1.25;position:relative;color:var(--ink)}
+  .faq-q::-webkit-details-marker{display:none}
+  .faq-q::after{content:"+";position:absolute;right:0;top:20px;color:var(--accent);font-size:22px;line-height:1;transition:transform .2s}
+  details[open] .faq-q::after{content:"\2212"}
+  .faq-q em{color:var(--accent);font-style:italic}
+  .faq-a{padding:0 0 20px;font-size:15px;color:var(--ink-soft);line-height:1.6;max-width:62ch}
+  .faq-a em{color:var(--ink);font-style:italic;font-weight:500}
+
+  /* ─── Close (from home) ─── */
+  .close{padding:clamp(72px,10vh,120px) 0;text-align:center;border-top:1px solid var(--line)}
+  .close h2{font-size:clamp(34px,5.2vw,60px);line-height:1.02;max-width:22ch;margin:0 auto 22px}
+  .close .sub{font-size:15.5px;color:var(--ink-soft);font-style:italic;max-width:52ch;margin:0 auto 32px;line-height:1.65}
+  .close .ct-row{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:28px}
+  .close .small{font-family:"Geist Mono",monospace;font-size:10.5px;color:var(--ink-mute);letter-spacing:.07em;text-transform:uppercase}
+
+  /* ─── Footer ─── */
+  footer{border-top:1px solid var(--line);padding:48px 0 36px}
   .footin{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;margin-bottom:36px}
-  .footcols{display:flex;gap:clamp(34px,5vw,64px);flex-wrap:wrap}
-  .footcol h4{font-style:italic;font-weight:400;font-size:12.5px;color:var(--ink-mute);margin-bottom:14px;letter-spacing:.04em;text-transform:uppercase;font-family:"Geist Mono",monospace}
-  .footcol a{display:block;color:var(--ink-soft);text-decoration:none;font-size:14px;margin-bottom:9px}
+  .footcols{display:flex;gap:clamp(34px,6vw,68px);flex-wrap:wrap}
+  .footcol h4{font-style:italic;font-weight:400;font-size:14px;color:var(--ink-mute);margin-bottom:13px}
+  .footcol a{display:block;color:var(--ink-soft);text-decoration:none;font-size:15px;margin-bottom:9px;transition:color .3s}
   .footcol a:hover{color:var(--accent)}
   .disc{padding-top:22px;border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px}
-  .disc span{font-size:11.5px;color:var(--ink-mute);line-height:1.6}
-  .disc .legal{max-width:72ch;font-style:italic}
-  .disc .reg-links a{color:var(--ink-mute);text-decoration:none;font-size:11.5px;font-style:italic;margin-left:14px}
-  .disc .reg-links a:hover{color:var(--ink-soft)}
-  .lswitch{position:fixed;left:18px;bottom:18px;z-index:200;display:inline-flex;align-items:center;gap:8px;font-family:"Source Serif 4",serif;font-size:12.5px;font-style:italic;color:var(--ink);background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border:1px solid var(--accent);padding:9px 15px;border-radius:999px;text-decoration:none}
+  .disc span{font-size:12.5px;color:var(--ink-mute);line-height:1.6}
+  .disc .legal{max-width:64ch;font-style:italic}
+
+  @keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+  .lswitch{position:fixed;left:18px;bottom:18px;z-index:200;display:inline-flex;align-items:center;gap:8px;font-family:"Geist",serif;font-size:12.5px;font-style:italic;color:var(--ink);background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border:1px solid var(--accent);padding:9px 15px;border-radius:999px;text-decoration:none}
   .lswitch:hover{background:var(--accent);color:var(--btn-ink)}
   .lswitch .i{font-style:normal}
 </style>
@@ -126,82 +248,156 @@
 </head>
 <body>
 
-  <nav id="nav">
+  <!-- ─── NAV ─── -->
+  <nav class="top" id="nav">
     <div class="wrap navin">
-      <a class="wm" href="#"><svg class="wm-ic" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="121.5 244.6 110.0 167.2" fill="none" style="height:1.05em;width:auto;vertical-align:-.16em;margin-right:7px"><path transform="matrix(.33995817,0,0,.33995817,76.5,225.75)" d="M220.2 523.6C220.2 425.09999 220.2 329.59999 220.2 233.99997 233 234.79998 234.4 236.29998 234.4 248.19997 234.4 324.19996 234.4 400.09999 234.29999 476.09999 234.29999 481.99998 233.99999 487.89997 233.79999 493.8 233.4 505.9 234.29999 507 245.9 505.19999 298 496.8 335.4 468.8 355.5 419.89997 379.9 360.39997 358.1 293.09999 304.3 257.49998 283.4 243.69997 261.5 231.39997 241.59999 216.39997 212.09999 194.09996 196.29999 163.09996 190.59999 126.59996 189.99999 122.59996 187.79999 119.09996 184.7 116.59996 172.4 107.09996 163 95.59996 155.8 80.29996 159.5 80.09996 224 78.999958 253.4 79.899959 286.3 80.79996 312.8 94.499958 332 121.899959 334.7 125.79996 339.6 129.09996 344.1 130.69995 361.30003 136.79996 378.80003 141.89995 396 147.89995 411.5 153.29994 423.4 163.29994 432.5 179.09995 423.2 176.29994 415.5 173.29994 407.5 171.59995 383.8 166.39995 360 167.09995 336.6 172.89995 321.1 176.79994 310.80003 187.69995 305.9 203.19995 304.9 206.19995 304.19999 209.29996 303.4 212.39995 289.5 207.39995 288.4 205.59995 293.9 192.89995 304.3 168.59995 324.1 157.89995 349.4 155.69995 352.69999 155.39995 358.9 154.69995 366 154.19995 341.9 144.49996 310.1 137.59995 284.6 135.29996 259.2 132.99996 233.70001 131.49996 207 129.49996 207.4 132.49996 207.4 135.59996 208.1 138.39995 217.1 172.49994 237.3 198.19995 267.2 216.59995 283 226.29994 299.1 235.59995 314.2 246.39995 367.2 284.49995 389.2 336.69996 376.5 400.49995 364.4 461.29994 325.7 499.99995 265.7 516.19998 251.4 519.8 236.4 520.9 220.2 523.6Z" fill="currentColor"/><path transform="matrix(.33995817,0,0,.33995817,76.5,225.75)" d="M183.4 93.4C183 94.200008 200.7 110.5 205.79999 111.8 216.79999 114.600009 305 122.600009 311.09999 123.4 310.89997 121.3 291.3 96.9 251.89998 95.3 231.2 94.8 195.8 93.4 183.4 93.4Z" fill="#FF6D0A"/></svg>flameback</a>
+      <a class="wm" href="#top"><svg class="wm-ic" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="121.5 244.6 110.0 167.2" fill="none" style="height:1.05em;width:auto;vertical-align:-.16em;margin-right:7px"><path transform="matrix(.33995817,0,0,.33995817,76.5,225.75)" d="M220.2 523.6C220.2 425.09999 220.2 329.59999 220.2 233.99997 233 234.79998 234.4 236.29998 234.4 248.19997 234.4 324.19996 234.4 400.09999 234.29999 476.09999 234.29999 481.99998 233.99999 487.89997 233.79999 493.8 233.4 505.9 234.29999 507 245.9 505.19999 298 496.8 335.4 468.8 355.5 419.89997 379.9 360.39997 358.1 293.09999 304.3 257.49998 283.4 243.69997 261.5 231.39997 241.59999 216.39997 212.09999 194.09996 196.29999 163.09996 190.59999 126.59996 189.99999 122.59996 187.79999 119.09996 184.7 116.59996 172.4 107.09996 163 95.59996 155.8 80.29996 159.5 80.09996 224 78.999958 253.4 79.899959 286.3 80.79996 312.8 94.499958 332 121.899959 334.7 125.79996 339.6 129.09996 344.1 130.69995 361.30003 136.79996 378.80003 141.89995 396 147.89995 411.5 153.29994 423.4 163.29994 432.5 179.09995 423.2 176.29994 415.5 173.29994 407.5 171.59995 383.8 166.39995 360 167.09995 336.6 172.89995 321.1 176.79994 310.80003 187.69995 305.9 203.19995 304.9 206.19995 304.19999 209.29996 303.4 212.39995 289.5 207.39995 288.4 205.59995 293.9 192.89995 304.3 168.59995 324.1 157.89995 349.4 155.69995 352.69999 155.39995 358.9 154.69995 366 154.19995 341.9 144.49996 310.1 137.59995 284.6 135.29996 259.2 132.99996 233.70001 131.49996 207 129.49996 207.4 132.49996 207.4 135.59996 208.1 138.39995 217.1 172.49994 237.3 198.19995 267.2 216.59995 283 226.29994 299.1 235.59995 314.2 246.39995 367.2 284.49995 389.2 336.69996 376.5 400.49995 364.4 461.29994 325.7 499.99995 265.7 516.19998 251.4 519.8 236.4 520.9 220.2 523.6Z" fill="currentColor"/><path transform="matrix(.33995817,0,0,.33995817,76.5,225.75)" d="M183.4 93.4C183 94.200008 200.7 110.5 205.79999 111.8 216.79999 114.600009 305 122.600009 311.09999 123.4 310.89997 121.3 291.3 96.9 251.89998 95.3 231.2 94.8 195.8 93.4 183.4 93.4Z" fill="#FF6D0A"/></svg>flameback</a>
       <div class="navr">
         <a class="navlink" href="flameback-who-we-are.html">Who we are</a>
-        <a class="navlink" href="flameback-what-we-do.html">What we do</a>
         <a class="navlink" href="flameback-our-work.html">Our work</a>
+        <a class="navlink" href="flameback-what-we-do.html">What we do</a>
         <a class="navlink" href="flameback-insights.html">Insights</a>
         <a class="navlink" href="flameback-tools.html">Tools</a>
-        <a class="navlink" href="flameback-offbook.html">Off-book</a>
         <a class="navlink" href="flameback-investor-relations.html">Investor Relations</a>
         <a class="navlink" href="flameback-app-accounts.html">Login</a>
-        <a class="cta" href="flameback-app-splash.html">Start your journey</a>
+        <a class="cta" href="flameback-app-schedule-call.html">Schedule</a>
         <button class="toggle" id="toggle">Light</button>
       </div>
     </div>
   </nav>
 
-  <section class="hero">
+  <!-- ─── HERO (home's language, v30's two-column) ─── -->
+  <section class="hero" id="top">
     <div class="wrap">
-      <div class="hero-meta">
-        <span class="left"><span class="d"></span>Bangalore &middot; Est. 2017</span>
-        <span>Working memorandum &middot; XXIII</span>
+      <div>
+        <div class="hero-meta">
+          <span class="left"><span class="d"></span>Bangalore &middot; SEBI &amp; SEC registered &middot; live since 2017</span>
+          <span>Working memorandum &middot; XXIII</span>
+        </div>
+        <h1 class="hero-h">We don&rsquo;t predict markets. We <em>engineer compounding.</em></h1>
+        <p class="hero-sub">A quantitative wealth manager for high net worth Indians with a global outlook. The firm exists to help patient capital compound, quietly, across every kind of market environment &mdash; <em>through engineered systems rather than forecasts or convictions.</em></p>
+        <div class="hero-ct">
+          <a class="btn" href="flameback-app-schedule-call.html">Schedule a conversation <span class="ar">&rarr;</span></a>
+          <a class="btn-out" href="flameback-who-we-are.html">Who we are</a>
+        </div>
       </div>
-      <h1 class="hero-h">We don&rsquo;t predict markets. We <em>engineer compounding.</em></h1>
-      <p class="hero-sub">A quantitative wealth manager for high net worth Indians with a global outlook. The firm exists to help patient capital compound, quietly, across every kind of market environment &mdash; through engineered systems rather than forecasts or convictions.</p>
-      <div class="hero-ct">
-        <a class="btn" href="flameback-app-splash.html">Start your journey &rarr;</a>
-        <a class="btn-out" href="flameback-who-we-are.html">Who we are</a>
+
+      <!-- portfolio card from v30 -->
+      <div class="appcard" aria-label="A client portfolio in the Flameback surface, illustrative">
+        <div class="ac-top">
+          <span class="wm"><svg class="wm-ic" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="121.5 244.6 110.0 167.2" fill="none" style="height:1.05em;width:auto;vertical-align:-.16em;margin-right:7px"><path transform="matrix(.33995817,0,0,.33995817,76.5,225.75)" d="M220.2 523.6C220.2 425.09999 220.2 329.59999 220.2 233.99997 233 234.79998 234.4 236.29998 234.4 248.19997 234.4 324.19996 234.4 400.09999 234.29999 476.09999 234.29999 481.99998 233.99999 487.89997 233.79999 493.8 233.4 505.9 234.29999 507 245.9 505.19999 298 496.8 335.4 468.8 355.5 419.89997 379.9 360.39997 358.1 293.09999 304.3 257.49998 283.4 243.69997 261.5 231.39997 241.59999 216.39997 212.09999 194.09996 196.29999 163.09996 190.59999 126.59996 189.99999 122.59996 187.79999 119.09996 184.7 116.59996 172.4 107.09996 163 95.59996 155.8 80.29996 159.5 80.09996 224 78.999958 253.4 79.899959 286.3 80.79996 312.8 94.499958 332 121.899959 334.7 125.79996 339.6 129.09996 344.1 130.69995 361.30003 136.79996 378.80003 141.89995 396 147.89995 411.5 153.29994 423.4 163.29994 432.5 179.09995 423.2 176.29994 415.5 173.29994 407.5 171.59995 383.8 166.39995 360 167.09995 336.6 172.89995 321.1 176.79994 310.80003 187.69995 305.9 203.19995 304.9 206.19995 304.19999 209.29996 303.4 212.39995 289.5 207.39995 288.4 205.59995 293.9 192.89995 304.3 168.59995 324.1 157.89995 349.4 155.69995 352.69999 155.39995 358.9 154.69995 366 154.19995 341.9 144.49996 310.1 137.59995 284.6 135.29996 259.2 132.99996 233.70001 131.49996 207 129.49996 207.4 132.49996 207.4 135.59996 208.1 138.39995 217.1 172.49994 237.3 198.19995 267.2 216.59995 283 226.29994 299.1 235.59995 314.2 246.39995 367.2 284.49995 389.2 336.69996 376.5 400.49995 364.4 461.29994 325.7 499.99995 265.7 516.19998 251.4 519.8 236.4 520.9 220.2 523.6Z" fill="currentColor"/><path transform="matrix(.33995817,0,0,.33995817,76.5,225.75)" d="M183.4 93.4C183 94.200008 200.7 110.5 205.79999 111.8 216.79999 114.600009 305 122.600009 311.09999 123.4 310.89997 121.3 291.3 96.9 251.89998 95.3 231.2 94.8 195.8 93.4 183.4 93.4Z" fill="#FF6D0A"/></svg>flameback</span>
+          <span class="ac-meta">Portfolio &middot; illustrative</span>
+        </div>
+        <div class="pf-vlab">Total value</div>
+        <div class="pf-val">&#8377; 62,40,000</div>
+        <div class="pf-since">Compounding since 2019 &middot; M.A., Bangalore</div>
+        <div class="pf-chart">
+          <svg viewBox="0 0 320 116" fill="none" aria-hidden="true">
+            <defs>
+              <linearGradient id="pfg" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="currentColor" stop-opacity="0.12"/>
+                <stop offset="1" stop-color="currentColor" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <path d="M2 104 C 38 100, 64 92, 92 84 C 118 77, 138 78, 164 66 C 196 51, 214 56, 244 40 C 272 26, 292 18, 318 8 L318 114 L2 114 Z" fill="url(#pfg)"/>
+            <path d="M2 104 C 38 100, 64 92, 92 84 C 118 77, 138 78, 164 66 C 196 51, 214 56, 244 40 C 272 26, 292 18, 318 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="318" cy="8" r="3.6" fill="var(--accent)"/>
+          </svg>
+        </div>
+        <div class="pf-alloc">
+          <div class="pf-arow"><span class="nm">Patience</span><span class="pct">34%</span></div>
+          <div class="pf-arow"><span class="nm">Steady</span><span class="pct">28%</span></div>
+          <div class="pf-arow"><span class="nm">Momentum of velocity</span><span class="pct">22%</span></div>
+          <div class="pf-arow"><span class="nm">Cash &amp; equivalents</span><span class="pct">16%</span></div>
+        </div>
+        <div class="pf-foot">Rebalanced monthly &middot; managed systematically</div>
       </div>
     </div>
     <div class="hero-wmark">flameback.</div>
   </section>
 
+  <!-- ─── NUMBERS ROW (from home) ─── -->
   <div class="nums">
     <div class="wrap">
       <div class="nums-row">
         <div class="nums-cell"><span class="l">Live since</span><span class="v">2017</span><span class="d">FIST engine &middot; eight years in production</span></div>
-        <div class="nums-cell"><span class="l">Under management</span><span class="v"><em>&#8377;105 Cr</em></span><span class="d">India and US strategies combined</span></div>
+        <div class="nums-cell"><span class="l">Under management</span><span class="v"><em>&#8377; 105 Cr</em></span><span class="d">India and US strategies combined</span></div>
         <div class="nums-cell"><span class="l">Live strategies</span><span class="v">18</span><span class="d">Each with its own engineered stack</span></div>
         <div class="nums-cell"><span class="l">Capital structure</span><span class="v"><em>Founder-owned</em></span><span class="d">No VC, no PE, no bank ownership</span></div>
       </div>
     </div>
   </div>
 
-  <section class="manif">
+  <!-- ─── i. OUR PROCESS (from v30, language polished) ─── -->
+  <section class="sec" id="how">
     <div class="wrap">
-      <div style="margin-bottom:clamp(28px,3vw,40px);max-width:680px">
-        <span class="lab"><span class="l"></span>The firm, in three statements</span>
+      <div class="head">
+        <span class="lab"><span class="n">i</span>Our process</span>
+        <h2>R&amp;D-driven, <em>top to bottom.</em></h2>
+        <p class="intro">We continually search the markets for patterns, turn them into tested rules, and run them with discipline. <em>The same four steps, on every strategy, every year.</em></p>
       </div>
-      <div class="manif-grid">
-        <div class="manif-cell">
+      <div class="body"><div class="cols c4">
+        <div class="col"><span class="cn">i.</span><h3>Research</h3><p>Search for patterns that reliably drive returns &mdash; in price, fundamentals, and macro data.</p></div>
+        <div class="col"><span class="cn">ii.</span><h3>Codify</h3><p>Define each pattern as a precise set of rules a machine can execute.</p></div>
+        <div class="col"><span class="cn">iii.</span><h3>Test &amp; refine</h3><p>Prove each rule on out-of-sample data; sharpen what survives, abandon what doesn&rsquo;t.</p></div>
+        <div class="col"><span class="cn">iv.</span><h3>Deploy</h3><p>Run the strategy live on the FIST engine, with monitored discipline.</p></div>
+      </div></div>
+    </div>
+  </section>
+
+  <!-- ─── ii. THE FIRM IN THREE STATEMENTS (from home) ─── -->
+  <section class="sec" id="firm">
+    <div class="wrap">
+      <div class="head">
+        <span class="lab"><span class="n">ii</span>The firm, in three statements</span>
+        <h2>What this <em>actually means.</em></h2>
+        <p class="intro">Three claims, plainly stated. Each is what the discipline of the previous section produces, in practice.</p>
+      </div>
+      <div class="body"><div class="cols c3">
+        <div class="col manif-cell">
           <span class="n">i.</span>
           <h3>We invest like <em>engineers.</em></h3>
           <p class="d">Mathematical models, computation, data edges. <em>No house view on the market.</em> No quarterly debates about whether to be bullish. Strategies are designed, tested, deployed, and monitored &mdash; not voted on.</p>
         </div>
-        <div class="manif-cell">
+        <div class="col manif-cell">
           <span class="n">ii.</span>
           <h3>We compound through <em>every weather.</em></h3>
           <p class="d">Quality, momentum, low-volatility, carry, mean-reversion &mdash; each behaves differently in different regimes. Combining them smooths the choppiness without surrendering the long-run compound. <em>Diversification is in dimensions you can&rsquo;t see.</em></p>
         </div>
-        <div class="manif-cell">
+        <div class="col manif-cell">
           <span class="n">iii.</span>
           <h3>We work with families who <em>think long-term.</em></h3>
           <p class="d">No pitch decks. No quarterly fund-of-the-month. The firm engages with a small number of families whose horizon matches ours &mdash; multi-year, intergenerational, and tolerant of the quiet years that compound returns require.</p>
         </div>
-      </div>
+      </div></div>
     </div>
   </section>
 
-  <section class="feat-strat">
+  <!-- ─── iii. PORTFOLIO CONSTRUCTION (from v30) ─── -->
+  <section class="sec" id="you">
+    <div class="wrap">
+      <div class="head">
+        <span class="lab"><span class="n">iii</span>Portfolio construction</span>
+        <h2>Built around each <em>client.</em></h2>
+        <p class="intro">Each client&rsquo;s asset allocation and choice of strategies follows their circumstances &mdash; not a four-bucket risk quiz. The discipline is systematic; <em>the portfolio is not generic.</em></p>
+      </div>
+      <div class="body"><div class="frows">
+        <div class="frow"><div class="ft">Return <em>objective</em></div><div class="fd">The pace at which the client wants to compound their capital, stated in plain terms.</div></div>
+        <div class="frow"><div class="ft">Ability to take risk</div><div class="fd">Income, liquidity, assets, liabilities and commitments &mdash; what the client can lose without distress.</div></div>
+        <div class="frow"><div class="ft">Willingness to take risk</div><div class="fd">Tolerance for drawdowns, separately from capacity to absorb them.</div></div>
+        <div class="frow"><div class="ft">Preferences</div><div class="fd">Stocks, sectors, or ESG exclusions the client wishes to avoid.</div></div>
+        <div class="frow"><div class="ft">Execution</div><div class="fd"><em>Discretionary,</em> or <em>non-discretionary</em> &mdash; depending on how hands-on the client prefers to stay.</div></div>
+      </div></div>
+    </div>
+  </section>
+
+  <!-- ─── iv. FEATURED STRATEGY: MOV (from home) ─── -->
+  <section class="feat-strat" id="work">
     <div class="wrap">
       <div class="fs-grid">
         <div>
-          <span class="lab"><span class="l"></span>One strategy, eight layers</span>
-          <h2 style="margin-top:14px">Momentum of <em>velocity.</em></h2>
+          <span class="lab"><span class="n">iv</span>One strategy, eight layers</span>
+          <h2>Momentum of <em>velocity.</em></h2>
           <p class="lede">A worked example of what an engineered strategy actually looks like. Not the marketing summary &mdash; the actual stack underneath. <em>Each layer is a deliberate piece of work.</em></p>
           <a class="btn-out" href="flameback-our-work.html">See the full stack &rarr;</a>
         </div>
@@ -219,78 +415,129 @@
     </div>
   </section>
 
-  <section class="mind">
+  <!-- ─── v. TRACK RECORD (locked, from v30) ─── -->
+  <section class="sec" id="record">
     <div class="wrap">
-      <div class="mind-h">
-        <span class="lab"><span class="l"></span>Who we work with</span>
+      <div class="head">
+        <span class="lab"><span class="n">v</span>Track record</span>
+        <h2>Eight years. <em>Real, and credible.</em></h2>
+        <p class="intro">A live track record across numerous strategies and market cycles &mdash; in both Indian and US markets. Drawdowns and recoveries included.</p>
+      </div>
+      <div class="body">
+        <div class="locked">
+          <div class="locked-head"><span class="lh">Strategy performance</span><span class="lm">SINCE 2017 &middot; NET OF FEES</span></div>
+          <div class="ltable" aria-hidden="true">
+            <div class="ltrow h"><span class="s">Strategy</span><span class="c">Worst yr</span><span class="c">Avg p.a.</span><span class="c">Best yr</span></div>
+            <div class="ltrow"><span class="s">Patience</span><span class="c">&minus;12.0</span><span class="c">+16.4</span><span class="c">+38.0</span></div>
+            <div class="ltrow"><span class="s">Steady</span><span class="c">&minus;8.0</span><span class="c">+8.6</span><span class="c">+18.0</span></div>
+            <div class="ltrow"><span class="s">Momentum of velocity</span><span class="c">&minus;22.0</span><span class="c">+14.2</span><span class="c">+41.0</span></div>
+            <div class="ltrow"><span class="s">Value</span><span class="c">&minus;16.0</span><span class="c">+12.0</span><span class="c">+33.0</span></div>
+            <div class="ltrow"><span class="s">Carry</span><span class="c">&minus;9.0</span><span class="c">+9.4</span><span class="c">+21.0</span></div>
+            <div class="ltrow"><span class="s">Multi-asset</span><span class="c">&minus;11.0</span><span class="c">+11.8</span><span class="c">+27.0</span></div>
+          </div>
+          <div class="lock-ov">
+            <span class="lic"><svg width="26" height="28" viewBox="0 0 24 26" fill="none"><rect x="3" y="10" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M7 10V7a5 5 0 0 1 10 0v3" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="16.5" r="1.7" fill="currentColor"/></svg></span>
+            <p class="lt">Performance is published to <em>registered users</em> &mdash; both prospects and clients. Creating an account is enough to see the full eight-year record, drawdowns and dispersion included.</p>
+            <div class="la">
+              <a class="btn" href="flameback-app-splash.html">Create an account <span class="ar">&rarr;</span></a>
+              <a class="btn-out" href="flameback-app-accounts.html">Already a client? Log in</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── vi. WHO WE WORK WITH (mindset, from home) ─── -->
+  <section class="sec" id="who">
+    <div class="wrap">
+      <div class="head">
+        <span class="lab"><span class="n">vi</span>Who we work with</span>
         <h2>Capital is welcome. <em>Mindset is the qualifier.</em></h2>
-        <p>The firm engages with a deliberately small number of families. What makes a client a good fit for us isn&rsquo;t the size of the cheque &mdash; it&rsquo;s a shared posture toward markets, time, and evidence. <em>If the following sounds like how you already think, we should talk.</em></p>
+        <p class="intro">The firm engages with a deliberately small number of families. What makes a client a good fit isn&rsquo;t the size of the cheque &mdash; it&rsquo;s a shared posture toward markets, time, and evidence. <em>If the following sounds like how you already think, we should talk.</em></p>
       </div>
-      <div class="mind-grid">
-        <div class="mind-cell"><span class="rn">i.</span><div class="body"><h4>Patient over the <em>multi-year.</em></h4><p>Comfortable measuring progress in years, not quarters. Aware that the most useful compounding happens during the quiet stretches that make for poor cocktail-party conversation.</p></div></div>
-        <div class="mind-cell"><span class="rn">ii.</span><div class="body"><h4>Interested in <em>how</em> the cookie is made.</h4><p>Reads beyond the headline number. Wants to understand the methodology, the assumptions, and the constraints. Prefers explained risks to comforting reassurances.</p></div></div>
-        <div class="mind-cell"><span class="rn">iii.</span><div class="body"><h4>Resistant to <em>marketing.</em></h4><p>Sceptical of star-manager profiles, fund-house tier lists, and quarterly performance theatre. Trusts methodology, not personalities; evidence, not narrative.</p></div></div>
-        <div class="mind-cell"><span class="rn">iv.</span><div class="body"><h4>Comfortable with <em>drawdowns.</em></h4><p>Recognises that any strategy with meaningful long-run returns will have uncomfortable stretches. Has the capacity &mdash; financial and temperamental &mdash; to hold through them.</p></div></div>
-        <div class="mind-cell"><span class="rn">v.</span><div class="body"><h4>Wants a <em>partner,</em> not a product.</h4><p>Seeks an ongoing relationship rather than a quarterly statement. Comfortable surfacing the rest of the financial picture &mdash; insurance, real estate, business interests &mdash; because none of it is separable from the portfolio.</p></div></div>
-        <div class="mind-cell"><span class="rn">vi.</span><div class="body"><h4><em>Global</em> in outlook.</h4><p>Thinks beyond Indian equities as the only asset class worth owning. Open to a multi-asset, multi-geography, multi-strategy posture &mdash; without abandoning the Indian growth thesis.</p></div></div>
+      <div class="body">
+        <div class="mind-grid">
+          <div class="mind-cell"><span class="rn">i.</span><div class="body"><h4>Patient over the <em>multi-year.</em></h4><p>Comfortable measuring progress in years, not quarters. Aware that the most useful compounding happens during the quiet stretches that make for poor cocktail-party conversation.</p></div></div>
+          <div class="mind-cell"><span class="rn">ii.</span><div class="body"><h4>Interested in <em>how</em> the cookie is made.</h4><p>Reads beyond the headline number. Wants to understand the methodology, the assumptions, and the constraints. Prefers explained risks to comforting reassurances.</p></div></div>
+          <div class="mind-cell"><span class="rn">iii.</span><div class="body"><h4>Resistant to <em>marketing.</em></h4><p>Sceptical of star-manager profiles, fund-house tier lists, and quarterly performance theatre. Trusts methodology, not personalities; evidence, not narrative.</p></div></div>
+          <div class="mind-cell"><span class="rn">iv.</span><div class="body"><h4>Comfortable with <em>drawdowns.</em></h4><p>Recognises that any strategy with meaningful long-run returns will have uncomfortable stretches. Has the capacity &mdash; financial and temperamental &mdash; to hold through them.</p></div></div>
+          <div class="mind-cell"><span class="rn">v.</span><div class="body"><h4>Wants a <em>partner,</em> not a product.</h4><p>Seeks an ongoing relationship rather than a quarterly statement. Comfortable surfacing the rest of the financial picture &mdash; insurance, real estate, business interests &mdash; because none of it is separable from the portfolio.</p></div></div>
+          <div class="mind-cell"><span class="rn">vi.</span><div class="body"><h4><em>Global</em> in outlook.</h4><p>Thinks beyond Indian equities as the only asset class worth owning. Open to a multi-asset, multi-geography, multi-strategy posture &mdash; without abandoning the Indian growth thesis.</p></div></div>
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="client-t">
+  <!-- ─── vii. FAQ (from v30) ─── -->
+  <section class="sec" id="faq">
     <div class="wrap">
-      <div class="ct-grid">
-        <div class="ct-portrait">
-          <svg viewBox="0 0 200 250" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
-            <rect width="200" height="250" fill="color-mix(in srgb,var(--accent) 10%,var(--bg))"/>
-            <circle cx="100" cy="92" r="38" fill="color-mix(in srgb,var(--accent) 22%,transparent)"/>
-            <ellipse cx="100" cy="200" rx="58" ry="60" fill="color-mix(in srgb,var(--accent) 18%,transparent)"/>
-            <line x1="160" y1="40" x2="160" y2="200" stroke="var(--accent)" stroke-width="0.6" opacity="0.4"/>
-            <line x1="170" y1="50" x2="170" y2="180" stroke="var(--accent)" stroke-width="0.4" opacity="0.3"/>
-          </svg>
-          <div class="stamp-p">Identifying details altered</div>
-        </div>
-        <div class="ct-body">
-          <div class="id">M.A. &middot; Bangalore-based founder, 47</div>
-          <div class="role">Client since 2019 &middot; second-generation investor</div>
-          <p class="ct-quote">&ldquo;I&rsquo;d been through two wealth managers and three PMS shops. <em>I didn&rsquo;t want another sales pitch.</em> I wanted to know exactly how my money was being invested, in language I could check.&rdquo;</p>
-        </div>
-        <div class="ct-side">
-          <span class="lab"><span class="l"></span>One client &middot; in profile</span>
-          <h3>The kind of relationship we <em>aim for.</em></h3>
-          <p>Six years on, the relationship has weathered two material drawdowns. He stayed because the explanation of why we held positions matched what he&rsquo;d been told before they started.</p>
-          <a href="flameback-clients.html">Read more profiles &rarr;</a>
-        </div>
+      <div class="head">
+        <span class="lab"><span class="n">vii</span>FAQ</span>
+        <h2>Common <em>questions.</em></h2>
+        <p class="intro">The ones every honest prospective client asks, answered plainly.</p>
+      </div>
+      <div class="body">
+        <details class="faq-item">
+          <summary class="faq-q">Where are client investments <em>held?</em></summary>
+          <div class="faq-a">In an account in the client&rsquo;s own name, with SEBI-registered brokers or custodians. <em>The firm never takes custody of client funds.</em></div>
+        </details>
+        <details class="faq-item">
+          <summary class="faq-q">How long does <em>onboarding</em> take?</summary>
+          <div class="faq-a">A first conversation can be scheduled within the week. KYC and account setup typically complete in two to three business days after the engagement is agreed.</div>
+        </details>
+        <details class="faq-item">
+          <summary class="faq-q">Is there a <em>lock-in?</em></summary>
+          <div class="faq-a">No regulatory lock-in. A horizon of at least three years is recommended for the systematic process to compound meaningfully &mdash; but clients can exit at any time.</div>
+        </details>
+        <details class="faq-item">
+          <summary class="faq-q">How are portfolios <em>reported</em> on?</summary>
+          <div class="faq-a">A live dashboard with daily NAV and holdings, plus formal statements as required by the relevant regulator.</div>
+        </details>
+        <details class="faq-item">
+          <summary class="faq-q">Does the firm <em>publish</em> performance?</summary>
+          <div class="faq-a">Yes &mdash; to registered users. The numbers aren&rsquo;t on the open web, but anyone who creates an account can see the full record.</div>
+        </details>
+        <details class="faq-item">
+          <summary class="faq-q">What does the firm <em>not</em> do?</summary>
+          <div class="faq-a">No commission products. No insurance distribution. No real-estate syndication. No startup angel deals. <em>Wealth management is all the firm does</em> &mdash; and the team is structured accordingly.</div>
+        </details>
+        <details class="faq-item">
+          <summary class="faq-q">Who <em>owns</em> the firm?</summary>
+          <div class="faq-a">The firm is owned by its <em>founders, employees, clients, and well-wishers.</em> No VC, no PE, no bank. Clients holding equity in their own wealth manager is a structural alignment most firms can&rsquo;t offer &mdash; and the reason the firm can take long-horizon decisions without quarterly pressure from outside capital.</div>
+        </details>
       </div>
     </div>
   </section>
 
+  <!-- ─── CLOSE (from home) ─── -->
   <section class="close">
     <div class="wrap">
       <h2>The first conversation is just a <em>conversation.</em></h2>
       <p class="sub">No slides, no pitch deck, no formal commitment. We spend most of it asking questions &mdash; and we&rsquo;ll tell you frankly if the firm isn&rsquo;t a fit. Many first conversations end without a follow-up. That, too, is an honest outcome.</p>
       <div class="ct-row">
-        <a class="btn" href="flameback-app-splash.html">Start your journey &rarr;</a>
+        <a class="btn" href="flameback-app-schedule-call.html">Schedule a conversation <span class="ar">&rarr;</span></a>
         <a class="btn-out" href="flameback-who-we-are.html">Read about the firm</a>
       </div>
-      <div class="small">30 min &middot; Bangalore office or Google Meet &middot; no commitment</div>
+      <div class="small">30 MIN &middot; BANGALORE OFFICE OR GOOGLE MEET &middot; NO COMMITMENT</div>
     </div>
   </section>
 
+  <!-- ─── FOOTER ─── -->
   <footer>
     <div class="wrap">
       <div class="footin">
-        <a class="wm" href="#"><svg class="wm-ic" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="121.5 244.6 110.0 167.2" fill="none" style="height:1.05em;width:auto;vertical-align:-.16em;margin-right:7px"><path transform="matrix(.33995817,0,0,.33995817,76.5,225.75)" d="M220.2 523.6C220.2 425.09999 220.2 329.59999 220.2 233.99997 233 234.79998 234.4 236.29998 234.4 248.19997 234.4 324.19996 234.4 400.09999 234.29999 476.09999 234.29999 481.99998 233.99999 487.89997 233.79999 493.8 233.4 505.9 234.29999 507 245.9 505.19999 298 496.8 335.4 468.8 355.5 419.89997 379.9 360.39997 358.1 293.09999 304.3 257.49998 283.4 243.69997 261.5 231.39997 241.59999 216.39997 212.09999 194.09996 196.29999 163.09996 190.59999 126.59996 189.99999 122.59996 187.79999 119.09996 184.7 116.59996 172.4 107.09996 163 95.59996 155.8 80.29996 159.5 80.09996 224 78.999958 253.4 79.899959 286.3 80.79996 312.8 94.499958 332 121.899959 334.7 125.79996 339.6 129.09996 344.1 130.69995 361.30003 136.79996 378.80003 141.89995 396 147.89995 411.5 153.29994 423.4 163.29994 432.5 179.09995 423.2 176.29994 415.5 173.29994 407.5 171.59995 383.8 166.39995 360 167.09995 336.6 172.89995 321.1 176.79994 310.80003 187.69995 305.9 203.19995 304.9 206.19995 304.19999 209.29996 303.4 212.39995 289.5 207.39995 288.4 205.59995 293.9 192.89995 304.3 168.59995 324.1 157.89995 349.4 155.69995 352.69999 155.39995 358.9 154.69995 366 154.19995 341.9 144.49996 310.1 137.59995 284.6 135.29996 259.2 132.99996 233.70001 131.49996 207 129.49996 207.4 132.49996 207.4 135.59996 208.1 138.39995 217.1 172.49994 237.3 198.19995 267.2 216.59995 283 226.29994 299.1 235.59995 314.2 246.39995 367.2 284.49995 389.2 336.69996 376.5 400.49995 364.4 461.29994 325.7 499.99995 265.7 516.19998 251.4 519.8 236.4 520.9 220.2 523.6Z" fill="currentColor"/><path transform="matrix(.33995817,0,0,.33995817,76.5,225.75)" d="M183.4 93.4C183 94.200008 200.7 110.5 205.79999 111.8 216.79999 114.600009 305 122.600009 311.09999 123.4 310.89997 121.3 291.3 96.9 251.89998 95.3 231.2 94.8 195.8 93.4 183.4 93.4Z" fill="#FF6D0A"/></svg>flameback</a>
+        <a class="wm" href="#top"><svg class="wm-ic" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="121.5 244.6 110.0 167.2" fill="none" style="height:1.05em;width:auto;vertical-align:-.16em;margin-right:7px"><path transform="matrix(.33995817,0,0,.33995817,76.5,225.75)" d="M220.2 523.6C220.2 425.09999 220.2 329.59999 220.2 233.99997 233 234.79998 234.4 236.29998 234.4 248.19997 234.4 324.19996 234.4 400.09999 234.29999 476.09999 234.29999 481.99998 233.99999 487.89997 233.79999 493.8 233.4 505.9 234.29999 507 245.9 505.19999 298 496.8 335.4 468.8 355.5 419.89997 379.9 360.39997 358.1 293.09999 304.3 257.49998 283.4 243.69997 261.5 231.39997 241.59999 216.39997 212.09999 194.09996 196.29999 163.09996 190.59999 126.59996 189.99999 122.59996 187.79999 119.09996 184.7 116.59996 172.4 107.09996 163 95.59996 155.8 80.29996 159.5 80.09996 224 78.999958 253.4 79.899959 286.3 80.79996 312.8 94.499958 332 121.899959 334.7 125.79996 339.6 129.09996 344.1 130.69995 361.30003 136.79996 378.80003 141.89995 396 147.89995 411.5 153.29994 423.4 163.29994 432.5 179.09995 423.2 176.29994 415.5 173.29994 407.5 171.59995 383.8 166.39995 360 167.09995 336.6 172.89995 321.1 176.79994 310.80003 187.69995 305.9 203.19995 304.9 206.19995 304.19999 209.29996 303.4 212.39995 289.5 207.39995 288.4 205.59995 293.9 192.89995 304.3 168.59995 324.1 157.89995 349.4 155.69995 352.69999 155.39995 358.9 154.69995 366 154.19995 341.9 144.49996 310.1 137.59995 284.6 135.29996 259.2 132.99996 233.70001 131.49996 207 129.49996 207.4 132.49996 207.4 135.59996 208.1 138.39995 217.1 172.49994 237.3 198.19995 267.2 216.59995 283 226.29994 299.1 235.59995 314.2 246.39995 367.2 284.49995 389.2 336.69996 376.5 400.49995 364.4 461.29994 325.7 499.99995 265.7 516.19998 251.4 519.8 236.4 520.9 220.2 523.6Z" fill="currentColor"/><path transform="matrix(.33995817,0,0,.33995817,76.5,225.75)" d="M183.4 93.4C183 94.200008 200.7 110.5 205.79999 111.8 216.79999 114.600009 305 122.600009 311.09999 123.4 310.89997 121.3 291.3 96.9 251.89998 95.3 231.2 94.8 195.8 93.4 183.4 93.4Z" fill="#FF6D0A"/></svg>flameback</a>
         <div class="footcols">
           <div class="footcol"><h4>The firm</h4><a href="flameback-who-we-are.html">Who we are</a><a href="flameback-what-we-do.html">What we do</a><a href="flameback-our-work.html">Our work</a><a href="flameback-clients.html">Clients</a></div>
           <div class="footcol"><h4>Open</h4><a href="flameback-insights.html">Insights</a><a href="flameback-tools.html">Tools</a><a href="flameback-offbook.html">Off-book</a></div>
-          <div class="footcol"><h4>Contact</h4><a href="flameback-app-splash.html">Start your journey</a><a href="#">hello@flameback.in</a><a href="#">Bangalore, India</a></div>
+          <div class="footcol"><h4>Get started</h4><a href="flameback-app-schedule-call.html">Schedule a conversation</a><a href="flameback-what-we-do.html">What we do</a><a href="#faq">FAQ</a></div>
+          <div class="footcol"><h4>Contact</h4><a href="#">hello@flameback.in</a><a href="#">Bangalore, India</a></div>
         </div>
       </div>
       <div class="disc">
-        <span>&copy; 2026 Flameback Capital Pvt Ltd</span>
-        <span class="legal">SEBI registered &middot; SEC filed for US strategy. Investments are subject to market risk. Past performance is not indicative of future results.</span>
-        <span class="reg-links"><a href="flameback-pms-disclosure.html">PMS disclosure</a><a href="flameback-advisory-disclosure.html">IA disclosure</a></span>
+        <span>&copy; 2026 Flameback Capital Private Limited</span>
+        <span class="legal">SEBI registered &middot; SEC filed for US strategy. Investments are subject to market risk. This page is for information only and is not an offer or solicitation. Past performance does not guarantee future results.</span>
       </div>
     </div>
   </footer>
@@ -302,7 +549,7 @@
   window.addEventListener('scroll',function(){nav.classList.toggle('scrolled',window.scrollY>16)});
 </script>
   <script src="site-footer.js"></script>
-  <script src="reload.js"></script>
+<script src="reload.js"></script>
   <a class="lswitch" href="flameback-home-alt.html"><span class="i">&#8646;</span> Alternate landing</a>
 </body>
 </html>
