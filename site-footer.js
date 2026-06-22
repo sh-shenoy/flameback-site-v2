@@ -108,7 +108,7 @@
     +     col('About', [['Team','flameback-team.html'],['Investment Philosophy','flameback-philosophy.html'],['Strategy R&D Process','flameback-strategy-rd.html'],['Technology','flameback-technology.html'],['Careers','#'],['Contact Us','flameback-app-schedule-call.html'],['Legal Information','#']])
     +     col('Investing', [['Smallcase','#'],['FAQs','#'],['Pricing','#']])
     +     col('Policies and Processes', [['Terms and Conditions','#'],['Complaints','#'],['Disclosures','flameback-pms-disclosure.html'],['Privacy Policy','#'],['Investor Charter','flameback-advisory-disclosure.html'],['Grievance Redressal','#'],['Refunds &amp; Cancellation Policy','#'],['Client Acceptance Policy','#'],['Anti-Money Laundering Policy','#']])
-    +     col('Resources', [['FIST Presentation','#']])
+    +     col('Resources', [['Investor Relations','flameback-investor-relations.html'],['FIST Presentation','#']])
     +   '</div>'
     + '</div>'
     + '<div class="sf-scores"><h3>SCORES Complaints - May 31, 2026</h3>'
