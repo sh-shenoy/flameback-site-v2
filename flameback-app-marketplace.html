@@ -177,6 +177,8 @@
   .fchip.rec.on::after{color:var(--btn-ink)}
   .scard{position:relative}
   .scard .recpill{position:absolute;top:14px;right:14px;font-family:"Geist Mono",monospace;font-size:8.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);border:1px solid color-mix(in srgb,var(--accent) 45%,transparent);border-radius:999px;padding:2px 8px}
+  .viewstrat{display:inline-block;font-size:13px;color:var(--accent);text-decoration:none;border-bottom:1px solid color-mix(in srgb,var(--accent) 40%,transparent);padding-bottom:2px;margin:2px 0 14px}
+  .viewstrat:hover{border-bottom-color:var(--accent)}
 </style>
   <link rel="stylesheet" href="v2.css">
 </head>
@@ -374,7 +376,7 @@
         '<div class="m"><span class="mk">Max drawdown</span><span class="mv neg">'+s.dd+'</span></div>'+
         '<div class="m"><span class="mk">Since inception</span><span class="mv pos">'+s.since+'</span></div>'+
       '</div>'+
-      '<p class="philo">'+s.philo+'</p>'+
+      '<p class="philo">'+s.philo+'</p>'+'<a class="viewstrat" href="flameback-strategy-large-cap-momentum.html">View strategy &rarr;</a>'+
       '<button class="know'+(open?' open':'')+'" data-key="'+key+'">Know more · factsheet <span class="ar">▾</span></button>'+
       '<div class="fact'+(open?' open':'')+'">'+
         '<div class="chart"><div class="ct">'+s.name+' vs Nifty 500 TRI</div>'+sparkline()+
