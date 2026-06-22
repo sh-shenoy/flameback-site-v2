@@ -255,6 +255,7 @@
   }
   document.getElementById('setupBtn').onclick=function(){
     if(document.getElementById('setupBtn').disabled)return;
+    try{sessionStorage.setItem('fb_from','accounts');}catch(e){}
     // Each product has its OWN onboarding — RIA and PMS are not the same flow.
     if(prod==='RIA'){ location.href='flameback-app-profile-intro.html?from=accounts'; }           // RIA advisory: risk profiling -> KYC
     else if(prod==='PMS'){ location.href='flameback-app-comingsoon.html?p=PMS&from=accounts'; }    // PMS: separate discretionary onboarding

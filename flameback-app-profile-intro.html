@@ -192,6 +192,6 @@
 </script>
   <script src="site-footer.js"></script>
   <script src="reload.js"></script>
-<script>(function(){if(new URLSearchParams(location.search).get('from')==='accounts'){document.querySelectorAll('a[href="flameback-app-product.html"]').forEach(function(a){a.href='flameback-app-accounts.html';if(/back to products/i.test(a.textContent))a.textContent='Back to accounts';});}})();</script>
+<script>(function(){var _fa=new URLSearchParams(location.search).get('from')==='accounts';try{_fa=_fa||sessionStorage.getItem('fb_from')==='accounts';}catch(e){}if(_fa){document.querySelectorAll('a[href="flameback-app-product.html"]').forEach(function(a){a.href='flameback-app-accounts.html';if(/back to products/i.test(a.textContent))a.textContent='Back to accounts';});}})();</script>
 </body>
 </html>
