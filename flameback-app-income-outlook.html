@@ -69,9 +69,14 @@
   .chip.sel .tick{border-color:var(--accent)}
   .chip.sel .tick::after{transform:scale(1)}
 
-  .why{margin-top:22px;border:1px solid var(--line);border-left:2px solid var(--accent);background:var(--card);padding:16px 18px}
-  .why .h{font-family:"Geist Mono",monospace;font-size:9.5px;color:var(--ink-mute);letter-spacing:.09em;text-transform:uppercase;margin-bottom:8px}
-  .why p{font-size:13px;line-height:1.6;color:var(--ink-soft)}
+  .why{margin-top:22px}
+  .why summary{list-style:none;cursor:pointer;display:inline-flex;align-items:center;gap:9px;font-family:"Geist Mono",monospace;font-size:9.5px;color:var(--ink-mute);letter-spacing:.09em;text-transform:uppercase;transition:color .2s;width:fit-content}
+  .why summary::-webkit-details-marker{display:none}
+  .why summary::marker{content:""}
+  .why .qi{width:17px;height:17px;border:1px solid currentColor;border-radius:50%;display:grid;place-items:center;font-size:10px;line-height:1;flex:none}
+  .why summary:hover{color:var(--accent)}
+  .why[open] summary{color:var(--ink-soft);margin-bottom:10px}
+  .why p{font-size:13px;line-height:1.6;color:var(--ink-soft);border-left:2px solid var(--accent);background:var(--card);padding:14px 16px}
 
   .cta{display:inline-flex;align-items:center;justify-content:center;gap:11px;background:var(--btn-bg);color:var(--btn-ink);font-family:"Geist",serif;font-size:15.5px;font-weight:500;padding:15px 30px;text-decoration:none;border:none;cursor:pointer;transition:gap .35s,opacity .3s;margin-top:36px}
   .cta:hover{gap:15px;opacity:.93}
@@ -112,10 +117,10 @@
           <button class="chip">Drop drastically<span class="tick"></span></button>
         </div>
 
-        <div class="why">
-          <div class="h">Why we ask</div>
+        <details class="why">
+          <summary><span class="qi">?</span>Why we ask</summary>
           <p>Where your income is heading shapes how much risk we should take today. Rising income lets us compound aggressively; falling calls for capital preservation.</p>
-        </div>
+        </details>
 
         <div><button class="cta" id="cta" disabled>Continue &rarr;</button></div>
       </div>
