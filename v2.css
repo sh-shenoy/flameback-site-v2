@@ -5,7 +5,7 @@
 body::after{display:none !important}
 
 /* Buttons are pills; the one action is filled, ghosts are hairline-outlined */
-.btn,.btn-out,.cta,.toggle,.navr a.cta,.navbtn,button.cta,a.cta{border-radius:999px !important}
+.btn,.btn-out,.cta,.toggle,.navr a.cta,.navr a.lite,.navbtn,button.cta,a.cta{border-radius:999px !important}
 
 /* Cards / tiles / panels: 8px, elevation by colour not shadow */
 .card,.scard,.tool,.meet,.explainer,.calc,.quizcta,.waitlist,.pbtn,.opt,
