@@ -46,8 +46,37 @@
     '.sf-tbl{width:100%;border-collapse:collapse;border:1px solid var(--line)}',
     '.sf-tbl th,.sf-tbl td{border:1px solid var(--line);padding:14px 16px;text-align:left;font-size:13.5px}',
     '.sf-tbl th{color:var(--ink);font-weight:600}.sf-tbl td{color:var(--ink-soft)}',
-    '@media(max-width:620px){.sf-tbl,.sf-tbl tbody,.sf-tbl tr,.sf-tbl td,.sf-tbl th{display:block;width:100%}.sf-tbl th{border-bottom:none;padding-bottom:4px}.sf-tbl td{padding-top:4px}}'
+    '@media(max-width:620px){.sf-tbl,.sf-tbl tbody,.sf-tbl tr,.sf-tbl td,.sf-tbl th{display:block;width:100%}.sf-tbl th{border-bottom:none;padding-bottom:4px}.sf-tbl td{padding-top:4px}}',
+    '.sf-disc{margin-top:46px;border-top:1px solid var(--line);padding-top:34px}',
+    '.sf-disc h3{font-size:21px;font-weight:600;color:var(--ink);margin:0 0 18px}',
+    '.sf-disc ul{list-style:disc;margin:0;padding-left:20px}',
+    '.sf-disc li{font-size:12.5px;line-height:1.65;color:var(--ink-soft);margin-bottom:13px;max-width:120ch}',
+    '.sf-disc a{color:var(--accent);text-decoration:none;word-break:break-word}',
+    '.sf-disc a:hover{text-decoration:underline}',
+    '.sf-copy{text-align:center;margin-top:34px;padding-top:22px;border-top:1px solid var(--line);font-size:12.5px;color:var(--ink-mute)}'
   ].join('');
+
+  function mail(e){ return '<a href="mailto:' + e + '">' + e + '</a>'; }
+  var DISC = '<div class="sf-disc"><h3>Disclaimer</h3><ul>'
+    + '<li>The information on the website is provided as general and impersonalized investment information and is not a recommendation, offer for solicitation, or advertisement to buy or sell any security. Flameback Capital Private Limited (Flameback) does not guarantee or certify the quality, accuracy, completeness, or timeliness of any content on the Flameback website. Information on this website should not be the sole criterion for making an investment decision.</li>'
+    + '<li>We recommend suitable investment strategies and portfolios only after assessing our client’s investment objective, risk tolerance, preferences, and other relevant information and pursuant to a signed investment advisory agreement. However, we do not provide personalized financial planning, insurance advisory, tax, retirement, or estate planning services. See Terms of Use, Disclosure and Privacy Policy.</li>'
+    + '<li>Flameback Investment Advisors, a Unit of Flameback Capital Private Limited (CIN: U65999KA2016PTC096684) is a Registered Investment Advisor (RIA) with Securities Exchange Board of India (SEBI) with Registration No: INA200013798 and BSE Enlistment Number: 1739</li>'
+    + '<li>Investment in securities markets is subject to market risks. Read all the related documents carefully before investing.</li>'
+    + '<li>Registration granted by SEBI, Enlistment with BSE and certification from NISM in no way guarantee performance of the intermediary or provide any assurance of returns to investors</li>'
+    + '<li>Past performance is not a guide to future returns.</li>'
+    + '<li>Historical simulations (backtests) or live model portfolio performance or other hypothetical performance is provided for informational purposes only to indicate historical performance had Flameback Strategies have been available to investors. It should not be the only basis for making an investment decision.</li>'
+    + '<li>Actual investors may experience different results from the hypothetical or historical results shown.</li>'
+    + '<li>The value of investments can grow and decline in value and, therefore, the value of any investment portfolio at any given point in time cannot be guaranteed.</li>'
+    + '<li>All investments involve risk and may lose money, including loss of principal and a reduction in earnings. Investors may lose all or part of their investments in any Flameback advised Portfolios or Strategies or other investment products including but not limited to Mutual Funds and Exchange Traded Funds (ETFs).</li>'
+    + '<li>Please contact us on 91-80-23321099 and email at ' + mail('support@flamebackcapital.com') + ' or ' + mail('support.smallcase@flamebackcapital.com') + '</li>'
+    + '<li>Compliance officer: Anila Abraham at ' + mail('admin@flamebackcapital.com') + '</li>'
+    + '<li>Grievance officer: Anila Abraham at ' + mail('admin@flamebackcapital.com') + '</li>'
+    + '<li>Principal officer: Malay Thakkar at ' + mail('malay@flamebackcapital.com') + '</li>'
+    + '<li>Our Registered Address is No.61, MKK Road, Nagappa Block, Srirampuram, Bengaluru, Bengaluru (Bangalore) Urban, Karnataka, 560021</li>'
+    + '<li>SEBI Office Details: SEBI Bhavan II PN-C/7, G Block BKC, Bandra Kurla Complex, Bandra East, Mumbai, Maharashtra 400051</li>'
+    + '<li>When you visit or interact with our sites, services or tools, we or our authorized service providers may use cookies for storing information to help provide you with a better, faster and safer experience and for marketing purposes.</li>'
+    + '<li>To lodge a complaint on Smart ODR Portal, visit <a href="https://scores.sebi.gov.in/" target="_blank" rel="noopener">https://scores.sebi.gov.in/</a></li>'
+    + '</ul><p class="sf-copy">&copy;Flameback Capital Private Limited. All rights reserved.</p></div>';
 
   function col(title, links) {
     var a = links.map(function (l) { return '<a href="' + l[1] + '">' + l[0] + '</a>'; }).join('');
@@ -86,6 +115,7 @@
     +   '<table class="sf-tbl"><thead><tr><th>At the beginning of the month</th><th>Received during the month</th><th>Resolved during the month</th><th>Pending at the end of the month</th></tr></thead>'
     +   '<tbody><tr><td>0</td><td>0</td><td>0</td><td>0</td></tr></tbody></table>'
     + '</div>'
+    + DISC
     + '</div></footer>';
 
   function mount() {
