@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>flameback. — Strategy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0B0C0E;--ink:#F5F2EA;--ink-soft:rgba(245,242,234,.66);--ink-mute:rgba(245,242,234,.44);--line:rgba(245,242,234,.16);--accent:#B59669;--btn-bg:#B59669;--btn-ink:#0B0C0E;--grain-blend:screen;--grain-op:.055;--card:rgba(245,242,234,.03)}
+  :root.light{--bg:#F5F2EA;--ink:#0B0C0E;--ink-soft:rgba(11,12,14,.68);--ink-mute:rgba(11,12,14,.46);--line:rgba(11,12,14,.14);--accent:#8A6D43;--btn-bg:#0B0C0E;--btn-ink:#F5F2EA;--grain-blend:multiply;--grain-op:.035;--card:rgba(11,12,14,.025)}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:"Geist",serif;transition:background .5s,color .5s;line-height:1.55;font-variant-numeric:tabular-nums;min-height:100vh;display:flex;flex-direction:column}
+  body::after{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;mix-blend-mode:var(--grain-blend);opacity:var(--grain-op);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  h1,h2,h3,h4{font-family:"Instrument Serif",serif;font-weight:500;letter-spacing:-.014em;line-height:1.04}
+  h1 em,h2 em,h3 em{color:var(--accent);font-style:italic;font-weight:500}
+  .mono{font-family:"Geist Mono",monospace;letter-spacing:.07em;text-transform:uppercase}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 clamp(22px,5vw,44px)}
+
+  nav{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 84%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid transparent;transition:border-color .4s}
+  nav.scrolled{border-color:var(--line)}
+  .navin{display:flex;align-items:center;justify-content:space-between;padding:14px 0;gap:24px}
+  .wm{font-family:"Geist",serif;font-weight:600;font-size:18px;color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+  .navr{display:flex;align-items:center;gap:22px}
+  .navr a{color:var(--ink-soft);text-decoration:none;font-size:14px;transition:color .3s}
+  .navr a:hover{color:var(--ink)}
+  .toggle{background:none;border:1px solid var(--line);color:var(--ink-soft);cursor:pointer;font-family:"Geist",serif;font-size:12.5px;font-style:italic;padding:5px 13px;border-radius:999px}
+  .avatar{width:30px;height:30px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;font-family:"Instrument Serif",serif;font-style:italic;font-size:15px;color:var(--accent)}
+
+  footer{padding:60px 0 32px;position:relative;z-index:2;border-top:1px solid var(--line);margin-top:auto}
+  .footdisc{display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px}
+  .footdisc span{font-size:11.5px;color:var(--ink-mute);line-height:1.6}
+  .footdisc .legal{max-width:72ch;font-style:italic}
+
+  main{position:relative;z-index:2;flex:1}
+  .screen{max-width:760px;margin:0 auto;padding:clamp(36px,5vh,60px) 0 clamp(56px,9vh,96px)}
+  .back-link{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-style:italic;color:var(--ink-mute);text-decoration:none;margin-bottom:26px;transition:color .3s}
+  .back-link:hover{color:var(--ink-soft)}
+
+  .s-tag{font-family:"Geist Mono",monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+  .s-name{font-size:clamp(34px,5vw,52px);line-height:1.02;margin-bottom:22px;padding-bottom:22px;border-bottom:1px solid var(--line)}
+  .s-perf{display:flex;align-items:baseline;gap:18px;flex-wrap:wrap;margin-bottom:10px}
+  .s-cagr{font-family:"Instrument Serif",serif;font-size:clamp(46px,8vw,68px);line-height:.9;color:var(--accent)}
+  .s-cagr-meta .mono{font-size:10px;color:var(--ink-mute);margin-bottom:5px}
+  .s-alpha{font-family:"Geist Mono",monospace;font-size:12px;color:var(--ink-soft)}
+  .s-vsnifty{font-size:14px;color:var(--ink-soft);line-height:1.55;margin-bottom:24px}
+
+  .card{border:1px solid var(--line);background:var(--card);padding:20px;margin-bottom:18px}
+  .navchart{margin:4px 0 12px}
+  .periods{display:flex;gap:6px;flex-wrap:wrap}
+  .periods button{font-family:"Geist",serif;font-size:12px;color:var(--ink-soft);background:none;border:1px solid var(--line);padding:5px 13px;border-radius:999px;cursor:pointer;transition:all .2s}
+  .periods button.on{background:var(--accent);color:var(--btn-ink);border-color:var(--accent)}
+
+  .statgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin:0 0 28px}
+  @media(max-width:560px){.statgrid{grid-template-columns:1fr 1fr}}
+  .stat{background:var(--bg);padding:15px 14px}
+  .stat .k{font-family:"Geist Mono",monospace;font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-mute);margin-bottom:7px}
+  .stat .v{font-family:"Instrument Serif",serif;font-size:23px;line-height:1}
+  .stat .v.up{color:var(--accent)}
+
+  .sec-lab{font-family:"Geist Mono",monospace;font-size:10px;color:var(--ink-mute);letter-spacing:.09em;text-transform:uppercase;margin-bottom:16px}
+  .alloc-wrap{display:flex;align-items:center;gap:28px;flex-wrap:wrap;border:1px solid var(--line);background:var(--card);padding:24px 22px;margin-bottom:28px}
+  .donut{width:128px;height:128px;border-radius:50%;position:relative;flex:none}
+  .donut::after{content:"";position:absolute;inset:26px;border-radius:50%;background:var(--bg)}
+  .alloc-legend{flex:1;min-width:220px;display:flex;flex-direction:column;gap:14px}
+  .alloc-row{display:grid;grid-template-columns:auto 1fr auto;gap:11px;align-items:baseline}
+  .alloc-row .sw{width:9px;height:9px;border-radius:2px;align-self:center}
+  .alloc-row .an{font-size:15px;color:var(--ink)}
+  .alloc-row .asub{font-size:11.5px;font-style:italic;color:var(--ink-mute);display:block;margin-top:1px}
+  .alloc-row .ap{font-family:"Geist Mono",monospace;font-size:13px;color:var(--ink-soft)}
+
+  .hold-list{border:1px solid var(--line);margin-bottom:30px}
+  .hold-row{display:grid;grid-template-columns:auto 1fr auto;gap:13px;align-items:center;padding:14px 18px;border-bottom:1px solid var(--line)}
+  .hold-row:last-child{border-bottom:none}
+  .hold-row .hn{font-family:"Geist Mono",monospace;font-size:11px;color:var(--ink-mute);width:18px}
+  .hold-row .ht{font-size:15.5px;color:var(--ink)}
+  .hold-row .htk{font-size:11px;font-style:italic;color:var(--ink-mute);margin-top:1px}
+  .hold-row .hc{font-family:"Geist Mono",monospace;font-size:12.5px;color:var(--accent)}
+
+  .s-actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+  .act-out,.act-fill,.act-skip{font-family:"Geist",serif;font-size:15px;font-weight:500;padding:15px;cursor:pointer;text-align:center;border:1px solid var(--line)}
+  .act-out{background:none;color:var(--ink)}
+  .act-out:hover{border-color:var(--ink-soft)}
+  .act-fill{background:var(--btn-bg);color:var(--btn-ink);border-color:var(--btn-bg)}
+  .act-fill:hover{opacity:.93}
+  .act-skip{width:100%;background:none;color:var(--ink-mute);font-style:italic;border-color:transparent;text-decoration:underline;text-underline-offset:3px}
+  .act-skip:hover{color:var(--ink-soft)}
+
+  /* modal */
+  .scrim{position:fixed;inset:0;z-index:100;background:rgba(10,8,6,.6);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:24px}
+  .scrim.open{display:flex}
+  .sheet{background:var(--bg);border:1px solid var(--line);width:100%;max-width:460px;padding:30px;animation:up .3s ease}
+  @keyframes up{from{transform:translateY(40px);opacity:.4}to{transform:translateY(0);opacity:1}}
+  .sheet h3{font-size:26px;margin-bottom:6px}
+  .sheet h3 em{color:var(--accent);font-style:italic}
+  .sheet p{font-size:13.5px;line-height:1.65;color:var(--ink-soft);margin-bottom:16px}
+  .famt{display:flex;align-items:center;border:1px solid var(--line);background:var(--card);padding:12px 14px;margin-bottom:14px}
+  .famt .r{font-family:"Instrument Serif",serif;font-size:26px;color:var(--ink-mute);margin-right:8px}
+  .famt input{flex:1;background:none;border:none;outline:none;color:var(--ink);font-family:"Instrument Serif",serif;font-size:26px;width:100%}
+  .fchip-row{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap}
+  .fchip{font-family:"Geist Mono",monospace;font-size:11px;color:var(--ink-soft);border:1px solid var(--line);padding:6px 12px;border-radius:999px;cursor:pointer;background:none}
+  .fchip:hover{border-color:var(--accent);color:var(--accent)}
+  .sheet .confirm{width:100%;background:var(--btn-bg);color:var(--btn-ink);border:none;font-family:"Geist",serif;font-size:15px;font-weight:500;padding:13px;cursor:pointer;margin-bottom:10px}
+  .sheet .close{width:100%;background:none;border:1px solid var(--line);color:var(--ink);font-family:"Geist",serif;font-style:italic;font-size:14px;padding:11px;cursor:pointer}
+  .ok{text-align:center}
+  .ok .tick{font-family:"Instrument Serif",serif;font-style:italic;font-size:46px;color:var(--accent);line-height:1}
+</style>
+  <link rel="stylesheet" href="v2.css">
+</head>
+<body>
+
+  <nav id="nav">
+    <div class="wrap navin">
+      <a class="wm" href="index.html"><svg class="wm-ic" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="121.5 244.6 110.0 167.2" fill="none" style="height:1.05em;width:auto;vertical-align:-.16em;margin-right:7px"><path transform="matrix(.33995817,0,0,.33995817,76.5,225.75)" d="M220.2 523.6C220.2 425.09999 220.2 329.59999 220.2 233.99997 233 234.79998 234.4 236.29998 234.4 248.19997 234.4 324.19996 234.4 400.09999 234.29999 476.09999 234.29999 481.99998 233.99999 487.89997 233.79999 493.8 233.4 505.9 234.29999 507 245.9 505.19999 298 496.8 335.4 468.8 355.5 419.89997 379.9 360.39997 358.1 293.09999 304.3 257.49998 283.4 243.69997 261.5 231.39997 241.59999 216.39997 212.09999 194.09996 196.29999 163.09996 190.59999 126.59996 189.99999 122.59996 187.79999 119.09996 184.7 116.59996 172.4 107.09996 163 95.59996 155.8 80.29996 159.5 80.09996 224 78.999958 253.4 79.899959 286.3 80.79996 312.8 94.499958 332 121.899959 334.7 125.79996 339.6 129.09996 344.1 130.69995 361.30003 136.79996 378.80003 141.89995 396 147.89995 411.5 153.29994 423.4 163.29994 432.5 179.09995 423.2 176.29994 415.5 173.29994 407.5 171.59995 383.8 166.39995 360 167.09995 336.6 172.89995 321.1 176.79994 310.80003 187.69995 305.9 203.19995 304.9 206.19995 304.19999 209.29996 303.4 212.39995 289.5 207.39995 288.4 205.59995 293.9 192.89995 304.3 168.59995 324.1 157.89995 349.4 155.69995 352.69999 155.39995 358.9 154.69995 366 154.19995 341.9 144.49996 310.1 137.59995 284.6 135.29996 259.2 132.99996 233.70001 131.49996 207 129.49996 207.4 132.49996 207.4 135.59996 208.1 138.39995 217.1 172.49994 237.3 198.19995 267.2 216.59995 283 226.29994 299.1 235.59995 314.2 246.39995 367.2 284.49995 389.2 336.69996 376.5 400.49995 364.4 461.29994 325.7 499.99995 265.7 516.19998 251.4 519.8 236.4 520.9 220.2 523.6Z" fill="currentColor"/><path transform="matrix(.33995817,0,0,.33995817,76.5,225.75)" d="M183.4 93.4C183 94.200008 200.7 110.5 205.79999 111.8 216.79999 114.600009 305 122.600009 311.09999 123.4 310.89997 121.3 291.3 96.9 251.89998 95.3 231.2 94.8 195.8 93.4 183.4 93.4Z" fill="#FF6D0A"/></svg>flameback</a>
+      <div class="navr">
+        <a href="flameback-app-accounts.html">Switch account</a>
+        <button class="toggle" id="toggle">Light</button>
+        <div class="avatar">A</div>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <div class="wrap">
+      <div class="screen">
+        <a class="back-link" href="flameback-lobby.html?funded=1">&larr; Dashboard &middot; Home</a>
+
+        <div class="s-tag" id="sTag"></div>
+        <h1 class="s-name" id="sName"></h1>
+
+        <div class="s-perf">
+          <div class="s-cagr" id="sCagr"></div>
+          <div class="s-cagr-meta">
+            <div class="mono" id="sCagrLab"></div>
+            <div class="s-alpha" id="sAlpha"></div>
+          </div>
+        </div>
+        <p class="s-vsnifty" id="sVs"></p>
+
+        <section class="card">
+          <div class="navchart">
+            <svg viewBox="0 0 320 110" preserveAspectRatio="none" style="width:100%;height:120px;display:block">
+              <defs><linearGradient id="navg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--accent)" stop-opacity=".18"/><stop offset="1" stop-color="var(--accent)" stop-opacity="0"/></linearGradient></defs>
+              <path d="M2 100 C40 96,66 90,96 82 C132 72,156 80,196 58 C236 40,262 48,300 18 L318 12 L318 108 L2 108 Z" fill="url(#navg)"/>
+              <path d="M2 100 C40 96,66 90,96 82 C132 72,156 80,196 58 C236 40,262 48,300 18 L318 12" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="periods"><button>1M</button><button>6M</button><button>1Y</button><button class="on">All</button></div>
+        </section>
+
+        <div class="statgrid">
+          <div class="stat"><div class="k">Invested</div><div class="v" id="sInv"></div></div>
+          <div class="stat"><div class="k">Current value</div><div class="v" id="sCur"></div></div>
+          <div class="stat"><div class="k">P&amp;L</div><div class="v up" id="sPnl"></div></div>
+          <div class="stat"><div class="k">Returns</div><div class="v up" id="sRet"></div></div>
+        </div>
+
+        <div class="sec-lab">Allocation</div>
+        <div class="alloc-wrap">
+          <div class="donut" id="donut"></div>
+          <div class="alloc-legend" id="allocLegend"></div>
+        </div>
+
+        <div class="sec-lab">Top holdings &middot; <span id="holdCount"></span></div>
+        <div class="hold-list" id="holdList"></div>
+
+        <div class="s-actions">
+          <button class="act-out" data-act="wd">Withdraw</button>
+          <button class="act-fill" data-act="add">+ Top up</button>
+        </div>
+        <button class="act-skip" data-act="skip">Skip this month's SIP</button>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <div class="footdisc">
+        <span>&copy; 2026 Flameback Capital Pvt Ltd</span>
+        <span class="legal">SEBI registered &middot; SEC filed for US strategy. Investments are subject to market risk. Past performance is not indicative of future results.</span>
+      </div>
+    </div>
+  </footer>
+
+  <div class="scrim" id="scrim">
+    <div class="sheet" id="sheet"></div>
+  </div>
+
+<script>
+  var t=document.getElementById('toggle');
+  t.onclick=function(){var l=document.documentElement.classList.toggle('light');t.textContent=l?'Dark':'Light';};
+  var nv=document.getElementById('nav');
+  window.addEventListener('scroll',function(){nv.classList.toggle('scrolled',window.scrollY>8);});
+
+  var STRAT={
+    'keel-50':{name:'The <em>All-Weather</em>',tag:'Balanced · Most chosen',cagr:'+12.6%',cagrLab:'CAGR · 4 yr',alpha:'↑ Alpha +3.9%',
+      vs:'vs NIFTY 50 TRI: +11.7% — outperformed in 3 of the last 4 calendar years.',
+      inv:'₹7,00,000',cur:'₹8,30,000',pnl:'+₹1,30,000',ret:'+18.6%',
+      alloc:[{nm:'Indian Equity',sub:'large & mid cap · 24 holdings',pct:55},{nm:'Debt / G-Sec',sub:'7-yr avg duration',pct:30},{nm:'Gold ETF',sub:'hedge sleeve',pct:15}],
+      hold:[{t:'HDFC Bank',tk:'HDFCBANK · 8.4% of strategy',c:'+14.2%'},{t:'Reliance Industries',tk:'RELIANCE · 7.1% of strategy',c:'+22.8%'},{t:'Infosys',tk:'INFY · 6.3% of strategy',c:'+11.4%'},{t:'ICICI Bank',tk:'ICICIBANK · 5.8% of strategy',c:'+19.1%'},{t:'TCS',tk:'TCS · 5.1% of strategy',c:'+9.6%'}],holdTotal:24},
+    'tide-moderate':{name:'The <em>Tide · Moderate</em>',tag:'Balanced · Dynamic',cagr:'+14.1%',cagrLab:'CAGR · 4 yr',alpha:'↑ Alpha +5.1%',
+      vs:'vs NIFTY 50 TRI: +11.7% — a rules-based tilt that leans into momentum when the trend is clear.',
+      inv:'₹3,00,000',cur:'₹3,54,000',pnl:'+₹54,000',ret:'+18.0%',
+      alloc:[{nm:'Indian Equity',sub:'momentum-tilted · 19 holdings',pct:70},{nm:'Debt / G-Sec',sub:'short duration',pct:20},{nm:'Cash & Idle',sub:'dry powder',pct:10}],
+      hold:[{t:'Reliance Industries',tk:'RELIANCE · 9.2% of strategy',c:'+22.8%'},{t:'Larsen & Toubro',tk:'LT · 7.6% of strategy',c:'+27.4%'},{t:'Bharti Airtel',tk:'BHARTIARTL · 6.8% of strategy',c:'+18.3%'},{t:'Axis Bank',tk:'AXISBANK · 6.1% of strategy',c:'+12.9%'},{t:'Sun Pharma',tk:'SUNPHARMA · 5.4% of strategy',c:'+16.5%'}],holdTotal:19}
+  };
+  var SHADES=['var(--accent)','color-mix(in srgb,var(--accent) 50%,var(--line))','color-mix(in srgb,var(--accent) 22%,var(--line))','color-mix(in srgb,var(--accent) 12%,var(--line))'];
+
+  function rupee(n){return n;}
+  var p=new URLSearchParams(location.search);
+  var key=p.get('s'); if(!STRAT[key]) key='keel-50';
+  var s=STRAT[key];
+
+  document.getElementById('sTag').textContent=s.tag;
+  document.getElementById('sName').innerHTML=s.name;
+  document.getElementById('sCagr').textContent=s.cagr;
+  document.getElementById('sCagrLab').textContent=s.cagrLab;
+  document.getElementById('sAlpha').textContent=s.alpha;
+  document.getElementById('sVs').textContent=s.vs;
+  document.getElementById('sInv').textContent=s.inv;
+  document.getElementById('sCur').textContent=s.cur;
+  document.getElementById('sPnl').textContent=s.pnl;
+  document.getElementById('sRet').textContent=s.ret;
+  document.title='flameback. — '+s.name.replace(/<[^>]+>/g,'');
+
+  // donut (conic) + legend
+  var acc=0, segs=[];
+  s.alloc.forEach(function(a,i){var col=SHADES[i]||SHADES[SHADES.length-1];segs.push(col+' '+acc+'% '+(acc+a.pct)+'%');acc+=a.pct;});
+  document.getElementById('donut').style.background='conic-gradient('+segs.join(',')+')';
+  var lg=document.getElementById('allocLegend');
+  s.alloc.forEach(function(a,i){
+    var col=SHADES[i]||SHADES[SHADES.length-1];
+    var row=document.createElement('div');row.className='alloc-row';
+    row.innerHTML='<span class="sw" style="background:'+col+'"></span><span class="an">'+a.nm+'<span class="asub">'+a.sub+'</span></span><span class="ap">'+a.pct+'%</span>';
+    lg.appendChild(row);
+  });
+
+  document.getElementById('holdCount').textContent=s.holdTotal+' total';
+  var hl=document.getElementById('holdList');
+  s.hold.forEach(function(h,i){
+    var row=document.createElement('div');row.className='hold-row';
+    var n=(i+1<10?'0':'')+(i+1);
+    row.innerHTML='<span class="hn">'+n+'</span><span><span class="ht">'+h.t+'</span><div class="htk">'+h.tk+'</div></span><span class="hc">'+h.c+'</span>';
+    hl.appendChild(row);
+  });
+
+  // fund modal
+  var scrim=document.getElementById('scrim'), sheet=document.getElementById('sheet');
+  function openSheet(html){sheet.innerHTML=html;scrim.classList.add('open');wire();}
+  function closeSheet(){scrim.classList.remove('open');}
+  scrim.onclick=function(e){if(e.target===scrim)closeSheet();};
+  var COPY={
+    add:{title:'Top up <em>'+s.name.replace(/<[^>]+>/g,'')+'</em>',desc:'Add to this strategy. Funds deploy on the next rebalance, in line with your plan.',cta:'Add funds',amt:true},
+    wd:{title:'Withdraw',desc:'Redeem from this strategy. Settlement is T+2 to your linked bank account.',cta:'Request withdrawal',amt:true},
+    skip:{title:'Skip this month’s SIP',desc:'Your scheduled SIP for this strategy will be paused for one month. A skipped month freezes your discipline streak — it never breaks it.',cta:'Confirm skip',amt:false}
+  };
+  function form(act){
+    var c=COPY[act];
+    var body='<h3>'+c.title+'</h3><p>'+c.desc+'</p>';
+    if(c.amt){
+      body+='<div class="famt"><span class="r">&#8377;</span><input id="amt" inputmode="numeric" placeholder="0" autocomplete="off"></div>'+
+            '<div class="fchip-row"><button class="fchip" data-v="25000">25,000</button><button class="fchip" data-v="50000">50,000</button><button class="fchip" data-v="100000">1,00,000</button></div>';
+    }
+    body+='<button class="confirm" data-do="'+act+'">'+c.cta+'</button><button class="close">Cancel</button>';
+    return body;
+  }
+  function done(act){
+    var msg=act==='add'?'Top-up received. It deploys on the next rebalance.':(act==='wd'?'Withdrawal requested. Settlement in T+2.':'SIP skipped for this month. Your streak is safe.');
+    openSheet('<div class="ok"><div class="tick">✓</div><h3 style="margin:10px 0 8px">All set.</h3><p>'+msg+'</p><button class="close">Done</button></div>');
+  }
+  function wire(){
+    var cl=sheet.querySelector('.close'); if(cl)cl.onclick=closeSheet;
+    sheet.querySelectorAll('.fchip').forEach(function(ch){ch.onclick=function(){var a=document.getElementById('amt');if(a)a.value=Number(ch.dataset.v).toLocaleString('en-IN');};});
+    var c=sheet.querySelector('.confirm'); if(c)c.onclick=function(){done(c.dataset.do);};
+  }
+  document.querySelectorAll('[data-act]').forEach(function(b){b.onclick=function(){openSheet(form(b.dataset.act));};});
+</script>
+  <script src="site-footer.js"></script>
+  <script src="reload.js"></script>
+</body>
+</html>

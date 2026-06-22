@@ -134,6 +134,36 @@
   .ipsrow .ih{font-family:"Instrument Serif",serif;font-style:italic;font-size:18px;color:var(--ink)}
   .ipsrow .is{font-size:12.5px;color:var(--ink-mute);font-style:italic;margin-top:2px}
   .ipsrow .iar{color:var(--accent);font-size:18px;flex:none}
+
+  /* manage funds */
+  .fundrow{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);margin-bottom:28px}
+  @media(max-width:560px){.fundrow{grid-template-columns:1fr}}
+  .fundbtn{background:var(--bg);border:none;cursor:pointer;padding:18px 16px;display:flex;flex-direction:column;align-items:flex-start;gap:9px;color:var(--ink);font-family:"Geist",serif;transition:background .2s}
+  .fundbtn:hover{background:var(--card)}
+  .fundbtn .fic{font-family:"Instrument Serif",serif;font-style:italic;font-size:26px;color:var(--accent);line-height:.7}
+  .fundbtn .fl{font-size:15px}
+  /* strategies list */
+  .strat-list{border:1px solid var(--line);margin-bottom:28px}
+  .strat-row{display:grid;grid-template-columns:1fr auto auto;gap:16px;align-items:center;padding:17px 18px;border-bottom:1px solid var(--line);text-decoration:none;color:var(--ink);transition:background .2s}
+  .strat-row:last-child{border-bottom:none}
+  .strat-row:hover{background:var(--card)}
+  .strat-row .sname{font-family:"Instrument Serif",serif;font-size:21px;color:var(--ink);display:flex;align-items:center;gap:10px;line-height:1.1}
+  .strat-row .sdot{width:7px;height:7px;border-radius:50%;background:var(--accent);flex:none}
+  .strat-row .smeta{font-size:12px;color:var(--ink-mute);font-style:italic;margin-top:3px}
+  .strat-row .sval{text-align:right}
+  .strat-row .sv1{font-family:"Instrument Serif",serif;font-size:19px;line-height:1}
+  .strat-row .sv2{font-family:"Geist Mono",monospace;font-size:10.5px;color:var(--accent);margin-top:4px}
+  .strat-row .sar{color:var(--accent);font-size:18px;flex:none}
+  /* fund modal form */
+  .famt{display:flex;align-items:center;border:1px solid var(--line);background:var(--card);padding:12px 14px;margin-bottom:14px}
+  .famt .r{font-family:"Instrument Serif",serif;font-size:26px;color:var(--ink-mute);margin-right:8px}
+  .famt input{flex:1;background:none;border:none;outline:none;color:var(--ink);font-family:"Instrument Serif",serif;font-size:26px;width:100%}
+  .fchip-row{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap}
+  .fchip{font-family:"Geist Mono",monospace;font-size:11px;color:var(--ink-soft);border:1px solid var(--line);padding:6px 12px;border-radius:999px;cursor:pointer;background:none}
+  .fchip:hover{border-color:var(--accent);color:var(--accent)}
+  .sheet .confirm{width:100%;background:var(--btn-bg);color:var(--btn-ink);border:none;font-family:"Geist",serif;font-size:15px;font-weight:500;padding:13px;cursor:pointer;margin-bottom:10px}
+  .sheet .ok{text-align:center}
+  .sheet .ok .tick{font-family:"Instrument Serif",serif;font-style:italic;font-size:46px;color:var(--accent);line-height:1}
 </style>
   <link rel="stylesheet" href="v2.css">
 </head>
@@ -215,6 +245,18 @@
             <div class="stat"><div class="k">CAGR · <span class="mono" style="font-size:8px">XIRR</span></div><div class="v">14.2%</div></div>
           </div>
 
+          <!-- manage funds -->
+          <div class="sec-lab">Manage funds</div>
+          <div class="fundrow">
+            <button class="fundbtn" data-act="add"><span class="fic">+</span><span class="fl">Add funds</span></button>
+            <button class="fundbtn" data-act="wd"><span class="fic">&minus;</span><span class="fl">Withdraw</span></button>
+            <button class="fundbtn" data-act="skip"><span class="fic">&#8631;</span><span class="fl">Skip this SIP</span></button>
+          </div>
+
+          <!-- strategies -->
+          <div class="sec-lab">Your strategies</div>
+          <div class="strat-list" id="stratList"></div>
+
           <section class="card">
             <div class="streak-h"><span class="sk">SIP discipline</span><span class="sv">7 months on track</span></div>
             <div class="cell12" id="streak"></div>
@@ -261,6 +303,10 @@
       <p style="margin-bottom:18px"><b style="color:var(--ink)">Moderate (40–69)</b> — a balanced build, weighted to steadiness, with room to lean either way as life changes.</p>
       <button class="close" id="closeBtn">Got it</button>
     </div>
+  </div>
+
+  <div class="scrim" id="fundScrim">
+    <div class="sheet" id="fundSheet"></div>
   </div>
 
   <footer>
@@ -312,6 +358,48 @@
     var sn=document.getElementById('snooze'); if(sn)sn.onclick=function(){var r=document.getElementById('reb'); if(r)r.style.display='none';};
     var pr=document.getElementById('navPeriods');
     if(pr)pr.querySelectorAll('button').forEach(function(b){b.onclick=function(){pr.querySelectorAll('button').forEach(function(x){x.classList.remove('on');});b.classList.add('on');};});
+
+    // ----- strategies list -----
+    var STRATS=[
+      {slug:'keel-50',name:'Keel 50',meta:'Balanced · Static · since Mar 2022',v1:'₹8,30,000',v2:'+18.6%'},
+      {slug:'tide-moderate',name:'Tide · Moderate',meta:'Balanced · Dynamic · since Aug 2023',v1:'₹3,54,000',v2:'+18.0%'}
+    ];
+    var sl=document.getElementById('stratList');
+    if(sl){STRATS.forEach(function(s){
+      var a=document.createElement('a');a.className='strat-row';a.href='flameback-app-strategy.html?s='+s.slug;
+      a.innerHTML='<div><div class="sname"><span class="sdot"></span>'+s.name+'</div><div class="smeta">'+s.meta+'</div></div>'+
+        '<div class="sval"><div class="sv1">'+s.v1+'</div><div class="sv2">'+s.v2+'</div></div>'+
+        '<span class="sar">&rarr;</span>';
+      sl.appendChild(a);
+    });}
+
+    // ----- manage funds modal -----
+    var fScrim=document.getElementById('fundScrim'), fSheet=document.getElementById('fundSheet');
+    var COPY={
+      add:{title:'Add funds',desc:'Top up your portfolio. New money is deployed across your strategies on the next rebalance, in line with your plan.',cta:'Add funds',amt:true},
+      wd:{title:'Withdraw',desc:'Redeem from your portfolio. Settlement is T+2 to your linked bank account.',cta:'Request withdrawal',amt:true},
+      skip:{title:'Skip this month’s SIP',desc:'Your scheduled SIP will be paused for one month. A skipped month freezes your discipline streak — it never breaks it.',cta:'Confirm skip',amt:false}
+    };
+    function openF(html){fSheet.innerHTML=html;fScrim.classList.add('open');wireF();}
+    function closeF(){fScrim.classList.remove('open');}
+    fScrim.onclick=function(e){if(e.target===fScrim)closeF();};
+    function formF(act){
+      var c=COPY[act], b='<h3>'+c.title.replace(/(Add funds|Withdraw|Skip[^<]*)/,'<em>$1</em>')+'</h3><p>'+c.desc+'</p>';
+      if(c.amt)b+='<div class="famt"><span class="r">&#8377;</span><input id="famt" inputmode="numeric" placeholder="0" autocomplete="off"></div>'+
+        '<div class="fchip-row"><button class="fchip" data-v="25000">25,000</button><button class="fchip" data-v="50000">50,000</button><button class="fchip" data-v="100000">1,00,000</button></div>';
+      b+='<button class="confirm" data-do="'+act+'">'+c.cta+'</button><button class="close" data-x="1">Cancel</button>';
+      return b;
+    }
+    function doneF(act){
+      var m=act==='add'?'Funds received. They deploy on the next rebalance.':(act==='wd'?'Withdrawal requested. Settlement in T+2.':'SIP skipped for this month. Your streak is safe.');
+      openF('<div class="ok"><div class="tick">✓</div><h3 style="margin:10px 0 8px">All set.</h3><p>'+m+'</p><button class="close" data-x="1">Done</button></div>');
+    }
+    function wireF(){
+      var x=fSheet.querySelector('[data-x]'); if(x)x.onclick=closeF;
+      fSheet.querySelectorAll('.fchip').forEach(function(ch){ch.onclick=function(){var a=document.getElementById('famt');if(a)a.value=Number(ch.dataset.v).toLocaleString('en-IN');};});
+      var c=fSheet.querySelector('.confirm'); if(c)c.onclick=function(){doneF(c.dataset.do);};
+    }
+    document.querySelectorAll('.fundbtn[data-act]').forEach(function(b){b.onclick=function(){openF(formF(b.dataset.act));};});
   })();
 </script>
   <script src="site-footer.js"></script>
