@@ -175,6 +175,16 @@
   .disc{padding-top:24px;border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px}
   .disc span{font-size:12px;color:var(--ink-mute);line-height:1.6}
   .disc .legal{max-width:72ch;font-style:italic}
+
+  /* === unified site header (standardized across all pages) === */
+  nav,nav.top{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 84%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);transition:border-color .4s}
+  .navin{display:flex;align-items:center;justify-content:space-between;padding:15px 0;gap:24px}
+  .navr{display:flex;align-items:center;gap:20px}
+  .navr a{color:var(--ink-soft);text-decoration:none;font-size:14px;transition:color .3s}
+  .navr a:hover{color:var(--ink)}
+  .navr a.active{color:var(--ink);font-weight:500}
+  .navr a.cta{background:var(--btn-bg);color:var(--btn-ink);padding:9px 18px;font-weight:500}
+  @media(max-width:1020px){.navr .navlink{display:none}}
 </style>
   <link rel="stylesheet" href="v2.css">
 </head>
@@ -190,9 +200,10 @@
         <a class="navlink" href="flameback-insights.html">Insights</a>
         <a class="navlink" href="flameback-tools.html">Tools</a>
         <a class="navlink" href="flameback-offbook.html">Off-book</a>
-        <a class="cta" href="flameback-app-splash.html">Start your journey</a>
         <a class="navlink" href="flameback-investor-relations.html">Investor Relations</a>
         <a class="navlink" href="flameback-app-accounts.html">Login</a>
+        <a class="navlink" href="flameback-app-schedule-call.html">Schedule</a>
+        <a class="cta" href="flameback-app-splash.html">Start your journey</a>
         <button class="toggle" id="toggle">Light</button>
       </div>
     </div>

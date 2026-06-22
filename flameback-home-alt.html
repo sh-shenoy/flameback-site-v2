@@ -121,6 +121,16 @@
   .lswitch{position:fixed;left:18px;bottom:18px;z-index:200;display:inline-flex;align-items:center;gap:8px;font-family:"Geist",serif;font-size:12.5px;font-style:italic;color:var(--ink);background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border:1px solid var(--accent);padding:9px 15px;border-radius:999px;text-decoration:none}
   .lswitch:hover{background:var(--accent);color:var(--btn-ink)}
   .lswitch .i{font-style:normal}
+
+  /* === unified site header (standardized across all pages) === */
+  nav,nav.top{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 84%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);transition:border-color .4s}
+  .navin{display:flex;align-items:center;justify-content:space-between;padding:15px 0;gap:24px}
+  .navr{display:flex;align-items:center;gap:20px}
+  .navr a{color:var(--ink-soft);text-decoration:none;font-size:14px;transition:color .3s}
+  .navr a:hover{color:var(--ink)}
+  .navr a.active{color:var(--ink);font-weight:500}
+  .navr a.cta{background:var(--btn-bg);color:var(--btn-ink);padding:9px 18px;font-weight:500}
+  @media(max-width:1020px){.navr .navlink{display:none}}
 </style>
   <link rel="stylesheet" href="v2.css">
 </head>
@@ -136,9 +146,10 @@
         <a class="navlink" href="flameback-insights.html">Insights</a>
         <a class="navlink" href="flameback-tools.html">Tools</a>
         <a class="navlink" href="flameback-offbook.html">Off-book</a>
-        <a class="cta" href="flameback-app-schedule-call.html">Schedule</a>
         <a class="navlink" href="flameback-investor-relations.html">Investor Relations</a>
         <a class="navlink" href="flameback-app-accounts.html">Login</a>
+        <a class="navlink" href="flameback-app-schedule-call.html">Schedule</a>
+        <a class="cta" href="flameback-app-splash.html">Start your journey</a>
         <button class="toggle" id="toggle">Light</button>
       </div>
     </div>
