@@ -118,6 +118,9 @@
   .disc .legal{max-width:72ch;font-style:italic}
   .disc .reg-links a{color:var(--ink-mute);text-decoration:none;font-size:11.5px;font-style:italic;margin-left:14px}
   .disc .reg-links a:hover{color:var(--ink-soft)}
+  .lswitch{position:fixed;left:18px;bottom:18px;z-index:200;display:inline-flex;align-items:center;gap:8px;font-family:"Source Serif 4",serif;font-size:12.5px;font-style:italic;color:var(--ink);background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border:1px solid var(--accent);padding:9px 15px;border-radius:999px;text-decoration:none}
+  .lswitch:hover{background:var(--accent);color:var(--btn-ink)}
+  .lswitch .i{font-style:normal}
 </style>
   <link rel="stylesheet" href="v2.css">
 </head>
@@ -298,5 +301,6 @@
 </script>
   <script src="site-footer.js"></script>
   <script src="reload.js"></script>
+  <a class="lswitch" href="flameback-home-alt.html"><span class="i">&#8646;</span> Alternate landing</a>
 </body>
 </html>
