@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>flameback — Your accounts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0B0C0E;--ink:#F5F2EA;--ink-soft:rgba(245,242,234,.66);--ink-mute:rgba(245,242,234,.44);--line:rgba(245,242,234,.16);--accent:#B59669;--btn-bg:#B59669;--btn-ink:#0B0C0E;--grain-blend:screen;--grain-op:.055;--card:rgba(245,242,234,.03)}
+  :root.light{--bg:#F5F2EA;--ink:#0B0C0E;--ink-soft:rgba(11,12,14,.68);--ink-mute:rgba(11,12,14,.46);--line:rgba(11,12,14,.14);--accent:#8A6D43;--btn-bg:#0B0C0E;--btn-ink:#F5F2EA;--grain-blend:multiply;--grain-op:.035;--card:rgba(11,12,14,.03)}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:"Geist",serif;transition:background .5s,color .5s;line-height:1.55;font-variant-numeric:tabular-nums;min-height:100vh;display:flex;flex-direction:column}
+  body::after{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;mix-blend-mode:var(--grain-blend);opacity:var(--grain-op);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  h1,h2,h3,h4{font-family:"Instrument Serif",serif;font-weight:500;letter-spacing:-.014em;line-height:1.04}
+  h1 em,h2 em,h3 em{color:var(--accent);font-style:italic;font-weight:500}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 clamp(22px,5vw,44px)}
+
+  nav{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 84%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid transparent;transition:border-color .4s}
+  nav.scrolled{border-color:var(--line)}
+  .navin{display:flex;align-items:center;justify-content:space-between;padding:14px 0;gap:24px}
+  .wm{font-family:"Geist",serif;font-weight:600;font-size:18px;color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+  .navr{display:flex;align-items:center;gap:22px}
+  .navr a{color:var(--ink-soft);text-decoration:none;font-size:14px;transition:color .3s}
+  .navr a:hover{color:var(--ink)}
+  .toggle{background:none;border:1px solid var(--line);color:var(--ink-soft);cursor:pointer;font-family:"Geist",serif;font-size:12.5px;font-style:italic;padding:5px 13px;border-radius:999px}
+
+  main{position:relative;z-index:2;flex:1}
+
+  /* login gate */
+  .gate{max-width:430px;margin:0 auto;padding:clamp(48px,9vh,110px) 0}
+  .eyebrow{display:inline-flex;align-items:center;gap:10px;font-family:"Geist Mono",monospace;font-size:10px;color:var(--ink-mute);letter-spacing:.09em;text-transform:uppercase;margin-bottom:16px}
+  .eyebrow .l{width:20px;height:1px;background:var(--accent)}
+  .gate h1{font-size:clamp(34px,5vw,46px);margin-bottom:12px}
+  .gate .lede{font-size:15px;font-style:italic;color:var(--ink-soft);margin-bottom:30px;line-height:1.6}
+  .fld{margin-bottom:16px}
+  .fld label{display:block;font-family:"Geist Mono",monospace;font-size:10px;color:var(--ink-mute);letter-spacing:.07em;text-transform:uppercase;margin-bottom:9px}
+  .gin{width:100%;background:var(--card);border:1px solid var(--line);color:var(--ink);font-family:"Geist",serif;font-size:16px;padding:13px 14px;outline:none;transition:border-color .3s}
+  .gin:focus{border-color:var(--accent)}
+  .otp{display:flex;gap:9px;margin-bottom:6px}
+  .otp input{flex:1;aspect-ratio:1/1;text-align:center;background:var(--card);border:1px solid var(--line);color:var(--ink);font-family:"Geist",serif;font-size:20px;outline:none;transition:border-color .2s,box-shadow .2s}
+  .otp input:focus{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 18%,transparent)}
+  .hint{font-size:12.5px;color:var(--ink-mute);font-style:italic;margin:4px 0 18px;min-height:1em}
+  .hint b{color:var(--accent);font-style:normal}
+  .gbtn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;background:var(--btn-bg);color:var(--btn-ink);font-family:"Geist",serif;font-size:15.5px;font-weight:500;padding:15px;border:none;cursor:pointer;transition:opacity .3s,gap .35s}
+  .gbtn:hover:not(:disabled){opacity:.93;gap:14px}.gbtn:disabled{opacity:.35;cursor:not-allowed}
+  .step{display:none}.step.show{display:block;animation:fade .35s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .shield{font-size:11.5px;color:var(--ink-mute);font-style:italic;margin-top:18px;line-height:1.5}
+
+  /* selector */
+  .hub{display:none;padding:clamp(40px,6vh,72px) 0 64px}
+  .hub.show{display:block}
+  .hub-h{margin-bottom:28px}
+  .hub-h h1{font-size:clamp(34px,5vw,52px)}
+  .hub-h p{font-size:14.5px;color:var(--ink-soft);font-style:italic;margin-top:6px}
+  .acct-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+  .acct{border:1px solid var(--line);background:var(--card);padding:20px;text-decoration:none;color:var(--ink);display:flex;flex-direction:column;gap:14px;transition:border-color .25s,transform .15s}
+  .acct:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .acct .top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+  .acct .nm{font-family:"Instrument Serif",serif;font-style:italic;font-size:24px;line-height:1.05}
+  .acct .rel{font-family:"Geist Mono",monospace;font-size:9px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-mute);margin-top:4px}
+  .chiprow{display:flex;gap:7px;flex-wrap:wrap}
+  .pill{font-family:"Geist Mono",monospace;font-size:9px;letter-spacing:.05em;text-transform:uppercase;padding:4px 9px;border-radius:999px;border:1px solid var(--line);color:var(--ink-soft)}
+  .pill.prod{border-color:color-mix(in srgb,var(--accent) 45%,transparent);color:var(--accent)}
+  .acct .val{display:flex;align-items:baseline;justify-content:space-between;gap:10px;border-top:1px solid var(--line);padding-top:13px}
+  .acct .val .v{font-family:"Instrument Serif",serif;font-size:24px}
+  .acct .val .st{font-family:"Geist Mono",monospace;font-size:9.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-mute)}
+  .acct .val .st.live{color:var(--accent)}
+  .acct .enter{font-size:13px;font-style:italic;color:var(--accent)}
+  .addacct{border:1px dashed color-mix(in srgb,var(--accent) 50%,var(--line));background:transparent;color:var(--ink);display:flex;align-items:center;justify-content:center;gap:10px;min-height:150px;cursor:pointer;font-family:"Geist",serif;font-size:15px;transition:border-color .2s,background .2s}
+  .addacct:hover{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 5%,transparent)}
+  .addacct .pl{font-family:"Instrument Serif",serif;font-style:italic;font-size:26px;color:var(--accent)}
+
+  /* add-account modal */
+  .scrim{position:fixed;inset:0;z-index:100;background:rgba(10,8,6,.62);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:20px}
+  .scrim.open{display:flex}
+  .sheet{background:var(--bg);border:1px solid var(--line);width:100%;max-width:480px;max-height:90vh;overflow:auto;padding:28px 26px 30px;animation:fade .3s ease}
+  .sheet h3{font-size:26px;margin-bottom:6px}
+  .sheet .ws{font-size:13px;color:var(--ink-soft);font-style:italic;margin-bottom:20px}
+  .qlab{font-family:"Geist Mono",monospace;font-size:10px;color:var(--ink-mute);letter-spacing:.07em;text-transform:uppercase;margin:18px 0 11px}
+  .opts{display:flex;flex-direction:column;gap:9px}
+  .opt{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;text-align:left;background:var(--card);border:1px solid var(--line);color:var(--ink);font-family:"Geist",serif;font-size:15.5px;padding:14px 16px;cursor:pointer;transition:border-color .2s,background .2s}
+  .opt .sub{display:block;font-size:12px;color:var(--ink-mute);font-style:italic;margin-top:2px}
+  .opt.sel{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 9%,transparent)}
+  .opt:hover{border-color:color-mix(in srgb,var(--accent) 45%,var(--line))}
+  .subfields{margin-top:12px;display:none}.subfields.show{display:block}
+  .relrow{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+  .rel-chip{font-family:"Geist",serif;font-size:13px;color:var(--ink-soft);background:var(--card);border:1px solid var(--line);padding:7px 14px;border-radius:999px;cursor:pointer}
+  .rel-chip.on{background:var(--accent);color:var(--btn-ink);border-color:var(--accent)}
+  .sheet-foot{display:flex;gap:10px;margin-top:24px}
+  .sheet-foot .ghost{flex:none;background:none;border:1px solid var(--line);color:var(--ink-soft);font-family:"Geist",serif;font-style:italic;font-size:14px;padding:13px 18px;cursor:pointer}
+  .sheet-foot .gbtn{margin:0}
+</style>
+  <link rel="stylesheet" href="v2.css">
+</head>
+<body>
+
+  <nav id="nav">
+    <div class="wrap navin">
+      <a class="wm" href="index.html">flameback</a>
+      <div class="navr">
+        <a href="flameback-app-schedule-call.html">Talk to us</a>
+        <a id="signout" href="#" style="display:none">Sign out</a>
+        <button class="toggle" id="toggle">Light</button>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <div class="wrap">
+
+      <!-- LOGIN -->
+      <section class="gate" id="gate">
+        <span class="eyebrow"><span class="l"></span>Client login</span>
+        <h1>Welcome <em>back.</em></h1>
+        <p class="lede">One number, all your accounts. Sign in with the mobile or email on your account.</p>
+        <div class="step show" id="s1">
+          <div class="fld"><label>Mobile or email</label><input class="gin" id="idfield" placeholder="+91 98765 43210 or you@email.com" autocomplete="off"></div>
+          <button class="gbtn" id="sendBtn" disabled>Send me a code &rarr;</button>
+          <p class="shield">Flameback will never ask you for this code.</p>
+        </div>
+        <div class="step" id="s2">
+          <div class="fld"><label>Enter the 6-digit code</label>
+            <div class="otp" id="otp"><input maxlength="1" inputmode="numeric"><input maxlength="1" inputmode="numeric"><input maxlength="1" inputmode="numeric"><input maxlength="1" inputmode="numeric"><input maxlength="1" inputmode="numeric"><input maxlength="1" inputmode="numeric"></div>
+          </div>
+          <p class="hint" id="hint">Sent to <b id="sentTo"></b> · demo code <b>123456</b></p>
+          <button class="gbtn" id="verifyBtn" disabled>Verify &amp; enter &rarr;</button>
+        </div>
+      </section>
+
+      <!-- ACCOUNT SELECTOR -->
+      <section class="hub" id="hub">
+        <div class="hub-h">
+          <span class="eyebrow"><span class="l"></span>Your household</span>
+          <h1>Welcome in, <em>Rajesh.</em></h1>
+          <p>Pick an account to manage — or add a new one. They all sit under your one login.</p>
+        </div>
+        <div class="acct-grid" id="acctGrid"></div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- add-account modal -->
+  <div class="scrim" id="scrim">
+    <div class="sheet">
+      <h3>Add an <em>account.</em></h3>
+      <p class="ws">A new investment account under your login.</p>
+
+      <div class="qlab">Who is this account for?</div>
+      <div class="opts" id="whoOpts">
+        <button class="opt" data-who="self"><span>Myself <span class="sub">Rajesh Sharma — another product in your name</span></span></button>
+        <button class="opt" data-who="individual"><span>Another individual <span class="sub">Spouse, parent, child — in their name</span></span></button>
+        <button class="opt" data-who="joint"><span>Joint <span class="sub">You and one other holder</span></span></button>
+      </div>
+
+      <div class="subfields" id="indFields">
+        <div class="fld"><label>Their full name</label><input class="gin" id="newName" placeholder="e.g. Sunita Sharma"></div>
+        <div class="qlab" style="margin-top:4px">Relationship</div>
+        <div class="relrow" id="relRow">
+          <button class="rel-chip" data-r="Spouse">Spouse</button><button class="rel-chip" data-r="Parent">Parent</button><button class="rel-chip" data-r="Child">Child</button><button class="rel-chip" data-r="Other">Other</button>
+        </div>
+      </div>
+      <div class="subfields" id="jointFields">
+        <div class="fld"><label>Second holder's full name</label><input class="gin" id="jointName" placeholder="e.g. Sunita Sharma"></div>
+      </div>
+
+      <div class="qlab">Which product?</div>
+      <div class="opts" id="prodOpts">
+        <button class="opt" data-prod="RIA"><span>RIA — Advisory <span class="sub">We advise; you approve every trade</span></span></button>
+        <button class="opt" data-prod="PMS"><span>PMS <span class="sub">Discretionary — we manage on your behalf</span></span></button>
+        <button class="opt" data-prod="INTL"><span>International <span class="sub">Global markets via LRS</span></span></button>
+      </div>
+
+      <div class="sheet-foot">
+        <button class="ghost" id="cancelAdd">Cancel</button>
+        <button class="gbtn" id="setupBtn" disabled>Set up account &rarr;</button>
+      </div>
+    </div>
+  </div>
+
+  <footer></footer>
+
+<script>
+  var t=document.getElementById('toggle');
+  t.onclick=function(){var l=document.documentElement.classList.toggle('light');t.textContent=l?'Dark':'Light';};
+  var nv=document.getElementById('nav');
+  window.addEventListener('scroll',function(){nv.classList.toggle('scrolled',window.scrollY>8);});
+
+  /* login */
+  var idf=document.getElementById('idfield'), sendBtn=document.getElementById('sendBtn');
+  idf.addEventListener('input',function(){sendBtn.disabled=idf.value.trim().length<5;});
+  sendBtn.onclick=function(){if(sendBtn.disabled)return;document.getElementById('sentTo').textContent=idf.value.trim();document.getElementById('s1').classList.remove('show');document.getElementById('s2').classList.add('show');document.querySelector('#otp input').focus();};
+  var boxes=[].slice.call(document.querySelectorAll('#otp input')), verifyBtn=document.getElementById('verifyBtn');
+  function code(){return boxes.map(function(b){return b.value;}).join('');}
+  boxes.forEach(function(b,i){
+    b.addEventListener('input',function(){b.value=b.value.replace(/[^0-9]/g,'');if(b.value&&i<5)boxes[i+1].focus();verifyBtn.disabled=code().length<6;});
+    b.addEventListener('keydown',function(e){if(e.key==='Backspace'&&!b.value&&i>0)boxes[i-1].focus();});
+  });
+  verifyBtn.onclick=function(){
+    if(code()==='123456'){document.getElementById('gate').style.display='none';document.getElementById('hub').classList.add('show');document.getElementById('signout').style.display='';renderAccts();window.scrollTo(0,0);}
+    else{document.getElementById('hint').innerHTML="That code didn't match. Try again — demo code <b>123456</b>.";}
+  };
+  document.getElementById('signout').onclick=function(e){e.preventDefault();location.reload();};
+
+  /* accounts */
+  var ACCOUNTS=[
+    {nm:'Rajesh Sharma',rel:'You',type:'Individual',prod:'RIA · Advisory',val:'₹11,84,000',st:'Invested',funded:true},
+    {nm:'Rajesh Sharma',rel:'You',type:'Individual',prod:'PMS',val:'₹52,00,000',st:'Invested',funded:true},
+    {nm:'Sunita Sharma',rel:'Spouse',type:'Individual',prod:'RIA · Advisory',val:'Not funded',st:'Profile complete',funded:false}
+  ];
+  function renderAccts(){
+    var g=document.getElementById('acctGrid');
+    g.innerHTML = ACCOUNTS.map(function(a){
+      var href = a.funded ? 'flameback-lobby.html?funded=1' : 'flameback-lobby.html';
+      return '<a class="acct" href="'+href+'">'+
+        '<div class="top"><div><div class="nm">'+a.nm+'</div><div class="rel">'+a.rel+' · '+a.type+'</div></div></div>'+
+        '<div class="chiprow"><span class="pill prod">'+a.prod+'</span><span class="pill">'+a.type+'</span></div>'+
+        '<div class="val"><span class="v">'+a.val+'</span><span class="st'+(a.funded?' live':'')+'">'+a.st+'</span></div>'+
+        '<span class="enter">Open account &rarr;</span></a>';
+    }).join('') + '<button class="addacct" id="addBtn"><span class="pl">+</span> Add an account</button>';
+    document.getElementById('addBtn').onclick=openAdd;
+  }
+
+  /* add-account wizard */
+  var scrim=document.getElementById('scrim');
+  var who=null, prod=null, rel=null;
+  function openAdd(){who=prod=rel=null;reset();scrim.classList.add('open');}
+  function reset(){
+    document.querySelectorAll('#whoOpts .opt,#prodOpts .opt,.rel-chip').forEach(function(x){x.classList.remove('sel','on');});
+    document.getElementById('indFields').classList.remove('show');document.getElementById('jointFields').classList.remove('show');
+    document.getElementById('newName').value='';document.getElementById('jointName').value='';
+    document.getElementById('setupBtn').disabled=true;
+  }
+  document.getElementById('cancelAdd').onclick=function(){scrim.classList.remove('open');};
+  scrim.onclick=function(e){if(e.target===scrim)scrim.classList.remove('open');};
+  document.querySelectorAll('#whoOpts .opt').forEach(function(o){
+    o.onclick=function(){document.querySelectorAll('#whoOpts .opt').forEach(function(x){x.classList.remove('sel');});o.classList.add('sel');who=o.dataset.who;
+      document.getElementById('indFields').classList.toggle('show',who==='individual');
+      document.getElementById('jointFields').classList.toggle('show',who==='joint');
+      check();};
+  });
+  document.querySelectorAll('.rel-chip').forEach(function(c){c.onclick=function(){document.querySelectorAll('.rel-chip').forEach(function(x){x.classList.remove('on');});c.classList.add('on');rel=c.dataset.r;check();};});
+  document.querySelectorAll('#prodOpts .opt').forEach(function(o){o.onclick=function(){document.querySelectorAll('#prodOpts .opt').forEach(function(x){x.classList.remove('sel');});o.classList.add('sel');prod=o.dataset.prod;check();};});
+  document.getElementById('newName').addEventListener('input',check);
+  document.getElementById('jointName').addEventListener('input',check);
+  function check(){
+    var ok=who&&prod;
+    if(who==='individual') ok=ok&&document.getElementById('newName').value.trim()&&rel;
+    if(who==='joint') ok=ok&&document.getElementById('jointName').value.trim();
+    document.getElementById('setupBtn').disabled=!ok;
+  }
+  document.getElementById('setupBtn').onclick=function(){
+    if(document.getElementById('setupBtn').disabled)return;
+    // new holders / PMS / international need full onboarding + KYC → product picker;
+    // a new product for an existing (self) holder reuses KYC, still routes through onboarding.
+    location.href='flameback-app-product.html';
+  };
+</script>
+  <script src="site-footer.js"></script>
+  <script src="reload.js"></script>
+</body>
+</html>

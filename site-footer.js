@@ -105,7 +105,7 @@
     +     '<p class="sf-sched">Schedule a <b>meeting</b><span class="sf-sub">Monday to Saturday: 10 am to 8pm</span></p>'
     +   '</div>'
     +   '<div class="sf-cols">'
-    +     col('About', [['Team','flameback-team.html'],['Investment Philosophy','flameback-philosophy.html'],['Strategy R&D Process','flameback-strategy-rd.html'],['Technology','flameback-technology.html'],['Careers','#'],['Contact Us','flameback-app-schedule-call.html'],['Legal Information','#']])
+    +     col('About', [['Team','flameback-team.html'],['Investment Philosophy','flameback-philosophy.html'],['Strategy R&D Process','flameback-strategy-rd.html'],['Technology','flameback-technology.html'],['Careers','#'],['Contact Us','flameback-app-schedule-call.html'],['Client login','flameback-app-accounts.html'],['Legal Information','#']])
     +     col('Investing', [['Smallcase','#'],['FAQs','#'],['Pricing','#']])
     +     col('Policies and Processes', [['Terms and Conditions','#'],['Complaints','#'],['Disclosures','flameback-pms-disclosure.html'],['Privacy Policy','#'],['Investor Charter','flameback-advisory-disclosure.html'],['Grievance Redressal','#'],['Refunds &amp; Cancellation Policy','#'],['Client Acceptance Policy','#'],['Anti-Money Laundering Policy','#']])
     +     col('Resources', [['Investor Relations','flameback-investor-relations.html'],['FIST Presentation','#']])
