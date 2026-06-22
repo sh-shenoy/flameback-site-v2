@@ -254,9 +254,10 @@
   }
   document.getElementById('setupBtn').onclick=function(){
     if(document.getElementById('setupBtn').disabled)return;
-    // new holders / PMS / international need full onboarding + KYC → product picker;
-    // a new product for an existing (self) holder reuses KYC, still routes through onboarding.
-    location.href='flameback-app-product.html';
+    // Each product has its OWN onboarding — RIA and PMS are not the same flow.
+    if(prod==='RIA'){ location.href='flameback-app-profile-intro.html'; }           // RIA advisory: risk profiling -> KYC
+    else if(prod==='PMS'){ location.href='flameback-app-comingsoon.html?p=PMS'; }    // PMS: separate discretionary onboarding
+    else { location.href='flameback-app-comingsoon.html?p=International%20Investing'; }
   };
 </script>
   <script src="site-footer.js"></script>
