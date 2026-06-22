@@ -270,7 +270,7 @@
 
           <div class="rebanner" id="reb">
             <div class="rt"><b>We've tuned your strategy.</b> Have a look, then apply when you're ready.</div>
-            <div class="ra"><a href="#" class="rebtn">Rebalance now</a><button class="snooze" id="snooze">Snooze 7 days</button></div>
+            <div class="ra"><a href="flameback-app-rebalance.html" class="rebtn">Rebalance now</a><button class="snooze" id="snooze">Snooze 7 days</button></div>
           </div>
 
           <a href="#" class="ipsrow">
@@ -316,7 +316,7 @@
         <div class="footcols">
           <div class="footcol"><h4>The firm</h4><a href="flameback-who-we-are.html">Who we are</a><a href="flameback-what-we-do.html">What we do</a><a href="flameback-our-work.html">Our work</a><a href="flameback-clients.html">Clients</a></div>
           <div class="footcol"><h4>Open</h4><a href="flameback-insights.html">Insights</a><a href="flameback-tools.html">Tools</a><a href="flameback-offbook.html">Off-book</a></div>
-          <div class="footcol"><h4>Contact</h4><a href="flameback-app-splash.html">Start your journey</a><a href="#">hello@flameback.in</a><a href="#">Bangalore, India</a></div>
+          <div class="footcol"><h4>Contact</h4><a href="flameback-app-splash.html">Schedule a conversation</a><a href="#">hello@flameback.in</a><a href="#">Bangalore, India</a></div>
         </div>
       </div>
       <div class="footdisc">
@@ -397,7 +397,10 @@
     function wireF(){
       var x=fSheet.querySelector('[data-x]'); if(x)x.onclick=closeF;
       fSheet.querySelectorAll('.fchip').forEach(function(ch){ch.onclick=function(){var a=document.getElementById('famt');if(a)a.value=Number(ch.dataset.v).toLocaleString('en-IN');};});
-      var c=fSheet.querySelector('.confirm'); if(c)c.onclick=function(){doneF(c.dataset.do);};
+      var c=fSheet.querySelector('.confirm'); if(c)c.onclick=function(){
+        if(c.dataset.do==='add'){var a=document.getElementById('famt');var n=a?parseInt((a.value||'').replace(/[^0-9]/g,''),10):0;location.href='flameback-app-rebalance.html?mode=deploy&amt='+(n||100000);return;}
+        doneF(c.dataset.do);
+      };
     }
     document.querySelectorAll('.fundbtn[data-act]').forEach(function(b){b.onclick=function(){openF(formF(b.dataset.act));};});
   })();

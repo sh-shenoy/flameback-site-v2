@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>flameback. — Review trades</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0B0C0E;--ink:#F5F2EA;--ink-soft:rgba(245,242,234,.66);--ink-mute:rgba(245,242,234,.44);--line:rgba(245,242,234,.16);--accent:#B59669;--btn-bg:#B59669;--btn-ink:#0B0C0E;--grain-blend:screen;--grain-op:.055;--card:rgba(245,242,234,.03);--sell:#B58450;--buy:#5B8C82}
+  :root.light{--bg:#F5F2EA;--ink:#0B0C0E;--ink-soft:rgba(11,12,14,.68);--ink-mute:rgba(11,12,14,.46);--line:rgba(11,12,14,.14);--accent:#8A6D43;--btn-bg:#0B0C0E;--btn-ink:#F5F2EA;--grain-blend:multiply;--grain-op:.035;--card:rgba(11,12,14,.025);--sell:#B58450;--buy:#5B8C82}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:"Geist",serif;transition:background .5s,color .5s;line-height:1.55;font-variant-numeric:tabular-nums;min-height:100vh;display:flex;flex-direction:column}
+  body::after{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;mix-blend-mode:var(--grain-blend);opacity:var(--grain-op);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  h1,h2,h3,h4{font-family:"Instrument Serif",serif;font-weight:500;letter-spacing:-.014em;line-height:1.04}
+  h1 em,h2 em,h3 em{color:var(--accent);font-style:italic;font-weight:500}
+  .mono{font-family:"Geist Mono",monospace;letter-spacing:.07em;text-transform:uppercase}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 clamp(22px,5vw,44px)}
+
+  nav{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 84%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid transparent;transition:border-color .4s}
+  nav.scrolled{border-color:var(--line)}
+  .navin{display:flex;align-items:center;justify-content:space-between;padding:14px 0;gap:24px}
+  .wm{font-family:"Geist",serif;font-weight:600;font-size:18px;color:var(--ink);text-decoration:none}
+  .navr{display:flex;align-items:center;gap:22px}
+  .navr a{color:var(--ink-soft);text-decoration:none;font-size:14px}
+  .navr a:hover{color:var(--ink)}
+  .toggle{background:none;border:1px solid var(--line);color:var(--ink-soft);cursor:pointer;font-family:"Geist",serif;font-size:12.5px;font-style:italic;padding:5px 13px;border-radius:999px}
+  .avatar{width:30px;height:30px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;font-family:"Instrument Serif",serif;font-style:italic;font-size:15px;color:var(--accent)}
+
+  main{position:relative;z-index:2;flex:1}
+  .screen{max-width:680px;margin:0 auto;padding:clamp(30px,4vh,48px) 0 160px}
+  .rb-top{display:flex;align-items:center;justify-content:space-between;font-family:"Geist Mono",monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-mute);padding-bottom:18px;border-bottom:1px solid var(--line);margin-bottom:26px}
+  .rb-top a{color:var(--ink-mute);text-decoration:none;border:1px solid var(--line);width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-size:14px}
+  .rb-top a:hover{color:var(--ink);border-color:var(--ink-mute)}
+  .s-eyebrow{font-family:"Geist Mono",monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+  .rb-h{font-size:clamp(34px,5vw,52px);line-height:1.02;margin-bottom:22px}
+
+  .why{border:1px solid var(--line);border-left:2px solid var(--accent);background:var(--card);padding:16px 18px;margin-bottom:24px}
+  .why .wl{font-family:"Geist Mono",monospace;font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-mute);margin-bottom:7px}
+  .why .wt{font-size:14px;font-style:italic;color:var(--ink-soft);line-height:1.55}
+
+  .sumrow{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-bottom:30px}
+  @media(max-width:520px){.sumrow{grid-template-columns:1fr}}
+  .sumc{background:var(--bg);padding:15px 16px}
+  .sumc .k{font-family:"Geist Mono",monospace;font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-mute);margin-bottom:7px}
+  .sumc .v{font-family:"Instrument Serif",serif;font-size:26px;line-height:1}
+  .sumc .s{font-size:11.5px;font-style:italic;color:var(--ink-mute);margin-top:4px}
+
+  .plab{display:flex;justify-content:space-between;align-items:baseline;font-family:"Geist Mono",monospace;font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-mute);margin-bottom:6px}
+  .trades{border:1px solid var(--line)}
+  .trade{display:grid;grid-template-columns:auto auto 1fr auto;gap:13px;align-items:center;padding:16px 18px;border-bottom:1px solid var(--line)}
+  .trade:last-child{border-bottom:none}
+  .ck{appearance:none;-webkit-appearance:none;width:19px;height:19px;border:1px solid var(--ink-mute);background:none;cursor:pointer;flex:none;position:relative;border-radius:3px}
+  .ck:checked{background:var(--accent);border-color:var(--accent)}
+  .ck:checked::after{content:"✓";position:absolute;inset:0;display:grid;place-items:center;color:var(--btn-ink);font-size:12px}
+  .chip{font-family:"Geist Mono",monospace;font-size:9.5px;letter-spacing:.05em;padding:4px 8px;border:1px solid;border-radius:3px;align-self:center}
+  .chip.sell{color:var(--sell);border-color:color-mix(in srgb,var(--sell) 50%,transparent)}
+  .chip.buy{color:var(--buy);border-color:color-mix(in srgb,var(--buy) 50%,transparent)}
+  .tinfo .ti1{font-size:15.5px;color:var(--ink)}
+  .tinfo .ti1 b{font-weight:500}
+  .tinfo .ti1 span{color:var(--ink-mute);font-size:13px}
+  .tinfo .ti2{font-size:11.5px;color:var(--ink-mute);font-style:italic;margin-top:2px}
+  .tright{text-align:right}
+  .tright .tv{font-family:"Instrument Serif",serif;font-size:18px}
+  .tright .twhy{font-family:"Geist Mono",monospace;font-size:9px;letter-spacing:.06em;color:var(--accent);background:none;border:none;cursor:pointer;margin-top:3px;text-transform:uppercase;border-bottom:1px solid color-mix(in srgb,var(--accent) 40%,transparent);padding:0 0 1px}
+  .twhy-row{grid-column:1/-1;font-size:12.5px;font-style:italic;color:var(--ink-soft);line-height:1.5;padding:2px 0 2px 32px;display:none}
+  .twhy-row.show{display:block}
+
+  .authbar{position:fixed;left:0;right:0;bottom:0;z-index:40;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:14px 0}
+  .authbar .wrap{max-width:680px}
+  .authbtn{width:100%;display:flex;align-items:center;justify-content:space-between;gap:14px;background:var(--btn-bg);color:var(--btn-ink);border:none;font-family:"Geist",serif;font-size:15.5px;font-weight:500;padding:16px 20px;cursor:pointer;transition:opacity .3s}
+  .authbtn:hover{opacity:.93}
+  .authbtn:disabled{opacity:.4;cursor:not-allowed}
+  .authbtn .av{font-family:"Instrument Serif",serif;font-size:20px}
+
+  /* confirm modal */
+  .scrim{position:fixed;inset:0;z-index:100;background:rgba(10,8,6,.6);backdrop-filter:blur(4px);display:none;align-items:flex-end;justify-content:center}
+  .scrim.open{display:flex}
+  .sheet{background:var(--bg);border:1px solid var(--line);border-bottom:none;width:100%;max-width:680px;padding:14px 28px 30px;animation:up .3s ease}
+  @keyframes up{from{transform:translateY(60px);opacity:.4}to{transform:translateY(0);opacity:1}}
+  .grab{width:42px;height:4px;border-radius:999px;background:var(--line);margin:0 auto 18px}
+  .sheet .cl{font-family:"Geist Mono",monospace;font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-mute);margin-bottom:8px}
+  .sheet h3{font-size:28px;margin-bottom:18px}
+  .sheet h3 em{color:var(--accent);font-style:italic}
+  .crow{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--line);font-size:14px}
+  .crow:first-of-type{border-top:1px solid var(--line)}
+  .crow .ck2{color:var(--ink-soft)}
+  .crow .cv{color:var(--ink)}
+  .confirm{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;background:var(--btn-bg);color:var(--btn-ink);border:none;font-family:"Geist",serif;font-size:15.5px;font-weight:500;padding:15px;cursor:pointer;margin:20px 0 8px}
+  .confirm:hover{opacity:.93}
+  .goback{width:100%;background:none;border:none;color:var(--ink-mute);font-family:"Geist",serif;font-style:italic;font-size:14px;cursor:pointer;padding:6px}
+  .goback:hover{color:var(--ink-soft)}
+
+  /* done view */
+  #doneView{display:none}
+  .tick{width:54px;height:54px;border:1px solid color-mix(in srgb,var(--buy) 60%,var(--line));display:grid;place-items:center;color:var(--buy);font-size:26px;margin-bottom:22px}
+  .done-lab{font-family:"Geist Mono",monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-mute);margin-bottom:10px}
+  .done-h{font-size:clamp(32px,5vw,48px);line-height:1.04;margin-bottom:12px}
+  .done-sub{font-size:14.5px;color:var(--ink-soft);line-height:1.6;margin-bottom:30px;max-width:46ch}
+  .ledger{border:1px solid var(--line);margin-bottom:24px}
+  .lrow{display:grid;grid-template-columns:auto 1fr auto;gap:13px;align-items:center;padding:14px 18px;border-bottom:1px solid var(--line)}
+  .lrow:last-child{border-bottom:none}
+  .lrow .li1{font-size:15px;color:var(--ink)}
+  .lrow .li2{font-family:"Geist Mono",monospace;font-size:9.5px;letter-spacing:.04em;color:var(--ink-mute);margin-top:3px}
+  .lrow .lv{font-family:"Instrument Serif",serif;font-size:17px;text-align:right}
+  .doneacts{display:grid;grid-template-columns:auto 1fr;gap:12px}
+  .da-out,.da-fill{font-family:"Geist",serif;font-size:15px;font-weight:500;padding:15px 24px;cursor:pointer;text-align:center;text-decoration:none;border:1px solid var(--line)}
+  .da-out{background:none;color:var(--ink)}
+  .da-out:hover{border-color:var(--ink-soft)}
+  .da-fill{background:var(--btn-bg);color:var(--btn-ink);border-color:var(--btn-bg);display:flex;align-items:center;justify-content:center;gap:10px}
+  .da-fill:hover{opacity:.93}
+</style>
+  <link rel="stylesheet" href="v2.css">
+</head>
+<body>
+
+  <nav id="nav">
+    <div class="wrap navin">
+      <a class="wm" href="index.html"><svg class="wm-ic" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="121.5 244.6 110.0 167.2" fill="none" style="height:1.05em;width:auto;vertical-align:-.16em;margin-right:7px"><path transform="matrix(.33995817,0,0,.33995817,76.5,225.75)" d="M220.2 523.6C220.2 425.09999 220.2 329.59999 220.2 233.99997 233 234.79998 234.4 236.29998 234.4 248.19997 234.4 324.19996 234.4 400.09999 234.29999 476.09999 234.29999 481.99998 233.99999 487.89997 233.79999 493.8 233.4 505.9 234.29999 507 245.9 505.19999 298 496.8 335.4 468.8 355.5 419.89997 379.9 360.39997 358.1 293.09999 304.3 257.49998 283.4 243.69997 261.5 231.39997 241.59999 216.39997 212.09999 194.09996 196.29999 163.09996 190.59999 126.59996 189.99999 122.59996 187.79999 119.09996 184.7 116.59996 172.4 107.09996 163 95.59996 155.8 80.29996 159.5 80.09996 224 78.999958 253.4 79.899959 286.3 80.79996 312.8 94.499958 332 121.899959 334.7 125.79996 339.6 129.09996 344.1 130.69995 361.30003 136.79996 378.80003 141.89995 396 147.89995 411.5 153.29994 423.4 163.29994 432.5 179.09995 423.2 176.29994 415.5 173.29994 407.5 171.59995 383.8 166.39995 360 167.09995 336.6 172.89995 321.1 176.79994 310.80003 187.69995 305.9 203.19995 304.9 206.19995 304.19999 209.29996 303.4 212.39995 289.5 207.39995 288.4 205.59995 293.9 192.89995 304.3 168.59995 324.1 157.89995 349.4 155.69995 352.69999 155.39995 358.9 154.69995 366 154.19995 341.9 144.49996 310.1 137.59995 284.6 135.29996 259.2 132.99996 233.70001 131.49996 207 129.49996 207.4 132.49996 207.4 135.59996 208.1 138.39995 217.1 172.49994 237.3 198.19995 267.2 216.59995 283 226.29994 299.1 235.59995 314.2 246.39995 367.2 284.49995 389.2 336.69996 376.5 400.49995 364.4 461.29994 325.7 499.99995 265.7 516.19998 251.4 519.8 236.4 520.9 220.2 523.6Z" fill="currentColor"/><path transform="matrix(.33995817,0,0,.33995817,76.5,225.75)" d="M183.4 93.4C183 94.200008 200.7 110.5 205.79999 111.8 216.79999 114.600009 305 122.600009 311.09999 123.4 310.89997 121.3 291.3 96.9 251.89998 95.3 231.2 94.8 195.8 93.4 183.4 93.4Z" fill="#FF6D0A"/></svg>flameback</a>
+      <div class="navr">
+        <a href="flameback-lobby.html?funded=1">Dashboard</a>
+        <button class="toggle" id="toggle">Light</button>
+        <div class="avatar">A</div>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <div class="wrap">
+      <div class="screen">
+
+        <div id="reviewView">
+          <div class="rb-top">
+            <a href="flameback-lobby.html?funded=1" title="Close">&times;</a>
+            <span id="rbCtx">Rebalance &middot; 14 Nov</span>
+            <a href="flameback-lobby.html?funded=1" title="History" style="font-style:italic">i</a>
+          </div>
+
+          <div class="s-eyebrow" id="rbStrat">All-Weather strategy</div>
+          <h1 class="rb-h" id="rbHead">Six trades for your <em>review.</em></h1>
+
+          <div class="why">
+            <div class="wl" id="rbWhyLab">Why this rebalance</div>
+            <div class="wt" id="rbWhy">Monthly momentum refresh. IT sector rotating out, private banks and discretionary rotating in.</div>
+          </div>
+
+          <div class="sumrow">
+            <div class="sumc"><div class="k">Trades</div><div class="v" id="smN">6</div><div class="s" id="smMix">4 buy · 2 sell</div></div>
+            <div class="sumc"><div class="k">Net cash</div><div class="v" id="smCash">−₹1.2L</div><div class="s" id="smCashS">Out of cash sleeve</div></div>
+            <div class="sumc"><div class="k">Drift if skipped</div><div class="v" id="smDrift">−1.4%</div><div class="s">From target</div></div>
+          </div>
+
+          <div class="plab"><span>Proposed trades</span><span>By value ↓</span></div>
+          <div class="trades" id="trades"></div>
+        </div>
+
+        <div id="doneView">
+          <div class="tick">✓</div>
+          <div class="done-lab">Trades placed</div>
+          <h1 class="done-h" id="doneHead">Done. Six orders <em>at the desk.</em></h1>
+          <p class="done-sub" id="doneSub">Settlement expected by 16 Nov (T+2). We'll notify you as each fills.</p>
+          <div class="done-lab">Order ledger</div>
+          <div class="ledger" id="ledger"></div>
+          <div class="doneacts">
+            <a class="da-out" href="flameback-lobby.html?funded=1">Done</a>
+            <a class="da-fill" href="flameback-lobby.html?funded=1">View portfolio <span>&rarr;</span></a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <div class="authbar" id="authbar">
+    <div class="wrap">
+      <button class="authbtn" id="authbtn">
+        <span id="authlabel">Authorize all 6 trades</span>
+        <span class="av" id="authval">₹4,04,200</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="scrim" id="scrim">
+    <div class="sheet">
+      <div class="grab"></div>
+      <div class="cl">Confirm authorization</div>
+      <h3 id="cfHead">Place these <em>6 trades</em> now?</h3>
+      <div class="crow"><span class="ck2">Trades</span><span class="cv" id="cfN">4 buy · 2 sell</span></div>
+      <div class="crow"><span class="ck2">Total value</span><span class="cv" id="cfVal">₹4,04,200</span></div>
+      <div class="crow"><span class="ck2">Net cash</span><span class="cv" id="cfCash">−₹1,20,000 (out)</span></div>
+      <div class="crow"><span class="ck2">Strategy</span><span class="cv" id="cfStrat">All-Weather</span></div>
+      <div class="crow"><span class="ck2">Will execute</span><span class="cv">Today, 09:25 IST</span></div>
+      <button class="confirm" id="confirmBtn"><span>✓</span> Confirm and place trades</button>
+      <button class="goback" id="goback">Go back</button>
+    </div>
+  </div>
+
+  <footer style="position:relative;z-index:2;border-top:1px solid var(--line);padding:26px 0;margin-top:auto">
+    <div class="wrap"><span style="font-size:11px;color:var(--ink-mute);font-style:italic">Demo flow · no real orders are placed. SEBI registered. Investments are subject to market risk.</span></div>
+  </footer>
+
+<script>
+  var t=document.getElementById('toggle');
+  t.onclick=function(){var l=document.documentElement.classList.toggle('light');t.textContent=l?'Dark':'Light';};
+  var nv=document.getElementById('nav');
+  window.addEventListener('scroll',function(){nv.classList.toggle('scrolled',window.scrollY>8);});
+
+  function inr(n){return '₹'+Number(n).toLocaleString('en-IN');}
+  var p=new URLSearchParams(location.search);
+  var mode=p.get('mode')||'rebalance';
+  var amt=parseInt((p.get('amt')||'').replace(/[^0-9]/g,''),10);
+
+  var REBAL=[
+    {act:'SELL',tk:'TCS',nm:'Tata Consultancy Services',sh:24,pct:'1.8%',val:92400,why:'IT momentum has rolled over — trimming the overweight built up last quarter.'},
+    {act:'SELL',tk:'INFY',nm:'Infosys',sh:36,pct:'1.2%',val:58700,why:'Reducing IT services exposure as the sector trend weakens.'},
+    {act:'BUY',tk:'HDFCBANK',nm:'HDFC Bank',sh:48,pct:'1.6%',val:81200,why:'Private banks turning up on the momentum screen — adding to the leaders.'},
+    {act:'BUY',tk:'KOTAKBANK',nm:'Kotak Mahindra Bank',sh:22,pct:'0.8%',val:39600,why:'Topping up financials on relative strength.'},
+    {act:'BUY',tk:'BAJAJ-AUTO',nm:'Bajaj Auto',sh:8,pct:'1.3%',val:67800,why:'Discretionary rotating in; autos lead the move.'},
+    {act:'BUY',tk:'TITAN',nm:'Titan',sh:18,pct:'1.1%',val:64500,why:'Consumer discretionary momentum, quality balance sheet.'}
+  ];
+
+  function deployTrades(total){
+    var w=[['HDFCBANK','HDFC Bank',.30],['RELIANCE','Reliance Industries',.24],['INFY','Infosys',.16],['ICICIBANK','ICICI Bank',.16],['GOLDBEES','Nippon Gold ETF',.14]];
+    var rows=[],acc=0;
+    w.forEach(function(x,i){var v=(i===w.length-1)?(total-acc):Math.round(total*x[2]/100)*100;acc+=v;rows.push({act:'BUY',tk:x[0],nm:x[1],sh:'—',pct:Math.round(x[2]*100)+'% of add',val:v,why:'Deploying new funds toward your target allocation.'});});
+    return rows;
+  }
+
+  var TRADES, ctx, strat='All-Weather', head, why, mix, cash, cashS, drift;
+  if(mode==='deploy'){
+    if(!amt||amt<1000)amt=100000;
+    TRADES=deployTrades(amt);
+    ctx='Deploy funds · today';
+    head='Putting <em>'+inr(amt)+'</em> to work.';
+    why='New funds added. Deploying across your target allocation on today’s desk — nothing sits idle.';
+    mix=TRADES.length+' buy · 0 sell'; cash='−'+inr(amt); cashS='Fully deployed'; drift='0.0%';
+  } else {
+    TRADES=REBAL;
+    ctx='Rebalance · 14 Nov';
+    head='Six trades for your <em>review.</em>';
+    why='Monthly momentum refresh. IT sector rotating out, private banks and discretionary rotating in.';
+    mix='4 buy · 2 sell'; cash='−₹1.2L'; cashS='Out of cash sleeve'; drift='−1.4%';
+  }
+
+  document.getElementById('rbCtx').textContent=ctx.replace(/<[^>]+>/g,'');
+  document.getElementById('rbStrat').textContent=strat+' strategy';
+  document.getElementById('rbHead').innerHTML=head;
+  document.getElementById('rbWhyLab').textContent=(mode==='deploy'?'Where this goes':'Why this rebalance');
+  document.getElementById('rbWhy').textContent=why;
+  document.getElementById('smN').textContent=TRADES.length;
+  document.getElementById('smMix').textContent=mix;
+  document.getElementById('smCash').textContent=cash;
+  document.getElementById('smCashS').textContent=cashS;
+  document.getElementById('smDrift').textContent=drift;
+  document.getElementById('cfStrat').textContent=strat;
+
+  var box=document.getElementById('trades');
+  TRADES.forEach(function(tr,i){
+    var row=document.createElement('div');row.className='trade';
+    row.innerHTML='<input type="checkbox" class="ck" checked data-i="'+i+'">'+
+      '<span class="chip '+(tr.act==='SELL'?'sell':'buy')+'">'+tr.act+'</span>'+
+      '<div class="tinfo"><div class="ti1"><b>'+tr.tk+'</b> <span>'+tr.nm+'</span></div><div class="ti2">'+tr.sh+(tr.sh!=='—'?' shares':'')+' · '+tr.pct+'</div></div>'+
+      '<div class="tright"><div class="tv">'+inr(tr.val)+'</div><button class="twhy" data-i="'+i+'">Why</button></div>'+
+      '<div class="twhy-row" id="why'+i+'">'+tr.why+'</div>';
+    box.appendChild(row);
+  });
+
+  function recompute(){
+    var n=0,total=0;
+    box.querySelectorAll('.ck').forEach(function(c){if(c.checked){n++;total+=TRADES[+c.dataset.i].val;}});
+    document.getElementById('authlabel').textContent=n?('Authorize '+(n===TRADES.length?'all ':'')+n+' trade'+(n>1?'s':'')):'Select trades to authorize';
+    document.getElementById('authval').textContent=inr(total);
+    document.getElementById('authbtn').disabled=!n;
+    document.getElementById('cfHead').innerHTML='Place these <em>'+n+' trade'+(n>1?'s':'')+'</em> now?';
+    var buys=0,sells=0;box.querySelectorAll('.ck').forEach(function(c){if(c.checked){TRADES[+c.dataset.i].act==='SELL'?sells++:buys++;}});
+    document.getElementById('cfN').textContent=buys+' buy · '+sells+' sell';
+    document.getElementById('cfVal').textContent=inr(total);
+    return {n:n,total:total};
+  }
+  box.addEventListener('change',function(e){if(e.target.classList.contains('ck'))recompute();});
+  box.addEventListener('click',function(e){if(e.target.classList.contains('twhy')){var r=document.getElementById('why'+e.target.dataset.i);if(r)r.classList.toggle('show');}});
+  recompute();
+
+  // confirm modal
+  var scrim=document.getElementById('scrim');
+  document.getElementById('authbtn').onclick=function(){if(!this.disabled){recompute();scrim.classList.add('open');}};
+  document.getElementById('goback').onclick=function(){scrim.classList.remove('open');};
+  scrim.onclick=function(e){if(e.target===scrim)scrim.classList.remove('open');};
+
+  document.getElementById('confirmBtn').onclick=function(){
+    scrim.classList.remove('open');
+    // build done ledger from selected
+    var placed=[];box.querySelectorAll('.ck').forEach(function(c){if(c.checked)placed.push(TRADES[+c.dataset.i]);});
+    var led=document.getElementById('ledger');led.innerHTML='';
+    placed.forEach(function(tr,i){
+      var oid='FB200340'+('0'+(i)).slice(-2);
+      var row=document.createElement('div');row.className='lrow';
+      row.innerHTML='<span class="chip '+(tr.act==='SELL'?'sell':'buy')+'">'+tr.act+'</span>'+
+        '<div><div class="li1">'+tr.tk+'</div><div class="li2">ORDER #'+oid+' · QUEUED</div></div>'+
+        '<div class="lv">'+inr(tr.val)+'</div>';
+      led.appendChild(row);
+    });
+    var n=placed.length;
+    var words=['Zero','One','Two','Three','Four','Five','Six','Seven','Eight','Nine'];
+    document.getElementById('doneHead').innerHTML=(words[n]||n)+' order'+(n>1?'s':'')+' <em>at the desk.</em>';
+    document.getElementById('doneSub').textContent=(mode==='deploy'?'Your funds are being deployed. ':'')+'Settlement expected by 16 Nov (T+2). We\'ll notify you as each fills.';
+    document.getElementById('reviewView').style.display='none';
+    document.getElementById('authbar').style.display='none';
+    document.getElementById('doneView').style.display='block';
+    window.scrollTo(0,0);
+  };
+</script>
+  <script src="site-footer.js"></script>
+  <script src="reload.js"></script>
+</body>
+</html>

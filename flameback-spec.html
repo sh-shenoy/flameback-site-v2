@@ -177,8 +177,7 @@
         <a class="navlink" href="flameback-offbook.html">Off-book</a>
         <a class="navlink" href="flameback-investor-relations.html">Investor Relations</a>
         <a class="navlink lite" href="flameback-app-accounts.html">Login</a>
-        <a class="navlink lite" href="flameback-app-schedule-call.html">Schedule</a>
-        <a class="cta" href="flameback-app-splash.html">Start your journey</a>
+        <a class="cta" href="flameback-app-splash.html">Schedule a conversation</a>
         <button class="toggle" id="toggle">Light</button>
       </div>
     </div>
@@ -384,7 +383,7 @@
           <thead><tr><th style="width:20%">Field / Input</th><th style="width:13%">Type</th><th style="width:28%">Options / Format</th><th>Validation &amp; Logic</th></tr></thead>
           <tbody>
             <tr><td class="f" data-l="Field">Headline</td><td class="t" data-l="Type">Display</td><td class="opt" data-l="Format">Headline: &ldquo;Where to next?&rdquo; Sub: &ldquo;Pick the route that fits &mdash; you can always come back and try another.&rdquo;</td><td data-l="Logic">Static. Centred above the cards.</td></tr>
-            <tr><td class="f" data-l="Field">Path A &mdash; Start your journey</td><td class="t" data-l="Type">Button (secondary, plain)</td><td class="opt" data-l="Format">Label: &ldquo;Start your journey&rdquo;. Sub-line: &ldquo;We&rsquo;ll ask a few questions, then match you to a strategy.&rdquo; No card frame, no sub-cards, no Know more dropdown.</td><td data-l="Logic">Routes to <b>S-A05</b> Product Picker. The umbrella for all investing products; the product picker disambiguates which onboarding flow to run.</td></tr>
+            <tr><td class="f" data-l="Field">Path A &mdash; Schedule a conversation</td><td class="t" data-l="Type">Button (secondary, plain)</td><td class="opt" data-l="Format">Label: &ldquo;Schedule a conversation&rdquo;. Sub-line: &ldquo;We&rsquo;ll ask a few questions, then match you to a strategy.&rdquo; No card frame, no sub-cards, no Know more dropdown.</td><td data-l="Logic">Routes to <b>S-A05</b> Product Picker. The umbrella for all investing products; the product picker disambiguates which onboarding flow to run.</td></tr>
             <tr><td class="f" data-l="Field">Path B &mdash; Schedule a Call</td><td class="t" data-l="Type">Button (primary, filled)</td><td class="opt" data-l="Format">Label: &ldquo;Schedule a call&rdquo;. Sub-line: &ldquo;Talk to an advisor &mdash; they&rsquo;ll walk you through the right fit.&rdquo;</td><td data-l="Logic">Routes to Section K &mdash; Schedule a Call (in-app calendar picker).</td></tr>
             <tr><td class="f" data-l="Field">Path C &mdash; Explore Strategies</td><td class="t" data-l="Type">Button (secondary, plain)</td><td class="opt" data-l="Format">Label: &ldquo;Explore strategies&rdquo;. Sub-line: &ldquo;Browse our catalogue first &mdash; invest in any strategy once you&rsquo;ve looked.&rdquo;</td><td data-l="Logic">Routes directly to <b>S-J02</b> Strategy Catalogue (browse mode). No questionnaire on the way in.</td></tr>
             <tr><td class="f" data-l="Field">Logout / Switch account</td><td class="t" data-l="Type">Tertiary link</td><td class="opt" data-l="Format">Below the three paths. Label: &ldquo;Sign out&rdquo;.</td><td data-l="Logic">Standard sign-out. Ends the session and returns user to <b>S-A02</b>.</td></tr>
@@ -402,8 +401,8 @@
       <!-- S-A05 -->
       <article class="screen" id="s-a05">
         <div class="scr-head"><span class="chip">S-A05</span><h3>Product Picker</h3></div>
-        <div class="scr-meta"><span class="timing">~30 seconds</span><span class="path-tag">Path A &mdash; Start your journey</span><a class="view-link" href="flameback-app-product.html">View screen &rarr;</a></div>
-        <p class="purpose"><b>Purpose.</b> Reached when the user taps &ldquo;Start your journey&rdquo; on <b>S-A04</b>. Three stacked plain buttons (no card chrome) &mdash; one per product. The button itself is the tap target. Each carries a &ldquo;Know more&rdquo; arrow that toggles an inline explainer. v1.0 ships PMS Lite live (routes to <b>S-B00</b>); PMS and International tap-through to the <b>S-A05a</b> Coming Soon interstitial.</p>
+        <div class="scr-meta"><span class="timing">~30 seconds</span><span class="path-tag">Path A &mdash; Schedule a conversation</span><a class="view-link" href="flameback-app-product.html">View screen &rarr;</a></div>
+        <p class="purpose"><b>Purpose.</b> Reached when the user taps &ldquo;Schedule a conversation&rdquo; on <b>S-A04</b>. Three stacked plain buttons (no card chrome) &mdash; one per product. The button itself is the tap target. Each carries a &ldquo;Know more&rdquo; arrow that toggles an inline explainer. v1.0 ships PMS Lite live (routes to <b>S-B00</b>); PMS and International tap-through to the <b>S-A05a</b> Coming Soon interstitial.</p>
         <div class="block-lab">Fields &amp; inputs</div>
         <table class="tbl">
           <thead><tr><th style="width:20%">Field / Input</th><th style="width:13%">Type</th><th style="width:28%">Options / Format</th><th>Validation &amp; Logic</th></tr></thead>
@@ -1005,7 +1004,7 @@
       <div class="sec-divider">
         <span class="lab"><span class="l"></span><span class="n">J</span>Path C: Explore strategies</span>
         <h2>Section J &mdash; <em>Explore</em></h2>
-        <p class="intro">Reached when the user taps &ldquo;Open catalogue&rdquo; on <b>S-A04</b> Path Picker. A short 5-question profiler (S-J01) defaults the catalogue&rsquo;s spectrum slider, followed by the catalogue itself (S-J02). Each strategy card replaces [Select] with [Start your journey]; tapping it drops the user into <b>S-B00</b> &mdash; the formal Section B profile is still run, no bypass.</p>
+        <p class="intro">Reached when the user taps &ldquo;Open catalogue&rdquo; on <b>S-A04</b> Path Picker. A short 5-question profiler (S-J01) defaults the catalogue&rsquo;s spectrum slider, followed by the catalogue itself (S-J02). Each strategy card replaces [Select] with [Schedule a conversation]; tapping it drops the user into <b>S-B00</b> &mdash; the formal Section B profile is still run, no bypass.</p>
       </div>
 
       <!-- S-J01 -->
@@ -1038,7 +1037,7 @@
           <thead><tr><th style="width:18%">Field / Input</th><th style="width:15%">Type</th><th style="width:32%">Options / Format</th><th>Validation &amp; Logic</th></tr></thead>
           <tbody>
             <tr><td class="f" data-l="Field">Risk spectrum slider</td><td class="t" data-l="Type">Horizontal slider (4 stops)</td><td class="opt" data-l="Format">Coloured gradient bar. Stops: Conservative &middot; Moderate &middot; Aggressive &middot; Very Aggressive. Default landing band computed from S-J01 answers. No &ldquo;Recommended&rdquo; badge in this mode &mdash; user is exploring, not being matched.</td><td data-l="Logic">Slider movement updates the two cards below. No warnings on band changes &mdash; pure browsing.</td></tr>
-            <tr><td class="f" data-l="Field">Strategy cards (Static + Dynamic)</td><td class="t" data-l="Type">Card pair (side by side)</td><td class="opt" data-l="Format">Same content as <b>S-D03</b> cards: strategy name &middot; Type tag &middot; Historic CAGR &middot; Max Drawdown &middot; Since-Inception Return &middot; Investment Philosophy &middot; performance graph dropdown. Replace the [Select] CTA with [Start your journey &rarr;].</td><td data-l="Logic">Tapping [Start your journey]: if the user has no Section B profile yet &rarr; <b>S-B00</b> (full PMS Lite onboarding). If the user already has a completed profile from a prior session &rarr; <b>S-D01</b> (Amount Entry) with the clicked strategy session-stored so it&rsquo;s pre-highlighted on <b>S-D03</b>. Either path, the chosen strategy is a hint, not a commitment.</td></tr>
+            <tr><td class="f" data-l="Field">Strategy cards (Static + Dynamic)</td><td class="t" data-l="Type">Card pair (side by side)</td><td class="opt" data-l="Format">Same content as <b>S-D03</b> cards: strategy name &middot; Type tag &middot; Historic CAGR &middot; Max Drawdown &middot; Since-Inception Return &middot; Investment Philosophy &middot; performance graph dropdown. Replace the [Select] CTA with [Schedule a conversation &rarr;].</td><td data-l="Logic">Tapping [Schedule a conversation]: if the user has no Section B profile yet &rarr; <b>S-B00</b> (full PMS Lite onboarding). If the user already has a completed profile from a prior session &rarr; <b>S-D01</b> (Amount Entry) with the clicked strategy session-stored so it&rsquo;s pre-highlighted on <b>S-D03</b>. Either path, the chosen strategy is a hint, not a commitment.</td></tr>
             <tr><td class="f" data-l="Field">Back to Path Picker</td><td class="t" data-l="Type">Secondary link</td><td class="opt" data-l="Format">Always visible at the bottom. Label: &ldquo;Back to start&rdquo;.</td><td data-l="Logic">Routes to <b>S-A04</b> without state loss.</td></tr>
           </tbody>
         </table>

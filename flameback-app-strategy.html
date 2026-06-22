@@ -272,7 +272,10 @@
   function wire(){
     var cl=sheet.querySelector('.close'); if(cl)cl.onclick=closeSheet;
     sheet.querySelectorAll('.fchip').forEach(function(ch){ch.onclick=function(){var a=document.getElementById('amt');if(a)a.value=Number(ch.dataset.v).toLocaleString('en-IN');};});
-    var c=sheet.querySelector('.confirm'); if(c)c.onclick=function(){done(c.dataset.do);};
+    var c=sheet.querySelector('.confirm'); if(c)c.onclick=function(){
+      if(c.dataset.do==='add'){var a=document.getElementById('amt');var n=a?parseInt((a.value||'').replace(/[^0-9]/g,''),10):0;location.href='flameback-app-rebalance.html?mode=deploy&amt='+(n||100000);return;}
+      done(c.dataset.do);
+    };
   }
   document.querySelectorAll('[data-act]').forEach(function(b){b.onclick=function(){openSheet(form(b.dataset.act));};});
 </script>
