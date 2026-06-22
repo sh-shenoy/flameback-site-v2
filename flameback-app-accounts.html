@@ -135,7 +135,7 @@
         <div class="hub-h">
           <span class="eyebrow"><span class="l"></span>Your household</span>
           <h1>Welcome in, <em>Rajesh.</em></h1>
-          <p>Pick an account to manage — or add a new one. They all sit under your one login.</p>
+          <p>Every account below is linked to your number — <b style="color:var(--ink);font-weight:500">+91 98765 43210</b>. Your own PMS, RIA and International accounts, plus family you manage. Pick one, or add another.</p>
         </div>
         <div class="acct-grid" id="acctGrid"></div>
       </section>
@@ -207,9 +207,10 @@
 
   /* accounts */
   var ACCOUNTS=[
-    {nm:'Rajesh Sharma',rel:'You',type:'Individual',prod:'RIA · Advisory',val:'₹11,84,000',st:'Invested',funded:true},
-    {nm:'Rajesh Sharma',rel:'You',type:'Individual',prod:'PMS',val:'₹52,00,000',st:'Invested',funded:true},
-    {nm:'Sunita Sharma',rel:'Spouse',type:'Individual',prod:'RIA · Advisory',val:'Not funded',st:'Profile complete',funded:false}
+    {nm:'Rajesh Sharma',rel:'You · Primary',type:'Individual',prod:'RIA · Advisory',val:'₹11,84,000',st:'Invested',funded:true},
+    {nm:'Rajesh Sharma',rel:'You · Primary',type:'Individual',prod:'PMS',val:'₹52,00,000',st:'Invested',funded:true},
+    {nm:'Rajesh Sharma',rel:'You · Primary',type:'Individual',prod:'International',val:'$48,000',st:'Invested',funded:true},
+    {nm:'Sunita Sharma',rel:'Spouse · linked to you',type:'Individual',prod:'RIA · Advisory',val:'Not funded',st:'Profile complete',funded:false}
   ];
   function renderAccts(){
     var g=document.getElementById('acctGrid');
