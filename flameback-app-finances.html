@@ -248,7 +248,7 @@
     var ok = age>=18 && val('f2')>0 && val('f3')>0 && f4.value!=='' && val('f5')>0 && document.getElementById('f6').value!=='' && dep!==null && home;
     cta.disabled=!ok;
   }
-  cta.onclick=function(){ if(!cta.disabled) location.href='flameback-app-income-streams.html'; };
+  cta.onclick=function(){ if(!cta.disabled){ try{var _d=document.getElementById('f1');if(_d)sessionStorage.setItem('fb_dob',_d.value);}catch(e){} location.href='flameback-app-income-streams.html'; } };
 </script>
   <script src="site-footer.js"></script>
   <script src="reload.js"></script>

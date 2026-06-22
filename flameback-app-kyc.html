@@ -149,6 +149,7 @@
         <div class="fld">
           <label>Date of birth (as per PAN)</label>
           <input class="kinp" id="kdob" type="date" max="2007-12-31">
+          <div class="panhint" id="dobHint"></div>
         </div>
         <div class="fld">
           <label>Address</label>
@@ -255,6 +256,8 @@
   var pan=document.getElementById('pan');
   var kname=document.getElementById('kname'), kdob=document.getElementById('kdob'), kaddr=document.getElementById('kaddr');
   var panHint=document.getElementById('panHint'), beginBtn=document.getElementById('beginBtn');
+  // pre-fill DOB from the profile step; editable if it differs on PAN
+  try{var savedDob=sessionStorage.getItem('fb_dob');if(savedDob){kdob.value=savedDob;var dh=document.getElementById('dobHint');if(dh)dh.textContent='Pre-filled from your profile — change it if your PAN shows a different date.';}}catch(e){}
   var marital=null;
   var PANRE=/^[A-Z]{5}[0-9]{4}[A-Z]$/;
   pan.addEventListener('input',function(){
