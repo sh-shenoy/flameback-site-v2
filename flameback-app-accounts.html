@@ -92,6 +92,35 @@
   .sheet-foot{display:flex;gap:10px;margin-top:24px}
   .sheet-foot .ghost{flex:none;background:none;border:1px solid var(--line);color:var(--ink-soft);font-family:"Geist",serif;font-style:italic;font-size:14px;padding:13px 18px;cursor:pointer}
   .sheet-foot .gbtn{margin:0}
+
+  /* multi-account: own + shared (view-only) */
+  .grp-lab{font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-mute);margin:28px 0 14px;font-style:italic}
+  .reqs{display:flex;flex-direction:column;gap:12px;margin-bottom:6px}
+  .req{border:1px solid color-mix(in srgb,var(--accent) 45%,var(--line));background:color-mix(in srgb,var(--accent) 7%,transparent);border-radius:12px;padding:15px 18px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+  .req .rq-t{font-size:13.5px;color:var(--ink-soft);line-height:1.5;flex:1;min-width:240px}
+  .req .rq-t b{color:var(--ink);font-weight:500}
+  .req .rq-a{display:flex;gap:10px;flex:none}
+  .req button{font-family:inherit;font-size:13px;padding:8px 16px;border-radius:8px;cursor:pointer}
+  .req .acc{background:var(--btn-bg);color:var(--btn-ink);border:none;font-weight:500}
+  .req .dec{background:none;border:1px solid var(--line);color:var(--ink-soft)}
+  .acct.shared{position:relative}
+  .acct .vo{position:absolute;top:13px;right:14px;font-size:8px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);border:1px solid color-mix(in srgb,var(--accent) 45%,var(--line));border-radius:999px;padding:3px 8px}
+  .acct .shareby{font-size:11.5px;font-style:italic;color:var(--ink-mute);margin-top:3px}
+  .acct .removelink{display:inline-block;margin-top:10px;font-size:11px;font-style:italic;color:var(--ink-mute);background:none;border:none;cursor:pointer;text-decoration:underline;text-underline-offset:2px;padding:0}
+  .acct .removelink:hover{color:var(--accent)}
+  .hub-foot{display:flex;gap:20px;align-items:center;flex-wrap:wrap;margin-top:24px}
+  .linkbtn{background:none;border:1px dashed color-mix(in srgb,var(--accent) 55%,var(--line));color:var(--ink);border-radius:12px;padding:13px 20px;font-family:inherit;font-size:14.5px;cursor:pointer;display:inline-flex;align-items:center;gap:10px;transition:border-color .2s,background .2s}
+  .linkbtn:hover{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 6%,transparent)}
+  .linkbtn .pl{font-style:italic;font-size:20px;color:var(--accent);line-height:1}
+  .mgsmall{background:none;border:none;color:var(--ink-mute);font-family:inherit;font-style:italic;font-size:13.5px;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+  .mgsmall:hover{color:var(--ink-soft)}
+  .sheet .close{width:100%;background:none;border:1px solid var(--line);color:var(--ink);font-family:inherit;font-style:italic;font-size:14px;padding:12px;cursor:pointer;border-radius:8px;margin-top:6px}
+  .sheet .ok-ic{font-style:italic;font-size:42px;color:var(--accent);line-height:1;text-align:center}
+  .mglist{display:flex;flex-direction:column;gap:10px;margin:4px 0 16px}
+  .mgrow{display:flex;justify-content:space-between;align-items:center;border:1px solid var(--line);border-radius:10px;padding:12px 14px;gap:12px}
+  .mgrow .mg-t{font-size:14px;color:var(--ink)}
+  .mgrow .mg-s{font-size:11.5px;color:var(--ink-mute);font-style:italic;margin-top:2px}
+  .mgrow .revoke{background:none;border:1px solid color-mix(in srgb,var(--accent) 45%,var(--line));color:var(--accent);font-family:inherit;font-size:12px;padding:7px 13px;border-radius:8px;cursor:pointer;flex:none}
 </style>
   <link rel="stylesheet" href="v2.css">
 </head>
@@ -133,9 +162,21 @@
       <section class="hub" id="hub">
         <div class="hub-h">
           <h1>Welcome in, <em>Rajesh.</em></h1>
-          <p>Every account below is linked to your number — <b style="color:var(--ink);font-weight:500">+91 98765 43210</b>. Your own PMS, RIA and International accounts, plus family you manage. Pick one, or add another.</p>
+          <p>The accounts here are linked to your number &mdash; <b style="color:var(--ink);font-weight:500">+91 98765 43210</b>. Your own RIA, PMS and International accounts sit below, along with any account a family member has shared with you. A shared account is <b style="color:var(--ink);font-weight:500">view-only</b> &mdash; you can see it, never act on it &mdash; and the owner can revoke it any time.</p>
         </div>
+
+        <div class="reqs" id="reqs"></div>
+
+        <div class="grp-lab">Your accounts</div>
         <div class="acct-grid" id="acctGrid"></div>
+
+        <div class="grp-lab" id="sharedLab">Shared with you &middot; view only</div>
+        <div class="acct-grid" id="sharedGrid"></div>
+
+        <div class="hub-foot">
+          <button class="linkbtn" id="shareBtn"><span class="pl">&#8599;</span> Share an account with family</button>
+          <button class="mgsmall" id="manageBtn">Manage shared access &rarr;</button>
+        </div>
       </section>
 
     </div>
@@ -144,23 +185,15 @@
   <!-- add-account modal -->
   <div class="scrim" id="scrim">
     <div class="sheet">
-      <h3>Add an <em>account.</em></h3>
-      <p class="ws">A new investment account under your login.</p>
+      <h3>Add an account <em>in your name.</em></h3>
+      <p class="ws">Open another product for yourself. To add a family member, they open their own account and share it with you &mdash; you can&rsquo;t open one in someone else&rsquo;s name.</p>
 
       <div class="qlab">Who is this account for?</div>
       <div class="opts" id="whoOpts">
         <button class="opt" data-who="self"><span>Myself <span class="sub">Rajesh Sharma — another product in your name</span></span></button>
-        <button class="opt" data-who="individual"><span>Another individual <span class="sub">Spouse, parent, child — in their name</span></span></button>
         <button class="opt" data-who="joint"><span>Joint <span class="sub">You and one other holder</span></span></button>
       </div>
 
-      <div class="subfields" id="indFields">
-        <div class="fld"><label>Their full name</label><input class="gin" id="newName" placeholder="e.g. Sunita Sharma"></div>
-        <div class="qlab" style="margin-top:4px">Relationship</div>
-        <div class="relrow" id="relRow">
-          <button class="rel-chip" data-r="Spouse">Spouse</button><button class="rel-chip" data-r="Parent">Parent</button><button class="rel-chip" data-r="Child">Child</button><button class="rel-chip" data-r="Other">Other</button>
-        </div>
-      </div>
       <div class="subfields" id="jointFields">
         <div class="fld"><label>Second holder's full name</label><input class="gin" id="jointName" placeholder="e.g. Sunita Sharma"></div>
       </div>
@@ -178,6 +211,9 @@
       </div>
     </div>
   </div>
+
+  <div class="scrim" id="linkScrim"><div class="sheet" id="linkSheet"></div></div>
+  <div class="scrim" id="mgScrim"><div class="sheet" id="mgSheet"></div></div>
 
   <footer></footer>
 
@@ -203,51 +239,108 @@
   };
   document.getElementById('signout').onclick=function(e){e.preventDefault();location.reload();};
 
-  /* accounts */
-  var ACCOUNTS=[
-    {nm:'Rajesh Sharma',rel:'You · Primary',type:'Individual',prod:'RIA · Advisory',val:'₹11,84,000',st:'Invested',funded:true},
-    {nm:'Rajesh Sharma',rel:'You · Primary',type:'Individual',prod:'PMS',val:'₹52,00,000',st:'Invested',funded:true},
-    {nm:'Rajesh Sharma',rel:'You · Primary',type:'Individual',prod:'International',val:'$48,000',st:'Invested',funded:true},
-    {nm:'Sunita Sharma',rel:'Spouse · linked to you',type:'Individual',prod:'RIA · Advisory',val:'Not funded',st:'Profile complete',funded:false}
+  /* ---- accounts: own + shared (view-only) ---- */
+  var OWN=[
+    {nm:'Rajesh Sharma',rel:'You · Primary',type:'Individual',prod:'RIA · Advisory',val:'₹11,84,000',st:'Invested'},
+    {nm:'Rajesh Sharma',rel:'You · Primary',type:'Individual',prod:'PMS',val:'₹52,00,000',st:'Invested'},
+    {nm:'Rajesh Sharma',rel:'You · Primary',type:'Individual',prod:'International',val:'$48,000',st:'Invested'}
   ];
+  var SHARED=[
+    {nm:'Sunita Sharma',by:'Sunita · Spouse',prod:'RIA · Advisory',val:'₹8,40,000',st:'Invested'}
+  ];
+  var REQS=[
+    {nm:'Vikram Sharma',rel:'Brother',prod:'PMS',val:'₹19,00,000'}
+  ];
+  var SHAREDBYME=[];
+  function ownCard(a){
+    return '<a class="acct" href="flameback-lobby.html?funded=1">'+
+      '<div class="top"><div><div class="nm">'+a.nm+'</div><div class="rel">'+a.rel+' · '+a.type+'</div></div></div>'+
+      '<div class="chiprow"><span class="pill prod">'+a.prod+'</span><span class="pill">'+a.type+'</span></div>'+
+      '<div class="val"><span class="v">'+a.val+'</span><span class="st live">'+a.st+'</span></div>'+
+      '<span class="enter">View account &rarr;</span></a>';
+  }
   function renderAccts(){
     var g=document.getElementById('acctGrid');
-    g.innerHTML = ACCOUNTS.map(function(a){
-      var href = a.funded ? 'flameback-lobby.html?funded=1' : 'flameback-lobby.html';
-      return '<a class="acct" href="'+href+'">'+
-        '<div class="top"><div><div class="nm">'+a.nm+'</div><div class="rel">'+a.rel+' · '+a.type+'</div></div></div>'+
-        '<div class="chiprow"><span class="pill prod">'+a.prod+'</span><span class="pill">'+a.type+'</span></div>'+
-        '<div class="val"><span class="v">'+a.val+'</span><span class="st'+(a.funded?' live':'')+'">'+a.st+'</span></div>'+
-        '<span class="enter">View account &rarr;</span></a>';
-    }).join('') + '<button class="addacct" id="addBtn"><span class="pl">+</span> Add an account</button>';
+    g.innerHTML=OWN.map(ownCard).join('')+'<button class="addacct" id="addBtn"><span class="pl">+</span> Add an account in your name</button>';
     document.getElementById('addBtn').onclick=openAdd;
+    var sg=document.getElementById('sharedGrid'), sl=document.getElementById('sharedLab');
+    sl.style.display=SHARED.length?'':'none'; sg.style.display=SHARED.length?'':'none';
+    sg.innerHTML=SHARED.map(function(a,i){
+      return '<div class="acct shared"><span class="vo">View only</span>'+
+        '<div class="top"><div><div class="nm">'+a.nm+'</div><div class="shareby">Shared by '+a.by+'</div></div></div>'+
+        '<div class="chiprow"><span class="pill prod">'+a.prod+'</span></div>'+
+        '<div class="val"><span class="v">'+a.val+'</span><span class="st live">'+a.st+'</span></div>'+
+        '<a class="enter" href="flameback-lobby.html?funded=1">View (read-only) &rarr;</a>'+
+        '<button class="removelink" data-i="'+i+'">Remove from my view</button></div>';
+    }).join('');
+    sg.querySelectorAll('.removelink').forEach(function(b){b.onclick=function(){SHARED.splice(+b.dataset.i,1);renderAccts();};});
+    var rq=document.getElementById('reqs');
+    rq.innerHTML=REQS.map(function(r,i){
+      return '<div class="req"><div class="rq-t"><b>'+r.nm+'</b> ('+r.rel+') wants to give you <b>view-only</b> access to their '+r.prod+' account — '+r.val+'.</div>'+
+        '<div class="rq-a"><button class="acc" data-i="'+i+'">Accept</button><button class="dec" data-i="'+i+'">Decline</button></div></div>';
+    }).join('');
+    rq.querySelectorAll('.acc').forEach(function(b){b.onclick=function(){var r=REQS.splice(+b.dataset.i,1)[0];SHARED.push({nm:r.nm,by:r.nm.split(' ')[0]+' · '+r.rel,prod:r.prod,val:r.val,st:'Invested'});renderAccts();};});
+    rq.querySelectorAll('.dec').forEach(function(b){b.onclick=function(){REQS.splice(+b.dataset.i,1);renderAccts();};});
+  }
+  /* ---- share (grant view-only) ---- */
+  var linkScrim=document.getElementById('linkScrim'), linkSheet=document.getElementById('linkSheet');
+  document.getElementById('shareBtn').onclick=function(){openShare();};
+  linkScrim.onclick=function(e){if(e.target===linkScrim)linkScrim.classList.remove('open');};
+  function openShare(){
+    linkSheet.innerHTML='<h3>Share an account — <em>view only</em></h3>'+
+      '<p class="ws">Give a family member who is already a Flameback client a view-only window into one of your accounts. They can see it; they can never act on it. You can revoke access any time.</p>'+
+      '<div class="qlab">Which account?</div>'+
+      '<div class="opts" id="shAcct">'+OWN.map(function(a,i){return '<button class="opt" data-i="'+i+'"><span>'+a.prod+' <span class="sub">'+a.val+' · in your name</span></span></button>';}).join('')+'</div>'+
+      '<div class="fld"><label>Their registered mobile number</label><input class="gin" id="shMob" placeholder="+91 98765 43210" inputmode="tel" autocomplete="off"></div>'+
+      '<p class="ws" style="font-size:11.5px">They must already be a Flameback client. Access starts only after they accept the request.</p>'+
+      '<div class="sheet-foot"><button class="ghost" id="cancelShare">Cancel</button><button class="gbtn" id="sendShare" disabled>Send view-only request &rarr;</button></div>';
+    var pick=null;
+    linkSheet.querySelectorAll('#shAcct .opt').forEach(function(o){o.onclick=function(){linkSheet.querySelectorAll('#shAcct .opt').forEach(function(x){x.classList.remove('sel');});o.classList.add('sel');pick=+o.dataset.i;chk();};});
+    var mob=linkSheet.querySelector('#shMob'); mob.addEventListener('input',chk);
+    function chk(){linkSheet.querySelector('#sendShare').disabled=!(pick!==null&&mob.value.replace(/[^0-9]/g,'').length>=10);}
+    linkSheet.querySelector('#cancelShare').onclick=function(){linkScrim.classList.remove('open');};
+    linkSheet.querySelector('#sendShare').onclick=function(){
+      var a=OWN[pick], to=mob.value.trim(); SHAREDBYME.push({prod:a.prod,to:to,status:'Pending'});
+      linkSheet.innerHTML='<div class="ok-ic">✓</div><h3 style="text-align:center;margin:8px 0 8px">Request sent.</h3>'+
+        '<p class="ws" style="text-align:center">We have asked <b>'+to+'</b> to confirm view-only access to your '+a.prod+' account. It stays <b>pending</b> until they accept — and you can cancel any time from Manage shared access.</p>'+
+        '<button class="close" id="shDone">Done</button>';
+      linkSheet.querySelector('#shDone').onclick=function(){linkScrim.classList.remove('open');};
+    };
+    linkScrim.classList.add('open');
+  }
+  /* ---- manage shared access (revoke) ---- */
+  var mgScrim=document.getElementById('mgScrim'), mgSheet=document.getElementById('mgSheet');
+  document.getElementById('manageBtn').onclick=function(){openManage();};
+  mgScrim.onclick=function(e){if(e.target===mgScrim)mgScrim.classList.remove('open');};
+  function openManage(){
+    var rows=SHAREDBYME.length?SHAREDBYME.map(function(s,i){return '<div class="mgrow"><div><div class="mg-t">'+s.prod+'</div><div class="mg-s">Shared with '+s.to+' · '+s.status+'</div></div><button class="revoke" data-i="'+i+'">Revoke</button></div>';}).join(''):'<p class="ws">You have not shared any account yet. Use “Share an account with family” to give someone view-only access.</p>';
+    mgSheet.innerHTML='<h3>Manage <em>shared access</em></h3><p class="ws">People you have given view-only access to your accounts. Revoke any of them, any time — access ends at once.</p><div class="mglist">'+rows+'</div><button class="close" id="mgDone">Done</button>';
+    mgSheet.querySelectorAll('.revoke').forEach(function(b){b.onclick=function(){SHAREDBYME.splice(+b.dataset.i,1);openManage();};});
+    mgSheet.querySelector('#mgDone').onclick=function(){mgScrim.classList.remove('open');};
+    mgScrim.classList.add('open');
   }
 
   /* add-account wizard */
   var scrim=document.getElementById('scrim');
-  var who=null, prod=null, rel=null;
+  var who=null, prod=null;
   function openAdd(){who=prod=rel=null;reset();scrim.classList.add('open');}
   function reset(){
-    document.querySelectorAll('#whoOpts .opt,#prodOpts .opt,.rel-chip').forEach(function(x){x.classList.remove('sel','on');});
-    document.getElementById('indFields').classList.remove('show');document.getElementById('jointFields').classList.remove('show');
-    document.getElementById('newName').value='';document.getElementById('jointName').value='';
+    document.querySelectorAll('#whoOpts .opt,#prodOpts .opt').forEach(function(x){x.classList.remove('sel');});
+    document.getElementById('jointFields').classList.remove('show');
+    document.getElementById('jointName').value='';
     document.getElementById('setupBtn').disabled=true;
   }
   document.getElementById('cancelAdd').onclick=function(){scrim.classList.remove('open');};
   scrim.onclick=function(e){if(e.target===scrim)scrim.classList.remove('open');};
   document.querySelectorAll('#whoOpts .opt').forEach(function(o){
     o.onclick=function(){document.querySelectorAll('#whoOpts .opt').forEach(function(x){x.classList.remove('sel');});o.classList.add('sel');who=o.dataset.who;
-      document.getElementById('indFields').classList.toggle('show',who==='individual');
       document.getElementById('jointFields').classList.toggle('show',who==='joint');
       check();};
   });
-  document.querySelectorAll('.rel-chip').forEach(function(c){c.onclick=function(){document.querySelectorAll('.rel-chip').forEach(function(x){x.classList.remove('on');});c.classList.add('on');rel=c.dataset.r;check();};});
   document.querySelectorAll('#prodOpts .opt').forEach(function(o){o.onclick=function(){document.querySelectorAll('#prodOpts .opt').forEach(function(x){x.classList.remove('sel');});o.classList.add('sel');prod=o.dataset.prod;check();};});
-  document.getElementById('newName').addEventListener('input',check);
   document.getElementById('jointName').addEventListener('input',check);
   function check(){
     var ok=who&&prod;
-    if(who==='individual') ok=ok&&document.getElementById('newName').value.trim()&&rel;
     if(who==='joint') ok=ok&&document.getElementById('jointName').value.trim();
     document.getElementById('setupBtn').disabled=!ok;
   }
